@@ -1,0 +1,8 @@
+input:-webkit-autofill{ -webkit-box-shadow: 0 0 0px 1000px white inset; -webkit-text-fill-color: rgba(0,0,0,0.85);}
+input:-internal-autofill-selected{ background-color: rgba(0,0,0,0) !important}
+.ant-input-password{
+    padding: 0px !important;
+}
+.ant-input-password > .ant-input{
+    padding:6.5px 11px !important;
+}
