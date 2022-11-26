@@ -4,6 +4,7 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import moment from 'moment';
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
+import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month }  from '../../components/chart/TempData'
 
 const { Header, Sider, Content } = Layout;
@@ -25,9 +26,10 @@ function TRInfo() {
           <div>資料表數 :<span class="ml-2">10 個</span></div>
           <div>容量 :<span class="ml-2">160 VA</span></div>
         </Content>
-        {/* <Sider class="border-2 border-red-600">
-                  利用率：
-              </Sider> */}
+        <Content class="relative flex w-80 gap-2">
+          <span class="absolute -left-14 text-base tracking-widest">利用率(%)：</span>
+          <EChartRate />
+        </Content>
       </Layout>
       <Divider />
       <Layout class="py-2">
