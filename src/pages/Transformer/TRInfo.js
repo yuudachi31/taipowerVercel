@@ -1,131 +1,70 @@
-
-import React, { useState } from 'react';
-import { useSelector } from "react-redux";
-
-
 //antd
-import { Layout, Menu, Dropdown, Space } from 'antd';
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
-import './Manage.css';
+import { Layout, Divider, DatePicker } from 'antd';
+import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import EChartMain from '../../components/chart/EChartMain';
 
 const { Header, Sider, Content } = Layout;
 
+const monthFormat = 'YYYY/MM';
 
-
-
-function Manage() {
-    const _default_key = useSelector((state)=> state.frontReducer.default_key);
-    const [_item, _setItem] = useState(1);
-    // username
-    const _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1]
-
-
-    const menu = (
-        <Menu
-          items={[
-            {
-              key: '1',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                  1st menu item
-                </a>
-              ),
-            },
-            {
-              key: '2',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                  2nd menu item (disabled)
-                </a>
-              ),
-              icon: <SmileOutlined />,
-              disabled: true,
-            },
-            {
-              key: '3',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                  3rd menu item (disabled)
-                </a>
-              ),
-              disabled: true,
-            },
-            {
-              key: '4',
-              danger: true,
-              label: 'a danger item',
-            },
-          ]}
-        />
-      );
-
-    function Page() {
-        if (_item === 1) {
-            return (
-                <div>事件列表</div>
-            );
-        }
-        if (_item === 2) {
-            return (
-                <div>輸電線資訊</div>
-            );
-        }
-        if (_item === 3) {
-            return (
-                <div>鐵塔資訊</div>
-            );
-        }
-        if (_item === 4) {
-            return (
-                <div>帳號管理</div>
-            );
-        }
-        if (_item === 5) {
-            return (
-                <div>變更紀錄</div>
-            );
-        }
-    }
+function TRInfo() {
     return (
-        <Layout className='h-full'>
-            <Sider>
-                <div className='sider flex flex-col mt-16 min-h-screen'>
-                    <Menu mode='vertical' defaultSelectedKeys={['eventlist']}>
-                        <Menu.Item key="eventlist" onClick={() => _setItem(1)}>
-                            <div>事件列表</div>
-                        </Menu.Item>
-                        <Menu.Item key="lineinfo" onClick={() => _setItem(2)}>
-                            <div>輸電線資訊</div>
-                        </Menu.Item>
-                        <Menu.Item key="towerinfo" onClick={() => _setItem(3)}>
-                            <div>鐵塔資訊</div>
-                        </Menu.Item>
-                        <Menu.Item key="accountmanage" onClick={() => _setItem(4)}>
-                            <div>帳號管理</div>
-                        </Menu.Item>
-                        <Menu.Item key="changerecord" onClick={() => _setItem(5)}>
-                            <div>變更紀錄</div>
-                        </Menu.Item>
-                    </Menu>
-                </div>
-            </Sider>
-            <Layout>
-                <Header className='bg-white flex flex-row-reverse'>
-                    <Dropdown overlay={menu} trigger={['click']}>
-                        <a onClick={(e)=>e.preventDefault()}>
-                            <Space className="text-black">
-                                Hello, {_username} <DownOutlined/>
-                            </Space>
-                        </a>
-                    </Dropdown>
-                </Header>
-                <Content>
-                    <Page/>
+        <Layout class="px-20">
+            <Header class="pt-4 flex space-x-7 items-center">
+                <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">B3729DE2437</span></h2>
+                <button class="btn flex-none"><MessageOutlined />推播</button>
+                <button class="btn flex-none">返回列表</button>
+            </Header>
+            <Divider />
+            <Layout class="flex justify-between py-2">
+                <Content class="text-base tracking-widest space-y-5 flex-col">
+                    <div>所轄區處 :<span class="ml-2">桃園市桃園區</span></div>
+                    <div>資料表數 :<span class="ml-2">10 個</span></div>
+                    <div>容量 :<span class="ml-2">160 VA</span></div>
                 </Content>
+                <Sider class="border-2 border-red-600">
+                    利用率：
+                </Sider>
+            </Layout>
+            <Divider />
+            <Layout>
+                <Header class="flex items-center justify-between">
+                    <div class="space-x-3 flex-1">
+                        <span class="text-base">期間選擇</span>
+                        <DatePicker defaultValue={moment('2015/01', monthFormat)} format={monthFormat} picker="month" />
+                    </div>
+                    <h3 class="font-bold flex-1 text-center m-0 text-base">111 年度 01 月每日用電圖表</h3>
+                    <div class="flex flex-1 items-center justify-end">
+                        <span class="border-2 border-black w-7 h-3 bg-green"></span>
+                        <span class="ml-2 mr-6">尖峰利用率</span>
+                        <span class="w-7 h-3 bg-green-500"></span>
+                        <span class="ml-2 mr-6">尖峰</span>
+                        <span class="w-7 h-3 bg-green-300"></span>
+                        <span class="ml-2">離峰</span>
+                    </div>
+                </Header>
+            </Layout>
+            <Divider />
+            <Layout class="flex">
+                <Layout class="flex-1">
+                    <Header>
+                        <h3 class="font-bold text-base">111 年度 每月用電圖表</h3>
+                    </Header>
+                </Layout>
+                <Layout class="flex-1">
+                    <Header>
+                        <h3 class="font-bold text-base">111 年 01 月 01 日 當日用電圖表</h3>
+                        <div class="flex items-center justify-center mt-6">
+                            <button class="flex"><CaretLeftOutlined style={{ color: '#7ACA00' }} /></button>
+                            <span class="leading-none border-1 py-1 px-5 mx-5">10:00 - 13:45</span>
+                            <button class="flex"><CaretRightOutlined style={{ color: '#7ACA00' }} /></button>
+                        </div>
+                    </Header>
+                </Layout>
             </Layout>
         </Layout>
-
     );
 
 }
-export default Manage;
+export default TRInfo;

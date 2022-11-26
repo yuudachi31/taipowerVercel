@@ -1,4 +1,4 @@
-import "antd/dist/antd.css";
+import "antd/dist/antd.less";
 import "./App.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 // Redirect
@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Manage from "./pages/Manage";
+import TRInfo from "./pages/Transformer/TRInfo";
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/manage">
-          <Manage />
+        <Route path="/tr/info">
+          <TRInfo />
         </Route>
       </Switch>
     </BrowserRouter>
