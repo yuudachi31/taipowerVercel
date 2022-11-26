@@ -2,11 +2,11 @@
 import { Layout, Divider, DatePicker } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import EChartMain from '../../components/chart/EChartMain';
+import EChartMain from '../../components/EChartMain';
 
 const { Header, Sider, Content } = Layout;
 
-const monthFormat = 'YYYY/MM';
+const monthFormat = 'YYYY 年 MM 月';
 
 function TRInfo() {
     return (
@@ -23,12 +23,12 @@ function TRInfo() {
                     <div>資料表數 :<span class="ml-2">10 個</span></div>
                     <div>容量 :<span class="ml-2">160 VA</span></div>
                 </Content>
-                <Sider class="border-2 border-red-600">
+                {/* <Sider class="border-2 border-red-600">
                     利用率：
-                </Sider>
+                </Sider> */}
             </Layout>
             <Divider />
-            <Layout>
+            <Layout class="py-2">
                 <Header class="flex items-center justify-between">
                     <div class="space-x-3 flex-1">
                         <span class="text-base">期間選擇</span>
@@ -44,6 +44,9 @@ function TRInfo() {
                         <span class="ml-2">離峰</span>
                     </div>
                 </Header>
+                <Content class="flex justify-center mt-14 mb-20">
+                    <EChartMain />
+                </Content>
             </Layout>
             <Divider />
             <Layout class="flex">
