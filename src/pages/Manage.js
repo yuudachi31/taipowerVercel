@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 //antd
 import { Layout, Menu, Dropdown, Space } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
-import './Manage.css';
 
 const { Header, Sider, Content } = Layout;
 
