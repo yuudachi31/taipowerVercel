@@ -43,7 +43,7 @@ function Login() {
           <Form.Item>
             <div className="flex flex-row">
               <img src={rainbowLogo} className="w-12 h-12" />
-              <div className="text-liteBlue text-base text-bold ml-2">
+              <div className="text-base text-bold ml-2">
                 供電線路智慧故障
                 <br />
                 定位系統
@@ -96,7 +96,7 @@ function Login() {
           </div>
           <Form.Item>
             <button
-              className="w-full h-10 bg-gradient-to-r from-litePurple to-liteBlue hover:from-white hover:to-white text-white hover:text-liteBlue border-white border-2 hover:border-liteBlue text-center inline-block align-middle leading-9 rounded"
+              className="w-full h-10 bg-gradient-to-r from-litePurple hover:from-white hover:to-white text-white border-white border-2 text-center inline-block align-middle leading-9 rounded"
             >登入
             </button>
           </Form.Item>

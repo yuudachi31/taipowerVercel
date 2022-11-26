@@ -11,53 +11,25 @@ module.exports = {
         xl: "1280px",
       },
       height: {
-        header: "70px",
-      },
-      minHeight:{
-        'textArea': '40px',
-      },
-      letterSpacing: {
-        wide: ".03em",
+        header: "60px",
       },
       colors: {
         white: "#ffffff",
-        black: "#464453",
-        liteBlue:'#35B7FC',
-        litePurple:'#B992F9',
-        liteGreen:'#B5EB5D',
-        blue: {
-          400: "#1E659C",
-          300: "#E0EBF4",
-          200: "#F0F5FB",
-        },
-        yellow: {
-          400: "#F9B835",
-          300: "#FFD786",
-        },
-        gray: {
-          500: "#ACACAC",
-          400: "#DBDFE5",
-          300: "#F0F1F5",
+        black: "#000000",
+        green: {
+          500: "#55A630",
+          400: "#7ACA00",
+          300: "#92D131",
         },
         red:{
-          500:"#FF7E8D",
-          400:"#FFE0E4",
+          400:"#FF6262",
         },
         purple:{
-          600:"#464453",
-          500:"#525077",
-          400:"#7C80AA",
-          300:"#9799B5",
+          400:"#524FDD",
         }
       },
-      boxShadow: {
-        header: "0px 5px 8px rgba(0, 0, 0, 0.1)",
-        btn: "2px 3px 7px rgba(0, 0, 0, 0.2)",
-        card: "0px 4px 8px rgba(0, 0, 0, 0.06)",
-        busCircle: "0px 0px 4px #005DC0",
-      },
-      fontFamily: {
-        ch: ["Noto Sans TC", "sans-serif"],
+      fontSize: {
+        base: '18px',
       },
       backgroundImage:{
         'login':"url('./assets/img/starsunset.jpg')"
