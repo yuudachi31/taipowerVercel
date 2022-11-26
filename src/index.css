@@ -12,7 +12,7 @@ body {
 
 @layer base {
   body {
-    @apply text-black text-base;
+    @apply text-black text-base flex justify-center;
   }
   a {
     @apply cursor-pointer block;
@@ -23,6 +23,9 @@ body {
 }
 
 @layer components {
+  .wrapper {
+    @apply max-w-8xl;
+  }
   .btn {
     @apply bg-green-400 rounded-sm text-white text-center;
     @apply py-2 px-3 w-max h-auto;
@@ -34,6 +37,9 @@ body {
 @layer utilities {
   .h-18{
     height:72px;
+  }
+  .max-w-8xl {
+    max-width: 1440px;
   }
   .border-1 {
     border: 1px solid black;
