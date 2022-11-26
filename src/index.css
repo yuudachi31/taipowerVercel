@@ -6,156 +6,36 @@
 
 body {
   margin: 0;
-  font-size: 16px;
   font-family: "Noto Sans TC", sans-serif;
   letter-spacing: 0.03em;
 }
 
-/* search */
-
-.search {
-  display: grid;
-  grid-template-rows: min-content 74% auto;
-}
-
-@media (min-width: 768px) {
-  .search {
-    grid-template-rows: min-content 50% auto;
-    grid-template-columns: 100%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .search {
-    grid-template-columns: 465px auto;
-    grid-template-rows: min-content auto;
-    grid-auto-flow: column;
-  }
-}
-
 @layer base {
   body {
-    @apply text-black;
-  }
-  h1 {
-    /* logo title */
-    @apply text-blue-400 font-bold;
-  }
-  h2 {
-    @apply font-medium text-3xl tracking-wide;
+    @apply text-black text-base;
   }
   a {
     @apply cursor-pointer block;
   }
-  .content-full {
-    height: calc(100vh - theme("height.header"));
-    min-height: 600px;
+  h3 {
+    @apply font-bold text-center;
   }
 }
 
 @layer components {
   .btn {
-    @apply bg-liteBlue rounded-sm text-white shadow-btn h-8;
-    @apply py-1 px-5 w-max inline-block;
-  }
-
-  .line {
-    @apply border-b-2  border-blue-400;
-  }
-
-  .tab-line {
-    @apply text-white py-2 font-medium w-max;
-  }
-  .tab-line-active {
-    @apply py-2 w-max font-medium text-yellow-400 border-b border-yellow-400;
-  }
-
-  /* home */
-
-  .home_switch_on {
-    @apply bg-blue-400 border-blue-400  text-white font-medium py-1 px-3 w-max inline-block shadow-btn;
-    border-width: 1.75px;
-  }
-  .home_switch_off {
-    @apply bg-white border-blue-400 text-blue-400 font-medium py-1 px-3 w-max inline-block;
-    border-width: 1.75px;
-  }
-
-  /* searchbar */
-  .step-circle {
-    @apply w-8 h-8 rounded-full bg-blue-300 text-white flex items-center justify-center relative;
-  }
-  .step-circle:after {
-    content: "";
-    @apply border-r-2 border-blue-300 absolute h-12;
-    @apply top-12;
-  }
-  .step-circle-active {
-    @apply bg-blue-400;
-  }
-  .step-circle-active:after {
-    @apply border-blue-400;
-  }
-  .step-circle-dash {
-    @apply bg-white text-blue-300 border-blue-300 border-2 border-dashed;
-  }
-  .step-circle-dash:after {
-    @apply border-dashed;
-  }
-  .step-circle-dash-active {
-    @apply text-blue-400 border-blue-400;
-  }
-  .step-circle-dash-active:after {
-    @apply border-blue-400;
-  }
-  .line-dropdown {
-    @apply rounded-full w-8 border-white mx-auto bg-white cursor-pointer;
-    border: 1.5px solid white;
-  }
-
-  /* plansearch */
-  .planlistitem {
-    @apply grid p-4 items-center gap-4 relative;
-    grid-template-columns: auto max-content max-content;
+    @apply bg-green-400 rounded-sm text-white text-center;
+    @apply py-2 px-3 w-max h-auto;
+    @apply grid grid-flow-col gap-2 items-center;
   }
 }
 
-@variants group-hover, hover, focus {
-  .tab-line-hover {
-    @apply py-2 w-max font-medium text-yellow-400 border-b border-yellow-400;
-  }
-  /* pseudo solution */
-  .content {
-    content: ".";
-  }
-  .home-switch-on-hover {
-    @apply bg-blue-400  text-white;
-  }
-}
 
 @layer utilities {
-  .w-1053 {
-    width: 1200px;
+  .h-18{
+    height:72px;
   }
-  .w-130{
-    width: 130px;
-  }
-  .w-187{
-    width:187px;
-  }
-  .z-999{
-    z-index: 999;
-  }
-  .h-780{
-    height:780px;
-  }
-  .h-85vh{
-    height:85vh;
-  }
-  .h-70vh{
-    height:65vh;
-  }
-  .min-h-85{
-    min-height: 85vh;
+  .border-1 {
+    border: 1px solid black;
   }
 }
