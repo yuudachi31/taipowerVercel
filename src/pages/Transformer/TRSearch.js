@@ -4,128 +4,104 @@ import { useSelector } from "react-redux";
 
 
 //antd
-import { Layout, Menu, Dropdown, Space } from 'antd';
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
-import './Manage.css';
-
-const { Header, Sider, Content } = Layout;
+import { Layout, Menu, Dropdown, Space, Table } from 'antd';
+import { PrinterOutlined } from '@ant-design/icons';
 
 
 
 
-function Manage() {
-    const _default_key = useSelector((state)=> state.frontReducer.default_key);
-    const [_item, _setItem] = useState(1);
-    // username
-    const _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1]
-
-
-    const menu = (
-        <Menu
-          items={[
-            {
-              key: '1',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                  1st menu item
-                </a>
-              ),
-            },
-            {
-              key: '2',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                  2nd menu item (disabled)
-                </a>
-              ),
-              icon: <SmileOutlined />,
-              disabled: true,
-            },
-            {
-              key: '3',
-              label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                  3rd menu item (disabled)
-                </a>
-              ),
-              disabled: true,
-            },
-            {
-              key: '4',
-              danger: true,
-              label: 'a danger item',
-            },
-          ]}
-        />
-      );
-
-    function Page() {
-        if (_item === 1) {
-            return (
-                <div>事件列表</div>
-            );
-        }
-        if (_item === 2) {
-            return (
-                <div>輸電線資訊</div>
-            );
-        }
-        if (_item === 3) {
-            return (
-                <div>鐵塔資訊</div>
-            );
-        }
-        if (_item === 4) {
-            return (
-                <div>帳號管理</div>
-            );
-        }
-        if (_item === 5) {
-            return (
-                <div>變更紀錄</div>
-            );
-        }
+function TRSearch() {
+    const columns = [
+        {
+            title: '區處別',
+            dataIndex: 'name',
+        },
+        {
+            title: '圖號座標',
+            dataIndex: 'see',
+        },
+        {
+            title: '組別',
+            dataIndex: 'group',
+        },
+        {
+            title: '第幾具',
+            dataIndex: 'number',
+        },
+        {
+            title: '利用率',
+            dataIndex: 'rate',
+        },
+        {
+            title: '容量',
+            dataIndex: 'vol',
+        },
+    ];
+    const data = [];
+    for (let i = 0; i < 46; i++) {
+        data.push({
+            key: i,
+            name: `01`,
+            see: 'A222BC3333',
+            group: `T01`,
+            number: '001',
+            rate: '70.3',
+            vol: 32,
+        });
     }
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+        selections: [
+            Table.SELECTION_ALL,
+            Table.SELECTION_INVERT,
+            Table.SELECTION_NONE,
+            {
+                key: 'odd',
+                text: 'Select Odd Row',
+                onSelect: (changableRowKeys) => {
+                    let newSelectedRowKeys = [];
+                    newSelectedRowKeys = changableRowKeys.filter((_, index) => {
+                        if (index % 2 !== 0) {
+                            return false;
+                        }
+                        return true;
+                    });
+                    setSelectedRowKeys(newSelectedRowKeys);
+                },
+            },
+            {
+                key: 'even',
+                text: 'Select Even Row',
+                onSelect: (changableRowKeys) => {
+                    let newSelectedRowKeys = [];
+                    newSelectedRowKeys = changableRowKeys.filter((_, index) => {
+                        if (index % 2 !== 0) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    setSelectedRowKeys(newSelectedRowKeys);
+                },
+            },
+        ],
+    };
     return (
-        <Layout className='h-full'>
-            <Sider>
-                <div className='sider flex flex-col mt-16 min-h-screen'>
-                    <Menu mode='vertical' defaultSelectedKeys={['eventlist']}>
-                        <Menu.Item key="eventlist" onClick={() => _setItem(1)}>
-                            <div>事件列表</div>
-                        </Menu.Item>
-                        <Menu.Item key="lineinfo" onClick={() => _setItem(2)}>
-                            <div>輸電線資訊</div>
-                        </Menu.Item>
-                        <Menu.Item key="towerinfo" onClick={() => _setItem(3)}>
-                            <div>鐵塔資訊</div>
-                        </Menu.Item>
-                        <Menu.Item key="accountmanage" onClick={() => _setItem(4)}>
-                            <div>帳號管理</div>
-                        </Menu.Item>
-                        <Menu.Item key="changerecord" onClick={() => _setItem(5)}>
-                            <div>變更紀錄</div>
-                        </Menu.Item>
-                    </Menu>
-                </div>
-            </Sider>
-            <Layout>
-                <Header className='bg-white flex flex-row-reverse'>
-                    <Dropdown overlay={menu} trigger={['click']}>
-                        <a onClick={(e)=>e.preventDefault()}>
-                            <Space className="text-black">
-                                Hello, {_username} <DownOutlined/>
-                            </Space>
-                        </a>
-                    </Dropdown>
-                </Header>
-                <Content>
-                    <Page/>
-                </Content>
-            </Layout>
-        </Layout>
+        <div className='wrapper px-24 py-4'>
+            <div className='flex justify-between mb-4'>
+                <button class="btn flex-none"><PrinterOutlined />匯出</button>
+                <button class="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
+            </div>
+
+            <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+        </div>
 
     );
 
 }
-export default Manage;
+export default TRSearch;

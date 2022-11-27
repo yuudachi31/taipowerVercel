@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
+import TRSearch from "./pages/Transformer/TRSearch";
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
         <Route path="/tr/info">
           <Header />
           <TRInfo />
+        </Route>
+        <Route path="/tr/search">
+          <Header />
+          <TRSearch />
         </Route>
       </Switch>
     </BrowserRouter>
