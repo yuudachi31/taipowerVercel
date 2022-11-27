@@ -20,6 +20,7 @@ function App() {
           <Login />
         </Route>
         <Route path="/tr/info">
+          <Header />
           <TRInfo />
         </Route>
       </Switch>

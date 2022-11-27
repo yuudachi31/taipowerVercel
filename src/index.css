@@ -44,4 +44,7 @@ body {
   .border-1 {
     border: 1px solid black;
   }
+  .tracking-8{
+    letter-spacing: 0.08em;
+  }
 }
