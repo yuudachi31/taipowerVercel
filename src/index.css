@@ -10,6 +10,10 @@ body {
   letter-spacing: 0.03em;
 }
 
+#root {
+  width: 100%;
+}
+
 @layer base {
   body {
     @apply text-black text-base flex justify-center;
