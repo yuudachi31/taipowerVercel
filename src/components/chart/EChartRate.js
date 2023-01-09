@@ -22,6 +22,7 @@ function EChartRate() {
                     innerRadius={70}
                     outerRadius={90}
                     dataKey="value"
+                    isAnimationActive={false}
                 >
                     {data.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
