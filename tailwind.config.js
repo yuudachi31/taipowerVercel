@@ -25,7 +25,11 @@ module.exports = {
           400:"#FF6262",
         },
         purple:{
-          400:"#524FDD",
+          400:"#524FDF",
+        },
+        gray:{
+          300:"#C4C4C4",
+          400:"#7B7B7B",
         }
       },
       fontSize: {
@@ -35,8 +39,9 @@ module.exports = {
         'login':"url('./assets/img/starsunset.jpg')"
       },
       boxShadow: {
-        header: "0px 4px 10px rgba(172, 172, 172, 0.25)",
-        card: "0px 4px 8px rgba(0, 0, 0, 0.06)",
+        'header': "0px 4px 10px rgba(172, 172, 172, 0.25)",
+        'card': "0px 4px 8px rgba(0, 0, 0, 0.06)",
+        'menu': "0px 6px 8px rgba(82, 79, 223, 0.3)"
       },
     },
   },

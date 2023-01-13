@@ -31,10 +31,34 @@ body {
     @apply w-8xl;
     margin: 0 auto;
   }
+  .manage-wrapper {
+    @apply bg-gray-100;
+    width: calc(100% - 290px);
+    margin: 0 auto;
+  }
   .btn {
     @apply bg-green-400 rounded-sm text-white text-center;
     @apply py-2 px-3 w-max h-auto;
     @apply grid grid-flow-col gap-2 items-center;
+  }
+  .btn-manage {
+    @apply border border-purple-400;
+    @apply rounded-sm text-purple-400 text-center;
+    @apply py-1 px-6 w-max h-auto;
+    @apply grid grid-flow-col gap-2 items-center;
+  }
+  .btn-manage-full {
+    @apply bg-purple-400 text-white
+  }
+  .menu-btn {
+    @apply w-full h-14 flex items-center p-5;
+    @apply bg-white rounded-md text-gray-400 text-base;
+  }
+  .menu-btn-active {
+    @apply bg-purple-400 shadow-menu text-white;
+  }
+  .user-grid-row {
+    @apply pl-8 grid grid-cols-4 items-center;
   }
 }
 
@@ -42,6 +66,9 @@ body {
 @layer utilities {
   .h-18{
     height:72px;
+  }
+  .h-08{
+    height:80%;
   }
   .w-8xl {
     width: 1440px;
