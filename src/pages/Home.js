@@ -23,7 +23,7 @@ function Home() {
       <div></div>
     </div>
     </>:<>
-    { _history.push('/manage/user')}
+    { _history.push('/tr/search')}
     </>
     }
     </>

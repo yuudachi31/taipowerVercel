@@ -8,13 +8,15 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 
 
-function _logout(e) {
-  document.cookie = 'fln=; Max-Age=-99999999;';
-  document.cookie = 'fltk=; Max-Age=-99999999;';
-  document.cookie = 'flid=; Max-Age=-99999999;';
-}
+
 
 function Header() {
+  function _logout(e) {
+    document.cookie = 'fln=; Max-Age=-99999999;';
+    document.cookie = 'fltk=; Max-Age=-99999999;';
+    document.cookie = 'flid=; Max-Age=-99999999;';
+    _history.push('/login')
+  }
   const menu = (
     <Menu defaultSelectedKeys={['logout']} className="">
       <Menu.Item key="logout">
@@ -31,6 +33,7 @@ function Header() {
     _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1];
   }
   function _gotomanage() {
+    _history.push('/manage/notify')
     
   }
 

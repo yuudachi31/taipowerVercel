@@ -1,24 +1,29 @@
 
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 
 //antd
 import { Layout, Menu, Dropdown, Space, Table } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 
 
 
 function TRSearch() {
+    const _history = useHistory();
+
     const columns = [
-        {
-            title: '區處別',
-            dataIndex: 'name',
-        },
         {
             title: '圖號座標',
             dataIndex: 'see',
+            render:text=>{
+                return(
+                    <a href='/tr/info' >{text}</a>
+                )
+            }
         },
         {
             title: '組別',
@@ -41,7 +46,6 @@ function TRSearch() {
     for (let i = 0; i < 46; i++) {
         data.push({
             key: i,
-            name: `01`,
             see: 'A222BC3333',
             group: `T01`,
             number: '001',
