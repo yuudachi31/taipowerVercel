@@ -37,7 +37,7 @@ module.exports = {
         base: '18px',
       },
       backgroundImage:{
-        'login':"url('./assets/img/starsunset.jpg')"
+        'login':"url('./assets/img/login_bg.png')"
       },
       boxShadow: {
         'header': "0px 4px 10px rgba(172, 172, 172, 0.25)",
