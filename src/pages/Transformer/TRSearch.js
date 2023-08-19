@@ -138,7 +138,6 @@ function TRSearch() {
             <div className='flex justify-between mb-4'>
                 <button className="btn flex-none"><PrinterOutlined />匯出</button>
                 <button className="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
-                <button className="btn-manage justify-self-end mr-4 bg-white font-bold" onClick={showModal} >新增群組</button>
                     <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
                     footer={[
                         // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
