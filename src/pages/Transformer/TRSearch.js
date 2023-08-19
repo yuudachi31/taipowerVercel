@@ -1,19 +1,48 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 
 //antd
-import { Layout, Menu, Dropdown, Space, Table } from 'antd';
+import { Layout, Menu, Dropdown, Space, Table ,Modal,Input,Button,Checkbox} from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 
-
+const CheckboxGroup = Checkbox.Group;
+const plainOptions = ['A222BC3333', 'A222BC1111', 'A222BC2222'];
+const plainPersentage = ['72', '82', '60'];
+const defaultCheckedList = [];
 
 
 function TRSearch() {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    useEffect(() => {
+        // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
+        const timer = setTimeout(() => {
+        setIsModalVisible(true);
+        }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
+        // 在組件卸載時清除定時器，以避免記憶體洩漏
+        return () => clearTimeout(timer);
+      }, []);
     const _history = useHistory();
+      //新增群組modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    
+    const dataCheck = [] 
+    for (let i = 0; i < 3; i++) {
+        dataCheck[i]=
+        plainOptions[i] + '：' + plainPersentage[i]
+    };
 
     const columns = [
         {
@@ -58,6 +87,15 @@ function TRSearch() {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
+    const [checkedList, setCheckedList] = useState(defaultCheckedList);
+    const checkAll = dataCheck.length === checkedList.length;
+    const indeterminate = checkedList.length > 0 && checkedList.length < dataCheck.length;
+    const onChange = (list) => {
+      setCheckedList(list);
+    };
+    const onCheckAllChange = (e) => {
+      setCheckedList(e.target.checked ? dataCheck : []);
+    };
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
@@ -98,8 +136,20 @@ function TRSearch() {
     return (
         <div className='wrapper px-24 py-4'>
             <div className='flex justify-between mb-4'>
-                <button class="btn flex-none"><PrinterOutlined />匯出</button>
-                <button class="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
+                <button className="btn flex-none"><PrinterOutlined />匯出</button>
+                <button className="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
+                <button className="btn-manage justify-self-end mr-4 bg-white font-bold" onClick={showModal} >新增群組</button>
+                    <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
+                    footer={[
+                        // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                        <Button type="primary" onClick={() => setIsModalVisible(false)}>隔天通知</Button>,
+                         ]}
+
+                    >
+                    <div class="flex mb-3"><div class=" w-72">
+                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox></div></div>
+                    <div class="flex mb-3"><CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} /></div>
+                    </Modal>
             </div>
 
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
