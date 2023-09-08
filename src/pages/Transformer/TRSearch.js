@@ -61,14 +61,17 @@ function TRSearch() {
         {
             title: '第幾具',
             dataIndex: 'number',
+        },{
+            title: '容量(單位)',
+            dataIndex: 'vol',
         },
         {
             title: '利用率',
             dataIndex: 'rate',
         },
         {
-            title: '容量',
-            dataIndex: 'vol',
+            title: '隔天通知',
+            dataIndex: 'notify',
         },
     ];
     const data = [];
@@ -80,6 +83,7 @@ function TRSearch() {
             number: '001',
             rate: '70.3',
             vol: 32,
+            notify:'是'
         });
     }
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);

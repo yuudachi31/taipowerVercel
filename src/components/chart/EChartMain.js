@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 
 function EChartMain({data}) {
@@ -26,6 +26,7 @@ function EChartMain({data}) {
                 <Tooltip content={renderLegend} />
                 <Bar isAnimationActive={false} dataKey="load_on" name="尖峰" stackId="a" barSize={16} fill="#55A630" />
                 <Bar isAnimationActive={false} dataKey="load_off" name="離峰" stackId="a" fill="#92D131" />
+                {/* 圖表線 */}
                 <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} />
             </ComposedChart>
         </ResponsiveContainer>

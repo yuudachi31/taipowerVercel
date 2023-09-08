@@ -41,6 +41,7 @@ function EChartDay() {
                 <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
                 <YAxis dataKey="load" orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
+                {/* 負載量Hover(搭配BarChart) */}
                 <Tooltip content={renderLegend} />
                 <Bar isAnimationActive={false} dataKey="load" name="尖峰" stackId="a" barSize={16} fill="#55A630" />
             </BarChart>
