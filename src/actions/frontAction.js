@@ -1,7 +1,8 @@
 import {
     SET_TEST,
     RESET_TEST,
-    LOGIN
+    LOGIN,
+    STORE_USER_INFO
 } from '../utils/actionType/frontActionType'
 
 export const setTest = () => {
@@ -25,6 +26,14 @@ export const loginAction=(token)=>{
         type: LOGIN,
         payload: {
             token: token
+        }
+    }
+}
+export const storeUserInfo=(info)=>{
+    return {
+        type: STORE_USER_INFO,
+        payload: {
+            info: info
         }
     }
 }

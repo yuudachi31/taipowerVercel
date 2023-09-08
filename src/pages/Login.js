@@ -2,8 +2,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import rainbowLogo from "../assets/icon/logo-rainbow.png";
 
-import { postUser } from "../api/frontApi";
-import{resetTest,loginAction} from"../actions/frontAction"
+import { postUser, getUserRole } from "../api/frontApi";
+import { resetTest, loginAction,storeUserInfo } from "../actions/frontAction";
 import { Form, Input, message } from "antd";
 import {
   EyeInvisibleOutlined,
@@ -16,25 +16,29 @@ import passwordIcon from "../assets/img/password.png";
 import { connect } from "react-redux";
 import "./Login.css";
 
-function Login({user,resetTest,loginAction}) {
+function Login({ user, resetTest, loginAction,storeUserInfo }) {
   const _history = useHistory();
   // const testbtn = () => {
   //   console.log(user);
   //   resetTest(10)
-     console.log(user);
+  console.log(user);
   // };
   const _handleLogin = (values) => {
     postUser(values.username, values.password).then((data) => {
       if (data.errStatus) {
         message.error(data.errDetail);
       } else {
-        console.log(data)
-        loginAction(data.access_token)
+        console.log(data);
+        loginAction(data.access_token);
+
         document.cookie = "fltk=" + data.access_token;
         document.cookie = "flid=" + data.group_id;
         document.cookie = "fln=" + data.username;
+        console.log(document.cookie);
         _history.push("/");
-        
+        getUserRole(data.access_token).then((data) => {
+          storeUserInfo(data)
+        });
       }
     });
   };
@@ -120,12 +124,13 @@ function Login({user,resetTest,loginAction}) {
   );
 }
 
-const mapStateToProps = ({userReducer}) => ({
-  user: userReducer
-})
+const mapStateToProps = ({ userReducer }) => ({
+  user: userReducer,
+});
 
 const mapDispatchToProps = {
   resetTest,
-  loginAction
-}
+  loginAction,
+  storeUserInfo
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
