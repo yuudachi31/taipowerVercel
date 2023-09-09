@@ -37,7 +37,16 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         console.log(document.cookie);
         _history.push("/");
         getUserRole(data.access_token).then((data) => {
-          storeUserInfo(data)
+          storeUserInfo(data);
+        document.cookie = "user_id=" + data.user_id;
+        document.cookie = "email=" + data.email;
+        document.cookie = "chat_id=" + data.chat_id;
+        document.cookie = "user_name=" + data.user_name;
+        document.cookie = "region_id=" + data.region_id;
+        document.cookie = "region_name=" + data.region_name;
+        document.cookie = "roles=" + JSON.stringify(data.roles);
+        
+
         });
       }
     });
