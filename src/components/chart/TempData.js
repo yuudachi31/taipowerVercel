@@ -8,6 +8,7 @@ for (let idx = 1; idx <= 31; idx++) {
     let load_on = Math.ceil(Math.random() * 50);
     let load_off = Math.ceil(Math.random() * 20);
     let uti_rate = Math.floor(Math.random() * 50) + 40 + 1;
+    let uti_rate_two = Math.floor(Math.random() * 30) + 40 + 1;
     let date = idx
 
     if (idx < 10) {
@@ -19,6 +20,7 @@ for (let idx = 1; idx <= 31; idx++) {
         'load_off': load_off,
         'load_total': load_on + load_off,
         'uti_rate': uti_rate,
+        'uti_rate_two': uti_rate_two,
         'x_key': date,
     })
 }

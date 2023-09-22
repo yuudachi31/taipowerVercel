@@ -38,7 +38,7 @@ function EChartDay() {
     return (
         <ResponsiveContainer height={400}>
             <BarChart width="100%" height="100%" data={data} barGap={60} margin={0} >
-                <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
+                <XAxis dataKey="x_key" tickLine={false}  tick={renderCustomXTick} />
                 <YAxis dataKey="load" orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 {/* 負載量Hover(搭配BarChart) */}

@@ -1,10 +1,12 @@
 //antd
-import { Layout, Divider, DatePicker } from 'antd';
+import { Layout, Divider, DatePicker,Progress } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import {red, green, } from '@ant-design/colors';
+
 import moment from 'moment';
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
-import EChartRate from '../../components/chart/EChartRate';
+// import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month }  from '../../components/chart/TempData'
 
 const { Header, Sider, Content } = Layout;
@@ -24,12 +26,21 @@ function TRInfo() {
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">桃園市桃園區</span></div>
           <div>資料表數 :<span class="ml-2">10 個</span></div>
-          <div>容量 :<span class="ml-2">160 VA</span></div>
+
         </Content>
-        <Content class="relative flex w-80 gap-2">
-          <span class="absolute -left-14 text-base tracking-widest">利用率(%)：</span>
-          <EChartRate />
+        <Content class="text-base tracking-widest space-y-5 flex-col">
+        <div>組別 :<span class="ml-2">T01</span></div>
+        <div>容量 :<span class="ml-2">160 kw</span></div>
         </Content>
+
+        <Content class="relative flex-col w-80 gap-2" >
+          <span class="relative text-base tracking-widest">利用率(%)：</span>
+          <div class="flex mt-8 justify-left w-100 h-100 gap-2">
+          <Progress percent={50} steps={5} size={[50,20]} />
+          </div>
+          {/* <EChartRate /> */}
+        </Content>
+        
       </Layout>
       <Divider />
       
