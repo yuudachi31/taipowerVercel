@@ -1,10 +1,12 @@
 //antd
-import { Layout, Divider, DatePicker } from 'antd';
+import { Layout, Divider, DatePicker,Progress } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
+import {red, green, } from '@ant-design/colors';
+
 import moment from 'moment';
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
-import EChartRate from '../../components/chart/EChartRate';
+// import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month }  from '../../components/chart/TempData'
 
 const { Header, Sider, Content } = Layout;
@@ -24,13 +26,50 @@ function TRInfo() {
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">桃園市桃園區</span></div>
           <div>資料表數 :<span class="ml-2">10 個</span></div>
-          <div>容量 :<span class="ml-2">160 VA</span></div>
+
         </Content>
-        <Content class="relative flex w-80 gap-2">
-          <span class="absolute -left-14 text-base tracking-widest">利用率(%)：</span>
-          <EChartRate />
+        <Content class="text-base tracking-widest space-y-5 flex-col">
+        <div>組別 :<span class="ml-2">T01</span></div>
+        <div>容量 :<span class="ml-2">160 kw</span></div>
         </Content>
+
+        <Content class="relative flex-col w-80 gap-2" >
+          <span class="relative text-base tracking-widest">利用率(%)：</span>
+          <div class="flex mt-8 justify-left w-100 h-100 gap-2">
+          <Progress percent={50} steps={5} size={[50,20]} />
+          </div>
+          {/* <EChartRate /> */}
+        </Content>
+        
       </Layout>
+      <Divider />
+      
+      <Layout class="grid grid-cols-2 gap-10">
+        <Layout>
+          <Header class="h-20 mb-3">
+            <h3 class="font-bold text-base">111 年度 每月用電圖表</h3>
+          </Header>
+          <Content class="flex mb-20 justify-center items-center">
+          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
+            <EChartMain data={data_month} />
+          </Content>
+        </Layout>
+        <Layout>
+          <Header class="h-20 mb-3">
+            <h3 class="font-bold text-base">111 年 01 月 01 日 當日用電圖表</h3>
+            <div class="flex items-center justify-center mt-6">
+              <button class="flex"><CaretLeftOutlined style={{ color: '#7ACA00' }} /></button>
+              <span class="leading-none border-1 py-1 px-5 mx-5">10:00 - 13:45</span>
+              <button class="flex"><CaretRightOutlined style={{ color: '#7ACA00' }} /></button>
+            </div>
+          </Header>
+          <Content class="flex mb-20 justify-center items-center">
+          <span class="min-w-max h-8 -mr-11 transform -rotate-90 text-center">利用率 (%)</span>
+            <EChartDay />
+          </Content>
+        </Layout>
+      </Layout>
+
       <Divider />
       <Layout class="py-2">
         <Header class="flex items-center justify-between">
@@ -49,35 +88,13 @@ function TRInfo() {
           </div>
         </Header>
         <Content class="flex justify-center items-center mt-14 mb-20 w-full">
-          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">負載量 (kW)</span>
+          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
           <EChartMain data={data_main}/>
-          <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span>
+          {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
         </Content>
       </Layout>
-      <Divider />
-      <Layout class="grid grid-cols-2 gap-10">
-        <Layout>
-          <Header class="h-20 mb-3">
-            <h3 class="font-bold text-base">111 年度 每月用電圖表</h3>
-          </Header>
-          <Content class="mb-20">
-            <EChartMain data={data_month} />
-          </Content>
-        </Layout>
-        <Layout>
-          <Header class="h-20 mb-3">
-            <h3 class="font-bold text-base">111 年 01 月 01 日 當日用電圖表</h3>
-            <div class="flex items-center justify-center mt-6">
-              <button class="flex"><CaretLeftOutlined style={{ color: '#7ACA00' }} /></button>
-              <span class="leading-none border-1 py-1 px-5 mx-5">10:00 - 13:45</span>
-              <button class="flex"><CaretRightOutlined style={{ color: '#7ACA00' }} /></button>
-            </div>
-          </Header>
-          <Content class="mb-20">
-            <EChartDay />
-          </Content>
-        </Layout>
-      </Layout>
+
+
     </Layout>
   );
 

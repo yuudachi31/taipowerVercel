@@ -61,14 +61,17 @@ function TRSearch() {
         {
             title: '第幾具',
             dataIndex: 'number',
+        },{
+            title: '容量(單位)',
+            dataIndex: 'vol',
         },
         {
             title: '利用率',
             dataIndex: 'rate',
         },
         {
-            title: '容量',
-            dataIndex: 'vol',
+            title: '隔天通知',
+            dataIndex: 'notify',
         },
     ];
     const data = [];
@@ -80,6 +83,7 @@ function TRSearch() {
             number: '001',
             rate: '70.3',
             vol: 32,
+            notify:'是'
         });
     }
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -141,9 +145,8 @@ function TRSearch() {
                     <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
                     footer={[
                         // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-                        <Button type="primary" onClick={() => setIsModalVisible(false)}>隔天通知</Button>,
+                        <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
                          ]}
-
                     >
                     <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox></div></div>
