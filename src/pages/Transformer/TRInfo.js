@@ -1,8 +1,8 @@
 //antd
 import { Layout, Divider, DatePicker,Progress } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
-import {red, green, } from '@ant-design/colors';
-
+import {red, green,lime,yellow,orange,volcano } from '@ant-design/colors';
+import styles from '../../index.less'
 import moment from 'moment';
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
@@ -36,7 +36,7 @@ function TRInfo() {
         <Content class="relative flex-col w-80 gap-2" >
           <span class="relative text-base tracking-widest">利用率(%)：</span>
           <div class="flex mt-8 justify-left w-100 h-100 gap-2">
-          <Progress percent={50} steps={5} size={[50,20]} />
+          <Progress percent={100} steps={5} size={[50,20]}  strokeColor={[green[4], lime[4],yellow[4] ,orange[4],volcano[5]]}/>
           </div>
           {/* <EChartRate /> */}
         </Content>
