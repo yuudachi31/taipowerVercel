@@ -6,6 +6,7 @@ import {red, green, } from '@ant-design/colors';
 import moment from 'moment';
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
+import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month }  from '../../components/chart/TempData'
 
@@ -18,7 +19,7 @@ function TRInfo() {
     <Layout class="px-20 wrapper">
       <Header class="pt-4 flex space-x-7 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">B3729DE2437</span></h2>
-        <button class="btn flex-none"><MessageOutlined />推播</button>
+        {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
         <button class="btn flex-none">返回列表</button>
       </Header>
       <Divider />
@@ -50,8 +51,8 @@ function TRInfo() {
             <h3 class="font-bold text-base">111 年度 每月用電圖表</h3>
           </Header>
           <Content class="flex mb-20 justify-center items-center">
-          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
-            <EChartMain data={data_month} />
+          <span class="min-w-max h-8 -mr-12 transform -rotate-90 text-center">利用率 (%)</span>
+            <EChartMonth data={data_month} />
           </Content>
         </Layout>
         <Layout>

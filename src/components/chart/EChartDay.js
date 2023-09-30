@@ -12,7 +12,7 @@ function EChartDay() {
         for (let idx = 1; idx <= 12; idx++) {
 
             let load = 10 * idx;
-            let time = '10:00'
+            const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
 
             data_temp.push({
                 'load': load,
@@ -30,7 +30,7 @@ function EChartDay() {
         if (payload.length <= 0) return null
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                <li key={`item-0`}>{`負載量：${payload[0].value}kW`}</li>
+                <li key={`item-0`}>{`利用率：${payload[0].value}kW`}</li>
             </ul>
         );
     }

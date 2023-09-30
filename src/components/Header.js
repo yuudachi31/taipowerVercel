@@ -42,7 +42,7 @@ function Header() {
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
-          <div className='w-1/3 text-center text-xl'>電壓器查詢列表</div>
+          <div className='w-1/3 text-center text-xl'>變壓器查詢列表</div>
         </div>
         <div className="w-1/3 flex items-center justify-end">
           <button className='p-2 mx-3 btn font-bold flex-none tracking-8' type='primary' onClick={_gotomanage}>帳號管理</button>

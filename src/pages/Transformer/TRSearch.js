@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 
 //antd
-import { Layout, Menu, Dropdown, Space, Table ,Modal,Input,Button,Checkbox} from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 
@@ -20,13 +20,13 @@ function TRSearch() {
     useEffect(() => {
         // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         const timer = setTimeout(() => {
-        setIsModalVisible(true);
+            setIsModalVisible(true);
         }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
         // 在組件卸載時清除定時器，以避免記憶體洩漏
         return () => clearTimeout(timer);
-      }, []);
+    }, []);
     const _history = useHistory();
-      //新增群組modal
+    //新增群組modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -37,19 +37,19 @@ function TRSearch() {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    
-    const dataCheck = [] 
+
+    const dataCheck = []
     for (let i = 0; i < 3; i++) {
-        dataCheck[i]=
-        plainOptions[i] + '：' + plainPersentage[i]
+        dataCheck[i] =
+            plainOptions[i] + '：' + plainPersentage[i]
     };
 
     const columns = [
         {
             title: '圖號座標',
             dataIndex: 'see',
-            render:text=>{
-                return(
+            render: text => {
+                return (
                     <a href='/tr/info' >{text}</a>
                 )
             }
@@ -61,7 +61,7 @@ function TRSearch() {
         {
             title: '第幾具',
             dataIndex: 'number',
-        },{
+        }, {
             title: '容量(單位)',
             dataIndex: 'vol',
         },
@@ -83,7 +83,7 @@ function TRSearch() {
             number: '001',
             rate: '70.3',
             vol: 32,
-            notify:'是'
+            notify: '是'
         });
     }
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -92,13 +92,13 @@ function TRSearch() {
         setSelectedRowKeys(newSelectedRowKeys);
     };
     const [checkedList, setCheckedList] = useState(defaultCheckedList);
-    const checkAll = dataCheck.length === checkedList.length;
-    const indeterminate = checkedList.length > 0 && checkedList.length < dataCheck.length;
+    const checkAll = dataCheck.length === checkedList.length;//全選
+    const indeterminate = checkedList.length > 0 && checkedList.length < dataCheck.length;//單選
     const onChange = (list) => {
-      setCheckedList(list);
+        setCheckedList(list);
     };
     const onCheckAllChange = (e) => {
-      setCheckedList(e.target.checked ? dataCheck : []);
+        setCheckedList(e.target.checked ? dataCheck : []);
     };
     const rowSelection = {
         selectedRowKeys,
@@ -142,16 +142,32 @@ function TRSearch() {
             <div className='flex justify-between mb-4'>
                 <button className="btn flex-none"><PrinterOutlined />匯出</button>
                 <button className="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
-                    <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
+                <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
                     footer={[
                         // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
                         <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
-                         ]}
-                    >
-                    <div class="flex mb-3"><div class=" w-72">
-                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox></div></div>
-                    <div class="flex mb-3"><CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} /></div>
-                    </Modal>
+                    ]}
+                >
+                    <div >
+                        <Row>
+                            <Col span={7}>圖號座標</Col>
+                            <Col span={7}>組別</Col>
+                            <Col span={7}>利用率</Col>
+                        </Row>
+                        <Row>
+                            <Col span={7}>{plainOptions[0]}</Col>
+                            <Col span={7} >{plainOptions[0]}</Col>
+                            <Col span={7}>56%</Col>
+                        </Row>
+                    </div>
+                    {/* <div class="flex mb-3"><div class=" w-72">
+                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
+                        </div>
+                        </div>
+                    <div class="flex mb-3">
+                        <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
+                        </div> */}
+                </Modal>
             </div>
 
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
