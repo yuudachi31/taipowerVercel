@@ -2,46 +2,70 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import rainbowLogo from "../assets/icon/logo-rainbow.png";
 
-import { postUser } from "../api/frontApi";
-
-
+import { postUser, getUserRole } from "../api/frontApi";
+import { resetTest, loginAction,storeUserInfo } from "../actions/frontAction";
 import { Form, Input, message } from "antd";
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   UserOutlined,
-  LockOutlined
+  LockOutlined,
 } from "@ant-design/icons";
-import userIcon from '../assets/img/username.png';
-import passwordIcon from '../assets/img/password.png';
+import userIcon from "../assets/img/username.png";
+import passwordIcon from "../assets/img/password.png";
+import { connect } from "react-redux";
+import "./Login.css";
 
-import './Login.css'
-
-function Login() {
+function Login({ user, resetTest, loginAction,storeUserInfo }) {
   const _history = useHistory();
-
-
+  // const testbtn = () => {
+  //   console.log(user);
+  //   resetTest(10)
+  console.log(user);
+  // };
   const _handleLogin = (values) => {
-    // postUser(values.username, values.password).then((data) => {
-    //   if (data.errStatus) {
-    //     message.error(data.errDetail);
-    //   } else {
-    //     document.cookie = 'fltk=' + data.token;
-    //     document.cookie = 'flid=' + data.group_id;
-    //     document.cookie = 'fln=' + data.username;
-    //     _history.push('/')
-    //   }
-    // })
+    postUser(values.username, values.password).then((data) => {
+      if (data.errStatus) {
+        message.error(data.errDetail);
+      } else {
+        console.log(data);
+        loginAction(data.access_token);
 
+        document.cookie = "fltk=" + data.access_token;
+        document.cookie = "flid=" + data.group_id;
+        document.cookie = "fln=" + data.username;
+        console.log(document.cookie);
+        _history.push("/");
+        getUserRole(data.access_token).then((data) => {
+          storeUserInfo(data);
+        document.cookie = "user_id=" + data.user_id;
+        document.cookie = "email=" + data.email;
+        document.cookie = "chat_id=" + data.chat_id;
+        document.cookie = "user_name=" + data.user_name;
+        document.cookie = "region_id=" + data.region_id;
+        document.cookie = "region_name=" + data.region_name;
+        document.cookie = "roles=" + JSON.stringify(data.roles);
+        
+
+        });
+      }
+    });
   };
 
   return (
     <>
-      {document.cookie.split('; ').find(row => row.startsWith('fln')) ?
-        <>{_history.push('/')}</> :
+      {document.cookie.split("; ").find((row) => row.startsWith("fln")) ? (
+        <>{_history.push("/")}</>
+      ) : (
         <div className="w-screen h-screen bg-cover bg-center bg-login flex justify-center items-center">
           <div className="w-2/5 h-1/2 px-12 py-12 absolute bg-white shadow rounded border-black">
-            <Form onFinish={_handleLogin} className="h-full flex flex-col justify-between">
+            {/* <div>
+              <button onClick={testbtn}>test</button>
+            </div> */}
+            <Form
+              onFinish={_handleLogin}
+              className="h-full flex flex-col justify-between"
+            >
               <div className="flex justify-center">
                 <Form.Item>
                   <div className="flex items-center">
@@ -71,16 +95,19 @@ function Login() {
                       placeholder="請輸入信箱"
                       size="large"
                       maxLength={20}
-                      prefix={<UserOutlined/>}
+                      prefix={<UserOutlined />}
                     />
                   </div>
                 </Form.Item>
                 <Form.Item
                   name="password"
-                  rules={[{
-                    required: true, message: "密碼錯誤，請再試一次",
-                    pattern: new RegExp(/^[A-z0-9]*$/),
-                  }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "密碼錯誤，請再試一次",
+                      pattern: new RegExp(/^[A-z0-9]*$/),
+                    },
+                  ]}
                 >
                   <div className="flex flex-row items-center">
                     <div className=" w-20">密碼：</div>
@@ -89,24 +116,30 @@ function Login() {
                       size="large"
                       maxLength={20}
                       prefix={<LockOutlined />}
-                      
                     />
                   </div>
                 </Form.Item>
               </div>
               <div className="flex justify-center">
                 <Form.Item>
-                  <button
-                    className="btn"
-                  >登入
-                  </button>
+                  <button className="btn">登入</button>
                 </Form.Item>
               </div>
             </Form>
           </div>
         </div>
-      }</>
+      )}
+    </>
   );
 }
 
-export default Login;
+const mapStateToProps = ({ userReducer }) => ({
+  user: userReducer,
+});
+
+const mapDispatchToProps = {
+  resetTest,
+  loginAction,
+  storeUserInfo
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

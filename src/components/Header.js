@@ -2,15 +2,17 @@ import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { Button } from 'antd';
 import logo from '../assets/icon/logo-rainbow.png';
-
+import { useReducer } from 'react';
 //antd
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
+import { userReducer } from '../reducers/userReducer';
+import { connect } from "react-redux";
 
 
 
-
-function Header() {
+function Header({user}) {
+  // console.log(user.user_info.user_name)
   function _logout(e) {
     document.cookie = 'fln=; Max-Age=-99999999;';
     document.cookie = 'fltk=; Max-Age=-99999999;';
@@ -48,7 +50,7 @@ function Header() {
           <button className='p-2 mx-3 btn font-bold flex-none tracking-8' type='primary' onClick={_gotomanage}>帳號管理</button>
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
-            <div className='text-sm text-black mr-3'>User_001</div>
+            <div className='text-sm text-black mr-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
           </a>
         </Dropdown>
@@ -78,5 +80,11 @@ function Header() {
     // </>
   );
 }
+const mapStateToProps = ({ userReducer }) => ({
+  user: userReducer,
+});
 
-export default Header;
+// const mapDispatchToProps = {
+
+// };
+export default connect(mapStateToProps, null)(Header);
