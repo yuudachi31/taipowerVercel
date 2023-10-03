@@ -69,10 +69,6 @@ function TRSearch() {
             title: '利用率',
             dataIndex: 'rate',
         },
-        {
-            title: '隔天通知',
-            dataIndex: 'notify',
-        },
     ];
     const data = [];
     for (let i = 0; i < 46; i++) {
@@ -83,7 +79,6 @@ function TRSearch() {
             number: '001',
             rate: '70.3',
             vol: 32,
-            notify: '是'
         });
     }
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -139,37 +134,40 @@ function TRSearch() {
     };
     return (
         <div className='wrapper px-24 py-4'>
-            <div className='flex justify-between mb-4'>
-                <button className="btn flex-none"><PrinterOutlined />匯出</button>
-                <button className="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
-                <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
-                    footer={[
-                        // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-                        <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
-                    ]}
-                >
-                    <div >
-                        <Row>
-                            <Col span={7}>圖號座標</Col>
-                            <Col span={7}>組別</Col>
-                            <Col span={7}>利用率</Col>
-                        </Row>
-                        <Row>
-                            <Col span={7}>{plainOptions[0]}</Col>
-                            <Col span={7} >{plainOptions[0]}</Col>
-                            <Col span={7}>56%</Col>
-                        </Row>
-                    </div>
-                    {/* <div class="flex mb-3"><div class=" w-72">
+            <div className="flex justify-between">
+                <button className="btn " style={{ height: 40, width: 75}}><PrinterOutlined />匯出</button>
+                <div className="flex">
+                
+                <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100}}>異常變壓器</button>
+                <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85}}>清除篩選</button>
+                </div>
+            </div>
+            <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
+                footer={[
+                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                    <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
+                ]}
+            >
+                <div >
+                    <Row>
+                        <Col span={7}>圖號座標</Col>
+                        <Col span={7}>組別</Col>
+                        <Col span={7}>利用率</Col>
+                    </Row>
+                    <Row>
+                        <Col span={7}>{plainOptions[0]}</Col>
+                        <Col span={7} >{plainOptions[0]}</Col>
+                        <Col span={7}>56%</Col>
+                    </Row>
+                </div>
+                {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
                         </div>
                     <div class="flex mb-3">
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
-                </Modal>
-            </div>
-
+            </Modal>
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
         </div>
 
