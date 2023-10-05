@@ -37,7 +37,7 @@ function TRInfo() {
         <Content class="relative flex-col w-80 gap-2" >
           <span class="relative text-base tracking-widest">利用率(%)：</span>
           <div class="flex mt-8 justify-left w-100 h-100 gap-2">
-          <Progress percent={100} steps={5} size={[50,20]}  strokeColor={[green[4], lime[4],yellow[4] ,orange[4],volcano[5]]}/>
+          <Progress percent={100} steps={5} size={[50,20]} status='active' strokeColor={[green[4], lime[4],yellow[4] ,orange[4],volcano[5]]}/>
           </div>
           {/* <EChartRate /> */}
         </Content>

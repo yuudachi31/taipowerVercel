@@ -11,6 +11,9 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['A222BC3333', 'A222BC1111', 'A222BC2222'];
+const Percent = ['70.3', '63.9', '80.5'];
+const Group = ['TO1', 'TO2', 'TO3'];
+const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 
@@ -150,14 +153,16 @@ function TRSearch() {
                 >
                     <div >
                         <Row>
-                            <Col span={7}>圖號座標</Col>
-                            <Col span={7}>組別</Col>
-                            <Col span={7}>利用率</Col>
+                            <Col span={6}>圖號座標</Col>
+                            <Col span={6}>組別</Col>
+                            <Col span={6}>利用率</Col>
+                            <Col span={6}>時間</Col>
                         </Row>
                         <Row>
-                            <Col span={7}>{plainOptions[0]}</Col>
-                            <Col span={7} >{plainOptions[0]}</Col>
-                            <Col span={7}>56%</Col>
+                            <Col span={6}>{plainOptions[0]}</Col>
+                            <Col span={6} >{Group[0]}</Col>
+                            <Col span={6}>{Percent[0]}</Col>
+                            <Col span={6}>{Time[0]}</Col>
                         </Row>
                     </div>
                     {/* <div class="flex mb-3"><div class=" w-72">
