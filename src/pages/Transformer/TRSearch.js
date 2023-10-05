@@ -72,10 +72,6 @@ function TRSearch() {
             title: '利用率',
             dataIndex: 'rate',
         },
-        {
-            title: '隔天通知',
-            dataIndex: 'notify',
-        },
     ];
     const data = [];
     for (let i = 0; i < 46; i++) {
@@ -86,7 +82,6 @@ function TRSearch() {
             number: '001',
             rate: '70.3',
             vol: 32,
-            notify: '是'
         });
     }
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -153,16 +148,14 @@ function TRSearch() {
                 >
                     <div >
                         <Row>
-                            <Col span={6}>圖號座標</Col>
-                            <Col span={6}>組別</Col>
-                            <Col span={6}>利用率</Col>
-                            <Col span={6}>時間</Col>
+                            <Col span={7}>圖號座標</Col>
+                            <Col span={7}>組別</Col>
+                            <Col span={7}>利用率</Col>
                         </Row>
                         <Row>
-                            <Col span={6}>{plainOptions[0]}</Col>
-                            <Col span={6} >{Group[0]}</Col>
-                            <Col span={6}>{Percent[0]}</Col>
-                            <Col span={6}>{Time[0]}</Col>
+                            <Col span={7}>{plainOptions[0]}</Col>
+                            <Col span={7} >{plainOptions[0]}</Col>
+                            <Col span={7}>56%</Col>
                         </Row>
                     </div>
                     {/* <div class="flex mb-3"><div class=" w-72">
@@ -172,9 +165,7 @@ function TRSearch() {
                     <div class="flex mb-3">
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
-                </Modal>
-            </div>
-
+            </Modal>
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
         </div>
 
