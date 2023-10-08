@@ -1,2 +1,12 @@
 input:-webkit-autofill{ -webkit-box-shadow: 0 0 0px 1000px white inset; -webkit-text-fill-color: rgba(0,0,0,0.85);}
 input:-internal-autofill-selected{ background-color: rgba(0,0,0,0) !important}
+/* Login.css */
+.shadow {
+    /* 添加阴影效果，水平和垂直偏移均为0，模糊度为5px，扩散半径为5px，颜色为灰色 */
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+  }
+  .rounded {
+    /* 设置圆角大小 */
+    border-radius: 10px;
+  }
+  

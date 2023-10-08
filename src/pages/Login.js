@@ -60,7 +60,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         <div className="w-screen h-screen bg-cover bg-center items-center flex justify-center ">
           <div className="flex flex-col items-center ">
             <img src={rainbowLogo} className="w-24 h-24" />
-          <div className="mt-4 px-12 py-12 bg-white shadow rounded border-black"> 
+          <div className="mt-10 px-12 py-12 bg-white shadow rounded "> 
             {/* <div>
               <button onClick={testbtn}>test</button>
             </div> */}
