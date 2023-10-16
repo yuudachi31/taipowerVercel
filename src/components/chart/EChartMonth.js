@@ -25,8 +25,8 @@ function EChartMain({data}) {
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} />
-                <Bar isAnimationActive={false} dataKey="uti_rate" name="利用率" stackId="a" barSize={16} fill="#55A630" />
-                
+                <Bar isAnimationActive={false} dataKey="load_on" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" />
+                <Bar isAnimationActive={false} dataKey="load_off" name="離峰利用率" stackId="a" barSize={16} fill="#55A630"/>
                 {/* 圖表線 */}
                 {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
 

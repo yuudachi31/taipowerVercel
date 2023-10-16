@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
+import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import Manage from "./pages/Manage/Manage";
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
         <Route path="/tr/search">
           <Header />
           <TRSearch />
+        </Route>
+        <Route path="/tr/abnormal">
+          <Header />
+          <TRAbnormal />
         </Route>
         <Route path="/manage">
           <Header />

@@ -141,7 +141,7 @@ function TRSearch() {
                 <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button>
                 <div className="flex">
 
-                    <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }}>異常變壓器</button>
+                    <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button>
                     <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
@@ -153,15 +153,15 @@ function TRSearch() {
             >
                 <div >
                     <Row > 
-                        <Col span={6} >圖號座標</Col>
+                        <Col span={6}>圖號座標</Col>
                         <Col span={6}>組別</Col>
-                        <Col span={6}>利用率</Col>
-                        <Col span={6}>時間</Col>
+                        <Col span={6}>利用率（%）</Col>
+                        <Col span={6}>日期</Col>
                     </Row>
                     {plainOptions.map((option, index) => (
                     <Row key={index}>
-                        <Col span={6} >{option}</Col>
-                        <Col span={6} >{Group[index]}</Col>
+                        <Col span={6}>{option}</Col>
+                        <Col span={6}>{Group[index]}</Col>
                         <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
                         <Col span={6}>{Time[index]}</Col>
                     </Row>
