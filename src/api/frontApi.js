@@ -52,7 +52,43 @@ export const getUserRole = async (token) => {
   }
 };
 
+export const getTransformerList = async () => {
+  try {
+    const _url = `${baseURL}transformer_infos`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 // 包含 token 的
 // headers: {
 //     authorization: `Bearer ${token}`,
 // }
+export const getDailyRates = async () => {
+  try {
+    const _url = `${baseURL}dailypeak_rates    `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
