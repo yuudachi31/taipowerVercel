@@ -100,9 +100,20 @@ function Notify() {
 
                     <button class="btn-manage justify-self-end mr-4 bg-white font-bold" onClick={showModal} >新增群組</button>
                     <Modal title="新增群組" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="新增" cancelText="取消">
+                        <div class="flex mb-3"><p>縣市：</p><div class=" w-72"><Input /></div></div>
                         <div class="flex mb-3"><p>群組名稱：</p><div class=" w-72"><Input /></div></div>
-                        <div class="flex mb-3"><p>警告門檻低於：</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                        <div class="flex mb-3"><p>警告門檻高於：</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                        <div  class="flex row ">
+                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                        </div>
+                        <div  class="flex row">
+                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                        </div>
+                        <div  class="flex row">
+                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                        </div>
                     </Modal>
                 </Header>
                 <Content class=" bg-white">

@@ -27,6 +27,7 @@ function ManageMenu({ data, menuActive }) {
             <div class="grid gap-4 px-5 py-8">
                 <button class={`menu-btn ${menuActive == data[0].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(0)}>{data[0].icon}<span class="ml-6">{data[0].title}</span></button>
                 <button class={`menu-btn ${menuActive == data[1].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(1)}>{data[1].icon}<span class="ml-6">{data[1].title}</span></button>
+                
             </div>
         </Sider>
     );
