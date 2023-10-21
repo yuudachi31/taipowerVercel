@@ -7,6 +7,7 @@ function EChartMain({data}) {
 
     const renderLegend = ({ payload }) => {
         if (payload.length < 2) return null
+        // console.log(payload[0])
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                 
@@ -17,7 +18,7 @@ function EChartMain({data}) {
             </ul>
         );
     }
-
+// console.log(data)
     return (
         <ResponsiveContainer height={400}>
             <BarChart data={data} margin={0} barGap={60}>

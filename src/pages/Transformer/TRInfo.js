@@ -4,13 +4,13 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
-import { saveDailyRates } from '../../actions/transformer'
+import { saveDailyRates,saveQuarterRates} from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates} from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory } from "react-router-dom";
@@ -18,7 +18,8 @@ const { Header, Sider, Content } = Layout;
 
 const monthFormat = 'YYYY 年 MM 月';
 
-function TRInfo({ transformer, saveDailyRates }) {
+function TRInfo({ transformer, saveDailyRates ,saveQuarterRates}) {
+  console.log(transformer.dailyRatesList)
   useEffect(() => {
     getDailyRates().then((data) => {
       if (data.errStatus) {
@@ -27,7 +28,18 @@ function TRInfo({ transformer, saveDailyRates }) {
         // console.log(data)
         // console.log(data)
         saveDailyRates(data)
-        console.log(transformer)
+        
+
+      }
+    })
+    getQuarterRates().then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+
+        saveQuarterRates(data)
+
+        // console.log(transformer.quarterRatesList)
 
       }
     })
@@ -127,7 +139,7 @@ function TRInfo({ transformer, saveDailyRates }) {
 
         <Content class="flex justify-center items-center mt-10 mb-20 w-full">
           <span class="min-w-max h-8 -mr-9 transform -rotate-90 text-center">利用率 (%)</span>
-          <EChartDay />
+          <EChartDay data={transformer.quarterRatesList} />
         </Content>
       </Layout>
     </Layout>
@@ -139,7 +151,7 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates
+  saveDailyRates,saveQuarterRates
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRInfo);
 
