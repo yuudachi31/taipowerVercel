@@ -31,9 +31,10 @@ export const transformerReducer = (state = initialState, action) => {
           dailyrates.push({
             key:index,
               'load_on': Math.ceil(element.peak_rate),
+              'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
               'load_off': Math.ceil(element.off_peak_rate),
               'load_total': Math.ceil(element.peak_rate),
-              'uti_rate' :Math.ceil(element.peak_rate+element.off_peak_rate),
+              'uti_rate' :Math.ceil(element.peak_rate),
               'uti_rate_two': Math.ceil(element.off_peak_rate),
               'x_key': element.date_day
             })
@@ -46,7 +47,7 @@ export const transformerReducer = (state = initialState, action) => {
         const quarterRates=[];
         const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
         action.payload.forEach((element,index) => {
-          if(index%8 == 0){
+          if(index!=0&&index%8 == 0){
             quarterRates.push({
               key:index,
                 'load': Math.ceil(element.uti_rate_15min),               

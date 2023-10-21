@@ -1,7 +1,8 @@
 import {
     SAVE_TRANS_DATA,
     SAVE_DAILYRATES,
-    SAVE_QUARTERRATES
+    SAVE_QUARTERRATES,
+    SAVE_MONTHLYRATES
 } from '../utils/actionType/frontActionType'
 
 export const saveTransData = (data) => {
@@ -25,3 +26,11 @@ export const saveQuarterRates = (data) => {
         payload:data
     }
 }
+export const saveMonthlyRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYRATES,
+        payload:data
+    }
+}
+
