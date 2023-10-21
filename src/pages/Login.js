@@ -57,8 +57,10 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
       {document.cookie.split("; ").find((row) => row.startsWith("fln")) ? (
         <>{_history.push("/")}</>
       ) : (
-        <div className="w-screen h-screen bg-cover bg-center bg-login flex justify-center items-center">
-          <div className="w-2/5 h-1/2 px-12 py-12 absolute bg-white shadow rounded border-black">
+        <div className="w-screen h-screen bg-cover bg-center items-center flex justify-center ">
+          <div className="flex flex-col items-center ">
+            <img src={rainbowLogo} className="w-24 h-24" />
+          <div className="mt-10 px-12 py-12 bg-white shadow rounded "> 
             {/* <div>
               <button onClick={testbtn}>test</button>
             </div> */}
@@ -69,7 +71,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
               <div className="flex justify-center">
                 <Form.Item>
                   <div className="flex items-center">
-                    <img src={rainbowLogo} className="w-12 h-12" />
+                    {/* <img src={rainbowLogo} className="w-12 h-12" /> */}
                     <div className="text-base font-extrabold ml-2">
                       變壓器查詢列表
                     </div>
@@ -127,7 +129,8 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
               </div>
             </Form>
           </div>
-        </div>
+          </div>
+          </div>
       )}
     </>
   );

@@ -2,43 +2,46 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {getTransformerList} from '../../api/frontApi'
+import { getTransformerList } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col , message} from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['A222BC3333', 'A222BC1111', 'A222BC2222'];
+const Percent = ['70.3', '63.9', '80.5'];
+const Group = ['TO1', 'TO2', 'TO3'];
+const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 
 
-function TRSearch({transformer,saveTransData}) {
+function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     useEffect(() => {
-    getTransformerList().then((data)=>{
-        if (data.errStatus) {
-            message.error(data.errDetail);
-          } else {
-            // console.log(data)
-            saveTransData(data)
-            pushData()
-          }
-    })
-        
- 
+        getTransformerList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveTransData(data)
+                pushData()
+            }
+        })
+
+
     }, []);
     useEffect(() => {
-        
+
         // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         const timer = setTimeout(() => {
             setIsModalVisible(true);
         }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
         // 在組件卸載時清除定時器，以避免記憶體洩漏
         return () => clearTimeout(timer);
-       
+
 
     }, []);
     const _history = useHistory();
@@ -85,16 +88,12 @@ function TRSearch({transformer,saveTransData}) {
             title: '利用率',
             dataIndex: 'rate',
         },
-        {
-            title: '隔天通知',
-            dataIndex: 'notify',
-        },
     ];
     const data = [];
-  
+
     // console.log(transformer)
-    function pushData (){
-        transformer.transformerList.forEach((element,index) => {
+    function pushData() {
+        transformer.transformerList.forEach((element, index) => {
             data.push({
                 key: index,
                 see: element.coor,
@@ -107,7 +106,7 @@ function TRSearch({transformer,saveTransData}) {
         });
         console.log(transformer)
     }
-    
+
     // for (let i = 0; i < 46; i++) {
     //     data.push({
     //         key: i,
@@ -119,7 +118,7 @@ function TRSearch({transformer,saveTransData}) {
     //         notify: '是'
     //     });
     // }
-    
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -173,49 +172,56 @@ function TRSearch({transformer,saveTransData}) {
     };
     return (
         <div className='wrapper px-24 py-4'>
-            <div className='flex justify-between mb-4'>
-                <button className="btn flex-none"><PrinterOutlined />匯出</button>
-                <button className="border border-green-400 flex-none rounded-sm py-2 px-3 ">清除篩選</button>
-                <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
-                    footer={[
-                        // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-                        <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
-                    ]}
-                >
-                    <div >
-                        <Row>
-                            <Col span={7}>圖號座標</Col>
-                            <Col span={7}>組別</Col>
-                            <Col span={7}>利用率</Col>
+            <div className="flex justify-between">
+                <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button>
+                <div className="flex">
+
+                    <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button>
+                    <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                </div>
+            </div>
+            <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
+                footer={[
+                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                    <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
+                ]}
+            >
+                <div >
+                    <Row >
+                        <Col span={6}>圖號座標</Col>
+                        <Col span={6}>組別</Col>
+                        <Col span={6}>利用率（%）</Col>
+                        <Col span={6}>日期</Col>
+                    </Row>
+                    {plainOptions.map((option, index) => (
+                        <Row key={index}>
+                            <Col span={6}>{option}</Col>
+                            <Col span={6}>{Group[index]}</Col>
+                            <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
+                            <Col span={6}>{Time[index]}</Col>
                         </Row>
-                        <Row>
-                            <Col span={7}>{plainOptions[0]}</Col>
-                            <Col span={7} >{plainOptions[0]}</Col>
-                            <Col span={7}>56%</Col>
-                        </Row>
-                    </div>
-                    {/* <div class="flex mb-3"><div class=" w-72">
+                    ))}
+                </div>
+                {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
                         </div>
                     <div class="flex mb-3">
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
-                </Modal>
-            </div>
+            </Modal>
 
             <Table rowSelection={rowSelection} columns={columns} dataSource={transformer.transformerList} />
-            
-        </div>
 
+        </div>
     );
 
 }
 const mapStateToProps = ({ transformerReducer }) => ({
     transformer: transformerReducer,
-  });
-  
-  const mapDispatchToProps = {
-saveTransData
-  };
-  export default connect(mapStateToProps, mapDispatchToProps)(TRSearch);
+});
+
+const mapDispatchToProps = {
+    saveTransData
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TRSearch);
