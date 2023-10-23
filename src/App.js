@@ -11,7 +11,7 @@ import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import Manage from "./pages/Manage/Manage";
-
+import UploadPage from "./pages/UploadPage"
 function App() {
   return (
     <BrowserRouter>
@@ -39,6 +39,11 @@ function App() {
           <Header />
           <Manage />
         </Route>
+        <Route path="/uploadPage">
+          <Header />
+          < UploadPage />
+        </Route>
+      
       </Switch>
     </BrowserRouter>
   );

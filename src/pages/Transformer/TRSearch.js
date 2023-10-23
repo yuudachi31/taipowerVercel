@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
-
+import { getTransformerList } from '../../api/frontApi'
+import { saveTransData } from '../../actions/transformer';
+import { connect } from "react-redux";
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
-
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['A222BC3333', 'A222BC1111', 'A222BC2222'];
 const Percent = ['70.3', '63.9', '80.5'];
@@ -18,15 +18,31 @@ const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 
 
-function TRSearch() {
+function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     useEffect(() => {
+        getTransformerList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveTransData(data)
+                pushData()
+            }
+        })
+
+
+    }, []);
+    useEffect(() => {
+
         // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         const timer = setTimeout(() => {
             setIsModalVisible(true);
         }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
         // 在組件卸載時清除定時器，以避免記憶體洩漏
         return () => clearTimeout(timer);
+
+
     }, []);
     const _history = useHistory();
     //新增群組modal
@@ -74,16 +90,35 @@ function TRSearch() {
         },
     ];
     const data = [];
-    for (let i = 0; i < 46; i++) {
-        data.push({
-            key: i,
-            see: 'A222BC3333',
-            group: `T01`,
-            number: '001',
-            rate: '70.3',
-            vol: 32,
+
+    // console.log(transformer)
+    function pushData() {
+        transformer.transformerList.forEach((element, index) => {
+            data.push({
+                key: index,
+                see: element.coor,
+                group: element.div,
+                number: 'nan',
+                rate: 'nan',
+                vol: 'nan',
+                notify: 'nan'
+            })
         });
+        console.log(transformer)
     }
+
+    // for (let i = 0; i < 46; i++) {
+    //     data.push({
+    //         key: i,
+    //         see: 'A222BC3333',
+    //         group: `T01`,
+    //         number: '001',
+    //         rate: '70.3',
+    //         vol: 32,
+    //         notify: '是'
+    //     });
+    // }
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -152,19 +187,19 @@ function TRSearch() {
                 ]}
             >
                 <div >
-                    <Row > 
+                    <Row >
                         <Col span={6}>圖號座標</Col>
                         <Col span={6}>組別</Col>
                         <Col span={6}>利用率（%）</Col>
                         <Col span={6}>日期</Col>
                     </Row>
                     {plainOptions.map((option, index) => (
-                    <Row key={index}>
-                        <Col span={6}>{option}</Col>
-                        <Col span={6}>{Group[index]}</Col>
-                        <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
-                        <Col span={6}>{Time[index]}</Col>
-                    </Row>
+                        <Row key={index}>
+                            <Col span={6}>{option}</Col>
+                            <Col span={6}>{Group[index]}</Col>
+                            <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
+                            <Col span={6}>{Time[index]}</Col>
+                        </Row>
                     ))}
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">
@@ -175,9 +210,18 @@ function TRSearch() {
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
             </Modal>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+
+            <Table rowSelection={rowSelection} columns={columns} dataSource={transformer.transformerList} />
+
         </div>
     );
 
 }
-export default TRSearch;
+const mapStateToProps = ({ transformerReducer }) => ({
+    transformer: transformerReducer,
+});
+
+const mapDispatchToProps = {
+    saveTransData
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TRSearch);
