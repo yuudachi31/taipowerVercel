@@ -141,7 +141,7 @@ function TRSearch() {
                 <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button>
                 <div className="flex">
 
-                    <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button>
+                    {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
                     <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>

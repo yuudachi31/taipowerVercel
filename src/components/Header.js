@@ -5,7 +5,7 @@ import logo from '../assets/icon/logo-rainbow.png';
 import { useReducer } from 'react';
 //antd
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu, Divider } from 'antd';
 import { userReducer } from '../reducers/userReducer';
 import { connect } from "react-redux";
 
@@ -26,6 +26,50 @@ function Header({user}) {
       </Menu.Item>
     </Menu>
   );
+
+  const items = [
+    {
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          閥值管理
+        </a>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          推播管理
+        </a>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          帳戶權限
+        </a>
+      ),
+      key: '2',
+    },
+    {
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          AMI 匯入
+        </a>
+      ),
+      key: '3',
+    },
+    {
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          AMI 匯出
+        </a>
+      ),
+      key: '4',
+    },
+  ];
+
   const _history = useHistory();
   const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
   var _group_id;
@@ -38,6 +82,14 @@ function Header({user}) {
     _history.push('/manage/notify')
     
   }
+  function _gotoabnormal() {
+    _history.push('/tr/abnormal')
+    
+  }
+  function _gotosearch() {
+    _history.push('/tr/search')
+    
+  }
 
   return (
     <>
@@ -47,7 +99,12 @@ function Header({user}) {
           <div className='w-1/3 text-center text-xl'>變壓器查詢列表</div>
         </div>
         <div className="w-1/3 flex items-center justify-end">
-          <button className='p-2 mx-3 btn font-bold flex-none tracking-8' type='primary' onClick={_gotomanage}>帳號管理</button>
+        
+          {/* <button className='p-2 mx-3 btn font-bold flex-none tracking-8' type='primary' onClick={_gotomanage}>帳號管理</button> */}
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
+          <Button className='ant-button-black flex-none mr-1' type="link" onClick={_gotomanage} >系統</Button>
+          <Divider type="vertical"  style={{ 'background-color':'#92D131' , marginRight:30,height:25}} />
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
             <div className='text-sm text-black mr-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
