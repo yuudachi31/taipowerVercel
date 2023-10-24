@@ -55,6 +55,7 @@ function Manage() {
                         <Menu data={MENU_DATA} menuActive={'user'} />
                         <UserList />
                     </Route>
+                     {/* 閥值 */}
                     <Route path="/manage/threshold">
                         <Menu data={MENU_DATA} menuActive={'threshold'} />
                         <Threshold />
