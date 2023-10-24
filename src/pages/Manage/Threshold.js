@@ -5,7 +5,7 @@ import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
-
+import './manage.css'
 
 const { Header, Content } = Layout;
 const { Search } = Input
@@ -96,7 +96,7 @@ function Notify() {
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
             <Content>
                 <Header class="pt-4 pb-8 flex space-x-7 items-center">
-                    <h2 class="flex-auto font-bold text-2xl">推播管理</h2>
+                    <h2 class="flex-auto font-bold text-2xl">閥值管理</h2>
 
                     {/* <button class="btn-manage justify-self-end mr-4 bg-white font-bold" onClick={showModal} >新增群組</button> */}
                     <Modal title="新增群組" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="新增" cancelText="取消">
@@ -151,24 +151,42 @@ function Notify() {
                                 </div>
                                 :
                                 //修改完後的顯示
-                                <span class="font-bold">低於 10% 高於80%</span>
+                                <div class="flex">
+                                    <div>
+                                        <div  class="flex row ">
+                                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
 
                         </div>
                         {isEdit ?
-                            <div class="flex">
+                            <div class="flex2">
                                 <button class="btn-manage justify-self-end mr-4 btn-manage-full" >刪除群組</button>
                                 <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={handleSave}>儲存</button>
                             </div>
                             :
-                            <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => setIsEdit(true)} >編輯</button>
+                            <div class="flex2">
+                                <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={() => setIsEdit(true)} >編輯</button>
+                            </div>
                         }
+
 
                     </div>
 
                 </Content>
             </Content>
-            <div class="my-7 font-bold text-base">推播帳號列表</div>
+            {/* <div class="my-7 font-bold text-base">推播帳號列表</div>
             <Content>
 
                 <Layout class="p-7 bg-white">
@@ -189,7 +207,7 @@ function Notify() {
                         </div>
                     </Content>
                 </Layout>
-            </Content>
+            </Content> */}
         </Layout>
     );
 
