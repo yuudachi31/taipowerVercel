@@ -4,13 +4,13 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
-import { saveDailyRates,saveQuarterRates} from '../../actions/transformer'
+import { saveDailyRates,saveQuarterRates,saveMonthlyRates} from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates} from '../../api/frontApi'
+import { getDailyRates, getQuarterRates,getMonthlyRates} from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory } from "react-router-dom";
@@ -18,7 +18,7 @@ const { Header, Sider, Content } = Layout;
 
 const monthFormat = 'YYYY 年 MM 月';
 
-function TRInfo({ transformer, saveDailyRates ,saveQuarterRates}) {
+function TRInfo({ transformer, saveDailyRates ,saveQuarterRates,saveMonthlyRates}) {
   console.log(transformer.dailyRatesList)
   useEffect(() => {
     getDailyRates().then((data) => {
@@ -36,11 +36,15 @@ function TRInfo({ transformer, saveDailyRates ,saveQuarterRates}) {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-
         saveQuarterRates(data)
-
-        // console.log(transformer.quarterRatesList)
-
+      }
+    })
+    getMonthlyRates().then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+       
+        saveMonthlyRates(data)
       }
     })
   }, [])
@@ -90,7 +94,7 @@ function TRInfo({ transformer, saveDailyRates ,saveQuarterRates}) {
         </Header>
         <Content class="flex mb-20 justify-center items-center">
           <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
-          <EChartMonth data={data_month} />
+          <EChartMonth data={transformer.monthlyRatesList} />
         </Content>
       </Layout>
 
@@ -151,7 +155,7 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates,saveQuarterRates
+  saveDailyRates,saveQuarterRates,saveMonthlyRates
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRInfo);
 

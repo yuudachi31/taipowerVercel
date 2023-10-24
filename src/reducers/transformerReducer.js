@@ -1,9 +1,10 @@
-import { SAVE_TRANS_DATA,SAVE_DAILYRATES,SAVE_QUARTERRATES} from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA,SAVE_DAILYRATES,SAVE_QUARTERRATES,SAVE_MONTHLYRATES} from "../utils/actionType/frontActionType";
 
 const initialState = {
 transformerList:[],
 dailyRatesList:[],
-quarterRatesList:[]
+quarterRatesList:[],
+monthlyRatesList:[]
 };
 
 export const transformerReducer = (state = initialState, action) => {
@@ -61,6 +62,28 @@ export const transformerReducer = (state = initialState, action) => {
       return {
         ...state,
         quarterRatesList:quarterRates,
+      };
+      case SAVE_MONTHLYRATES:
+        const monthlyRates=[];
+        // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+        action.payload.forEach((element,index) => {
+          
+    let month = `${element.date_month}月`
+
+    monthlyRates.push({
+        'load_on': Math.ceil(element.peak_rate),
+        'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
+        'load_off': Math.ceil(element.off_peak_rate),
+        'load_total': Math.ceil(element.peak_rate+element.off_peak_rate),
+        'uti_rate': Math.ceil(element.peak_rate),
+        'x_key': month,
+    })
+         
+        });
+        // console.log(monthlyRates)
+      return {
+        ...state,
+        monthlyRatesList:monthlyRates,
       };
     default:
       return state;
