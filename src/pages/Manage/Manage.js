@@ -38,12 +38,17 @@ function Manage() {
         <BrowserRouter>
             <Layout id="manage" class="bg-gray-100">
                 <Switch>
+                    {/* 閥值 */}
+                    <Route exact path="/manage/threshold">
+                        <Menu data={MENU_DATA} menuActive={'threshold'} />
+                        <Threshold />
+                    </Route>
                     <Route path="/manage/notify">
                         <Menu data={MENU_DATA} menuActive={'notify'} />
                         <Notify/>
                     </Route>
                     {/* user */}
-                    <Route exact path="/manage/user/create">
+                    <Route path="/manage/user/create">
                         <Menu data={MENU_DATA} menuActive={'user'} />
                         <CreateUser />
                     </Route>
@@ -55,11 +60,7 @@ function Manage() {
                         <Menu data={MENU_DATA} menuActive={'user'} />
                         <UserList />
                     </Route>
-                     {/* 閥值 */}
-                    <Route path="/manage/threshold">
-                        <Menu data={MENU_DATA} menuActive={'threshold'} />
-                        <Threshold />
-                    </Route>
+                     
                 </Switch>
             </Layout>
         </BrowserRouter>
