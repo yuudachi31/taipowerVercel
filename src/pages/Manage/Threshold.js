@@ -11,29 +11,29 @@ const { Header, Content } = Layout;
 const { Search } = Input
 
 
-export const USER_DATA = [
-    {
-        user_id: 0,
-        name: 'User_001',
-        group: ['區處管理者', '運維人員'],
-        email: 'user1@gmail.com',
-        line_state: true
-    },
-    {
-        user_id: 1,
-        name: 'User_002',
-        group: ['運維人員'],
-        email: 'user2@gmail.com',
-        line_state: true
-    },
-    {
-        user_id: 2,
-        name: 'User_003',
-        group: ['區處檢修人員'],
-        email: 'user3@gmail.com',
-        line_state: false
-    },
-];
+// export const USER_DATA = [
+//     {
+//         user_id: 0,
+//         name: 'User_001',
+//         group: ['區處管理者', '運維人員'],
+//         email: 'user1@gmail.com',
+//         line_state: true
+//     },
+//     {
+//         user_id: 1,
+//         name: 'User_002',
+//         group: ['運維人員'],
+//         email: 'user2@gmail.com',
+//         line_state: true
+//     },
+//     {
+//         user_id: 2,
+//         name: 'User_003',
+//         group: ['區處檢修人員'],
+//         email: 'user3@gmail.com',
+//         line_state: false
+//     },
+// ];
 export const LINEGROUPID = [
     {
         value: '1',
@@ -53,7 +53,7 @@ export const LINEGROUPID = [
     },
 ]
 
-function Notify() {
+function Threshold() {
     const _history = useHistory()
 
     //是否編輯
@@ -66,29 +66,29 @@ function Notify() {
         setIsEdit(false)
     }
 
-    //新增群組modal
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    // //新增群組modal
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const showModal = () => {
+    //     setIsModalOpen(true);
+    // };
+    // const handleOk = () => {
+    //     setIsModalOpen(false);
+    // };
+    // const handleCancel = () => {
+    //     setIsModalOpen(false);
+    // };
 
-    //新增帳號modal
-    const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
-    const showadduserModal = () => {
-        setIsadduserModalOpen(true);
-    };
-    const handleOk_adduser = () => {
-        setIsadduserModalOpen(false);
-    };
-    const handleCancel_adduser = () => {
-        setIsadduserModalOpen(false);
-    };
+    // //新增帳號modal
+    // const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
+    // const showadduserModal = () => {
+    //     setIsadduserModalOpen(true);
+    // };
+    // const handleOk_adduser = () => {
+    //     setIsadduserModalOpen(false);
+    // };
+    // const handleCancel_adduser = () => {
+    //     setIsadduserModalOpen(false);
+    // };
 
 
 
@@ -99,7 +99,7 @@ function Notify() {
                     <h2 class="flex-auto font-bold text-2xl">閥值管理</h2>
 
                     {/* <button class="btn-manage justify-self-end mr-4 bg-white font-bold" onClick={showModal} >新增群組</button> */}
-                    <Modal title="新增群組" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="新增" cancelText="取消">
+                    {/* <Modal title="新增群組" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText="新增" cancelText="取消">
                         <div class="flex mb-3"><p>縣市：</p><div class=" w-72"><Input /></div></div>
                         <div class="flex mb-3"><p>群組名稱：</p><div class=" w-72"><Input /></div></div>
                         <div  class="flex row ">
@@ -114,7 +114,7 @@ function Notify() {
                             <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
                             <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
                         </div>
-                    </Modal>
+                    </Modal> */}
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
@@ -212,29 +212,29 @@ function Notify() {
     );
 
 }
-export default Notify;
+export default Threshold;
 
-function UserItem({ user }) {
-    const _history = useHistory()
+// function UserItem({ user }) {
+//     const _history = useHistory()
 
-    return (
-        <>
-            <div class="user-grid-row pt-1">
-                <div class="col-span-1">{user.name}</div>
-                <div class="col-span-1">{user.email}</div>
-                <div class=" ml-4">
-                    {user.line_state ?
-                        <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
-                        :
-                        <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
-                    }
-                </div>
+//     return (
+//         <>
+//             <div class="user-grid-row pt-1">
+//                 <div class="col-span-1">{user.name}</div>
+//                 <div class="col-span-1">{user.email}</div>
+//                 <div class=" ml-4">
+//                     {user.line_state ?
+//                         <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
+//                         :
+//                         <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
+//                     }
+//                 </div>
 
 
-                <button class="btn-manage justify-self-end mr-4" >移除</button>
-            </div>
-            <Divider />
-        </>
-    );
+//                 <button class="btn-manage justify-self-end mr-4" >移除</button>
+//             </div>
+//             <Divider />
+//         </>
+//     );
 
-}
+//}
