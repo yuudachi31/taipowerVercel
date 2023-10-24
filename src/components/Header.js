@@ -20,23 +20,25 @@ function Header({user}) {
     _history.push('/login')
   }
   function _gotosearch() { //全部變壓器
-    _history.push('/tr/search')
-    
+    _history.push('/tr/search') 
   }
   function _gotoabnormal() { //異常變壓器
-    _history.push('/tr/abnormal')
-    
+    _history.push('/tr/abnormal') 
   }
   function _gotomanage1() { //閥值管理
     _history.push('/manage/threshold')
-    
   }
   function _gotomanage2() { //推播管理
     _history.push('/manage/notify')
-    
   }
   function _gotomanage3() { //帳號管理
     _history.push('/manage/user')
+  }
+  function _gotomanage4() { //AMI匯入
+    _history.push('/manage2/AMIimport')
+  }
+  function _gotomanage5() { //匯出變壓器
+    _history.push('/manage2/transformerRemit')
   }
   const menu = (
     <Menu defaultSelectedKeys={['logout']} className="">
@@ -62,10 +64,10 @@ function Header({user}) {
   const info_menu = (
     <Menu defaultSelectedKeys={['3']} className="">
       <Menu.Item key="1">
-        <div onClick={_logout}>匯入AMI</div>
+        <div onClick={_gotomanage4}>匯入AMI</div>
       </Menu.Item>
       <Menu.Item key="2">
-        <div onClick={_logout}>匯出變壓器</div>
+        <div onClick={_gotomanage5}>匯出變壓器</div>
       </Menu.Item>
     </Menu>
   );

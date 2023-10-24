@@ -12,6 +12,7 @@ import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import Manage from "./pages/Manage/Manage";
+import Manage2 from "./pages/Manage/Manage2";
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
         <Route path="/manage">
           <Header2 />
           <Manage />
+        </Route>
+        <Route path="/manage2">
+          <Header2 />
+          <Manage2 />
         </Route>
       </Switch>
     </BrowserRouter>
