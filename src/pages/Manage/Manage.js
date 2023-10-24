@@ -8,8 +8,6 @@ import CreateUser from "./CreateUser";
 import UserInfo from "./UserInfo";
 import Notify from "./Notify";
 import Threshold from "./Threshold";
-import AMIimport from "./AMIimport";
-import transformerRemit from "./transformerRemit";
 import Menu from "../../components/manage/ManageMenu"
 
 const MENU_DATA = [
@@ -31,19 +29,7 @@ const MENU_DATA = [
         name: 'user',
         icon: <ToolOutlined />
     },
-    {
-        route: '/manage/AMIimport',
-        title: 'AMI匯入',
-        name: 'AMIimport',
-        icon: <ToolOutlined />
-    },
-    {
-        route: '/manage/transformerRemit',
-        title: '匯出變壓器',
-        name: 'transformerRemit',
-        icon: <ToolOutlined />
-    },
-   
+
 ]
 
 
@@ -74,17 +60,6 @@ function Manage() {
                         <Menu data={MENU_DATA} menuActive={'user'} />
                         <UserList />
                     </Route>
-                      {/* AMI匯入 */}
-                    <Route path="/manage/AMIimport">
-                        <Menu data={MENU_DATA} menuActive={'AMIimport'} />
-                        <AMIimport />
-                    </Route>
-                    {/* 匯出變壓器 */}
-                    <Route path="/manage/transformerRemit">
-                        <Menu data={MENU_DATA} menuActive={'transformerRemit'} />
-                        <transformerRemit />
-                    </Route>
-                     
                 </Switch>
             </Layout>
         </BrowserRouter>

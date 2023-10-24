@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Layout } from 'antd';
-import { BellOutlined, ToolOutlined ,LineChartOutlined} from '@ant-design/icons';
+import { ImportOutlined,ExportOutlined} from '@ant-design/icons';
 import './ant.css'
 
 import UserList from "./UserList";
@@ -17,13 +17,13 @@ const MENU_DATA = [
         route: '/manage2/AMIimport',
         title: 'AMI匯入',
         name: 'AMIimport',
-        icon: <ToolOutlined />
+        icon: <ImportOutlined />
     },
     {
         route: '/manage2/transformerRemit',
         title: '變壓器匯出',
         name: 'transformerRemit',
-        icon: <ToolOutlined />
+        icon: <ExportOutlined />
     },
    
 ]
