@@ -37,10 +37,10 @@ function Header({user}) {
   function _gotomanage4() { //AMI匯入
     _history.push('/manage2/AMIimport')
   }
-  function _gotomanage5() { //匯出變壓器
+  function _gotomanage5() { //變壓器匯出
     _history.push('/manage2/transformerRemit')
   }
-  
+
   const menu = (
     <Menu defaultSelectedKeys={['logout']} className="">
       <Menu.Item key="logout">
@@ -65,10 +65,10 @@ function Header({user}) {
   const info_menu = (
     <Menu defaultSelectedKeys={['3']} className="">
       <Menu.Item key="1">
-        <div onClick={_gotomanage4}>匯入AMI</div>
+        <div onClick={_gotomanage4}>AMI匯入</div>
       </Menu.Item>
       <Menu.Item key="2">
-        <div onClick={_gotomanage5}>匯出變壓器</div>
+        <div onClick={_gotomanage5}>變壓器匯出</div>
       </Menu.Item>
     </Menu>
   );

@@ -9,7 +9,7 @@ import UserInfo from "./UserInfo";
 import Notify from "./Notify";
 import Threshold from "./Threshold";
 import AMIimport from "./AMIimport";
-import transformerRemit from "./transformerRemit";
+import Remit from "./transformerRemit";
 import Menu from "../../components/manage/ManageMenu2"
 
 const MENU_DATA = [
@@ -21,7 +21,7 @@ const MENU_DATA = [
     },
     {
         route: '/manage2/transformerRemit',
-        title: '匯出變壓器',
+        title: '變壓器匯出',
         name: 'transformerRemit',
         icon: <ToolOutlined />
     },
@@ -39,10 +39,10 @@ function Manage2() {
                         <Menu data={MENU_DATA} menuActive={'AMIimport'} />
                         <AMIimport />
                     </Route>
-                    {/* 匯出變壓器 */}
+                    {/* 變壓器匯出 */}
                     <Route path="/manage2/transformerRemit">
                         <Menu data={MENU_DATA} menuActive={'transformerRemit'} />
-                        <transformerRemit />
+                        <Remit />
                     </Route>
                      
                 </Switch>
