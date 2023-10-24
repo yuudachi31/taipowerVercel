@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 
 
-function Header({user}) {
+function Header2({user}) {
   // console.log(user.user_info.user_name)
   function _logout(e) {
     document.cookie = 'fln=; Max-Age=-99999999;';
@@ -84,7 +84,7 @@ function Header({user}) {
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
-          <div className='w-1.2/3 text-center text-xl'>變壓器查詢列表</div>
+          <div className='w-1.2/3 text-center text-xl '>後台系統操作頁面</div>
         </div>
         <div className="w-1/3 flex items-center justify-end">
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button>
@@ -142,4 +142,4 @@ const mapStateToProps = ({ userReducer }) => ({
 // const mapDispatchToProps = {
 
 // };
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, null)(Header2);

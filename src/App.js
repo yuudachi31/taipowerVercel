@@ -2,9 +2,10 @@ import "antd/dist/antd.less";
 import "./App.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Layout } from 'antd';
-// Redirect
+// Redirec
 
 import Header from "./components/Header";
+import Header2 from "./components/Header2";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
@@ -23,7 +24,7 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/tr/info">
+        <Route path="/tr/info"> 
           <Header />
           <TRInfo />
         </Route>
@@ -36,7 +37,7 @@ function App() {
           <TRAbnormal />
         </Route>
         <Route path="/manage">
-          <Header />
+          <Header2 />
           <Manage />
         </Route>
       </Switch>
