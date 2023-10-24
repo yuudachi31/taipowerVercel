@@ -51,69 +51,7 @@ function Threshold() {
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
-                        <span class="font-bold">台北市區：</span>
-                        <Select
-                            defaultValue="1"
-                            style={{
-                                width: 120,
-                            }}
-                            // onChange={handleChange}
-                            options={LINEGROUPID}
-                        />
-                    </div>
-                    <div class=" px-10 pb-10 flex justify-between">
-                        <div class="flex">
-                            <span class="font-bold">警告門檻：</span>
-                            {/* 修改  */}
-                            {isEdit ? 
-                                <div class="flex">
-                                    <div>
-                                    <div  class="flex row ">
-                                        <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2" > %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2"> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                    </div>
-                                    </div>
-                                </div>
-                                :
-                                //修改完後的顯示
-                                <div class="flex">
-                                    <div>
-                                        <div  class="flex row ">
-                                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><p class="mr-2"> 70%</p></div>
-                                            <div class="flex mb-3"><p class="mr-2">低於</p><p> 80%</p></div>
-                                        </div>
-                                        <div  class="flex row">
-                                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><p class="mr-2"> 80%</p></div>
-                                            <div class="flex mb-3"><p class="mr-2">低於</p><p> 90%</p></div>
-                                        </div>
-                                        <div  class="flex row">
-                                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><p> 90%</p></div>
-                                            {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-
-                        </div>
-                        {isEdit ?
-                            <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >刪除群組</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={handleSave}>儲存</button>
-                            </div>
-                            :
-                            <div class="flex2">
-                                <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={() => setIsEdit(true)} >編輯</button>
-                            </div>
-                        }
-
+                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入AMI資料</button>
 
                     </div>
 

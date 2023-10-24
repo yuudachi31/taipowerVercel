@@ -40,6 +40,7 @@ function Header({user}) {
   function _gotomanage5() { //匯出變壓器
     _history.push('/manage2/transformerRemit')
   }
+  
   const menu = (
     <Menu defaultSelectedKeys={['logout']} className="">
       <Menu.Item key="logout">
