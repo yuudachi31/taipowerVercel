@@ -92,8 +92,10 @@ function Header2({user}) {
         <div className="w-1/3 flex items-center justify-end">
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotoabnormal}>異常變壓器</button>
+          <button className='p-1 mx-3 flex-none tracking-8'  onClick={_gotomanage4}>AMI</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage1}>帳號管理</button>
           <button className='p-1 mx-3 flex-none tracking-8'  onClick={_gotomanage4}>資料管理</button>
+          
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black p-1 mx-2  flex-none tracking-8' onClick={(e) => e.preventDefault()}>
             <div className='text-sm text-black mr-2'>帳號管理</div>

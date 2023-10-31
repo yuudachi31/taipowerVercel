@@ -137,11 +137,11 @@ function Threshold() {
                                     <div>
                                     <div  class="flex row ">
                                         <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2" > %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div> */}
                                     </div>
                                     <div  class="flex row">
                                         <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2"> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
                                     </div>
                                     <div  class="flex row">
                                         <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
@@ -155,11 +155,11 @@ function Threshold() {
                                     <div>
                                         <div  class="flex row ">
                                             <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><p class="mr-2"> 70%</p></div>
-                                            <div class="flex mb-3"><p class="mr-2">低於</p><p> 80%</p></div>
+                                            {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 80%</p></div> */}
                                         </div>
                                         <div  class="flex row">
                                             <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><p class="mr-2"> 80%</p></div>
-                                            <div class="flex mb-3"><p class="mr-2">低於</p><p> 90%</p></div>
+                                            {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 90%</p></div> */}
                                         </div>
                                         <div  class="flex row">
                                             <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><p> 90%</p></div>
