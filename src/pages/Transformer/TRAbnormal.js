@@ -9,6 +9,26 @@ import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 
 function TRAbnormal() {
+    //刪除modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const confirm = () => {
+        Modal.confirm({
+          title: '刪除確認',
+          content: '確定刪除這些異常變壓器？',
+          okText:'是',
+          cancelText:'否',
+          
+        });
+      };
     const _history = useHistory();
     const columns = [
         {
@@ -34,7 +54,11 @@ function TRAbnormal() {
         },
         {
             title: '閥值',
-            dataIndex: 'fa',
+            dataIndex: 'threshold',
+        },
+        {
+            title: '危險等級',
+            dataIndex: 'warning',
         },
     ];
     const data = [];
@@ -45,7 +69,8 @@ function TRAbnormal() {
             group: `T01`,
             number: '001',
             rate: '70.3',
-            fa: '77%',
+            threshold: '77%',
+            warning: 'nan',
         });
     }
         const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -95,7 +120,8 @@ function TRAbnormal() {
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
             <div className="flex">
-                <button className="btn-red mr-7" style={{ height: 40, width: 60 }}>刪除</button>
+                <button className="btn-red mr-7" style={{ height: 40, width: 60 }} onClick={confirm}>刪除</button>
+                
                 <button className="btn " style={{ height: 40, width: 80 }}>隔天通知</button>
             </div>
                 <div className="flex">

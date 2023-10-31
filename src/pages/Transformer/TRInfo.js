@@ -17,7 +17,9 @@ import { useHistory } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 
 const monthFormat = 'YYYY 年 MM 月';
-
+const onChangeMonth = (date, dateString) => {
+  console.log(date, dateString);
+};
 function TRInfo({ transformer, saveDailyRates }) {
   useEffect(() => {
     getDailyRates().then((data) => {
@@ -65,8 +67,14 @@ function TRInfo({ transformer, saveDailyRates }) {
 
 
       <Layout>
-        <Header class="flex flex-1 items-center justify-between mb-10">
-          <div class="space-x-3 flex-1"></div>
+        <Header class="flex items-center justify-between mb-14">
+          {/* <div class="space-x-3 flex-1"></div> */}
+          <div class="space-x-2 flex-1">
+          <span class="text-base "  style={{fontSize:'14px'}}>期間選擇</span>
+          
+        <DatePicker onChange={onChangeMonth} picker="month" />
+        
+        </div>
           <h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 每月用電圖表</h3>
           <div class="flex flex-1 items-center justify-end">
 
@@ -75,7 +83,9 @@ function TRInfo({ transformer, saveDailyRates }) {
             <span class="w-7 h-3 bg-green-300"></span>
             <span class="ml-2">離峰利用率</span>
           </div>
+          
         </Header>
+        
         <Content class="flex mb-20 justify-center items-center">
           <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
           <EChartMonth data={data_month} />
@@ -87,8 +97,8 @@ function TRInfo({ transformer, saveDailyRates }) {
       <Layout class="py-2">
         <Header class="flex items-center justify-between">
 
-          <div class="space-x-3 flex-1">
-            <span class="text-base">期間選擇</span>
+          <div class="space-x-2 flex-1">
+            <span class="text-base "  style={{fontSize:'14px'}}>期間選擇</span>
             <DatePicker defaultValue={moment('2015/01', monthFormat)} format={monthFormat} picker="month" />
           </div>
           <h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 01 月每日用電圖表</h3>

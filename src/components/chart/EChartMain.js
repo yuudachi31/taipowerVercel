@@ -12,6 +12,7 @@ function EChartMain({data}) {
                 
                 <li key={`item-0`}>{`尖峰利用率：${payload[0].value}kW`}</li>
                 <li key={`item-1`}>{`離峰利用率：${payload[1].value}kW`}</li>
+                
                 {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
                 
             </ul>

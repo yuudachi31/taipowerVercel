@@ -88,6 +88,10 @@ function TRSearch({ transformer, saveTransData }) {
             title: '利用率',
             dataIndex: 'rate',
         },
+        {
+            title: '閥值',
+            dataIndex: 'threshold',
+        },
     ];
     const data = [];
 
@@ -101,7 +105,8 @@ function TRSearch({ transformer, saveTransData }) {
                 number: 'nan',
                 rate: 'nan',
                 vol: 'nan',
-                notify: 'nan'
+                notify: 'nan',
+                threshold:'nan'
             })
         });
         console.log(transformer)
