@@ -92,7 +92,9 @@ function Header({user}) {
         <div className="w-1/3 flex items-center justify-end">
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotoabnormal}>異常變壓器</button>
-          <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
+          <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage1}>帳號管理</button>
+          <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage4}>資料管理</button>
+          {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black p-1 mx-2  flex-none tracking-8' onClick={(e) => e.preventDefault()}>
             <div className='text-sm text-black mr-2'>帳號管理</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
@@ -103,12 +105,12 @@ function Header({user}) {
             <div className='text-sm text-black mr-2'>資料管理</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black mr-2' /></div>
           </a>
-        </Dropdown>
+        </Dropdown> */}
           {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage}>帳號管理</button>
           <button className='p-1 pr-4 mx-3  flex-none tracking-8'  onClick={_gotomanage}>資料管理</button> */}
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
-            <div className='text-sm text-black mr-2'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
+            <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
           </a>
         </Dropdown>
