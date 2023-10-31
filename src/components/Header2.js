@@ -5,13 +5,13 @@ import logo from '../assets/icon/logo-rainbow.png';
 import { useReducer } from 'react';
 //antd
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, Divider } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import { userReducer } from '../reducers/userReducer';
 import { connect } from "react-redux";
 
 
 
-function Header({user}) {
+function Header2({user}) {
   // console.log(user.user_info.user_name)
   function _logout(e) {
     document.cookie = 'fln=; Max-Age=-99999999;';
@@ -20,16 +20,16 @@ function Header({user}) {
     _history.push('/login')
   }
   function _gotosearch() { //全部變壓器
-    _history.push('/tr/search') 
+    _history.push('/tr/search')  
   }
   function _gotoabnormal() { //異常變壓器
-    _history.push('/tr/abnormal') 
+    _history.push('/tr/abnormal')  
   }
   function _gotoAMI() { //異常變壓器
     _history.push('/tr/AMIinfo')  
   }
   function _gotomanage1() { //閥值管理
-    _history.push('/manage/threshold')
+    _history.push('/manage/threshold') 
   }
   function _gotomanage2() { //推播管理
     _history.push('/manage/notify')
@@ -51,50 +51,6 @@ function Header({user}) {
       </Menu.Item>
     </Menu>
   );
-
-  // const items = [
-  //   {
-  //     label: (
-  //       <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-  //         閥值管理
-  //       </a>
-  //     ),
-  //     key: '0',
-  //   },
-  //   {
-  //     label: (
-  //       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-  //         推播管理
-  //       </a>
-  //     ),
-  //     key: '1',
-  //   },
-  //   {
-  //     label: (
-  //       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-  //         帳戶權限
-  //       </a>
-  //     ),
-  //     key: '2',
-  //   },
-  //   {
-  //     label: (
-  //       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-  //         AMI 匯入
-  //       </a>
-  //     ),
-  //     key: '3',
-  //   },
-  //   {
-  //     label: (
-  //       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-  //         AMI 匯出
-  //       </a>
-  //     ),
-  //     key: '4',
-  //   },
-  // ];
-
 
   const manage_menu = (
     <Menu defaultSelectedKeys={['3']} className="">
@@ -119,7 +75,6 @@ function Header({user}) {
       </Menu.Item>
     </Menu>
   );
-
   const _history = useHistory();
   const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
   var _group_id;
@@ -128,38 +83,21 @@ function Header({user}) {
     _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
     _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1];
   }
-
-  function _gotomanage() {
-    _history.push('/manage/notify')
-    
-  }
-  function _gotoabnormal() {
-    _history.push('/tr/abnormal')
-    
-  }
-  function _gotosearch() {
-    _history.push('/tr/search')
-    
-  }
-
-
   
-
+  
   return (
     <>
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
-          <div className='w-1.2/3 text-center text-xl'>變壓器查詢列表</div>
+          <div className='w-1.2/3 text-center text-xl '>後台系統操作頁面</div>
         </div>
         <div className="w-1/3 flex items-center justify-end">
-
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
+        <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>AMI</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>帳號管理</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage4}>資料管理</Button>
-          {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button> */}
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black p-1 mx-2  flex-none tracking-8' onClick={(e) => e.preventDefault()}>
             <div className='text-sm text-black mr-2'>帳號管理</div>
@@ -213,4 +151,4 @@ const mapStateToProps = ({ userReducer }) => ({
 // const mapDispatchToProps = {
 
 // };
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, null)(Header2);

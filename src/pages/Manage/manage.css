@@ -1,0 +1,10 @@
+.flex2 {
+    display: flex;
+    justify-content: center; /* 水平居中对齐 */
+    align-items: flex-end; /* 垂直居中对齐 */
+  }
+.account-list{
+    display: flex;
+    justify-content:space-between; /* 水平居中对齐 */
+    align-items: center; /* 垂直居中对齐 */
+}
