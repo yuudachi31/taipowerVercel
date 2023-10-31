@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
+import AMIInfo from "./pages/Transformer/AMIInfo";
 import Manage from "./pages/Manage/Manage";
 import Manage2 from "./pages/Manage/Manage2";
 
@@ -28,6 +29,10 @@ function App() {
         <Route path="/tr/info"> 
           <Header />
           <TRInfo />
+        </Route>
+        <Route path="/tr/AMIinfo">
+          <Header />
+          <AMIInfo />
         </Route>
         <Route path="/tr/search">
           <Header />

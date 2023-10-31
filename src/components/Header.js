@@ -25,6 +25,9 @@ function Header({user}) {
   function _gotoabnormal() { //異常變壓器
     _history.push('/tr/abnormal') 
   }
+  function _gotoAMI() { //異常變壓器
+    _history.push('/tr/AMIinfo')  
+  }
   function _gotomanage1() { //閥值管理
     _history.push('/manage/threshold')
   }
@@ -92,7 +95,7 @@ function Header({user}) {
         <div className="w-1/3 flex items-center justify-end">
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotoabnormal}>異常變壓器</button>
-          <button className='p-1 mx-3 flex-none tracking-8'  onClick={_gotomanage4}>AMI</button>
+          <button className='p-1 mx-3 flex-none tracking-8'  onClick={_gotoAMI}>AMI</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage1}>帳號管理</button>
           <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage4}>資料管理</button>
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
