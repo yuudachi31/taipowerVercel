@@ -1,8 +1,8 @@
 //antd
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, DatePicker, Space  } from 'antd';
 
 const { Option } = Select;
-
+const { RangePicker } = DatePicker;
 const layout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 4 },
@@ -11,16 +11,10 @@ const layout = {
 function UserInfo({ isEdited, user = null }) {
   return (
     <Form {...layout} name="user-edit" colon={false} labelAlign="left">
-      <Form.Item name="district" label="群組">
-        {!isEdited && user ? <span>台北</span> :
-          <Select
-            placeholder="選擇群組"
-            allowClear
-            size='large'
-          >
-            <Option value="群組一">群組一</Option>
-            <Option value="群組二">群組二</Option>
-          </Select>}
+      <Form.Item name="district" label="時間選擇">
+        <Space direction="vertical" size={12}>
+          <RangePicker picker="year" />
+        </Space>
       </Form.Item>
       <Form.Item name="district" label="區處">
         {!isEdited && user ? <span>台北</span> :
@@ -31,6 +25,17 @@ function UserInfo({ isEdited, user = null }) {
           >
             <Option value="台北">台北</Option>
             <Option value="台中">台中</Option>
+          </Select>}
+      </Form.Item>
+      <Form.Item name="district" label="群組">
+        {!isEdited && user ? <span>台北</span> :
+          <Select
+            placeholder="選擇群組"
+            allowClear
+            size='large'
+          >
+            <Option value="群組一">群組一</Option>
+            <Option value="群組二">群組二</Option>
           </Select>}
       </Form.Item>
       <Form.Item name="notify-group" label="第幾具">
