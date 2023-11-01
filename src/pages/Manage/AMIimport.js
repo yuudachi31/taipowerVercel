@@ -43,7 +43,7 @@ function Threshold() {
     }
 
     return (
-        <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
+        <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
             <Content>
                 <Header class="pt-4 pb-8 flex space-x-7 items-center">
                     <h2 class="flex-auto font-bold text-2xl">AMI匯入</h2>

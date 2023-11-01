@@ -37,11 +37,11 @@ function Header({user}) {
   function _gotomanage3() { //帳號管理
     _history.push('/manage/user')
   }
-  function _gotomanage4() { //AMI匯入
-    _history.push('/manage2/AMIimport')
+  function _gotodatamanage1() { //AMI匯入
+    _history.push('/datamanage/AMIimport')
   }
-  function _gotomanage5() { //變壓器匯出
-    _history.push('/manage2/transformerRemit')
+  function _gotodatamanage2() { //變壓器匯出
+    _history.push('/datamanage/transformerRemit')
   }
 
   const menu = (
@@ -112,10 +112,10 @@ function Header({user}) {
   const info_menu = (
     <Menu defaultSelectedKeys={['3']} className="">
       <Menu.Item key="1">
-        <div onClick={_gotomanage4}>AMI匯入</div>
+        <div onClick={_gotodatamanage1}>AMI匯入</div>
       </Menu.Item>
       <Menu.Item key="2">
-        <div onClick={_gotomanage5}>變壓器匯出</div>
+        <div onClick={_gotodatamanage2}>變壓器匯出</div>
       </Menu.Item>
     </Menu>
   );
@@ -158,7 +158,7 @@ function Header({user}) {
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>AMI</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>帳號管理</Button>
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage4}>資料管理</Button>
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotodatamanage1}>資料管理</Button>
           {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button> */}
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black p-1 mx-2  flex-none tracking-8' onClick={(e) => e.preventDefault()}>
