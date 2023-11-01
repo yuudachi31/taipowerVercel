@@ -13,3 +13,6 @@
   justify-content:flex-end;
   align-items: center; /* 垂直居中对齐 */
 }
+.minHeight{
+  min-height: calc(100vh - 60px);
+}

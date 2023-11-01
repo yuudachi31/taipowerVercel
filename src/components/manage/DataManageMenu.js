@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 const { Sider } = Layout;
 
-function ManageMenu2({ data, menuActive }) {
+function DataManageMenu({ data, menuActive }) {
     const _history = useHistory()
 
     function handleClickMenu(idx) {
@@ -32,4 +32,4 @@ function ManageMenu2({ data, menuActive }) {
     );
 
 }
-export default ManageMenu2;
+export default DataManageMenu;

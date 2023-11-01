@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 // Redirec
 
 import Header from "./components/Header";
-import Header2 from "./components/Header2";
+import ManageHeader from "./components/ManageHeader";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
@@ -13,7 +13,7 @@ import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import AMIInfo from "./pages/Transformer/AMIInfo";
 import Manage from "./pages/Manage/Manage";
-import Manage2 from "./pages/Manage/Manage2";
+import DataManage from "./pages/Manage/DataManage";
 
 function App() {
   return (
@@ -43,12 +43,12 @@ function App() {
           <TRAbnormal />
         </Route>
         <Route path="/manage">
-          <Header2 />
+          <ManageHeader />
           <Manage />
         </Route>
-        <Route path="/manage2">
-          <Header2 />
-          <Manage2 />
+        <Route path="/datamanage">
+          <ManageHeader />
+          <DataManage />
         </Route>
       </Switch>
     </BrowserRouter>

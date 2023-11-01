@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 
 
-function Header2({user}) {
+function ManageHeader({user}) {
   // console.log(user.user_info.user_name)
   function _logout(e) {
     document.cookie = 'fln=; Max-Age=-99999999;';
@@ -37,11 +37,11 @@ function Header2({user}) {
   function _gotomanage3() { //帳號管理
     _history.push('/manage/user')
   }
-  function _gotomanage4() { //AMI匯入
-    _history.push('/manage2/AMIimport')
+  function _gotodatamanage1() { //AMI匯入
+    _history.push('/datamanage/AMIimport')
   }
-  function _gotomanage5() { //變壓器匯出
-    _history.push('/manage2/transformerRemit')
+  function _gotodatamanage2() { //變壓器匯出
+    _history.push('/datamanage/transformerRemit')
   }
 
   const menu = (
@@ -68,10 +68,10 @@ function Header2({user}) {
   const info_menu = (
     <Menu defaultSelectedKeys={['3']} className="">
       <Menu.Item key="1">
-        <div onClick={_gotomanage4}>AMI匯入</div>
+        <div onClick={_gotodatamanage1}>AMI匯入</div>
       </Menu.Item>
       <Menu.Item key="2">
-        <div onClick={_gotomanage5}>變壓器匯出</div>
+        <div onClick={_gotodatamanage2}>變壓器匯出</div>
       </Menu.Item>
     </Menu>
   );
@@ -97,7 +97,7 @@ function Header2({user}) {
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>AMI</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>帳號管理</Button>
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage4}>資料管理</Button>
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotodatamanage1}>資料管理</Button>
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black p-1 mx-2  flex-none tracking-8' onClick={(e) => e.preventDefault()}>
             <div className='text-sm text-black mr-2'>帳號管理</div>
@@ -151,4 +151,4 @@ const mapStateToProps = ({ userReducer }) => ({
 // const mapDispatchToProps = {
 
 // };
-export default connect(mapStateToProps, null)(Header2);
+export default connect(mapStateToProps, null)(ManageHeader);
