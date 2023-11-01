@@ -1,7 +1,7 @@
 //antd
 import { Divider, Layout } from 'antd';
 import RemitForm from '../../components/manage/RemitForm'
-
+import './manage.css'
 const { Header, Footer, Content } = Layout;
 
 
@@ -18,7 +18,9 @@ function transformerRemit() {
             <RemitForm  />
           </Content>
           <Divider />
-         
+          <div className="remitBotton">
+            <button class="btn-manage justify-self-end mr-4 btn-manage-full " >匯出 CSV</button>
+          </div>
       </Content>
     </Layout>
   );
