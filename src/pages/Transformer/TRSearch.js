@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { getTransformerList } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom/cjs/react-router-dom';
 //antd
 import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
@@ -27,7 +28,7 @@ function TRSearch({ transformer, saveTransData }) {
             } else {
                 // console.log(data)
                 saveTransData(data)
-                pushData()
+                // pushData()
             }
         })
 
@@ -69,7 +70,7 @@ function TRSearch({ transformer, saveTransData }) {
             dataIndex: 'see',
             render: text => {
                 return (
-                    <a href='/tr/info' >{text}</a>
+                    <Link to={'/tr/info/?custid='+text[1]} >{text[0]}</Link>
                 )
             }
         },
@@ -92,20 +93,20 @@ function TRSearch({ transformer, saveTransData }) {
     const data = [];
 
     // console.log(transformer)
-    function pushData() {
-        transformer.transformerList.forEach((element, index) => {
-            data.push({
-                key: index,
-                see: element.coor,
-                group: element.div,
-                number: 'nan',
-                rate: 'nan',
-                vol: 'nan',
-                notify: 'nan'
-            })
-        });
-        console.log(transformer)
-    }
+    // function pushData() {
+    //     transformer.transformerList.forEach((element, index) => {
+    //         data.push({
+    //             key: index,
+    //             see: element.coor,
+    //             group: element.div,
+    //             number: 'nan',
+    //             rate: 'nan',
+    //             vol: 'nan',
+    //             notify: 'nan'
+    //         })
+    //     });
+    //     console.log(transformer)
+    // }
 
     // for (let i = 0; i < 46; i++) {
     //     data.push({

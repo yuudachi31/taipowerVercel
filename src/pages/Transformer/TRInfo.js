@@ -4,22 +4,23 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
-import { saveDailyRates,saveQuarterRates,saveMonthlyRates} from '../../actions/transformer'
+import { saveDailyRates,saveQuarterRates,saveMonthlyRates,saveEachTransInfo} from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates,getMonthlyRates} from '../../api/frontApi'
+import { getDailyRates, getQuarterRates,getMonthlyRates,getEachTransformer} from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory } from "react-router-dom";
+import queryString from "query-string";
 const { Header, Sider, Content } = Layout;
 
 const monthFormat = 'YYYY 年 MM 月';
 
-function TRInfo({ transformer, saveDailyRates ,saveQuarterRates,saveMonthlyRates}) {
-  console.log(transformer.dailyRatesList)
+function TRInfo({ transformer, saveDailyRates ,saveQuarterRates,saveMonthlyRates,saveEachTransInfo}) {
+  // console.log(transformer.dailyRatesList)
   useEffect(() => {
     getDailyRates().then((data) => {
       if (data.errStatus) {
@@ -32,6 +33,7 @@ function TRInfo({ transformer, saveDailyRates ,saveQuarterRates,saveMonthlyRates
 
       }
     })
+    // getEachTransformer
     getQuarterRates().then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -47,24 +49,36 @@ function TRInfo({ transformer, saveDailyRates ,saveQuarterRates,saveMonthlyRates
         saveMonthlyRates(data)
       }
     })
+    const parsed = queryString.parse(window.location.search);
+    getEachTransformer( parsed.custid).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+       
+        saveEachTransInfo(data)
+      }
+    })
+    
+// result
+
   }, [])
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
       <Header class="pt-4 flex space-x-7 items-center">
-        <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">B3729DE2437</span></h2>
+        <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
         <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
       </Header>
       <Divider />
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>所轄區處 :<span class="ml-2">桃園市桃園區</span></div>
+          <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.cust_city+transformer.eachTransformerInfo.cust_dist}</span></div>
           <div>資料表數 :<span class="ml-2">10 個</span></div>
 
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>組別 :<span class="ml-2">T01</span></div>
+          <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
           <div>容量 :<span class="ml-2">160 kw</span></div>
         </Content>
 
@@ -155,7 +169,7 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates,saveQuarterRates,saveMonthlyRates
+  saveDailyRates,saveQuarterRates,saveMonthlyRates,saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRInfo);
 

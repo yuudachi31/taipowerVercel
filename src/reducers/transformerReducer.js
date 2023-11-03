@@ -1,10 +1,13 @@
-import { SAVE_TRANS_DATA,SAVE_DAILYRATES,SAVE_QUARTERRATES,SAVE_MONTHLYRATES} from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA,SAVE_DAILYRATES,SAVE_QUARTERRATES,SAVE_MONTHLYRATES,SAVE_EACHTRANSINFO} from "../utils/actionType/frontActionType";
 
 const initialState = {
 transformerList:[],
 dailyRatesList:[],
 quarterRatesList:[],
-monthlyRatesList:[]
+monthlyRatesList:[],
+eachTransformerInfo:{
+
+}
 };
 
 export const transformerReducer = (state = initialState, action) => {
@@ -14,7 +17,7 @@ export const transformerReducer = (state = initialState, action) => {
         action.payload.forEach((element,index) => {
             data.push({
                 key: index,
-                see: element.coor,
+                see: [element.coor,element.cust_id],
                 group: element.div,
                 number: 'nan',
                 rate: 'nan',
@@ -85,6 +88,13 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         monthlyRatesList:monthlyRates,
       };
+      case SAVE_EACHTRANSINFO:
+       console.log(action.payload)
+      return {
+        ...state,
+        eachTransformerInfo:action.payload,
+      };
+      
     default:
       return state;
   }
