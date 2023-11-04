@@ -23,7 +23,7 @@ export const postUser = async (username, password) => {
         },
       }
     );
-    console.log(result);
+    // console.log(result);
     if (result.status === 200) {
       return result.data;
     }
@@ -43,7 +43,7 @@ export const getUserRole = async (token) => {
         Authorization: `Bearer ${token}`
       },
     });
-    console.log(result);
+    // console.log(result);
     if (result.status === 200) {
       return result.data;
     }
@@ -62,7 +62,7 @@ export const getTransformerList = async () => {
         // Authorization: `Bearer ${token}`
       },
     });
-    console.log(result);
+    // console.log(result);
     if (result.status === 200) {
       return result.data;
     }
@@ -84,7 +84,64 @@ export const getDailyRates = async () => {
         // Authorization: `Bearer ${token}`
       },
     });
-    console.log(result);
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getQuarterRates  = async () => {
+  try {
+    const _url = `${baseURL}quarterrates    `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthlyRates  = async () => {
+  try {
+    const _url = `${baseURL}monthlyrates    `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getEachTransformer  = async (cust_id) => {
+  try {
+   
+    const _url = `${baseURL}transformer_info/${cust_id}   `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
     if (result.status === 200) {
       return result.data;
     }

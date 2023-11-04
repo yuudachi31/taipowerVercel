@@ -1,8 +1,13 @@
-import { SAVE_TRANS_DATA,SAVE_DAILYRATES} from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA,SAVE_DAILYRATES,SAVE_QUARTERRATES,SAVE_MONTHLYRATES,SAVE_EACHTRANSINFO} from "../utils/actionType/frontActionType";
 
 const initialState = {
 transformerList:[],
-dailyRatesList:[]
+dailyRatesList:[],
+quarterRatesList:[],
+monthlyRatesList:[],
+eachTransformerInfo:{
+
+}
 };
 
 export const transformerReducer = (state = initialState, action) => {
@@ -12,7 +17,7 @@ export const transformerReducer = (state = initialState, action) => {
         action.payload.forEach((element,index) => {
             data.push({
                 key: index,
-                see: element.coor,
+                see: [element.coor,element.cust_id],
                 group: element.div,
                 number: 'nan',
                 rate: 'nan',
@@ -29,8 +34,9 @@ export const transformerReducer = (state = initialState, action) => {
         action.payload.forEach((element,index) => {
           dailyrates.push({
             key:index,
-              'load_on': Math.ceil(Math.random() * 50),
-              'load_off': Math.ceil(Math.random() * 20),
+              'load_on': Math.ceil(element.peak_rate),
+              'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
+              'load_off': Math.ceil(element.off_peak_rate),
               'load_total': Math.ceil(element.peak_rate),
               'uti_rate' :Math.ceil(element.peak_rate),
               'uti_rate_two': Math.ceil(element.off_peak_rate),
@@ -41,6 +47,54 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         dailyRatesList:dailyrates,
       };
+      case SAVE_QUARTERRATES:
+        const quarterRates=[];
+        const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+        action.payload.forEach((element,index) => {
+          if(index!=0&&index%8 == 0){
+            quarterRates.push({
+              key:index,
+                'load': Math.ceil(element.uti_rate_15min),               
+                'x_key': time,
+              })
+             
+          }
+         
+        });
+        console.log(quarterRates)
+      return {
+        ...state,
+        quarterRatesList:quarterRates,
+      };
+      case SAVE_MONTHLYRATES:
+        const monthlyRates=[];
+        // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+        action.payload.forEach((element,index) => {
+          
+    let month = `${element.date_month}月`
+
+    monthlyRates.push({
+        'load_on': Math.ceil(element.peak_rate),
+        'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
+        'load_off': Math.ceil(element.off_peak_rate),
+        'load_total': Math.ceil(element.peak_rate+element.off_peak_rate),
+        'uti_rate': Math.ceil(element.peak_rate),
+        'x_key': month,
+    })
+         
+        });
+        // console.log(monthlyRates)
+      return {
+        ...state,
+        monthlyRatesList:monthlyRates,
+      };
+      case SAVE_EACHTRANSINFO:
+       console.log(action.payload)
+      return {
+        ...state,
+        eachTransformerInfo:action.payload,
+      };
+      
     default:
       return state;
   }
