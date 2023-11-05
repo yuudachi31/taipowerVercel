@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Rectangle } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 
 function EChartMain({data}) {
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
+
+    const processedData = data.map((item, index) => ({
+        ...item,
+        fill: index < 6 ==='#92D131' ? '#55A630' : '#BDBDBD',
+        
+      }));
 
     const renderLegend = ({ payload }) => {
         if (payload.length <= 0) return null
@@ -18,20 +24,20 @@ function EChartMain({data}) {
 
     return (
         <ResponsiveContainer height={400}>
-            <BarChart data={data} margin={0} barGap={60}>
+            <ComposedChart data={data} margin={0} barGap={60}>
                 <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
                 {/* ticks={ticks_y} */}
                 {/* dataKey="load_total" */}
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} />
-                <Bar isAnimationActive={false} dataKey="load_on" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" />
-                <Bar isAnimationActive={false} dataKey="load_off" name="離峰利用率" stackId="a" barSize={16} fill="#55A630"/>
+                <Bar isAnimationActive={false} dataKey="load_on" name="尖峰利用率" stackId="a" barSize={22} fill="#92D131" />
+                <Bar isAnimationActive={false} dataKey="load_off" name="離峰利用率" stackId="b" barSize={22} fill="#55A630"/>
                 {/* 圖表線 */}
-                {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load_on" stroke="#BDBDBD" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: '#BDBDBD', strokeWidth: 2 }} />
 
                 
-            </BarChart>
+            </ComposedChart>
         </ResponsiveContainer>
     );
 

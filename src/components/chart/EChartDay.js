@@ -46,7 +46,7 @@ function EChartDay() {
                 <Tooltip content={renderLegend} />
                 <Bar isAnimationActive={false} dataKey="load" name="尖峰利用率" stackId="a" barSize={16} fill="transparent" />
                 
-                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} />
+                {/* <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
                 <Line isAnimationActive={false} type="monotone"  name="離峰利用率" dataKey="load_low" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
             </ComposedChart>
         </ResponsiveContainer>
