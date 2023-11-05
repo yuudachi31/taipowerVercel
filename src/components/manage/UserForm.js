@@ -17,6 +17,9 @@ function UserInfo({ isEdited, user = null }) {
       <Form.Item name="email" label="信箱">
         {!isEdited && user ? <span>{user.email}</span> : <Input placeholder={ user ? user.email : "請輸入信箱"} size="large" />}
       </Form.Item>
+      <Form.Item name="password" label="密碼">
+        {!isEdited && user ? <span>{user.password}</span> : <Input placeholder={ user ? user.email : "請輸入密碼"} size="large" />}
+      </Form.Item>
       <Form.Item name="group" label="身份權限">
         {!isEdited && user ? <span>{user.group.join(' / ')}</span> :
           <Select
