@@ -89,7 +89,7 @@ function UserList() {
   return (
     <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
-        <h2 class="flex-auto font-bold text-base">帳戶權限</h2>
+        <h2 class="flex-auto font-bold text-2xl">帳戶管理</h2>
         <div class="flex h-10">
           <Input placeholder={"請輸入帳號名稱"} size="large" />
           <button class="btn-manage btn-manage-full flex-none h-10"><SearchOutlined />搜尋</button>

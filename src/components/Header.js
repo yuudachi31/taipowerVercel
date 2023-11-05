@@ -150,14 +150,14 @@ function Header({user}) {
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
-          <div className='w-1.2/3 text-center text-xl'>變壓器查詢列表</div>
+          <div className='w-1.2/3 text-center text-xl'>前台系統操作介面</div>
         </div>
         <div className="w-1/3 flex items-center justify-end">
 
           <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>AMI</Button>
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>帳號管理</Button>
+          {/* <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>智慧電表</Button> */}
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>系統管理</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotodatamanage1}>資料管理</Button>
           {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotosearch}>全部變壓器</button> */}
           {/* <Dropdown overlay={manage_menu} trigger={['click']} placement="bottomRight">
