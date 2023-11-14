@@ -80,7 +80,7 @@ const onChange = (pagination, filters, sorter, extra) => {
 
 function UserList() {
   const _history = useHistory()
-
+  const [searchText, setSearchText] = useState('');
   const onClick = ({ key }) => {
     console.log("aa")
   };
@@ -94,6 +94,7 @@ function UserList() {
       title:'帳號名稱',
       key: 'account_name',
       dataIndex: 'name',
+      onFilter: (value, record) => record.name.includes(value),
     },
     {
       title:'身份權限',
@@ -131,13 +132,22 @@ function UserList() {
       ),
     },
   ]
+  const filteredData = USER_DATA.filter(user => user.name.includes(searchText));
   return (
     <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
         <h2 class="flex-auto font-bold text-2xl">帳號管理</h2>
         <div class="flex h-10">
-          <Input placeholder={"請輸入帳號名稱"} size="large" />
-          <button class="btn-manage btn-manage-full flex-none h-10"><SearchOutlined />搜尋</button>
+          <Search
+              placeholder="請輸入帳號名稱"
+              size="large"
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              
+            />
+            {/* <button className="btn-manage btn-manage-full flex-none h-10">
+              <SearchOutlined />搜尋
+            </button> */}
         </div>
         <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯入會員資料</button>
         <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯出會員資料</button>
@@ -145,7 +155,7 @@ function UserList() {
       <Content>
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
-          <Table columns={columns} dataSource={USER_DATA}  onChange={onChange} pagination={{ defaultCurrent: 1, total: 50 }}  />
+          <Table columns={columns} dataSource={filteredData}  onChange={onChange} pagination={{ defaultCurrent: 1, total: 50 }}  />
             {/* <div class="col-span-1">帳號名稱</div>
             <div>身份權限</div> */}
             {/* <Dropdown menu={{ items }}>
