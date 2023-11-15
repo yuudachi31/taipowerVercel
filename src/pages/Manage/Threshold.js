@@ -38,38 +38,42 @@ const { Option } = Select;
 export const LINEGROUPID = [
     {
         value: '1',
+        area: "台北市區",
         label: '群組名稱1',
         threshold: [
-          { state: 1, limit_max: '70%' },
-          { state: 2, limit_max: '80%' },
-          { state: 3, limit_max: '90%' },
+          { state: 1, limit_max: '70' },
+          { state: 2, limit_max: '80' },
+          { state: 3, limit_max: '90' },
         ],
       },
       {
         value: '2',
+        area: "台北市區",
         label: '群組名稱2',
         threshold: [
-          { state: 1, limit_max: '72%' },
-          { state: 2, limit_max: '82%' },
-          { state: 3, limit_max: '92%' },
+          { state: 1, limit_max: '72' },
+          { state: 2, limit_max: '82' },
+          { state: 3, limit_max: '92' },
         ],
       },
       {
         value: '3',
+        area: "台北市區",
         label: '群組名稱3',
         threshold: [
-          { state: 1, limit_max: '73%' },
-          { state: 2, limit_max: '83%' },
-          { state: 3, limit_max: '93%' },
+          { state: 1, limit_max: '73' },
+          { state: 2, limit_max: '83' },
+          { state: 3, limit_max: '93' },
         ],
       },
       {
         value: '4',
+        area: "台北市區",
         label: '群組名稱4',
         threshold: [
-          { state: 1, limit_max: '74%' },
-          { state: 2, limit_max: '84%' },
-          { state: 3, limit_max: '94%' },
+          { state: 1, limit_max: '74' },
+          { state: 2, limit_max: '84' },
+          { state: 3, limit_max: '94' },
         ],
       },
 ]
@@ -79,20 +83,56 @@ function Threshold() {
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
-    const handleDelete = async () => {
-        console.log("delete")
+    const handleDelete = async (value) => {
+        console.log("delete", value)
     }
-    const handleSave = () => {
-        console.log("save")
-        setIsEdit(false)
-    }
-    const [selectedGroup, setSelectedGroup] = useState(LINEGROUPID[0]);
 
+    //設定select內容
+
+    const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const handleGroupChange = (value) => {
-      const selectedGroup = LINEGROUPID.find((group) => group.value === value);
-      setSelectedGroup(selectedGroup);
+        const selectedGroup = groupData.find((group) => group.value === value);
+        setSelectedGroup(selectedGroup);
+    };
+    
+    //實現編輯儲存
+    const [editedThresholds, setEditedThresholds] = useState(() => {
+        // 使用物件映射初始化編輯狀態
+        const initialThresholds = {};
+        groupData.forEach((group) => {
+          initialThresholds[group.value] = group.threshold.map(item => ({ ...item }));
+        });
+        return initialThresholds;
+    });
+
+    const handleInputChange = (e, groupId, index) => {
+        const value = e.target.value;
+        setEditedThresholds((prev) => {
+          const newThresholds = { ...prev };
+          newThresholds[groupId][index].limit_max = value;
+          return newThresholds;
+        });
     };
 
+    const handleSave = (groupId) => {
+        console.log("save", groupId, editedThresholds[groupId]);
+        const newGroupData = groupData.map((item) => {
+            if (item.value === groupId) {
+                return {
+                    ...item,
+                    threshold: editedThresholds[groupId],
+                };
+            }
+            return item;
+        });
+        setGroupData(newGroupData);
+        const selectedGroup = newGroupData.find((group) => group.value === groupId);
+        setSelectedGroup(selectedGroup);
+        console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
+        setIsEdit(false);
+    };
+    
     // //新增群組modal
     // const [isModalOpen, setIsModalOpen] = useState(false);
     // const showModal = () => {
@@ -152,19 +192,34 @@ function Threshold() {
                                 width: 120,
                             }}
                             // onChange={handleChange}
-                            options={LINEGROUPID}
+                            options={groupData}
                         /> */}
-                        <Select
-                            defaultValue={LINEGROUPID[0].value}
-                            style={{ width: 120 }}
-                            onChange={handleGroupChange}
-                            >
-                            {LINEGROUPID.map((group) => (
-                                <Option key={group.value} value={group.value}>
-                                    {group.label}
-                                </Option>
-                            ))}
-                        </Select>
+                        {isEdit ?
+                            <Select
+                                defaultValue={groupData[0].value}
+                                style={{ width: 120 }}
+                                onChange={handleGroupChange}
+                                disabled
+                                >
+                                {groupData.map((group) => (
+                                    <Option key={group.value} value={group.value}>
+                                        {group.label}
+                                    </Option>
+                                ))}
+                            </Select>
+                        :
+                            <Select
+                                defaultValue={groupData[0].value}
+                                style={{ width: 120 }}
+                                onChange={handleGroupChange}
+                                >
+                                {groupData.map((group) => (
+                                    <Option key={group.value} value={group.value}>
+                                        {group.label}
+                                    </Option>
+                                ))}
+                            </Select>
+                        }           
                     </div>
                     <div class=" px-10 pb-10 flex justify-between">
                         <div class="flex">
@@ -173,18 +228,25 @@ function Threshold() {
                             {isEdit ? 
                                 <div class="flex">
                                     <div>
-                                    <div  class="flex row ">
-                                        <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2" > %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div> */}
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2"> %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                    </div>
+                                        {editedThresholds[selectedGroup.value].map((item, index) => (
+                                            <div key={item.state} className="flex mb-3">
+                                            <div className="flex row">
+                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                {item.state === 1 && '一般'}
+                                                {item.state === 2 && '中度'}
+                                                {item.state === 3 && '重度'}
+                                                </p>
+                                                <p className="mr-2">警告門檻：高於 </p>
+                                                <p className="w-16 mr-2">
+                                                <Input
+                                                    value={item.limit_max}
+                                                    onChange={(e) => handleInputChange(e, selectedGroup.value, index)}
+                                                />
+                                                </p>
+                                                <p className="mr-2"> %</p>
+                                            </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                                 :
@@ -194,14 +256,14 @@ function Threshold() {
                                         {/* <div  class="flex row "> */}
                                         {selectedGroup.threshold.map((item) => (
                                             <div key={item.state} className="flex mb-3">
-                                                <div  class="flex row ">
-                                                    <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
-                                                        {item.state === 1 && '一般'}
-                                                        {item.state === 2 && '中度'}
-                                                        {item.state === 3 && '重度'}
-                                                    </p>
-                                                    <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`}</p>
-                                                </div>
+                                            <div class="flex row ">
+                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                {item.state === 1 && '一般'}
+                                                {item.state === 2 && '中度'}
+                                                {item.state === 3 && '重度'}
+                                                </p>
+                                                <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                            </div>
                                             </div>
                                         ))}
                                         {/* </div> */}
@@ -212,8 +274,8 @@ function Threshold() {
                         </div>
                         {isEdit ?
                             <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >刪除群組</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={handleSave}>儲存</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => handleDelete(selectedGroup.value)}>刪除群組</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => handleSave(selectedGroup.value)}>儲存</button>
                             </div>
                             :
                             <div class="flex2">
