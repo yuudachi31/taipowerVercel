@@ -1,7 +1,7 @@
 //閥值管理
 //antd
 import { Divider, Layout, Input } from 'antd';
-// import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
 // import { Pagination } from 'antd';
@@ -11,6 +11,7 @@ import './manage.css'
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
+const { confirm } = Modal;
 
 // export const USER_DATA = [
 //     {
@@ -83,12 +84,8 @@ function Threshold() {
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
-    const handleDelete = async (value) => {
-        console.log("delete", value)
-    }
 
     //設定select內容
-
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const handleGroupChange = (value) => {
@@ -132,19 +129,39 @@ function Threshold() {
         console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
         setIsEdit(false);
     };
-    
-    // //新增群組modal
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    // const showModal = () => {
-    //     setIsModalOpen(true);
-    // };
-    // const handleOk = () => {
-    //     setIsModalOpen(false);
-    // };
+
+    //刪除群組Confirm
+    const showConfirm = (groupId) => {
+        confirm({
+          title: '刪除群組',
+          icon: <ExclamationCircleOutlined />,
+          content: '確定刪除這個群組資料？',
+          onOk: () => handleOk(groupId),
+        //   onCancel: () => handleCancel(),
+          okText: "刪除",
+          cancelText: "取消",
+          okButtonProps :{
+            danger: true,
+          }
+        });
+        // setIsModalOpen(true);
+    };
+    const handleOk = (groupId) => {
+        handleDelete(groupId)
+        setIsEdit(false);
+    };
     // const handleCancel = () => {
-    //     setIsModalOpen(false);
+    //     setIsEdit(false);
     // };
 
+    //實現刪除
+    const handleDelete = async (groupId) => {
+        const newGroup = groupData.filter((group) => group.value !== groupId);
+        setGroupData(newGroup);
+        setSelectedGroup(newGroup[0]);
+        console.log("delete", newGroup, groupId, groupData, selectedGroup)
+    }
+    
     // //新增帳號modal
     // const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
     // const showadduserModal = () => {
@@ -182,6 +199,16 @@ function Threshold() {
                             <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
                         </div>
                     </Modal> */}
+                    {/* <Modal 
+                        title="刪除群組" 
+                        visible={isModalOpen} 
+                        onOk={handleOk} 
+                        onCancel={handleCancel} 
+                        okText="新增" 
+                        cancelText="取消"
+                    >
+                        <p>確定刪除這個群組資料？</p>
+                    </Modal>  */}
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
@@ -274,7 +301,7 @@ function Threshold() {
                         </div>
                         {isEdit ?
                             <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => handleDelete(selectedGroup.value)}>刪除群組</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => showConfirm(selectedGroup.value)}>刪除群組</button>
                                 <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => handleSave(selectedGroup.value)}>儲存</button>
                             </div>
                             :
