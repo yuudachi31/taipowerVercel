@@ -7,7 +7,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 
 import { USER_DATA } from './UserList';
-
 import UserForm from '../../components/manage/UserForm'
 
 const { Header, Footer, Content } = Layout;
@@ -21,21 +20,31 @@ function UserInfo() {
 
 
   useEffect(() => {
-    setUser(USER_DATA[userId])
-  }, []);
+    setUser(USER_DATA[userId]);
+  }, [userId]); 
 
-
+  const handleFormChange = (changedValues) => {
+    setUser((prevUser) => ({ ...prevUser, ...changedValues }));
+  };
+  const handleSave = () => {
+    console.log('Before save:', USER_DATA[userId]);
+    USER_DATA[userId] = user;
+    setIsEdited(false);
+    console.log('After save:', USER_DATA[userId]);
+  };
   const handleClickStore = () => {
     setIsEdited(false)
   }
 
   const handleClickCancel = () => {
-    setIsEdited(false)
-  }
+    setUser(USER_DATA[userId]);
+    setIsEdited(false);
+  };
 
   const handleClickEdit = () => {
     setIsEdited(true)
   }
+ 
 
   return (
     <Layout class="h-screen px-20 py-12 manage-wrapper bg-gray-100">
@@ -46,7 +55,7 @@ function UserInfo() {
       </Header>
       <Content class="h-08 bg-white">
           <Content class="h-08 px-14 py-12">
-            <UserForm isEdited={isEdited} user={user} />
+            <UserForm isEdited={isEdited} user={user} onFormChange={handleFormChange} />
           </Content>
           <Divider />
           <Footer class="grid grid-cols-2 px-7">
@@ -56,7 +65,7 @@ function UserInfo() {
                 :
                 <>
                   <button class="btn-manage justify-self-start mr-4" onClick={handleClickCancel}>取消</button>
-                  <button class="btn-manage btn-manage-full justify-self-end mr-4" onClick={handleClickStore}>儲存</button>
+                  <button class="btn-manage btn-manage-full justify-self-end mr-4"  onClick={handleSave}>儲存</button>
                 </>
             }
           </Footer>

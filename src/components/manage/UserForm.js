@@ -8,10 +8,14 @@ const layout = {
   wrapperCol: { span: 4 },
 };
 
-function UserForm({ isEdited, user = null }) {
+function UserForm({ isEdited, user = null, onFormChange }) {
+  const handleChange = (changedValues) => {
+    console.log('Changed values:', changedValues);
+    onFormChange(changedValues);
+  };
   return (
-    <Form {...layout} name="user-edit" colon={false} labelAlign="left">
-      <Form.Item name="username" label="帳號名稱">
+    <Form {...layout} name="user-edit" colon={false} labelAlign="left" onValuesChange={handleChange}>
+      <Form.Item name="name" label="帳號名稱">
         {!isEdited && user ? <span>{user.name}</span> : <Input placeholder={ user ? user.name : "請輸入帳號名稱"} size="large" />}
       </Form.Item>
       <Form.Item name="email" label="信箱">
