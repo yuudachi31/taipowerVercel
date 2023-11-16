@@ -132,7 +132,7 @@ function UserList() {
       ),
     },
   ]
-  const filteredData = USER_DATA.filter(user => user.name.includes(searchText));
+  const filteredData = USER_DATA.filter(user => user.name.includes(searchText) || user.group.some(group => group.includes(searchText)));
   return (
     <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
@@ -155,7 +155,14 @@ function UserList() {
       <Content>
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
-          <Table columns={columns} dataSource={filteredData}  onChange={onChange} pagination={{ defaultCurrent: 1, total: 50 }}  />
+          <Table columns={columns} dataSource={filteredData}  onChange={onChange} 
+              pagination={{
+                defaultCurrent: 1,
+                total: 50,
+                style: {
+                  marginRight: '20px',
+                },
+              }}  />
             {/* <div class="col-span-1">帳號名稱</div>
             <div>身份權限</div> */}
             {/* <Dropdown menu={{ items }}>
