@@ -1,7 +1,7 @@
 //推播管理
 //antd
 import { Divider, Layout, Input } from 'antd';
-import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
@@ -10,7 +10,8 @@ import './manage.css'
 
 const { Header, Content } = Layout;
 const { Search } = Input
-
+const { Option } = Select;
+const { confirm } = Modal;
 
 export const USER_DATA = [
     {
@@ -35,27 +36,76 @@ export const USER_DATA = [
         line_state: false
     },
 ];
+// export const LINEGROUPID = [
+//     {
+//         value: '1',
+//         label: '群組名稱1',
+//     },
+//     {
+//         value: '2',
+//         label: '群組名稱2',
+//     },
+//     {
+//         value: '3',
+//         label: '群組名稱3',
+//     },
+//     {
+//         value: '4',
+//         label: '群組名稱4',
+//     },
+// ]
 export const LINEGROUPID = [
     {
         value: '1',
+        area: "台北市區",
         label: '群組名稱1',
-    },
-    {
+        threshold: [
+          { state: 1, limit_max: '70' },
+          { state: 2, limit_max: '80' },
+          { state: 3, limit_max: '90' },
+        ],
+      },
+      {
         value: '2',
+        area: "台北市區",
         label: '群組名稱2',
-    },
-    {
+        threshold: [
+          { state: 1, limit_max: '72' },
+          { state: 2, limit_max: '82' },
+          { state: 3, limit_max: '92' },
+        ],
+      },
+      {
         value: '3',
+        area: "台北市區",
         label: '群組名稱3',
-    },
-    {
+        threshold: [
+          { state: 1, limit_max: '73' },
+          { state: 2, limit_max: '83' },
+          { state: 3, limit_max: '93' },
+        ],
+      },
+      {
         value: '4',
+        area: "台北市區",
         label: '群組名稱4',
-    },
+        threshold: [
+          { state: 1, limit_max: '74' },
+          { state: 2, limit_max: '84' },
+          { state: 3, limit_max: '94' },
+        ],
+      },
 ]
 
 function Notify() {
     const _history = useHistory()
+    //設定Select資料
+    const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
+    const handleGroupChange = (value) => {
+        const selectedGroup = groupData.find((group) => group.value === value);
+        setSelectedGroup(selectedGroup);
+    };
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
@@ -119,32 +169,45 @@ function Notify() {
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
-                        <span class="font-bold">台北市區：</span>
+                        <span class="font-bold">推播群組：</span>
                         <Select
-                            defaultValue="1"
-                            style={{
-                                width: 120,
-                            }}
-                            // onChange={handleChange}
-                            options={LINEGROUPID}
-                        />
+                            defaultValue='台北市區'
+                            style={{ width: 120, marginRight: '8px' }}
+                            >
+                            <Option key= 'taipei'value='台北市區'>
+                                台北市區
+                            </Option>
+                        </Select>
+                        <Select
+                            defaultValue={groupData[0].value}
+                            style={{ width: 120 }}
+                            onChange={handleGroupChange}
+                            >
+                            {groupData.map((group) => (
+                                <Option key={group.value} value={group.value}>
+                                    {group.label}
+                                </Option>
+                            ))}
+                        </Select>
                     </div>
                     <div class=" px-10 pb-10 flex justify-between">
                         <div class="flex">
                             <span class="font-bold">警告門檻：</span>
                             <div>
-                                <div  class="flex row ">
-                                    <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><p class="mr-2"> 70%</p></div>
-                                    {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 80%</p></div> */}
-                                </div>
-                                <div  class="flex row">
-                                    <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><p class="mr-2"> 80%</p></div>
-                                    {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 90%</p></div> */}
-                                </div>
-                                <div  class="flex row">
-                                    <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><p> 90%</p></div>
-                                    {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                </div>
+                                {/* <div  class="flex row "> */}
+                                {selectedGroup.threshold.map((item) => (
+                                    <div key={item.state} className="flex mb-3">
+                                    <div class="flex row ">
+                                        <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                        {item.state === 1 && '一般'}
+                                        {item.state === 2 && '中度'}
+                                        {item.state === 3 && '重度'}
+                                        </p>
+                                        <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                    </div>
+                                    </div>
+                                ))}
+                                {/* </div> */}
                             </div>
                             {/* 修改  */}
                             {/* {isEdit ? 
