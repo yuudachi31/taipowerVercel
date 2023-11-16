@@ -1,9 +1,9 @@
 //推播管理
 //antd
-import { Divider, Layout, Input } from 'antd';
+import { Divider, Layout, Input, Table } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
@@ -16,24 +16,99 @@ const { confirm } = Modal;
 export const USER_DATA = [
     {
         user_id: 0,
+        label: ['群組名稱1'],
         name: 'User_001',
-        group: ['區處管理者', '運維人員'],
-        email: 'user1@gmail.com',
-        line_state: true
+        // group: ['區處管理者', '運維人員'],
+        // email: 'user1@gmail.com',
+        // line_state: true
     },
     {
         user_id: 1,
+        label: ['群組名稱1', '群組名稱3'],
         name: 'User_002',
-        group: ['運維人員'],
-        email: 'user2@gmail.com',
-        line_state: true
+        // group: ['運維人員'],
+        // email: 'user2@gmail.com',
+        // line_state: true
     },
     {
         user_id: 2,
+        label: ['群組名稱1','群組名稱2', '群組名稱3'],
         name: 'User_003',
-        group: ['區處檢修人員'],
-        email: 'user3@gmail.com',
-        line_state: false
+        // group: ['區處檢修人員'],
+        // email: 'user3@gmail.com',
+        // line_state: false
+    },
+    {
+        user_id: 3,
+        label: ['群組名稱1','群組名稱4'],
+        name: 'User_004',
+        // group: ['區處管理者', '運維人員'],
+        // email: 'user4@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 4,
+        label: ['群組名稱1', '群組名稱3'],
+        name: 'User_005',
+        // group: ['運維人員'],
+        // email: 'user5@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 5,
+        label: ['群組名稱1','群組名稱2', '群組名稱4'],
+        name: 'User_006',
+        // group: ['區處檢修人員'],
+        // email: 'user6@gmail.com',
+        // line_state: false
+    },
+    {
+        user_id: 6,
+        label: ['群組名稱1'],
+        name: 'User_001',
+        // group: ['區處管理者', '運維人員'],
+        // email: 'user1@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 7,
+        label: ['群組名稱1', '群組名稱3'],
+        name: 'User_002',
+        // group: ['運維人員'],
+        // email: 'user2@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 8,
+        label: ['群組名稱1','群組名稱2', '群組名稱3'],
+        name: 'User_003',
+        // group: ['區處檢修人員'],
+        // email: 'user3@gmail.com',
+        // line_state: false
+    },
+    {
+        user_id: 9,
+        label: ['群組名稱1','群組名稱4'],
+        name: 'User_004',
+        // group: ['區處管理者', '運維人員'],
+        // email: 'user4@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 10,
+        label: ['群組名稱1', '群組名稱3'],
+        name: 'User_005',
+        // group: ['運維人員'],
+        // email: 'user5@gmail.com',
+        // line_state: true
+    },
+    {
+        user_id: 11,
+        label: ['群組名稱1','群組名稱2', '群組名稱4'],
+        name: 'User_006',
+        // group: ['區處檢修人員'],
+        // email: 'user6@gmail.com',
+        // line_state: false
     },
 ];
 // export const LINEGROUPID = [
@@ -102,10 +177,42 @@ function Notify() {
     //設定Select資料
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    // 切換群組時更新列表資訊
     const handleGroupChange = (value) => {
         const selectedGroup = groupData.find((group) => group.value === value);
         setSelectedGroup(selectedGroup);
+
+        // 過濾符合條件的帳號
+        const usersInGroup = USER_DATA.filter((user) => user.label.includes(selectedGroup.label));
+        setFilteredUsers(usersInGroup);
     };
+    useEffect(() => {
+        // 在組件初始化時進行一次過濾
+        const initialUsersInGroup = USER_DATA.filter((user) => user.label.includes(groupData[0].label));
+        setFilteredUsers(initialUsersInGroup);
+      }, []);
+
+    //設定table欄位
+    const columns = [
+        {
+          title: ()=>{return <div class='font-medium text-base'>帳號</div> },
+          dataIndex: 'name',
+          key: 'name',
+        },
+        {
+          title: ()=>{return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button>},
+          key: 'action',
+          align: 'right',
+          render: ()=> <button class=" btn-manage" style={{display: 'inline'}}>移除</button>, 
+        },
+    ];
+
+    //當切換成不同群組時將列表切回第一頁
+    const [currentPage, setCurrentPage] = useState(1);
+    const handlePaginationChange = (page) => {
+        setCurrentPage(page);
+      };
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
@@ -250,21 +357,28 @@ function Notify() {
             <Content>
 
                 <Layout class="p-7 bg-white">
-                    <Header class="pl-16 user-grid-row h-14 bg-gray-200 font-medium text-base account-list">
-                        <div >帳號</div>
+                    {/* <Header class="pl-16 user-grid-row h-14 bg-gray-200 font-medium text-base account-list"> */}
+                        {/* <div >帳號</div> */}
                         {/* <div class="col-span-1">電子信箱</div>
                         <div class="col-span-1">LINE 連接狀態</div> */}
-                        <button class="pr-10   text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button>
+                        {/* <button class="pr-10   text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button> */}
                         <Modal title="新增帳號" visible={isadduserModalOpen} onOk={handleOk_adduser} onCancel={handleCancel_adduser} okText="新增" cancelText="取消">
                             <div class="flex mb-3"><p>帳號：</p><div class=" w-72"><Input /></div></div>
-
                         </Modal>
-                    </Header>
-                    <Content class="px-8 py-7 bg-white">
-                        {USER_DATA.map((user) => <UserItem user={user} />)}
+                    {/* </Header> */}
+                    
+                    <Content class="p-3 bg-white">
+                        <Table
+                            columns={columns}
+                            dataSource={filteredUsers}
+                            pagination={{ current: currentPage, total: filteredUsers.length, onChange: handlePaginationChange }}
+                        />
+                        {/* {filteredUsers.map((user) => (
+                            <UserItem key={user.user_id} user={user} />
+                        ))}
                         <div class="flex justify-end py-3 border-purple-400">
                             <Pagination defaultCurrent={1} total={50} />
-                        </div>
+                        </div> */}
                     </Content>
                 </Layout>
             </Content>
