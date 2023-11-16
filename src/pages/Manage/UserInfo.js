@@ -32,9 +32,9 @@ function UserInfo() {
     setIsEdited(false);
     console.log('After save:', USER_DATA[userId]);
   };
-  const handleClickStore = () => {
-    setIsEdited(false)
-  }
+  // const handleClickStore = () => {
+  //   setIsEdited(false)
+  // }
 
   const handleClickCancel = () => {
     setUser(USER_DATA[userId]);
@@ -50,8 +50,8 @@ function UserInfo() {
     <Layout class="h-screen px-20 py-12 manage-wrapper bg-gray-100">
       <Header class="pt-4 pb-8 grid grid-rows-2 auto-cols-min items-center gap-x-7">
         <a onClick={(e) => { e.preventDefault(); _history.push('/manage/user'); }} class="row-span-2"><LeftOutlined style={{ fontSize: '24px', color: '#7B7B7B' }} /></a>
-        <span class="text-base text-gray-400 col-start-2">帳號名稱</span>
-        <h2 class="flex-auto font-bold text-xl col-start-2">{user.name}</h2>
+          <span class="text-base text-gray-400 col-start-2 whitespace-nowrap overflow-hidden">帳號名稱</span>
+          <h2 class="flex-auto font-bold text-xl col-start-2">{user.name}</h2>
       </Header>
       <Content class="h-08 bg-white">
           <Content class="h-08 px-14 py-12">
