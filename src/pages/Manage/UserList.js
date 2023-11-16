@@ -17,61 +17,91 @@ export const USER_DATA = [
     user_id: 0,
     name: 'User_001',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 1,
     name: 'User_002',
     group: ['區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 2,
     name: 'User_003',
     group: ['區處管理員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 3,
     name: 'User_004',
     group: ['區處管理員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 4,
     name: 'User_005',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 5,
     name: 'User_006',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 6,
     name: 'User_007',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 7,
     name: 'User_008',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 8,
     name: 'User_009',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
   {
     user_id: 9,
     name: 'User_010',
     group: ['區處管理員', '區處操作員'],
-    email: 'aaa123@gmail.com'
+    email: 'aaa123@gmail.com',
+    password: '11111111',
+    district:['台北'],
+    notifygroup:['群組一']
   },
 ];
 const onChange = (pagination, filters, sorter, extra) => {
