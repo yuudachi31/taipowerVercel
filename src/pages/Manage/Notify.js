@@ -65,7 +65,7 @@ export const USER_DATA = [
     {
         user_id: 6,
         label: ['群組名稱1'],
-        name: 'User_001',
+        name: 'User_007',
         // group: ['區處管理者', '運維人員'],
         // email: 'user1@gmail.com',
         // line_state: true
@@ -73,7 +73,7 @@ export const USER_DATA = [
     {
         user_id: 7,
         label: ['群組名稱1', '群組名稱3'],
-        name: 'User_002',
+        name: 'User_008',
         // group: ['運維人員'],
         // email: 'user2@gmail.com',
         // line_state: true
@@ -81,7 +81,7 @@ export const USER_DATA = [
     {
         user_id: 8,
         label: ['群組名稱1','群組名稱2', '群組名稱3'],
-        name: 'User_003',
+        name: 'User_009',
         // group: ['區處檢修人員'],
         // email: 'user3@gmail.com',
         // line_state: false
@@ -89,7 +89,7 @@ export const USER_DATA = [
     {
         user_id: 9,
         label: ['群組名稱1','群組名稱4'],
-        name: 'User_004',
+        name: 'User_010',
         // group: ['區處管理者', '運維人員'],
         // email: 'user4@gmail.com',
         // line_state: true
@@ -97,7 +97,7 @@ export const USER_DATA = [
     {
         user_id: 10,
         label: ['群組名稱1', '群組名稱3'],
-        name: 'User_005',
+        name: 'User_011',
         // group: ['運維人員'],
         // email: 'user5@gmail.com',
         // line_state: true
@@ -105,7 +105,7 @@ export const USER_DATA = [
     {
         user_id: 11,
         label: ['群組名稱1','群組名稱2', '群組名稱4'],
-        name: 'User_006',
+        name: 'User_012',
         // group: ['區處檢修人員'],
         // email: 'user6@gmail.com',
         // line_state: false
@@ -178,20 +178,21 @@ function Notify() {
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [userData, setUserData] = useState(USER_DATA);
     // 切換群組時更新列表資訊
     const handleGroupChange = (value) => {
         const selectedGroup = groupData.find((group) => group.value === value);
         setSelectedGroup(selectedGroup);
 
         // 過濾符合條件的帳號
-        const usersInGroup = USER_DATA.filter((user) => user.label.includes(selectedGroup.label));
+        const usersInGroup = userData.filter((user) => user.label.includes(selectedGroup.label));
         setFilteredUsers(usersInGroup);
     };
     useEffect(() => {
         // 在組件初始化時進行一次過濾
-        const initialUsersInGroup = USER_DATA.filter((user) => user.label.includes(groupData[0].label));
+        const initialUsersInGroup = userData.filter((user) => user.label.includes(groupData[0].label));
         setFilteredUsers(initialUsersInGroup);
-      }, []);
+    }, []);
 
     //設定table欄位
     const columns = [
@@ -204,7 +205,11 @@ function Notify() {
           title: ()=>{return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button>},
           key: 'action',
           align: 'right',
-          render: ()=> <button class=" btn-manage" style={{display: 'inline'}}>移除</button>, 
+          render: (text, record) => (
+            <button className="btn-manage" style={{ display: 'inline' }} onClick={() => showConfirm(record.user_id)}>
+              移除
+            </button>
+          ), 
         },
     ];
 
@@ -224,17 +229,44 @@ function Notify() {
         setIsEdit(false)
     }
 
-    //新增群組modal
+    //確認移除modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
     };
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const showConfirm = (userId) => {
+        confirm({
+          title: '移除帳號',
+          icon: <ExclamationCircleOutlined />,
+          content: '確定將此帳號移出此群組？',
+          onOk: () => handleRemoveUser(userId),
+        //   onCancel: () => handleCancel(),
+          okText: "移除",
+          cancelText: "取消",
+          okButtonProps :{
+            danger: true,
+          }
+        });
+        // setIsModalOpen(true);
     };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    const handleRemoveUser = (userId) => {
+        // 在這裡處理移除用戶的邏輯
+        const updatedUserData = USER_DATA.map((user) => {
+          if (user.user_id === userId) {
+            // 找到相應的用戶，並移除選定群組的 label
+            user.label = user.label.filter((groupLabel) => groupLabel !== selectedGroup.label);
+          }
+          return user;
+        });
+        setUserData(updatedUserData)
+        console.log('UserData data', userData)
+        // 更新 USER_DATA
+        // 注意：這裡應該使用您的狀態管理或後端服務來更新數據，這裡只是一個範例
+        // setUserData(updatedUserData);
+      };
+    // const handleCancel = () => {
+    //     setIsModalOpen(false);
+    // };
 
     //新增帳號modal
     const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
