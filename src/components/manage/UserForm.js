@@ -21,7 +21,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
       <Form.Item name="email" label="信箱">
         {!isEdited && user ? <span>{user.email}</span> : <Input placeholder={ user ? user.email : "請輸入信箱"} size="large" />}
       </Form.Item>
-      <Form.Item name="password" label="密碼">
+      {/* <Form.Item name="password" label="密碼">
         {!isEdited && user ? (
           <span>{'*'.repeat(user.password.length)}</span>
         ) : (
@@ -31,7 +31,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             size="large"
           />
         )}
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item name="group" label="身份權限">
         {!isEdited && user ? <span>{user.group.join(' / ')}</span> :
           <Select

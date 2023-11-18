@@ -27,7 +27,6 @@ export const USER_DATA = [
     name: 'User_002',
     group: ['區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -36,7 +35,6 @@ export const USER_DATA = [
     name: 'User_003',
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -45,7 +43,6 @@ export const USER_DATA = [
     name: 'User_004',
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -54,7 +51,6 @@ export const USER_DATA = [
     name: 'User_005',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -63,7 +59,6 @@ export const USER_DATA = [
     name: 'User_006',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -72,7 +67,6 @@ export const USER_DATA = [
     name: 'User_007',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -81,7 +75,6 @@ export const USER_DATA = [
     name: 'User_008',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -90,7 +83,6 @@ export const USER_DATA = [
     name: 'User_009',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -99,7 +91,6 @@ export const USER_DATA = [
     name: 'User_010',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
     district:['台北'],
     notifygroup:['群組一']
   },
@@ -169,7 +160,7 @@ function UserList() {
         <h2 class="flex-auto font-bold text-2xl">帳號管理</h2>
         <div class="flex h-10">
           <Search
-              placeholder="請輸入帳號名稱"
+              placeholder="請輸入帳號名稱或身份權限"
               size="large"
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
