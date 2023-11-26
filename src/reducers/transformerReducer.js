@@ -15,15 +15,40 @@ export const transformerReducer = (state = initialState, action) => {
     case SAVE_TRANS_DATA:
         const data=[];
         action.payload.forEach((element,index) => {
+          if(element.power_type=='Y接'){
+            data.push({
+              key: index,
+              coor: [element.coor,element.div,element.tr_index],
+              div: element.div,
+              tr_index:'NA',
+              uti_rate: element.uti_rate,
+              cap: element.cap,
+              type:element.type,
+              cust_num:element.cust_num,
+              num:element.num,
+              transformer_threshold:element.transformer_threshold,
+              power_type:element.power_type,
+              addr:element.addr,
+              notify: 'nan'
+          })
+          }else{
             data.push({
                 key: index,
-                see: [element.coor,element.cust_id],
-                group: element.div,
-                number: 'nan',
-                rate: 'nan',
-                vol: 'nan',
+                coor: [element.coor,element.div,element.tr_index],
+                div: element.div,
+                tr_index: element.tr_index,
+                uti_rate: element.uti_rate,
+                cap: element.cap,
+                type:element.type,
+                cust_num:element.cust_num,
+                num:element.num,
+                transformer_threshold:element.transformer_threshold,
+                power_type:element.power_type,
+                addr:element.addr,
                 notify: 'nan'
             })
+          }
+            
         });
       return {
         ...state,
@@ -72,18 +97,31 @@ export const transformerReducer = (state = initialState, action) => {
         action.payload.forEach((element,index) => {
           
     let month = `${element.date_month}月`
-
-    monthlyRates.push({
-        'load_on': Math.ceil(element.peak_rate),
-        'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
-        'load_off': Math.ceil(element.off_peak_rate),
-        'load_total': Math.ceil(element.peak_rate+element.off_peak_rate),
-        'uti_rate': Math.ceil(element.peak_rate),
-        'x_key': month,
-    })
+if(element.is_predict==1){
+  monthlyRates.push({
+    'load_on': Math.ceil(element.peak_rate),
+    'load_on_forChart': Math.ceil(element.peak_rate) -  Math.ceil(element.off_peak_rate),
+    'load_off': Math.ceil(element.off_peak_rate),
+    'load_total': Math.ceil(element.peak_rate+element.off_peak_rate),
+    'uti_rate': Math.ceil(element.peak_rate),
+    'x_key': month,
+    'predict_bars':0
+})
+}else{
+  monthlyRates.push({
+    'load_on': Math.ceil(element.peak_rate),
+    'load_on_forChart': 0,
+    'load_off': 0,
+    'load_total': Math.ceil(element.peak_rate+element.off_peak_rate),
+    'uti_rate': Math.ceil(element.peak_rate),
+    'x_key': month,
+    'predict_bars':Math.ceil(element.peak_rate),
+})
+}
+  
          
         });
-        // console.log(monthlyRates)
+        console.log(monthlyRates)
       return {
         ...state,
         monthlyRatesList:monthlyRates,
@@ -92,7 +130,7 @@ export const transformerReducer = (state = initialState, action) => {
        console.log(action.payload)
       return {
         ...state,
-        eachTransformerInfo:action.payload,
+        eachTransformerInfo:action.payload[0],
       };
       
     default:

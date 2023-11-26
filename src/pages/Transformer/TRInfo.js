@@ -48,21 +48,22 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-    getMonthlyRates().then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-
-        saveMonthlyRates(data)
-      }
-    })
+    
     const parsed = queryString.parse(window.location.search);
-    getEachTransformer(parsed.custid).then((data) => {
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
 
         saveEachTransInfo(data)
+        getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+          if (data.errStatus) {
+            console.log(data.errDetail);
+          } else {
+    
+            saveMonthlyRates(data)
+          }
+        })
       }
     })
 
@@ -80,20 +81,20 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       <Divider />
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.cust_city + transformer.eachTransformerInfo.cust_dist}</span></div>
+          <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
           <div>資料表數 :<span class="ml-2">10 個</span></div>
 
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">160 kw</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap}</span></div>
         </Content>
 
         <Content class="relative flex-col w-80 gap-2" >
           <span class="relative text-base tracking-widest">利用率(%)：</span>
           <div class="flex mt-8 justify-left w-100 h-100 gap-2">
             
-            <Progress percent={100} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
+            <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
           </div>
           {/* <EChartRate /> */}
         </Content>
