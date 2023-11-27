@@ -19,6 +19,9 @@ import queryString from "query-string";
 
 const { Header, Sider, Content } = Layout;
 
+const date = new Date();
+const year = date.getFullYear() - 1911
+const month = date.getMonth() + 1
 const Timeformat = 'HH:mm';
 
 const monthFormat = 'YYYY 年 MM 月';
@@ -136,9 +139,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment('2015/01', monthFormat)} format={monthFormat} picker="month" />
+            <DatePicker defaultValue={moment('2023/01', monthFormat)} format={monthFormat} picker="month" />
           </div>
-          <h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 01 月每日用電圖表</h3>
+          <h3 class="font-bold flex-1 text-center m-0 text-base"> 112 年度 10 月每日用電圖表</h3>
           <div class="flex flex-1 items-center justify-end">
 
             <span class="w-7 h-3 bg-green-500"></span>
