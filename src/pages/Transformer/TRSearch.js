@@ -67,31 +67,31 @@ function TRSearch({ transformer, saveTransData }) {
     const columns = [
         {
             title: '圖號座標',
-            dataIndex: 'see',
+            dataIndex: 'coor',
             render: text => {
                 return (
-                    <Link to={'/tr/info/?custid='+text[1]} >{text[0]}</Link>
+                    <Link to={'/tr/info/?coor='+text[0]+'&div='+text[1]+'&tr_index='+text[2]} >{text[0]}</Link>
                 )
             }
         },
         {
             title: '組別',
-            dataIndex: 'group',
+            dataIndex: 'div',
         },
         {
             title: '第幾具',
-            dataIndex: 'number',
+            dataIndex: 'tr_index',
         }, {
             title: '容量(單位)',
-            dataIndex: 'vol',
+            dataIndex: 'cap',
         },
         {
             title: '利用率',
-            dataIndex: 'rate',
+            dataIndex: 'uti_rate',
         },
         {
             title: '閥值',
-            dataIndex: 'threshold',
+            dataIndex: 'transformer_threshold',
         },
     ];
     const data = [];
