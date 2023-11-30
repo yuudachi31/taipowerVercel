@@ -29,6 +29,7 @@ const onChangeMonth = (date, dateString) => {
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
+    const parsed = queryString.parse(window.location.search);
     getDailyRates().then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -49,7 +50,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       }
     })
     
-    const parsed = queryString.parse(window.location.search);
+   
     getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);

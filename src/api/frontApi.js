@@ -54,7 +54,7 @@ export const getUserRole = async (token) => {
 
 export const getTransformerList = async () => {
   try {
-    const _url = `${baseURL}tramsformer_Details`;
+    const _url = `${baseURL}Transformer_details`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
 export const getEachTransformer  = async (cust_id,div,tr_index) => {
   try {
    
-    const _url = `${baseURL}tramsformer_Details/${cust_id}/${div}/${tr_index}`;
+    const _url = `${baseURL}Transformer_details/${cust_id}/${div}/${tr_index}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
