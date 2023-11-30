@@ -1,15 +1,15 @@
 //推播管理
 //antd
 import { Divider, Layout, Input, Table } from 'antd';
-import { ExclamationCircleOutlined} from '@ant-design/icons';
-import { Select, Modal } from 'antd';
+import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
+import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
-// import { Pagination } from 'antd';
+import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
 
 const { Header, Content } = Layout;
-// const { Search } = Input
+const { Search } = Input
 const { Option } = Select;
 const { confirm } = Modal;
 
@@ -174,7 +174,6 @@ export const LINEGROUPID = [
 
 function Notify() {
     const _history = useHistory()
-
     //設定Select資料
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
@@ -221,20 +220,20 @@ function Notify() {
       };
 
     //是否編輯
-    // const [isEdit, setIsEdit] = useState(false);
-    // const handleDelete = async () => {
-    //     console.log("delete")
-    // }
-    // const handleSave = () => {
-    //     console.log("save")
-    //     setIsEdit(false)
-    // }
+    const [isEdit, setIsEdit] = useState(false);
+    const handleDelete = async () => {
+        console.log("delete")
+    }
+    const handleSave = () => {
+        console.log("save")
+        setIsEdit(false)
+    }
 
     //確認移除modal
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    // const showModal = () => {
-    //     setIsModalOpen(true);
-    // };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
     const showConfirm = (userId) => {
         confirm({
           title: '移除帳號',
@@ -260,7 +259,7 @@ function Notify() {
           return user;
         });
         setUserData(updatedUserData)
-        console.log('UserData data', updatedUserData)
+        console.log('UserData data', userData)
         // 更新 USER_DATA
         // 注意：這裡應該使用您的狀態管理或後端服務來更新數據，這裡只是一個範例
         // setUserData(updatedUserData);
@@ -271,54 +270,17 @@ function Notify() {
 
     //新增帳號modal
     const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
-    const [newAccountName, setNewAccountName] = useState('');
-    const [modalContent, setModalContent] = useState(null);
     const showadduserModal = () => {
         setIsadduserModalOpen(true);
     };
     const handleOk_adduser = () => {
-        // 在這裡處理新增帳號的邏輯
-    
-        // 檢查輸入的帳號是否存在於 USER_DATA 中的 name 中
-        const existingUser = userData.find((user) => user.name === newAccountName);
-    
-        if (existingUser) {
-          // 如果帳號存在，檢查是否已經存在於選定群組的 label 中
-          if (existingUser.label.includes(selectedGroup.label)) {
-            // 帳號已經存在於群組中
-            setModalContent(
-              <p className="text-red-500">
-                *此帳號已存在於此群組中。
-              </p>
-            );
-          } else {
-            // 帳號不存在於群組中，新增群組
-            existingUser.label.push(selectedGroup.label);
-            setModalContent(
-              <p className="text-green-500">
-                *帳號成功添加到此群組。
-              </p>
-            );
-            setIsadduserModalOpen(false);
-            console.log('new user data', existingUser, userData)
-          }
-        } else {
-          // 帳號不存在
-          setModalContent(
-            <p className="text-red-500">
-              *此帳號不存在。請確保輸入的帳號正確。
-            </p>
-          );
-        }
-      };
-    
-      const handleCancel_adduser = () => {
-        // 重置輸入的值、提示信息，並禁用 OK 按鈕
-        setNewAccountName('');
-        setModalContent(null);
         setIsadduserModalOpen(false);
     };
-    
+    const handleCancel_adduser = () => {
+        setIsadduserModalOpen(false);
+    };
+
+
 
     return (
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
@@ -432,25 +394,12 @@ function Notify() {
                         {/* <div class="col-span-1">電子信箱</div>
                         <div class="col-span-1">LINE 連接狀態</div> */}
                         {/* <button class="pr-10   text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button> */}
+                        <Modal title="新增帳號" visible={isadduserModalOpen} onOk={handleOk_adduser} onCancel={handleCancel_adduser} okText="新增" cancelText="取消">
+                            <div class="flex mb-3"><p>帳號：</p><div class=" w-72"><Input /></div></div>
+                        </Modal>
                     {/* </Header> */}
                     
                     <Content class="p-3 bg-white">
-                         <Modal
-                            title="新增帳號"
-                            visible={isadduserModalOpen}
-                            onOk={handleOk_adduser}
-                            onCancel={handleCancel_adduser}
-                            okText="新增"
-                            cancelText="取消"
-                            >
-                            <div className="flex mb-3">
-                                <p>帳號：</p>
-                                <div className="w-72">
-                                <Input value={newAccountName} onChange={(e) => setNewAccountName(e.target.value)} />
-                                </div>
-                            </div>
-                            {modalContent}
-                        </Modal>
                         <Table
                             columns={columns}
                             dataSource={filteredUsers}
