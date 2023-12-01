@@ -4,7 +4,7 @@ import { Divider, Layout, Input, Table } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
-import { Pagination } from 'antd';
+// import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
 
@@ -16,99 +16,99 @@ const { confirm } = Modal;
 export const USER_DATA = [
     {
         user_id: 0,
-        label: ['群組名稱1'],
+        area: ['台北市區'],
         name: 'User_001',
         // group: ['區處管理者', '運維人員'],
         // email: 'user1@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 1,
-        label: ['群組名稱1', '群組名稱3'],
+        area: ['台北市區', '高雄市區'],
         name: 'User_002',
         // group: ['運維人員'],
         // email: 'user2@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 2,
-        label: ['群組名稱1','群組名稱2', '群組名稱3'],
+        area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_003',
         // group: ['區處檢修人員'],
         // email: 'user3@gmail.com',
-        // line_state: false
+        line_state: false
     },
     {
         user_id: 3,
-        label: ['群組名稱1','群組名稱4'],
+        area: ['台北市區','新北市區'],
         name: 'User_004',
         // group: ['區處管理者', '運維人員'],
         // email: 'user4@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 4,
-        label: ['群組名稱1', '群組名稱3'],
+        area: ['台北市區', '高雄市區'],
         name: 'User_005',
         // group: ['運維人員'],
         // email: 'user5@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 5,
-        label: ['群組名稱1','群組名稱2', '群組名稱4'],
+        area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_006',
         // group: ['區處檢修人員'],
         // email: 'user6@gmail.com',
-        // line_state: false
+        line_state: false
     },
     {
         user_id: 6,
-        label: ['群組名稱1'],
+        area: ['台北市區'],
         name: 'User_007',
         // group: ['區處管理者', '運維人員'],
         // email: 'user1@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 7,
-        label: ['群組名稱1', '群組名稱3'],
+        area: ['台北市區', '高雄市區'],
         name: 'User_008',
         // group: ['運維人員'],
         // email: 'user2@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 8,
-        label: ['群組名稱1','群組名稱2', '群組名稱3'],
+        area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_009',
         // group: ['區處檢修人員'],
         // email: 'user3@gmail.com',
-        // line_state: false
+        line_state: false
     },
     {
         user_id: 9,
-        label: ['群組名稱1','群組名稱4'],
+        area: ['台北市區','新北市區'],
         name: 'User_010',
         // group: ['區處管理者', '運維人員'],
         // email: 'user4@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 10,
-        label: ['群組名稱1', '群組名稱3'],
+        area: ['台北市區', '高雄市區'],
         name: 'User_011',
         // group: ['運維人員'],
         // email: 'user5@gmail.com',
-        // line_state: true
+        line_state: true
     },
     {
         user_id: 11,
-        label: ['群組名稱1','群組名稱2', '群組名稱4'],
+        area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_012',
         // group: ['區處檢修人員'],
         // email: 'user6@gmail.com',
-        // line_state: false
+        line_state: false
     },
 ];
 // export const LINEGROUPID = [
@@ -133,7 +133,7 @@ export const LINEGROUPID = [
     {
         value: '1',
         area: "台北市區",
-        label: '群組名稱1',
+        // label: '群組名稱1',
         threshold: [
           { state: 1, limit_max: '70' },
           { state: 2, limit_max: '80' },
@@ -142,8 +142,8 @@ export const LINEGROUPID = [
       },
       {
         value: '2',
-        area: "台北市區",
-        label: '群組名稱2',
+        area: "新北市區",
+        // label: '群組名稱2',
         threshold: [
           { state: 1, limit_max: '72' },
           { state: 2, limit_max: '82' },
@@ -152,8 +152,8 @@ export const LINEGROUPID = [
       },
       {
         value: '3',
-        area: "台北市區",
-        label: '群組名稱3',
+        area: "新竹市區",
+        // label: '群組名稱3',
         threshold: [
           { state: 1, limit_max: '73' },
           { state: 2, limit_max: '83' },
@@ -162,8 +162,8 @@ export const LINEGROUPID = [
       },
       {
         value: '4',
-        area: "台北市區",
-        label: '群組名稱4',
+        area: "高雄市區",
+        // label: '群組名稱4',
         threshold: [
           { state: 1, limit_max: '74' },
           { state: 2, limit_max: '84' },
@@ -185,12 +185,12 @@ function Notify() {
         setSelectedGroup(selectedGroup);
 
         // 過濾符合條件的帳號
-        const usersInGroup = userData.filter((user) => user.label.includes(selectedGroup.label));
+        const usersInGroup = userData.filter((user) => user.area.includes(selectedGroup.area));
         setFilteredUsers(usersInGroup);
     };
     useEffect(() => {
         // 在組件初始化時進行一次過濾
-        const initialUsersInGroup = userData.filter((user) => user.label.includes(groupData[0].label));
+        const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
     }, []);
 
@@ -200,6 +200,20 @@ function Notify() {
           title: ()=>{return <div class='font-medium text-base'>帳號</div> },
           dataIndex: 'name',
           key: 'name',
+        },
+        {
+            title: ()=>{return <div class='font-medium text-base'>LINE 連接狀態</div> },
+            dataIndex: 'line_state',
+            key: 'line_state',
+            render: (record) => (
+                <div>
+                    {record ?
+                        <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
+                        :
+                        <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
+                    }
+                </div>
+            )
         },
         {
           title: ()=>{return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button>},
@@ -217,7 +231,7 @@ function Notify() {
     const [currentPage, setCurrentPage] = useState(1);
     const handlePaginationChange = (page) => {
         setCurrentPage(page);
-      };
+    };
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
@@ -254,7 +268,7 @@ function Notify() {
         const updatedUserData = USER_DATA.map((user) => {
           if (user.user_id === userId) {
             // 找到相應的用戶，並移除選定群組的 label
-            user.label = user.label.filter((groupLabel) => groupLabel !== selectedGroup.label);
+            user.area = user.area.filter((groupLabel) => groupLabel !== selectedGroup.area);
           }
           return user;
         });
@@ -270,16 +284,53 @@ function Notify() {
 
     //新增帳號modal
     const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
+    const [newAccountName, setNewAccountName] = useState('');
+    const [modalContent, setModalContent] = useState(null);
     const showadduserModal = () => {
         setIsadduserModalOpen(true);
     };
     const handleOk_adduser = () => {
-        setIsadduserModalOpen(false);
-    };
-    const handleCancel_adduser = () => {
-        setIsadduserModalOpen(false);
+        // 在這裡處理新增帳號的邏輯
+
+        // 檢查輸入的帳號是否存在於 USER_DATA 中的 name 中
+        const existingUser = userData.find((user) => user.name === newAccountName);
+
+        if (existingUser) {
+        // 如果帳號存在，檢查是否已經存在於選定群組的 label 中
+        if (existingUser.area.includes(selectedGroup.area)) {
+            // 帳號已經存在於群組中
+            setModalContent(
+            <p className="text-red-500">
+                *此帳號已存在於此群組中。
+            </p>
+            );
+        } else {
+            // 帳號不存在於群組中，新增群組
+            existingUser.area.push(selectedGroup.area);
+            setModalContent(
+            <p className="text-green-500">
+                *帳號成功添加到此群組。
+            </p>
+            );
+            setIsadduserModalOpen(false);
+            console.log('new user data', existingUser, userData)
+        }
+        } else {
+        // 帳號不存在
+        setModalContent(
+            <p className="text-red-500">
+            *此帳號不存在。請確保輸入的帳號正確。
+            </p>
+        );
+        }
     };
 
+    const handleCancel_adduser = () => {
+        // 重置輸入的值、提示信息，並禁用 OK 按鈕
+        setNewAccountName('');
+        setModalContent(null);
+        setIsadduserModalOpen(false);
+    };
 
 
     return (
@@ -308,26 +359,18 @@ function Notify() {
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
-                        <span class="font-bold">推播群組：</span>
-                        <Select
-                            defaultValue='台北市區'
-                            style={{ width: 120, marginRight: '8px' }}
-                            >
-                            <Option key= 'taipei'value='台北市區'>
-                                台北市區
-                            </Option>
-                        </Select>
-                        <Select
-                            defaultValue={groupData[0].value}
-                            style={{ width: 120 }}
-                            onChange={handleGroupChange}
-                            >
-                            {groupData.map((group) => (
-                                <Option key={group.value} value={group.value}>
-                                    {group.label}
-                                </Option>
-                            ))}
-                        </Select>
+                        <span class="font-bold">推播區處：</span>
+                            <Select
+                                defaultValue={groupData[0].value}
+                                style={{ width: 120 }}
+                                onChange={handleGroupChange}
+                                >
+                                {groupData.map((group) => (
+                                    <Option key={group.value} value={group.value}>
+                                        {group.area}
+                                    </Option>
+                                ))}
+                            </Select>
                     </div>
                     <div class=" px-10 pb-10 flex justify-between">
                         <div class="flex">
@@ -394,8 +437,21 @@ function Notify() {
                         {/* <div class="col-span-1">電子信箱</div>
                         <div class="col-span-1">LINE 連接狀態</div> */}
                         {/* <button class="pr-10   text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button> */}
-                        <Modal title="新增帳號" visible={isadduserModalOpen} onOk={handleOk_adduser} onCancel={handleCancel_adduser} okText="新增" cancelText="取消">
-                            <div class="flex mb-3"><p>帳號：</p><div class=" w-72"><Input /></div></div>
+                        <Modal
+                            title="新增帳號"
+                            open={isadduserModalOpen}
+                            onOk={handleOk_adduser}
+                            onCancel={handleCancel_adduser}
+                            okText="新增"
+                            cancelText="取消"
+                            >
+                            <div className="flex mb-3">
+                                <p>帳號：</p>
+                                <div className="w-72">
+                                <Input value={newAccountName} onChange={(e) => setNewAccountName(e.target.value)} />
+                                </div>
+                            </div>
+                            {modalContent}
                         </Modal>
                     {/* </Header> */}
                     
@@ -405,6 +461,7 @@ function Notify() {
                             dataSource={filteredUsers}
                             pagination={{ current: currentPage, total: filteredUsers.length, onChange: handlePaginationChange }}
                         />
+
                         {/* {filteredUsers.map((user) => (
                             <UserItem key={user.user_id} user={user} />
                         ))}
