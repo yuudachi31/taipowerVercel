@@ -38,9 +38,9 @@ const { confirm } = Modal;
 // ];
 export const LINEGROUPID = [
     {
-        value: '1',
+        value: '00', //區處別
         area: "台北市區",
-        label: '群組名稱1',
+        // label: '群組名稱1',
         threshold: [
           { state: 1, limit_max: '70' },
           { state: 2, limit_max: '80' },
@@ -48,35 +48,35 @@ export const LINEGROUPID = [
         ],
       },
       {
-        value: '2',
-        area: "台北市區",
-        label: '群組名稱2',
+        value: '11', //區處別
+        area: "高雄市區",
+        // label: '群組名稱2',
         threshold: [
           { state: 1, limit_max: '72' },
           { state: 2, limit_max: '82' },
           { state: 3, limit_max: '92' },
         ],
       },
-      {
-        value: '3',
-        area: "台北市區",
-        label: '群組名稱3',
-        threshold: [
-          { state: 1, limit_max: '73' },
-          { state: 2, limit_max: '83' },
-          { state: 3, limit_max: '93' },
-        ],
-      },
-      {
-        value: '4',
-        area: "台北市區",
-        label: '群組名稱4',
-        threshold: [
-          { state: 1, limit_max: '74' },
-          { state: 2, limit_max: '84' },
-          { state: 3, limit_max: '94' },
-        ],
-      },
+    //   {
+    //     value: '3',
+    //     area: "台北市區",
+    //     label: '群組名稱3',
+    //     threshold: [
+    //       { state: 1, limit_max: '73' },
+    //       { state: 2, limit_max: '83' },
+    //       { state: 3, limit_max: '93' },
+    //     ],
+    //   },
+    //   {
+    //     value: '4',
+    //     area: "台北市區",
+    //     label: '群組名稱4',
+    //     threshold: [
+    //       { state: 1, limit_max: '74' },
+    //       { state: 2, limit_max: '84' },
+    //       { state: 3, limit_max: '94' },
+    //     ],
+    //   },
 ]
 
 function Threshold() {
@@ -212,7 +212,7 @@ function Threshold() {
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
-                        <span class="font-bold">台北市區：</span>
+                        <span class="font-bold">區處：</span>
                         {/* <Select
                             defaultValue="1"
                             style={{
@@ -230,7 +230,7 @@ function Threshold() {
                                 >
                                 {groupData.map((group) => (
                                     <Option key={group.value} value={group.value}>
-                                        {group.label}
+                                        {group.area}
                                     </Option>
                                 ))}
                             </Select>
@@ -242,7 +242,7 @@ function Threshold() {
                                 >
                                 {groupData.map((group) => (
                                     <Option key={group.value} value={group.value}>
-                                        {group.label}
+                                        {group.area}
                                     </Option>
                                 ))}
                             </Select>
