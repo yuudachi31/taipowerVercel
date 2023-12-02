@@ -133,7 +133,6 @@ export const LINEGROUPID = [
     {
         value: '1',
         area: "台北市區",
-        label: "台北市區",
         // label: '群組名稱1',
         threshold: [
           { state: 1, limit_max: '70' },
@@ -144,7 +143,6 @@ export const LINEGROUPID = [
       {
         value: '2',
         area: "新北市區",
-        label: "新北市區",
         // label: '群組名稱2',
         threshold: [
           { state: 1, limit_max: '72' },
@@ -155,7 +153,6 @@ export const LINEGROUPID = [
       {
         value: '3',
         area: "新竹市區",
-        label: "新竹市區",
         // label: '群組名稱3',
         threshold: [
           { state: 1, limit_max: '73' },
@@ -166,7 +163,6 @@ export const LINEGROUPID = [
       {
         value: '4',
         area: "高雄市區",
-        label: "高雄市區",
         // label: '群組名稱4',
         threshold: [
           { state: 1, limit_max: '74' },
@@ -376,11 +372,11 @@ function Notify() {
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
-                                    (option?.label ?? '').includes(input)
+                                    (option?.area ?? '').includes(input)
                                 }
                             >
                                 {groupData.map((group) => (
-                                    <Option key={group.value} value={group.value} label={group.area} class='select-search-input'>
+                                    <Option key={group.value} value={group.value} area={group.area} class='select-search-input'>
                                         {group.area}
                                     </Option>
                                 ))}
