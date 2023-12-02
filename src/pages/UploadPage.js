@@ -72,6 +72,7 @@ const UploadPage = () => {
         const blob2 = new Blob(fileData, {
           type: "application/x-gzip"
         });
+        
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob2);
         link.download = 'test.csv';

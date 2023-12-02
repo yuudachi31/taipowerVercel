@@ -28,7 +28,7 @@ const monthFormat = 'YYYY 年 MM 月';
 const currentDate = new Date();
 const currentHour = currentDate.getHours;
 const defaultTimeRange = [currentHour, currentHour];
-
+const parsed = queryString.parse(window.location.search);
 
 const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
@@ -39,6 +39,15 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const handlePanelChange = (value, mode) => {
     if (mode === 'month') {
       setSelectedYear(value.year());
+      console.log(value.year())
+      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+
+          saveMonthlyRates(data)
+        }
+      })
     }
   };
   // console.log(transformer.dailyRatesList)
@@ -63,19 +72,19 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-    
-   
-    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+
+
+    getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
 
         saveEachTransInfo(data)
-        getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+        getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
           if (data.errStatus) {
             console.log(data.errDetail);
           } else {
-    
+
             saveMonthlyRates(data)
           }
         })
@@ -108,7 +117,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         <Content class="relative flex-col w-80 gap-2" >
           <span class="relative text-base tracking-widest">利用率(%)：</span>
           <div class="flex mt-8 justify-left w-100 h-100 gap-2">
-            
+
             <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
           </div>
           {/* <EChartRate /> */}
@@ -124,12 +133,12 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
 
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange}/>
+            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange} />
 
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear -1911} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 每月用電圖表</h3>)}
+          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear - 1911} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 每月用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
-          <span class="border-2 border-gray-300 w-7 h-0 bg-green"></span>
+            <span class="border-2 border-gray-300 w-7 h-0 bg-green"></span>
             <span class="ml-2 mr-6">保證利用率</span>
             <span class="w-7 h-3 bg-green-500"></span>
             <span class="ml-2 mr-6">尖峰利用率</span>
