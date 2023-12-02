@@ -174,7 +174,10 @@ function Threshold() {
     //     setIsadduserModalOpen(false);
     // };
 
-
+    //下拉搜尋
+    const onSearch = (value) => {
+        console.log('search:', value);
+    };
 
     return (
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
@@ -236,12 +239,19 @@ function Threshold() {
                             </Select>
                         :
                             <Select
+                                showSearch
+                                placeholder="Select a person"
+                                optionFilterProp="children"
                                 defaultValue={groupData[0].value}
                                 style={{ width: 120 }}
                                 onChange={handleGroupChange}
+                                onSearch={onSearch}
+                                filterOption={(input, option) =>
+                                    (option?.area ?? '').includes(input)
+                                }
                                 >
                                 {groupData.map((group) => (
-                                    <Option key={group.value} value={group.value}>
+                                    <Option key={group.value} value={group.value}  area={group.area}>
                                         {group.area}
                                     </Option>
                                 ))}
