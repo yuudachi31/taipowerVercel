@@ -36,15 +36,15 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         document.cookie = "fln=" + data.username;
         console.log(document.cookie);
         _history.push("/");
-        getUserRole(data.access_token).then((data) => {
-          storeUserInfo(data);
-        document.cookie = "user_id=" + data.user_id;
-        document.cookie = "email=" + data.email;
-        document.cookie = "chat_id=" + data.chat_id;
-        document.cookie = "user_name=" + data.user_name;
-        document.cookie = "region_id=" + data.region_id;
-        document.cookie = "region_name=" + data.region_name;
-        document.cookie = "roles=" + JSON.stringify(data.roles);
+        getUserRole(data.access_token).then((userData) => {
+          storeUserInfo(userData);
+        document.cookie = "user_id=" + userData.user_id;
+        document.cookie = "email=" + userData.email;
+        document.cookie = "chat_id=" + userData.chat_id;
+        document.cookie = "user_name=" + userData.user_name;
+        document.cookie = "region_id=" + userData.region_id;
+        document.cookie = "region_name=" + userData.region_name;
+        document.cookie = "roles=" + JSON.stringify(userData.roles);
         
 
         });

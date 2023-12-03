@@ -26,6 +26,7 @@ function ManageMenu({ data, menuActive }) {
                 <button class={`menu-btn ${menuActive == data[0].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(0)}>{data[0].icon}<span class="ml-6">{data[0].title}</span></button>
                 <button class={`menu-btn ${menuActive == data[1].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(1)}>{data[1].icon}<span class="ml-6">{data[1].title}</span></button>
                 <button class={`menu-btn ${menuActive == data[2].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(2)}>{data[2].icon}<span class="ml-6">{data[2].title}</span></button>
+                <button class={`menu-btn ${menuActive == data[3].name ? 'menu-btn-active' : ''}`} onClick={() => handleClickMenu(3)}>{data[3].icon}<span class="ml-6">{data[3].title}</span></button>
             </div>
         </Sider>
     );
