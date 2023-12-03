@@ -17,7 +17,14 @@ function Header({user}) {
     document.cookie = 'fln=; Max-Age=-99999999;';
     document.cookie = 'fltk=; Max-Age=-99999999;';
     document.cookie = 'flid=; Max-Age=-99999999;';
-    _history.push('/login')
+    document.cookie = 'user_id=; Max-Age=-99999999;';
+    document.cookie = 'email=; Max-Age=-99999999;';
+    document.cookie = 'chat_id=; Max-Age=-99999999;';
+    document.cookie = 'user_name=; Max-Age=-99999999;';
+    document.cookie = 'region_id=; Max-Age=-99999999;';
+    document.cookie = 'region_name=; Max-Age=-99999999;';
+    document.cookie = 'roles=; Max-Age=-99999999;';
+    _history.push('/login') 
   }
   function _gotosearch() { //全部變壓器
     _history.push('/tr/search') 
@@ -95,30 +102,30 @@ function Header({user}) {
   //   },
   // ];
 
-
-  const manage_menu = (
-    <Menu defaultSelectedKeys={['3']} className="">
-      <Menu.Item key="1">
-        <div onClick={_gotomanage1}>閥值管理</div>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <div onClick={_gotomanage2}>推播管理</div>
-      </Menu.Item>
-      <Menu.Item key="logout">
-        <div onClick={_gotomanage3}>帳號管理</div>
-      </Menu.Item>
-    </Menu>
-  );
-  const info_menu = (
-    <Menu defaultSelectedKeys={['3']} className="">
-      <Menu.Item key="1">
-        <div onClick={_gotodatamanage1}>AMI匯入</div>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <div onClick={_gotodatamanage2}>變壓器匯出</div>
-      </Menu.Item>
-    </Menu>
-  );
+  //heard下拉
+  // const manage_menu = (
+  //   <Menu defaultSelectedKeys={['3']} className="">
+  //     <Menu.Item key="1">
+  //       <div onClick={_gotomanage1}>閥值管理</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="2">
+  //       <div onClick={_gotomanage2}>推播管理</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="3">
+  //       <div onClick={_gotomanage3}>帳號管理</div>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
+  // const info_menu = (
+  //   <Menu defaultSelectedKeys={['3']} className="">
+  //     <Menu.Item key="1">
+  //       <div onClick={_gotodatamanage1}>AMI匯入</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="2">
+  //       <div onClick={_gotodatamanage2}>變壓器匯出</div>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   const _history = useHistory();
   const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
@@ -146,7 +153,8 @@ function Header({user}) {
   
 
   return (
-    <>
+    <>{
+      _login_status ?
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
@@ -181,8 +189,10 @@ function Header({user}) {
           </a>
         </Dropdown>
         </div>
-      </header>
-    </>
+      </header>:<>
+    { _history.push('/login')}</>
+    }</>
+    
 
     // <>
     //   {

@@ -35,7 +35,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         document.cookie = "flid=" + data.group_id;
         document.cookie = "fln=" + data.username;
         console.log(document.cookie);
-        _history.push("/");
+        
         getUserRole(data.access_token).then((data) => {
           storeUserInfo(data);
         document.cookie = "user_id=" + data.user_id;
@@ -46,6 +46,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         document.cookie = "region_name=" + data.region_name;
         document.cookie = "roles=" + JSON.stringify(data.roles);
         
+        _history.push("/tr/search");
 
         });
       }
@@ -55,7 +56,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
   return (
     <>
       {document.cookie.split("; ").find((row) => row.startsWith("fln")) ? (
-        <>{_history.push("/")}</>
+        <>{_history.push("/tr/search")}</>
       ) : (
         <div className="w-screen h-screen bg-cover bg-center items-center flex justify-center ">
           <div className="flex flex-col items-center ">
@@ -94,7 +95,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
                     <div className=" w-20">帳號：</div>
                     <Input
                       className="p-12"
-                      placeholder="請輸入信箱"
+                      placeholder="請輸入帳號"
                       size="large"
                       maxLength={20}
                       prefix={<UserOutlined />}
