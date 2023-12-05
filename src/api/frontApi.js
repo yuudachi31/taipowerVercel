@@ -35,7 +35,7 @@ export const postUser = async (username, password) => {
 
 export const getUserRole = async (token) => {
   try {
-    const _url = `${baseURL}security/user/me`;
+    const _url = `${baseURL}security/user/me/`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
