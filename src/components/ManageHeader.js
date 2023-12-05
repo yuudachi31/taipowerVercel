@@ -17,6 +17,13 @@ function ManageHeader({user}) {
     document.cookie = 'fln=; Max-Age=-99999999;';
     document.cookie = 'fltk=; Max-Age=-99999999;';
     document.cookie = 'flid=; Max-Age=-99999999;';
+    document.cookie = 'user_id=; Max-Age=-99999999;';
+    document.cookie = 'email=; Max-Age=-99999999;';
+    document.cookie = 'chat_id=; Max-Age=-99999999;';
+    document.cookie = 'user_name=; Max-Age=-99999999;';
+    document.cookie = 'region_id=; Max-Age=-99999999;';
+    document.cookie = 'region_name=; Max-Age=-99999999;';
+    document.cookie = 'roles=; Max-Age=-99999999;';
     _history.push('/login')
   }
   function _gotosearch() { //全部變壓器
@@ -76,12 +83,13 @@ function ManageHeader({user}) {
     </Menu>
   );
   const _history = useHistory();
-  const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
+  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
   var _group_id;
   var _username;
   if (_login_status) {
     _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
-    _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1];
+    _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
+    console.log("user",user);
   }
   
   
@@ -114,7 +122,8 @@ function ManageHeader({user}) {
           <button className='p-1 pr-4 mx-3  flex-none tracking-8'  onClick={_gotomanage}>資料管理</button> */}
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
-            <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
+            {/* <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div> */}
+            <div className='text-sm text-black mr-2 ml-3'>{_username?_username:"User_001"}</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
           </a>
         </Dropdown>

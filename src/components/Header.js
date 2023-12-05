@@ -128,12 +128,17 @@ function Header({user}) {
   // );
 
   const _history = useHistory();
-  const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
+  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
   var _group_id;
   var _username;
   if (_login_status) {
     _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
-    _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1];
+    _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
+    console.log("user",user);
+    // console.log('user_name cookie:', document.cookie.split('; ').find(row => row.startsWith('user_name')));
+
+    // const userCookie = document.cookie.split('; ').find(row => row.startsWith('user_name'));
+    // username = userCookie ? userCookie.split('=')[1] : undefined;
   }
 
   function _gotomanage() {
@@ -184,7 +189,7 @@ function Header({user}) {
           <button className='p-1 pr-4 mx-3  flex-none tracking-8'  onClick={_gotomanage}>資料管理</button> */}
           <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
-            <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
+            <div className='text-sm text-black mr-2 ml-3'>{_username?_username:"User_001"}</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
           </a>
         </Dropdown>
