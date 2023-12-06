@@ -3,20 +3,24 @@ import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 
 function EChartMain({data}) {
+    // console.log(data)
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
 
-    const renderLegend = ({ payload }) => {
-        if (payload.length < 2) return null
+    const renderLegend = ({ payload=[] }) => {
+        console.log(payload)
+        if (payload.length <=0) return null
         // console.log(payload[0])
-        return (
-            <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                
-                <li key={`item-0`}>{`尖峰利用率：${payload[2].value}kW`}</li>
-                <li key={`item-1`}>{`離峰利用率：${payload[0].value}kW`}</li>
-                {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
-                
-            </ul>
-        );
+            return (
+                <ul class="border-2 border-green-400 py-2 px-3 bg-white">
+                    
+                    <li key={`item-0`}>{`尖峰利用率：${payload[2].value}kW`}</li>
+                    <li key={`item-1`}>{`離峰利用率：${payload[0].value}kW`}</li>
+                    {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
+                    
+                </ul>
+            );
+        
+        
     }
 // console.log(data)
     return (

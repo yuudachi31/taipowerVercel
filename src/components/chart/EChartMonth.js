@@ -11,7 +11,7 @@ function EChartMain({data}) {
         
       }));
 
-    const renderLegend = ({ payload }) => {
+    const renderLegend = ({ payload={} }) => {
         if (payload.length <= 0) return null
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">

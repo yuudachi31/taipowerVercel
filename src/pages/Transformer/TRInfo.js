@@ -35,11 +35,12 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+  const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
+  // const [selectedYear, setSelectedYear] = useState(null);
   const handlePanelChange = (value, mode) => {
-    if (mode === 'month') {
-      setSelectedYear(value.year());
-      console.log(value.year())
+    if (mode === 'year') {
+  
       getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
         if (data.errStatus) {
           console.log(data.errDetail);
@@ -50,18 +51,31 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       })
     }
   };
+  const handlePanelChange_daily =(value,mode)=>{
+    const parsed = queryString.parse(window.location.search);
+    // setSelectedYear(value.year());
+    if (mode === 'month') {
+    // const parsed = queryString.parse(window.location.search);
+      console.log(value.year())
+      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+
+          saveDailyRates(data)
+        }
+      })
+    }
+  }
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = queryString.parse(window.location.search);
-    getDailyRates().then((data) => {
+    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
+      // getDailyRates().then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-        // console.log(data)
-        // console.log(data)
         saveDailyRates(data)
-
-
       }
     })
     // getEachTransformer
@@ -161,7 +175,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" />
+            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
           </div>
           <h3 class="font-bold flex-1 text-center m-0 text-base"> 112 年度 10 月每日用電圖表</h3>
           <div class="flex flex-1 items-center justify-end">

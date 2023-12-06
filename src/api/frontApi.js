@@ -74,9 +74,12 @@ export const getTransformerList = async () => {
 // headers: {
 //     authorization: `Bearer ${token}`,
 // }
-export const getDailyRates = async () => {
+// export const getDailyRates = async (coor,div,date_year,date_month) => {
+//   try {
+//     const _url = `${baseURL}/dailypeak_rate/coor/${coor}/${div}/${date_year}/${date_month}   `;
+export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   try {
-    const _url = `${baseURL}dailypeak_rates    `;
+    const _url = `${baseURL}dailypeak_rate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
