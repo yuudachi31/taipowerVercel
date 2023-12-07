@@ -101,7 +101,7 @@ function ManageHeader({user}) {
           <img className=' w-9 h-9 mr-5' src={logo}></img>
           <div className='w-1.2/3 text-center text-xl '>後台系統操作頁面</div>
         </div>
-        <div className="w-1/3 flex items-center justify-end">
+        <div className="w-1.5/3 flex items-center justify-end">
         <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           {/* <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>智慧電表</Button> */}
@@ -121,7 +121,7 @@ function ManageHeader({user}) {
         </Dropdown> */}
           {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage}>帳號管理</button>
           <button className='p-1 pr-4 mx-3  flex-none tracking-8'  onClick={_gotomanage}>資料管理</button> */}
-          <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+          <Dropdown className='ant-button-black flex-none'  overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
             {/* <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div> */}
             <div className='text-sm text-black mr-2 ml-3'>{_username?_username:"User_001"}</div>
