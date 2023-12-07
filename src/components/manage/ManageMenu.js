@@ -13,13 +13,19 @@ function ManageMenu({ data, menuActive }) {
             _history.push(data[idx].route)
         }
     }
-
+    const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
+    var _username;
+    if (_login_status) {
+      _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
+    }
     return (
         <Sider width={290}>
-            <div class="grid grid-flow-col auto-cols-min px-6 pt-12 pb-8">
+            <div class="flex row px-6 pt-12 pb-8">
                 <div class="w-14 h-14 rounded-full bg-gray-300 row-span-2 mr-6"></div>
-                <div class="text-base font-bold mb-3">User_001</div>
-                <span class="text-gray-300">管理者</span>
+                <div>
+                    <div class="text-base font-bold mb-3">{_username}</div>
+                    <span class="text-gray-300">管理者</span>
+                </div>
             </div>
             <Divider />
             <div class="grid gap-4 px-5 py-8">

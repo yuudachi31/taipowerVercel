@@ -25,7 +25,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
   // };
   const _handleLogin = (values) => {
     postUser(values.username, values.password).then((data) => {
-      if (data.errStatus) {
+      if (data && data.errStatus) {
         message.error(data.errDetail);
       } else {
         console.log(data);
@@ -35,32 +35,38 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         document.cookie = "flid=" + data.group_id;
         document.cookie = "fln=" + data.username;
         console.log(document.cookie);
-        _history.push("/");
-        getUserRole(data.access_token).then((data) => {
-          storeUserInfo(data);
-        document.cookie = "user_id=" + data.user_id;
-        document.cookie = "email=" + data.email;
-        document.cookie = "chat_id=" + data.chat_id;
-        document.cookie = "user_name=" + data.user_name;
-        document.cookie = "region_id=" + data.region_id;
-        document.cookie = "region_name=" + data.region_name;
-        document.cookie = "roles=" + JSON.stringify(data.roles);
         
+        getUserRole(data.access_token).then((userData) => {
+          
+        document.cookie = "user_id=" + userData.user_id;
+        document.cookie = "email=" + userData.email;
+        document.cookie = "chat_id=" + userData.chat_id;
+        document.cookie = "user_name=" + userData.user_name;
+        document.cookie = "region_id=" + userData.region_id;
+        document.cookie = "region_name=" + userData.region_name;
+        document.cookie = "roles=" + JSON.stringify(userData.roles);
+        storeUserInfo(userData);
+        _history.push("/tr/search");
 
         });
       }
+    })
+    .catch((error) => {
+      // 處理其他錯誤，例如網絡錯誤等
+      message.error("登入失敗，請檢查帳號密碼是否正確。");
+      console.error("Login failed:", error);
     });
   };
 
   return (
     <>
-      {document.cookie.split("; ").find((row) => row.startsWith("fln")) ? (
-        <>{_history.push("/")}</>
+      {document.cookie.split("; ").find((row) => row.startsWith("user_name")) ? (
+        <>{_history.push("/tr/search")}</>
       ) : (
         <div className="w-screen h-screen bg-cover bg-center items-center flex justify-center ">
           <div className="flex flex-col items-center ">
             <img src={rainbowLogo} className="w-24 h-24" />
-          <div className="mt-10 px-12 py-12 bg-white shadow rounded "> 
+          <div className="mt-10 px-24 py-12 bg-white shadow rounded "> 
             {/* <div>
               <button onClick={testbtn}>test</button>
             </div> */}
@@ -94,7 +100,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
                     <div className=" w-20">帳號：</div>
                     <Input
                       className="p-12"
-                      placeholder="請輸入信箱"
+                      placeholder="請輸入帳號"
                       size="large"
                       maxLength={20}
                       prefix={<UserOutlined />}

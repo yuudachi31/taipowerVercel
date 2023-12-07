@@ -1,6 +1,6 @@
 import "antd/dist/antd.less";
 import "./App.css";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import { Layout } from 'antd';
 // Redirec
 

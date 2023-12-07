@@ -17,7 +17,14 @@ function Header({user}) {
     document.cookie = 'fln=; Max-Age=-99999999;';
     document.cookie = 'fltk=; Max-Age=-99999999;';
     document.cookie = 'flid=; Max-Age=-99999999;';
-    _history.push('/login')
+    document.cookie = 'user_id=; Max-Age=-99999999;';
+    document.cookie = 'email=; Max-Age=-99999999;';
+    document.cookie = 'chat_id=; Max-Age=-99999999;';
+    document.cookie = 'user_name=; Max-Age=-99999999;';
+    document.cookie = 'region_id=; Max-Age=-99999999;';
+    document.cookie = 'region_name=; Max-Age=-99999999;';
+    document.cookie = 'roles=; Max-Age=-99999999;';
+    _history.push('/login') 
   }
   function _gotosearch() { //全部變壓器
     _history.push('/tr/search') 
@@ -95,38 +102,43 @@ function Header({user}) {
   //   },
   // ];
 
-
-  const manage_menu = (
-    <Menu defaultSelectedKeys={['3']} className="">
-      <Menu.Item key="1">
-        <div onClick={_gotomanage1}>閥值管理</div>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <div onClick={_gotomanage2}>推播管理</div>
-      </Menu.Item>
-      <Menu.Item key="logout">
-        <div onClick={_gotomanage3}>帳號管理</div>
-      </Menu.Item>
-    </Menu>
-  );
-  const info_menu = (
-    <Menu defaultSelectedKeys={['3']} className="">
-      <Menu.Item key="1">
-        <div onClick={_gotodatamanage1}>AMI匯入</div>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <div onClick={_gotodatamanage2}>變壓器匯出</div>
-      </Menu.Item>
-    </Menu>
-  );
+  //heard下拉
+  // const manage_menu = (
+  //   <Menu defaultSelectedKeys={['3']} className="">
+  //     <Menu.Item key="1">
+  //       <div onClick={_gotomanage1}>閥值管理</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="2">
+  //       <div onClick={_gotomanage2}>推播管理</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="3">
+  //       <div onClick={_gotomanage3}>帳號管理</div>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
+  // const info_menu = (
+  //   <Menu defaultSelectedKeys={['3']} className="">
+  //     <Menu.Item key="1">
+  //       <div onClick={_gotodatamanage1}>AMI匯入</div>
+  //     </Menu.Item>
+  //     <Menu.Item key="2">
+  //       <div onClick={_gotodatamanage2}>變壓器匯出</div>
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   const _history = useHistory();
-  const _login_status = document.cookie.split('; ').find(row => row.startsWith('fln')) ? true : false;
+  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
   var _group_id;
   var _username;
   if (_login_status) {
     _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
-    _username = document.cookie.split('; ').find(row => row.startsWith('fln')).split('=')[1];
+    _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
+    console.log("user",user);
+    // console.log('user_name cookie:', document.cookie.split('; ').find(row => row.startsWith('user_name')));
+
+    // const userCookie = document.cookie.split('; ').find(row => row.startsWith('user_name'));
+    // username = userCookie ? userCookie.split('=')[1] : undefined;
   }
 
   function _gotomanage() {
@@ -146,13 +158,14 @@ function Header({user}) {
   
 
   return (
-    <>
+    <>{
+      _login_status ?
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
           <div className='w-1.2/3 text-center text-xl'>前台系統操作介面</div>
         </div>
-        <div className="w-1/3 flex items-center justify-end">
+        <div className="w-1.5/3 flex items-center justify-end">
 
           <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
@@ -174,15 +187,17 @@ function Header({user}) {
         </Dropdown> */}
           {/* <button className='p-1 mx-3  flex-none tracking-8'  onClick={_gotomanage}>帳號管理</button>
           <button className='p-1 pr-4 mx-3  flex-none tracking-8'  onClick={_gotomanage}>資料管理</button> */}
-          <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+          <Dropdown className='ant-button-black flex-none' overlay={menu} trigger={['click']} placement="bottomRight">
           <a className='flex items-center text-black' onClick={(e) => e.preventDefault()}>
-            <div className='text-sm text-black mr-2 ml-3'>{user.user_info.user_name?user.user_info.user_name:"User_001"}</div>
+            <div className=' text-sm text-black mr-2 ml-3'  >{_username?_username:"User_001"}</div>
             <div className='flex items-center'><DownOutlined className='text-sm text-black' /></div>
           </a>
         </Dropdown>
         </div>
-      </header>
-    </>
+      </header>:<>
+    { _history.push('/login')}</>
+    }</>
+    
 
     // <>
     //   {
