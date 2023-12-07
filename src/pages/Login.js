@@ -25,7 +25,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
   // };
   const _handleLogin = (values) => {
     postUser(values.username, values.password).then((data) => {
-      if (data.errStatus) {
+      if (data && data.errStatus) {
         message.error(data.errDetail);
       } else {
         console.log(data);
@@ -50,6 +50,11 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
 
         });
       }
+    })
+    .catch((error) => {
+      // 處理其他錯誤，例如網絡錯誤等
+      message.error("登入失敗，請檢查帳號密碼是否正確。");
+      console.error("Login failed:", error);
     });
   };
 

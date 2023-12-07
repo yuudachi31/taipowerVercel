@@ -94,7 +94,8 @@ function ManageHeader({user}) {
   
   
   return (
-    <>
+    <>{
+      _login_status ?
       <header className="relative flex items-center justify-between md:px-10 px-8 h-header shadow-header z-50">
         <div className='w-1/3 flex items-center'>
           <img className=' w-9 h-9 mr-5' src={logo}></img>
@@ -128,8 +129,9 @@ function ManageHeader({user}) {
           </a>
         </Dropdown>
         </div>
-      </header>
-    </>
+        </header>:<>
+    { _history.push('/login')}</>
+    }</>
 
     // <>
     //   {
