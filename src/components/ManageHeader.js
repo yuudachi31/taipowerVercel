@@ -14,16 +14,17 @@ import { connect } from "react-redux";
 function ManageHeader({user}) {
   // console.log(user.user_info.user_name)
   function _logout(e) {
-    document.cookie = 'fln='+""+';Max-Age=-99999999';
-    document.cookie = 'fltk=; Max-Age=-99999999;';
-    document.cookie = 'flid=; Max-Age=-99999999;';
-    document.cookie = 'user_id=; Max-Age=-99999999';
-    document.cookie = 'email=; Max-Age=-99999999;';
-    document.cookie = 'chat_id=; Max-Age=-99999999;';
-    document.cookie = 'user_name=; Max-Age=-99999999;';
-    document.cookie = 'region_id=; Max-Age=-99999999;';
-    document.cookie = 'region_name=; Max-Age=-99999999;';
-    document.cookie = 'roles=; Max-Age=-99999999;';
+    document.cookie = "fltk=''"+";path=/";
+    document.cookie = "flid=''" +";path=/";
+    document.cookie = "fln=" +";path=/";
+    document.cookie = "user_id=" +";path=/";
+    document.cookie = "email=" +";path=/";
+    document.cookie = "chat_id=" +";path=/";
+    document.cookie = "user_name=" +";path=/";
+    document.cookie = "region_id=" +";path=/";
+    document.cookie = "region_name=" +";path=/";
+    document.cookie = "roles=" +";path=/";
+  
     _history.push('/login')
   }
   function _gotosearch() { //全部變壓器

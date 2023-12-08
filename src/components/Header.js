@@ -24,10 +24,10 @@ function Header({user}) {
     document.cookie = "region_id=" +";path=/";
     document.cookie = "region_name=" +";path=/";
     document.cookie = "roles=" +";path=/";
-    
-
-    console.log("logout!")
-    console.log(document.cookie);
+//筆記: 有出現同名cookie的現象，結果是因為path或max-age參數如果不同會被認為不同cookie
+//另外cookie的預設max-age是-1，即關閉瀏覽器就會刪除
+    // console.log("logout!")
+    // console.log(document.cookie);
     _history.push('/login') 
   }
   function _gotosearch() { //全部變壓器
@@ -130,18 +130,15 @@ function Header({user}) {
   //     </Menu.Item>
   //   </Menu>
   // );
-console.log(document.cookie)
+// console.log(document.cookie)
   const _history = useHistory();
-  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')).split("=")[1] ? true : false;
-  // var _group_id;
+
+  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name'))?.split("=")[1] ? true : false;
+  //本來的寫法沒加.split("=")[1]  會收到字串'user_name=' 即會被判定為True
+//但是這個寫法在一開始沒有cookie時會出現undefind .split錯誤 所以要加個?
   var _username;
   if (_login_status) {
-    // _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
     _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
-    console.log("user",user);
-    console.log("login!")
-    console.log(document.cookie);
-
     // console.log('user_name cookie:', document.cookie.split('; ').find(row => row.startsWith('user_name')));
 
     // const userCookie = document.cookie.split('; ').find(row => row.startsWith('user_name'));

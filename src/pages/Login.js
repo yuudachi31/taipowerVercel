@@ -63,10 +63,10 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         document.cookie = "region_name=" + userData.region_name+";path=/";
         document.cookie = "roles=" + JSON.stringify(userData.roles)+";path=/";
         storeUserInfo(userData);
-        console.log(userData);
-        console.log(document.cookie);
+        // console.log(userData);
+        // console.log(document.cookie);
         _history.push("/tr/search");
-        console.log("3")
+        // console.log("3")
         });
       }
     })
@@ -76,10 +76,10 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
       console.error("Login failed:", error);
     });
   };
-console.log(document.cookie)
+// console.log(document.cookie)
   return (
     <>
-      {document.cookie.split("; ").find((row) => row.startsWith("user_name")).split("=")[1] ? (
+      {document.cookie.split("; ").find((row) => row.startsWith("user_name"))?.split("=")[1] ? (
         <>{
           _history.push("/tr/search")}</>
       ) : (
