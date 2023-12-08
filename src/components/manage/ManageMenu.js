@@ -13,7 +13,7 @@ function ManageMenu({ data, menuActive }) {
             _history.push(data[idx].route)
         }
     }
-    const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
+    const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1] ? true : false;
     var _username;
     if (_login_status) {
       _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];

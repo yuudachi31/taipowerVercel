@@ -14,10 +14,10 @@ import { connect } from "react-redux";
 function ManageHeader({user}) {
   // console.log(user.user_info.user_name)
   function _logout(e) {
-    document.cookie = 'fln=; Max-Age=-99999999;';
+    document.cookie = 'fln='+""+';Max-Age=-99999999';
     document.cookie = 'fltk=; Max-Age=-99999999;';
     document.cookie = 'flid=; Max-Age=-99999999;';
-    document.cookie = 'user_id=; Max-Age=-99999999;';
+    document.cookie = 'user_id=; Max-Age=-99999999';
     document.cookie = 'email=; Max-Age=-99999999;';
     document.cookie = 'chat_id=; Max-Age=-99999999;';
     document.cookie = 'user_name=; Max-Age=-99999999;';

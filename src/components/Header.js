@@ -13,17 +13,21 @@ import { connect } from "react-redux";
 
 function Header({user}) {
   // console.log(user.user_info.user_name)
-  function _logout(e) {
-    document.cookie = 'fln=; Max-Age=-99999999;';
-    document.cookie = 'fltk=; Max-Age=-99999999;';
-    document.cookie = 'flid=; Max-Age=-99999999;';
-    document.cookie = 'user_id=; Max-Age=-99999999;';
-    document.cookie = 'email=; Max-Age=-99999999;';
-    document.cookie = 'chat_id=; Max-Age=-99999999;';
-    document.cookie = 'user_name=; Max-Age=-99999999;';
-    document.cookie = 'region_id=; Max-Age=-99999999;';
-    document.cookie = 'region_name=; Max-Age=-99999999;';
-    document.cookie = 'roles=; Max-Age=-99999999;';
+  const _logout=(e)=> {
+    document.cookie = "fltk=''"+";path=/";
+    document.cookie = "flid=''" +";path=/";
+    document.cookie = "fln=" +";path=/";
+    document.cookie = "user_id=" +";path=/";
+    document.cookie = "email=" +";path=/";
+    document.cookie = "chat_id=" +";path=/";
+    document.cookie = "user_name=" +";path=/";
+    document.cookie = "region_id=" +";path=/";
+    document.cookie = "region_name=" +";path=/";
+    document.cookie = "roles=" +";path=/";
+    
+
+    console.log("logout!")
+    console.log(document.cookie);
     _history.push('/login') 
   }
   function _gotosearch() { //全部變壓器
@@ -126,15 +130,18 @@ function Header({user}) {
   //     </Menu.Item>
   //   </Menu>
   // );
-
+console.log(document.cookie)
   const _history = useHistory();
-  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')) ? true : false;
-  var _group_id;
+  const _login_status = document.cookie.split('; ').find(row => row.startsWith('user_name')).split("=")[1] ? true : false;
+  // var _group_id;
   var _username;
   if (_login_status) {
-    _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
+    // _group_id = document.cookie.split('; ').find(row => row.startsWith('flid')).split('=')[1];
     _username = document.cookie.split('; ').find(row => row.startsWith('user_name')).split('=')[1];
     console.log("user",user);
+    console.log("login!")
+    console.log(document.cookie);
+
     // console.log('user_name cookie:', document.cookie.split('; ').find(row => row.startsWith('user_name')));
 
     // const userCookie = document.cookie.split('; ').find(row => row.startsWith('user_name'));
@@ -156,7 +163,7 @@ function Header({user}) {
 
 
   
-
+console.log(_login_status)
   return (
     <>{
       _login_status ?
