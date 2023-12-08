@@ -16,7 +16,24 @@ import passwordIcon from "../assets/img/password.png";
 import { connect } from "react-redux";
 import "./Login.css";
 
+console.log(document.cookie)
+// document.cookie = "fltk="+";path=/"
+// document.cookie = "flid=" +";path=/"
+// document.cookie = "fln=" +";path=/"
+// document.cookie = "user_id=" +";path=/"
+// document.cookie = "email=" +";path=/"
+// document.cookie = "chat_id=" +";path=/"
+// document.cookie = "user_name=" +";path=/"
+// document.cookie = "region_id=" +";path=/"
+// document.cookie = "region_name=" +";path=/"
+// document.cookie = "roles=" +";path=/"
+// console.log("initcookie")
+// console.log(document.cookie)
+
+
 function Login({ user, resetTest, loginAction,storeUserInfo }) {
+
+ 
   const _history = useHistory();
   // const testbtn = () => {
   //   console.log(user);
@@ -31,23 +48,25 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         console.log(data);
         loginAction(data.access_token);
 
-        document.cookie = "fltk=" + data.access_token;
-        document.cookie = "flid=" + data.group_id;
-        document.cookie = "fln=" + data.username;
+        document.cookie = "fltk=" + data.access_token+";path=/";
+        document.cookie = "flid=" + data.group_id+";path=/";
+        document.cookie = "fln=" + data.username+";path=/";
         console.log(document.cookie);
         
         getUserRole(data.access_token).then((userData) => {
           
-        document.cookie = "user_id=" + userData.user_id;
-        document.cookie = "email=" + userData.email;
-        document.cookie = "chat_id=" + userData.chat_id;
-        document.cookie = "user_name=" + userData.user_name;
-        document.cookie = "region_id=" + userData.region_id;
-        document.cookie = "region_name=" + userData.region_name;
-        document.cookie = "roles=" + JSON.stringify(userData.roles);
+        document.cookie = "user_id=" + userData.user_id+";path=/";
+        document.cookie = "email=" + userData.email+";path=/";
+        document.cookie = "chat_id=" + userData.chat_id+";path=/";
+        document.cookie = "user_name=" + userData.user_name+";path=/";
+        document.cookie = "region_id=" + userData.region_id+";path=/";
+        document.cookie = "region_name=" + userData.region_name+";path=/";
+        document.cookie = "roles=" + JSON.stringify(userData.roles)+";path=/";
         storeUserInfo(userData);
+        // console.log(userData);
+        // console.log(document.cookie);
         _history.push("/tr/search");
-
+        // console.log("3")
         });
       }
     })
@@ -57,11 +76,12 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
       console.error("Login failed:", error);
     });
   };
-
+// console.log(document.cookie)
   return (
     <>
-      {document.cookie.split("; ").find((row) => row.startsWith("user_name")) ? (
-        <>{_history.push("/tr/search")}</>
+      {document.cookie.split("; ").find((row) => row.startsWith("user_name"))?.split("=")[1] ? (
+        <>{
+          _history.push("/tr/search")}</>
       ) : (
         <div className="w-screen h-screen bg-cover bg-center items-center flex justify-center ">
           <div className="flex flex-col items-center ">
