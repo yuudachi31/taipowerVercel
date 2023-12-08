@@ -19,16 +19,16 @@ import queryString from "query-string";
 
 const { Header, Sider, Content } = Layout;
 
-const date = new Date();
-const year = date.getFullYear() - 1911
-const month = date.getMonth() + 1
 const Timeformat = 'HH:mm';
 
+const yearFormat = 'YYYY 年';
 const monthFormat = 'YYYY 年 MM 月';
+const dayFormat = 'YYYY 年 MM 月 DD 日';
 const currentDate = new Date();
+const currentMonth = currentDate.getMonth;
 const currentHour = currentDate.getHours;
 const defaultTimeRange = [currentHour, currentHour];
-const parsed = queryString.parse(window.location.search);
+const defaultMonth = [currentMonth, currentMonth];
 
 const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
@@ -36,23 +36,26 @@ const onChangeMonth = (date, dateString) => {
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
   const handlePanelChange = (value, mode) => {
+    if (mode === 'year') {
+      setSelectedYear(value.year());
+    }
+  };
+  const handlemonthChange = (value, mode) => {
     if (mode === 'month') {
       setSelectedYear(value.year());
-      console.log(value.year())
-      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
-
-          saveMonthlyRates(data)
-        }
-      })
+      setSelectedMonth(value.month());
     }
+  };
+  const handledayChange = (value,mode) => {
+    
+    setSelectedDay(mode);
+    
   };
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
     getDailyRates().then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -72,19 +75,19 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-
-
-    getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+    
+    const parsed = queryString.parse(window.location.search);
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
 
         saveEachTransInfo(data)
-        getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
+        getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
           if (data.errStatus) {
             console.log(data.errDetail);
           } else {
-
+    
             saveMonthlyRates(data)
           }
         })
@@ -115,9 +118,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         </Content>
 
         <Content class="relative flex-col w-80 gap-2" >
-          <span class="relative text-base tracking-widest">利用率(%)：</span>
+          <span class="relative text-base tracking-widest">利用率(%)</span>
           <div class="flex mt-8 justify-left w-100 h-100 gap-2">
-
+            
             <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
           </div>
           {/* <EChartRate /> */}
@@ -133,12 +136,12 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
 
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange} />
+            <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
 
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear - 1911} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">112 年度 每月用電圖表</h3>)}
+          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 每月用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
-            <span class="border-2 border-gray-300 w-7 h-0 bg-green"></span>
+          <span class="border-2 border-gray-300 w-7 h-0 bg-green"></span>
             <span class="ml-2 mr-6">保證利用率</span>
             <span class="w-7 h-3 bg-green-500"></span>
             <span class="ml-2 mr-6">尖峰利用率</span>
@@ -161,9 +164,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" />
+            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/>
           </div>
-          <h3 class="font-bold flex-1 text-center m-0 text-base"> 112 年度 10 月每日用電圖表</h3>
+          {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 12 月每日用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
 
             <span class="w-7 h-3 bg-green-500"></span>
@@ -183,11 +186,11 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
         <Header class="flex items-center justify-between">
           <div class="space-x-3 flex-1">
-            <span class="text-base " style={{ fontSize: '14px' }}>時間選擇</span>
-            <TimePicker.RangePicker defaultValue={moment(defaultTimeRange, Timeformat)} minuteStep={15} format={Timeformat} />
+            <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
+            <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
 
           </div>
-          <h3 class="font-bold flex-1 text-center m-0 text-base">112 年 01 月 01 日 當日用電圖表</h3>
+          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年 12 月 12 日 當日用電圖表</h3>)}
 
           <div class="flex flex-1 items-center justify-end">
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>
@@ -216,4 +219,3 @@ const mapDispatchToProps = {
   saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRInfo);
-
