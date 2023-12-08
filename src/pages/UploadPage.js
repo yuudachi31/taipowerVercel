@@ -59,36 +59,36 @@ const UploadPage = () => {
     // 触发下载
     // link.click();
 
-// // 合併測試
-//     const chunckNumber = !fileSize ? 1 : Math.ceil(fileSize / (8 * 1024 *1024));
-    const chunckNumber = 8 * 1024 *1024;
+    // // 合併測試
+    //     const chunckNumber = !fileSize ? 1 : Math.ceil(fileSize / (8 * 1024 *1024));
+    const chunckNumber = 8 * 1024 * 1024;
 
     let fileData = [];
-    chunks.forEach((blobs)=>{
+    chunks.forEach((blobs) => {
       fileData.push(blobs)
 
     })
     console.log(fileData)
-        const blob2 = new Blob(fileData, {
-          type: "application/x-gzip"
-        });
-        
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob2);
-        link.download = 'test.csv';
-        link.click();
-        window.URL.revokeObjectURL(link.href);
-      // }
+    const blob2 = new Blob(fileData, {
+      type: "application/x-gzip"
+    });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob2);
+    link.download = 'test.csv';
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+    // }
     // };
     // getFileContent(0);
   }
-    /////////////////////////////上傳測試(失敗)
+  /////////////////////////////上傳測試(失敗)
   //   var appUrl = "https://script.google.com/macros/s/AKfycbytmk4zI6ebjRKhUrycAyiyZxiz8zq9FZzJNwjeQWkO/dev", // 網路應用程式網址
 
   //     reader = new FileReader();
   //     reader.onload = getFileInfo;
   //     reader.readAsDataURL(file);
-    
+
 
   //   function getFileInfo(evt) {
   //     var fileName = file.name,
@@ -105,7 +105,7 @@ const UploadPage = () => {
   //         "fileType": fileType,
   //       "files":files
   //       },
-        
+
   //       success: function (fileUrl) { // 成功時回傳檔案網址
   //         console.log("good")
   //       },
@@ -123,42 +123,42 @@ const UploadPage = () => {
 
 
 
-const jsReadGZFiles = (files, type) => {
-  return new Promise(function (resolve, reject) {
-    let blob = new Blob([files], { type: 'application/x-gzip' })
-    let reader = new FileReader();
-    reader.onload = function () {
-      resolve(reader.result)
-    };
-    reader.readAsArrayBuffer(blob)
+  const jsReadGZFiles = (files, type) => {
+    return new Promise(function (resolve, reject) {
+      let blob = new Blob([files], { type: 'application/x-gzip' })
+      let reader = new FileReader();
+      reader.onload = function () {
+        resolve(reader.result)
+      };
+      reader.readAsArrayBuffer(blob)
 
-  })
-}
-
-
-
-function slice(file, piece = 1024 * 1024 * 5) {
-  let totalSize = file.size; // 檔案總大小
-  let start = 0; // 每次上傳的開始位元組
-  let end = start + piece; // 每次上傳的結尾位元組
-  let chunks = []
-  // console.log(file)
-  while (start < totalSize) {
-    // 根據長度擷取每次需要上傳的資料
-    // File物件繼承自Blob物件，因此包含slice方法
-    let blob = file.slice(start, end);
-    chunks.push(blob)
-    console.log(file)
-    start = end;
-    end = start + piece;
+    })
   }
-  return chunks
-}
 
 
-return (
-  <div>
-    {/* <input
+
+  function slice(file, piece = 1024 * 1024 * 5) {
+    let totalSize = file.size; // 檔案總大小
+    let start = 0; // 每次上傳的開始位元組
+    let end = start + piece; // 每次上傳的結尾位元組
+    let chunks = []
+    // console.log(file)
+    while (start < totalSize) {
+      // 根據長度擷取每次需要上傳的資料
+      // File物件繼承自Blob物件，因此包含slice方法
+      let blob = file.slice(start, end);
+      chunks.push(blob)
+      console.log(file)
+      start = end;
+      end = start + piece;
+    }
+    return chunks
+  }
+
+
+  return (
+    <div>
+      {/* <input
         type="file"
         accept = {[".csv.gz",".csv"]}
         onChange={(e) => {
@@ -173,24 +173,28 @@ return (
       >
         Submit
       </button> */}
-    <form enctype="multipart/form-data">
+      <label for="upload-user" id="test-upload-user-label">Browse...</label>
       <input type="file"
         accept={[".csv.gz", ".csv"]}
-
+        id="test-upload-user"
+        onChange={(e)=>{
+          handleFileUpload2();
+        }}
         name="file" />
-      <button
+        
+      {/* <button
         onClick={(e) => {
           e.preventDefault();
           handleFileUpload2();
         }}
       >試傳
-      </button>
-    </form>
-    <br />
-    {/* <DisplayTable value={csvArray} /> */}
+      </button> */}
 
-  </div>
-);
+      <br />
+      {/* <DisplayTable value={csvArray} /> */}
+
+    </div>
+  );
 };
 
 export default UploadPage;

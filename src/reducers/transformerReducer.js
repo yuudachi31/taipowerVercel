@@ -70,7 +70,7 @@ export const transformerReducer = (state = initialState, action) => {
       });
       return {
         ...state,
-        dailyRatesList: dailyrates,
+        dailyRatesList: [...dailyrates],
       };
     case SAVE_QUARTERRATES:
       const quarterRates = [];

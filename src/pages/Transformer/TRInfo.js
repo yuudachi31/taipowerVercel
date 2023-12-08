@@ -35,36 +35,64 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+  const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-  const handlePanelChange = (value, mode) => {
-    if (mode === 'year') {
-      setSelectedYear(value.year());
-    }
-  };
-  const handlemonthChange = (value, mode) => {
-    if (mode === 'month') {
-      setSelectedYear(value.year());
-      setSelectedMonth(value.month());
-    }
-  };
+ 
+  // const handlemonthChange = (value, mode) => {
+  //   if (mode === 'month') {
+  //     setSelectedYear(value.year());
+  //     setSelectedMonth(value.month());
+  //   }
+  // };
   const handledayChange = (value,mode) => {
     
     setSelectedDay(mode);
     
   };
   // console.log(transformer.dailyRatesList)
+
+  const handlePanelChange = (value, mode) => {
+    if (mode === 'year') {
+      setSelectedYear(value.year());
+      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+
+          saveMonthlyRates(data)
+        }
+      })
+    }
+  };
+  const handlePanelChange_daily =(value,mode)=>{
+    const parsed = queryString.parse(window.location.search);
+    // setSelectedYear(value.year());
+    if (mode === 'month') {
+      setSelectedYear(value.year());
+      setSelectedMonth(value.month());
+    // const parsed = queryString.parse(window.location.search);
+      console.log(value.year())
+      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+
+          saveDailyRates(data)
+        }
+      })
+    }
+  }
+  // console.log(transformer.dailyRatesList)
   useEffect(() => {
-    getDailyRates().then((data) => {
+    const parsed = queryString.parse(window.location.search);
+    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
+      // getDailyRates().then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-        // console.log(data)
-        // console.log(data)
         saveDailyRates(data)
-
-
       }
     })
     // getEachTransformer
@@ -76,7 +104,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       }
     })
     
-    const parsed = queryString.parse(window.location.search);
+
     getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -170,7 +198,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/>
+            {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
+            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
           </div>
           {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth+1} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 12 月每日用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
