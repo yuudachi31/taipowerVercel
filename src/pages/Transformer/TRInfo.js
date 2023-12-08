@@ -187,7 +187,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
         </Content>
       </Layout>
-
+      <Divider />
       <Layout>
 
         <Header class="flex items-center justify-between">
