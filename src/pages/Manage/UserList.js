@@ -94,8 +94,8 @@ function UserList() {
           <Input placeholder={"請輸入帳號名稱"} size="large" />
           <button class="btn-manage btn-manage-full flex-none h-10"><SearchOutlined />搜尋</button>
         </div>
-        <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯入會員資料</button>
-        <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯出會員資料</button>
+        <button class="btn-manage btn-manage-full flex-none h-10" >匯入會員資料</button>
+        <button class="btn-manage btn-manage-full flex-none h-10" >匯出會員資料</button>
       </Header>
       <Content>
         <Layout>
