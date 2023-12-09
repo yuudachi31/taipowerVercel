@@ -24,7 +24,8 @@ const Timeformat = 'HH:mm';
 const yearFormat = 'YYYY 年';
 const monthFormat = 'YYYY 年 MM 月';
 const dayFormat = 'YYYY 年 MM 月 DD 日';
-const currentDate = new Date();
+const currentDate = new Date('2022/6/1');
+console.log('currentDate', currentDate)
 const currentMonth = currentDate.getMonth;
 const currentHour = currentDate.getHours;
 const defaultTimeRange = [currentHour, currentHour];
@@ -163,11 +164,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           {/* <div class="space-x-3 flex-1"></div> */}
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-
-            {/* <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/> */}
-            <DatePicker defaultValue={moment('2022/06/01', yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
+            <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center mr-5 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 每月用電圖表</h3>)}
+          {selectedYear ? (<h3 class="font-bold flex-1 text-center mr-5 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-col flex-1">
           <div class="flex flex-1 items-center justify-end mt-4">
           <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
@@ -199,10 +198,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
-            {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/> */}
-            <DatePicker defaultValue={moment('2022/06/01', monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
+            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
           </div>
-          {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth+1} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 12 月每日用電圖表</h3>)}
+          {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth+1} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 6 月每日用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
 
             <span class="w-7 h-3 bg-green-500"></span>
@@ -226,7 +224,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
 
           </div>
-          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年 12 月 13 日 當日用電圖表</h3>)}
+          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年 6 月 1 日 當日用電圖表</h3>)}
 
           <div class="flex flex-1 items-center justify-end">
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>
