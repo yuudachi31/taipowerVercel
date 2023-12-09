@@ -35,13 +35,38 @@ function TRSearch({ transformer, saveTransData }) {
 
     }, []);
     useEffect(() => {
+        const lastPopupDate = localStorage.getItem('lastPopupDate');
+        const today = new Date();
+        const todayString = today.toISOString().slice(0, 10);
 
-        // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
-        const timer = setTimeout(() => {
+        if (!lastPopupDate || lastPopupDate !== todayString) {
+            // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
             setIsModalVisible(true);
-        }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
-        // 在組件卸載時清除定時器，以避免記憶體洩漏
-        return () => clearTimeout(timer);
+
+            // 更新弹窗日期为今天
+            localStorage.setItem('lastPopupDate', todayString);
+        }
+        // 设置定时器，在凌晨12点时清除弹窗记录
+        const clearPopupAtMidnight = () => {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+                localStorage.removeItem('lastPopupDate');
+            }
+        };
+
+        // 每隔一段时间检查是否到达凌晨12点
+        const interval = setInterval(clearPopupAtMidnight, 60000); // 每分钟检查一次
+
+        return () => {
+            clearInterval(interval); // 清除定时器
+        };
+
+        // // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
+        // const timer = setTimeout(() => {
+        //     setIsModalVisible(true);
+        // }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
+        // // 在組件卸載時清除定時器，以避免記憶體洩漏
+        // return () => clearTimeout(timer);
 
 
     }, []);
@@ -70,7 +95,7 @@ function TRSearch({ transformer, saveTransData }) {
             dataIndex: 'coor',
             render: text => {
                 return (
-                    <Link to={'/tr/info/?coor='+text[0]+'&div='+text[1]+'&tr_index='+text[2]} >{text[0]}</Link>
+                    <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
             }
         },
@@ -185,7 +210,7 @@ function TRSearch({ transformer, saveTransData }) {
                     <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
-            <Modal title="變壓器異常通知" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} mask={true}
+            <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)} 
                 footer={[
                     // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
                     <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,

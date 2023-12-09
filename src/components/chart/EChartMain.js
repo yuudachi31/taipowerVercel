@@ -8,8 +8,9 @@ function EChartMain({data}) {
 
     const renderLegend = ({ payload=[] }) => {
         console.log(payload)
-        if (payload.length <=0) return null
+        if (payload?.length <=0 || payload==null) return null
         // console.log(payload[0])
+        else{
             return (
                 <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                     
@@ -19,6 +20,8 @@ function EChartMain({data}) {
                     
                 </ul>
             );
+        }
+            
         
         
     }
