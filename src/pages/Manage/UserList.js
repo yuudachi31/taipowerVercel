@@ -202,7 +202,8 @@ function UserList() {
           name="file" />
 
         {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯入會員資料</button> */}
-        <button class="btn-manage btn-manage-full flex-none h-10" onClick={() => _history.push('/manage/user/create')}>匯出會員資料</button>
+        {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={() => _history.push('/manage/user/create')}>匯出會員資料</button> */}
+        <button class="btn-manage btn-manage-full flex-none h-10">匯出會員資料</button>
       </Header>
       <Content>
         <Layout>
