@@ -224,7 +224,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
 
           </div>
-          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年 6 月 1 日 當日用電圖表</h3>)}
+          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年 06 月 01 日 當日用電圖表</h3>)}
 
           <div class="flex flex-1 items-center justify-end">
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>
