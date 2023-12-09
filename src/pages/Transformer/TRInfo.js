@@ -166,7 +166,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center mr-5 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
+          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-col flex-1">
           <div class="flex flex-1 items-center justify-end mt-4">
           <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
