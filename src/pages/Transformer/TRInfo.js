@@ -164,8 +164,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
 
-            <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
-
+            {/* <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/> */}
+            <DatePicker defaultValue={moment('2022/06/01', yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
           </div>
           {selectedYear ? (<h3 class="font-bold flex-1 text-center mr-5 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 每月用電圖表</h3>)}
           <div class="flex flex-col flex-1">
@@ -199,7 +199,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
-            <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
+            {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/> */}
+            <DatePicker defaultValue={moment('2022/06/01', monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
           </div>
           {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth+1} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2023 年度 12 月每日用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
