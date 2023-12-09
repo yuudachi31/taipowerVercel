@@ -168,19 +168,19 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           </div>
           {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-col flex-1">
-          <div class="flex flex-1 items-center justify-end mt-4">
-          <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
-            <span class="mt-2 ml-2 mr-6">保證利用率</span>
-            <span class="mt-2 w-7 h-3 bg-green-500"></span>
-            <span class="mt-2 ml-2">尖峰利用率</span>
-            
-          </div>
-          <div class="flex items-center justify-end">
-          <span class="mt-2 bg-gray-300 w-7 h-3"></span>
-            <span class="mt-2 ml-2 mr-6">預估利用率</span>
-            <span class="mt-2 w-7 h-3 bg-green-300"></span>
-            <span class="mt-2 ml-2">離峰利用率</span>
-          </div>
+            <div class="flex flex-1 items-center justify-end">
+            <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
+              <span class="mt-2 ml-2 mr-6">保證利用率</span>
+              <span class="mt-2 w-7 h-3 bg-green-500"></span>
+              <span class="mt-2 ml-2">尖峰利用率</span>
+              
+            </div>
+            <div class="flex items-center justify-end">
+            <span class="mt-2 bg-gray-300 w-7 h-3"></span>
+              <span class="mt-2 ml-2 mr-6">預估利用率</span>
+              <span class="mt-2 w-7 h-3 bg-green-300"></span>
+              <span class="mt-2 ml-2">離峰利用率</span>
+            </div>
           </div>
         </Header>
 
