@@ -24,12 +24,12 @@ export const transformerReducer = (state = initialState, action) => {
             uti_rate: element.uti_rate,
             cap: element.cap,
             type: element.type,
-            cust_num: element.cust_num,
+            // cust_num: element.cust_num,
             num: element.num,
             transformer_threshold: element.transformer_threshold,
             power_type: element.power_type,
-            addr: element.addr,
-            notify: 'nan'
+            // addr: element.addr,
+            // notify: 'nan'
           })
         } else {
           data.push({
@@ -40,12 +40,12 @@ export const transformerReducer = (state = initialState, action) => {
             uti_rate: element.uti_rate,
             cap: element.cap,
             type: element.type,
-            cust_num: element.cust_num,
+            // cust_num: element.cust_num,
             num: element.num,
             transformer_threshold: element.transformer_threshold,
             power_type: element.power_type,
-            addr: element.addr,
-            notify: 'nan'
+            // addr: element.addr,
+            // notify: 'nan'
           })
         }
 

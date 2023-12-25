@@ -7,7 +7,7 @@ function EChartMain({data}) {
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
 
     const renderLegend = ({ payload=[] }) => {
-        console.log(payload)
+        // console.log(payload)
         if (payload?.length <=0 || payload==null) return null
         // console.log(payload[0])
         else{
