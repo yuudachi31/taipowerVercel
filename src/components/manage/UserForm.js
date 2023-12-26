@@ -64,8 +64,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             placeholder="選擇區域"
             allowClear
             size='middle'
-//             defaultValue={user ? user.district : []}
-//             size='large'
+            defaultValue={user ? user.district : []}
 
           >
             <Option value="台北">台北</Option>
@@ -78,9 +77,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             placeholder="選擇群組"
             allowClear
             size='middle'
-//             defaultValue={user ? user.nnotifygroup : []}
-//             size='large'
-
+            defaultValue={user ? user.notifygroup : []}
           >
             <Option value="群組一">群組一</Option>
             <Option value="群組二">群組二</Option>
