@@ -16,3 +16,23 @@
 .minHeight{
   min-height: calc(100vh - 60px);
 }
+
+/* 閥值等級 */
+.normal-style {
+  color: #faad14;
+  font-weight: bold;
+}
+
+.medium-style {
+  color: #eb2f96;
+  font-weight: bold;
+}
+
+.heavy-style {
+  color: #fa541c;
+  font-weight: bold;
+}
+
+.select-search-input input{
+  border-color: white;
+}

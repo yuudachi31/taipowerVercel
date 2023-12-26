@@ -1,16 +1,17 @@
 //閥值管理
 //antd
 import { Divider, Layout, Input } from 'antd';
-import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
-import { Pagination } from 'antd';
+// import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
 
 const { Header, Content } = Layout;
 const { Search } = Input
-
+const { Option } = Select;
+const { confirm } = Modal;
 
 // export const USER_DATA = [
 //     {
@@ -37,21 +38,45 @@ const { Search } = Input
 // ];
 export const LINEGROUPID = [
     {
-        value: '1',
-        label: '群組名稱1',
-    },
-    {
-        value: '2',
-        label: '群組名稱2',
-    },
-    {
-        value: '3',
-        label: '群組名稱3',
-    },
-    {
-        value: '4',
-        label: '群組名稱4',
-    },
+        value: '00', //區處別
+        area: "台北市區",
+        // label: '群組名稱1',
+        threshold: [
+          { state: 1, limit_max: '70' },
+          { state: 2, limit_max: '80' },
+          { state: 3, limit_max: '90' },
+        ],
+      },
+      {
+        value: '11', //區處別
+        area: "高雄市區",
+        // label: '群組名稱2',
+        threshold: [
+          { state: 1, limit_max: '72' },
+          { state: 2, limit_max: '82' },
+          { state: 3, limit_max: '92' },
+        ],
+      },
+    //   {
+    //     value: '3',
+    //     area: "台北市區",
+    //     label: '群組名稱3',
+    //     threshold: [
+    //       { state: 1, limit_max: '73' },
+    //       { state: 2, limit_max: '83' },
+    //       { state: 3, limit_max: '93' },
+    //     ],
+    //   },
+    //   {
+    //     value: '4',
+    //     area: "台北市區",
+    //     label: '群組名稱4',
+    //     threshold: [
+    //       { state: 1, limit_max: '74' },
+    //       { state: 2, limit_max: '84' },
+    //       { state: 3, limit_max: '94' },
+    //     ],
+    //   },
 ]
 
 function Threshold() {
@@ -59,26 +84,84 @@ function Threshold() {
 
     //是否編輯
     const [isEdit, setIsEdit] = useState(false);
-    const handleDelete = async () => {
-        console.log("delete")
-    }
-    const handleSave = () => {
-        console.log("save")
-        setIsEdit(false)
-    }
 
-    // //新增群組modal
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    // const showModal = () => {
-    //     setIsModalOpen(true);
-    // };
-    // const handleOk = () => {
-    //     setIsModalOpen(false);
-    // };
+    //設定select內容
+    const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
+    const handleGroupChange = (value) => {
+        const selectedGroup = groupData.find((group) => group.value === value);
+        setSelectedGroup(selectedGroup);
+    };
+    
+    //實現編輯儲存
+    const [editedThresholds, setEditedThresholds] = useState(() => {
+        // 使用物件映射初始化編輯狀態
+        const initialThresholds = {};
+        groupData.forEach((group) => {
+          initialThresholds[group.value] = group.threshold.map(item => ({ ...item }));
+        });
+        return initialThresholds;
+    });
+
+    const handleInputChange = (e, groupId, index) => {
+        const value = e.target.value;
+        setEditedThresholds((prev) => {
+          const newThresholds = { ...prev };
+          newThresholds[groupId][index].limit_max = value;
+          return newThresholds;
+        });
+    };
+
+    const handleSave = (groupId) => {
+        console.log("save", groupId, editedThresholds[groupId]);
+        const newGroupData = groupData.map((item) => {
+            if (item.value === groupId) {
+                return {
+                    ...item,
+                    threshold: editedThresholds[groupId],
+                };
+            }
+            return item;
+        });
+        setGroupData(newGroupData);
+        const selectedGroup = newGroupData.find((group) => group.value === groupId);
+        setSelectedGroup(selectedGroup);
+        console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
+        setIsEdit(false);
+    };
+
+    //刪除群組Confirm
+    const showConfirm = (groupId) => {
+        confirm({
+          title: '刪除群組',
+          icon: <ExclamationCircleOutlined />,
+          content: '確定刪除這個群組資料？',
+          onOk: () => handleOk(groupId),
+        //   onCancel: () => handleCancel(),
+          okText: "刪除",
+          cancelText: "取消",
+          okButtonProps :{
+            danger: true,
+          }
+        });
+        // setIsModalOpen(true);
+    };
+    const handleOk = (groupId) => {
+        handleDelete(groupId)
+        setIsEdit(false);
+    };
     // const handleCancel = () => {
-    //     setIsModalOpen(false);
+    //     setIsEdit(false);
     // };
 
+    //實現刪除
+    const handleDelete = async (groupId) => {
+        const newGroup = groupData.filter((group) => group.value !== groupId);
+        setGroupData(newGroup);
+        setSelectedGroup(newGroup[0]);
+        console.log("delete", newGroup, groupId, groupData, selectedGroup)
+    }
+    
     // //新增帳號modal
     // const [isadduserModalOpen, setIsadduserModalOpen] = useState(false);
     // const showadduserModal = () => {
@@ -91,7 +174,10 @@ function Threshold() {
     //     setIsadduserModalOpen(false);
     // };
 
-
+    //下拉搜尋
+    const onSearch = (value) => {
+        console.log('search:', value);
+    };
 
     return (
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
@@ -116,18 +202,61 @@ function Threshold() {
                             <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
                         </div>
                     </Modal> */}
+                    {/* <Modal 
+                        title="刪除群組" 
+                        visible={isModalOpen} 
+                        onOk={handleOk} 
+                        onCancel={handleCancel} 
+                        okText="新增" 
+                        cancelText="取消"
+                    >
+                        <p>確定刪除這個群組資料？</p>
+                    </Modal>  */}
                 </Header>
                 <Content class=" bg-white">
                     <div class=" p-10">
-                        <span class="font-bold">台北市區：</span>
-                        <Select
+                        <span class="font-bold">區處：</span>
+                        {/* <Select
                             defaultValue="1"
                             style={{
                                 width: 120,
                             }}
                             // onChange={handleChange}
-                            options={LINEGROUPID}
-                        />
+                            options={groupData}
+                        /> */}
+                        {isEdit ?
+                            <Select
+                                defaultValue={groupData[0].value}
+                                style={{ width: 120 }}
+                                onChange={handleGroupChange}
+                                disabled
+                                >
+                                {groupData.map((group) => (
+                                    <Option key={group.value} value={group.value}>
+                                        {group.area}
+                                    </Option>
+                                ))}
+                            </Select>
+                        :
+                            <Select
+                                showSearch
+                                placeholder="Select a person"
+                                optionFilterProp="children"
+                                defaultValue={groupData[0].value}
+                                style={{ width: 120 }}
+                                onChange={handleGroupChange}
+                                onSearch={onSearch}
+                                filterOption={(input, option) =>
+                                    (option?.area ?? '').includes(input)
+                                }
+                                >
+                                {groupData.map((group) => (
+                                    <Option key={group.value} value={group.value}  area={group.area}>
+                                        {group.area}
+                                    </Option>
+                                ))}
+                            </Select>
+                        }           
                     </div>
                     <div class=" px-10 pb-10 flex justify-between">
                         <div class="flex">
@@ -136,36 +265,45 @@ function Threshold() {
                             {isEdit ? 
                                 <div class="flex">
                                     <div>
-                                    <div  class="flex row ">
-                                        <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2" > %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div> */}
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p class="mr-2"> %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">低於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                    </div>
+                                        {editedThresholds[selectedGroup.value].map((item, index) => (
+                                            <div key={item.state} className="flex mb-3">
+                                            <div className="flex row">
+                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                {item.state === 1 && '一般'}
+                                                {item.state === 2 && '中度'}
+                                                {item.state === 3 && '重度'}
+                                                </p>
+                                                <p className="mr-2">警告門檻：高於 </p>
+                                                <p className="w-16 mr-2">
+                                                <Input
+                                                    value={item.limit_max}
+                                                    onChange={(e) => handleInputChange(e, selectedGroup.value, index)}
+                                                />
+                                                </p>
+                                                <p className="mr-2"> %</p>
+                                            </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                                 :
                                 //修改完後的顯示
                                 <div class="flex">
                                     <div>
-                                        <div  class="flex row ">
-                                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：高於 </p><p class="mr-2"> 70%</p></div>
-                                            {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 80%</p></div> */}
-                                        </div>
-                                        <div  class="flex row">
-                                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：高於 </p><p class="mr-2"> 80%</p></div>
-                                            {/* <div class="flex mb-3"><p class="mr-2">低於</p><p> 90%</p></div> */}
-                                        </div>
-                                        <div  class="flex row">
-                                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：高於 </p><p> 90%</p></div>
-                                            {/* <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div> */}
-                                        </div>
+                                        {/* <div  class="flex row "> */}
+                                        {selectedGroup.threshold.map((item) => (
+                                            <div key={item.state} className="flex mb-3">
+                                            <div class="flex row ">
+                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                {item.state === 1 && '一般'}
+                                                {item.state === 2 && '中度'}
+                                                {item.state === 3 && '重度'}
+                                                </p>
+                                                <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                            </div>
+                                            </div>
+                                        ))}
+                                        {/* </div> */}
                                     </div>
                                 </div>
                             }
@@ -173,8 +311,8 @@ function Threshold() {
                         </div>
                         {isEdit ?
                             <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >刪除群組</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={handleSave}>儲存</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => showConfirm(selectedGroup.value)}>刪除群組</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full"  onClick={() => handleSave(selectedGroup.value)}>儲存</button>
                             </div>
                             :
                             <div class="flex2">

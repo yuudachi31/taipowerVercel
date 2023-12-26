@@ -8,7 +8,11 @@ const layout = {
   wrapperCol: { span: 4 },
 };
 
-function UserInfo({ isEdited, user = null }) {
+function UserForm({ isEdited, user = null, onFormChange }) {
+  const handleChange = (changedValues) => {
+    console.log('Changed values:', changedValues);
+    onFormChange(changedValues);
+  };
   return (
     <Form {...layout} name="user-edit" colon={false} labelAlign="left">
       <Form.Item name="username" label="帳號名稱">
@@ -19,6 +23,25 @@ function UserInfo({ isEdited, user = null }) {
       </Form.Item>
       {/* <Form.Item name="password" label="密碼">
         {!isEdited && user ? <span>{user.password}</span> : <Input placeholder={ user ? user.email : "請輸入密碼"} size='middle' />}
+// =======
+//     <Form {...layout} name="user-edit" colon={false} labelAlign="left" onValuesChange={handleChange}>
+//       <Form.Item name="name" label="帳號名稱">
+//         {!isEdited && user ? <span>{user.name}</span> : <Input placeholder={ user ? user.name : "請輸入帳號名稱"} size="large" />}
+//       </Form.Item>
+//       <Form.Item name="email" label="信箱">
+//         {!isEdited && user ? <span>{user.email}</span> : <Input placeholder={ user ? user.email : "請輸入信箱"} size="large" />}
+//       </Form.Item>
+//       {/* <Form.Item name="password" label="密碼">
+//         {!isEdited && user ? (
+//           <span>{'*'.repeat(user.password.length)}</span>
+//         ) : (
+//           <Input
+//             type="password"
+//             placeholder={user ? user.password : "請輸入密碼"}
+//             size="large"
+//           />
+//         )}
+// >>>>>>> docker
       </Form.Item> */}
       <Form.Item name="group" label="身份權限">
         {!isEdited && user ? <span>{user.group.join(' / ')}</span> :
@@ -29,28 +52,35 @@ function UserInfo({ isEdited, user = null }) {
             allowClear
             size='middle'
           >
-            <Option value="運維人員">運維人員</Option>
-            <Option value="區處檢修人員">區處檢修人員</Option>
-            <Option value="區處管理者">區處管理者</Option>
+            <Option value="總處管理員">總處管理員</Option>
+            <Option value="總處操作員">總處操作員</Option>
+            <Option value="區處管理員">區處管理員</Option>
+            <Option value="區處操作員">區處操作員</Option>
           </Select>}
       </Form.Item>
       <Form.Item name="district" label="負責區域">
-        {!isEdited && user ? <span>台北</span> :
+        {!isEdited && user ? <span>{user.district}</span>:
           <Select
             placeholder="選擇區域"
             allowClear
             size='middle'
+//             defaultValue={user ? user.district : []}
+//             size='large'
+
           >
             <Option value="台北">台北</Option>
             <Option value="台中">台中</Option>
           </Select>}
       </Form.Item>
-      <Form.Item name="notify-group" label="通知群組">
-        {!isEdited && user ? <span>群組一</span> :
+      <Form.Item name="notifygroup" label="通知群組">
+        {!isEdited && user ? <span>{user.notifygroup}</span>:
           <Select
             placeholder="選擇群組"
             allowClear
             size='middle'
+//             defaultValue={user ? user.nnotifygroup : []}
+//             size='large'
+
           >
             <Option value="群組一">群組一</Option>
             <Option value="群組二">群組二</Option>
@@ -82,4 +112,4 @@ function UserInfo({ isEdited, user = null }) {
   );
 
 }
-export default UserInfo;
+export default UserForm;

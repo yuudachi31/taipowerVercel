@@ -90,7 +90,8 @@ function TRAbnormal() {
             dataIndex: 'see',
             render: text => {
                 return (
-                    <a href='/tr/info' >{text}</a>
+                    // <a href='/tr/info' >{text}</a>
+                    <div>{text}</div>
                 )
             }
         },

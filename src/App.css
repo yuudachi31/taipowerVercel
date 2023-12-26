@@ -42,3 +42,18 @@ p{
     transform: rotate(360deg);
   }
 }
+#upload-user{
+  background-color: blue;
+  opacity: 0;
+  position: absolute;
+}
+#upload-user-label{
+  cursor: pointer;
+}
+#test-upload-user{
+  background-color: blue;
+  opacity: 0;
+}
+#test-upload-user-label{
+  cursor: pointer;
+}

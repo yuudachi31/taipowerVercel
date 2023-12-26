@@ -29,6 +29,47 @@ export const LINEGROUPID = [
         label: '群組名稱4',
     },
 ]
+const handleFileUpload = () => {
+    let file = document.querySelector("[name=file]").files[0];
+
+
+    // const LENGTH = 1024 * 1024 * 8;
+    // let chunks = slice(file, LENGTH)
+    // let fileData = [];
+    // chunks.forEach((blobs) => {
+    //     fileData.push(blobs)
+
+    // })
+    console.log(file)
+    // const blob2 = new Blob(fileData, {
+    //     type: "application/x-gzip"
+    // });
+
+    // const link = document.createElement('a');
+    // link.href = window.URL.createObjectURL(blob2);
+    // link.download = 'test.csv';
+    // link.click();
+    // window.URL.revokeObjectURL(link.href);
+
+
+}
+function slice(file, piece = 1024 * 1024 * 5) {
+    let totalSize = file.size; // 檔案總大小
+    let start = 0; // 每次上傳的開始位元組
+    let end = start + piece; // 每次上傳的結尾位元組
+    let chunks = []
+    // console.log(file)
+    while (start < totalSize) {
+        // 根據長度擷取每次需要上傳的資料
+        // File物件繼承自Blob物件，因此包含slice方法
+        let blob = file.slice(start, end);
+        chunks.push(blob)
+        console.log(file)
+        start = end;
+        end = start + piece;
+    }
+    return chunks
+}
 
 function transformerImport() {
     // const _history = useHistory()
@@ -52,13 +93,25 @@ function transformerImport() {
                 </Header>
                 <Content class=" bg-white">
                     <div class="p-10 flex items-center">
-                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器關聯表</button>
-                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器詳細資料</button>
+
+                        <label for="upload-user" id="upload-user-label">
+                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器關聯表</button>
+                        </label>
+                        <input type="file"
+                            accept={[".csv.gz", ".csv"]}
+                            id="upload-user"
+                            onChange={(e) => {
+                                handleFileUpload();
+                            }}
+                            name="file" />
+
+
+                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器詳細資料</button>
                     </div>
 
                 </Content>
             </Content>
-           
+
         </Layout>
     );
 

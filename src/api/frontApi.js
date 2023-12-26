@@ -35,7 +35,7 @@ export const postUser = async (username, password) => {
 
 export const getUserRole = async (token) => {
   try {
-    const _url = `${baseURL}security/user/me`;
+    const _url = `${baseURL}security/user/me/`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const getUserRole = async (token) => {
 
 export const getTransformerList = async () => {
   try {
-    const _url = `${baseURL}transformer_infos`;
+    const _url = `${baseURL}Transformer_details`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -74,9 +74,12 @@ export const getTransformerList = async () => {
 // headers: {
 //     authorization: `Bearer ${token}`,
 // }
-export const getDailyRates = async () => {
+// export const getDailyRates = async (coor,div,date_year,date_month) => {
+//   try {
+//     const _url = `${baseURL}/dailypeak_rate/coor/${coor}/${div}/${date_year}/${date_month}   `;
+export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   try {
-    const _url = `${baseURL}dailypeak_rates    `;
+    const _url = `${baseURL}dailypeak_rate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -111,9 +114,9 @@ export const getQuarterRates  = async () => {
     console.log(err.response);
   }
 };
-export const getMonthlyRates  = async () => {
+export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
   try {
-    const _url = `${baseURL}monthlyrates    `;
+    const _url = `${baseURL}monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -130,16 +133,39 @@ export const getMonthlyRates  = async () => {
   }
 };
 
-export const getEachTransformer  = async (cust_id) => {
+export const getEachTransformer  = async (cust_id,div,tr_index) => {
   try {
    
-    const _url = `${baseURL}transformer_info/${cust_id}   `;
+    const _url = `${baseURL}Transformer_details/${cust_id}/${div}/${tr_index}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         // Authorization: `Bearer ${token}`
       },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const postAccountUpload  = async (file) => {
+  try {
+   
+    const _url = `${baseURL}account/upload_account`;
+    const result = await axios.post(_url, 
+      file
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
     });
     // console.log(result);
     if (result.status === 200) {
