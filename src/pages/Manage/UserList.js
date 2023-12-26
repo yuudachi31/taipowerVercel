@@ -20,7 +20,10 @@ export const USER_DATA = [
     email: 'aaa123@gmail.com',
     password: '11111111',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
+
   },
   {
     user_id: 1,
@@ -28,7 +31,9 @@ export const USER_DATA = [
     group: ['區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 2,
@@ -36,7 +41,9 @@ export const USER_DATA = [
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 3,
@@ -44,7 +51,9 @@ export const USER_DATA = [
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 4,
@@ -60,7 +69,9 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 6,
@@ -68,7 +79,9 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 7,
@@ -84,7 +97,9 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
   {
     user_id: 9,
@@ -92,7 +107,9 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北'],
-    notifygroup: ['群組一']
+    notifygroup: ['群組一'],
+    line_push: ['未連接'],
+    email_push: ['未連接'],
   },
 ];
 const onChange = (pagination, filters, sorter, extra) => {
