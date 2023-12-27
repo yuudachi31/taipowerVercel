@@ -20,7 +20,8 @@ export const USER_DATA = [
         name: 'User_001',
         // group: ['區處管理者', '運維人員'],
         // email: 'user1@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: true,
     },
     {
         user_id: 1,
@@ -28,7 +29,8 @@ export const USER_DATA = [
         name: 'User_002',
         // group: ['運維人員'],
         // email: 'user2@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: false
     },
     {
         user_id: 2,
@@ -36,7 +38,8 @@ export const USER_DATA = [
         name: 'User_003',
         // group: ['區處檢修人員'],
         // email: 'user3@gmail.com',
-        line_state: false
+        line_state: false,
+        email_state: true,
     },
     {
         user_id: 3,
@@ -44,7 +47,8 @@ export const USER_DATA = [
         name: 'User_004',
         // group: ['區處管理者', '運維人員'],
         // email: 'user4@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: true,
     },
     {
         user_id: 4,
@@ -52,7 +56,8 @@ export const USER_DATA = [
         name: 'User_005',
         // group: ['運維人員'],
         // email: 'user5@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: true,
     },
     {
         user_id: 5,
@@ -60,7 +65,8 @@ export const USER_DATA = [
         name: 'User_006',
         // group: ['區處檢修人員'],
         // email: 'user6@gmail.com',
-        line_state: false
+        line_state: false,
+        email_state: false,
     },
     {
         user_id: 6,
@@ -68,7 +74,8 @@ export const USER_DATA = [
         name: 'User_007',
         // group: ['區處管理者', '運維人員'],
         // email: 'user1@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: false,
     },
     {
         user_id: 7,
@@ -76,7 +83,8 @@ export const USER_DATA = [
         name: 'User_008',
         // group: ['運維人員'],
         // email: 'user2@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: true,
     },
     {
         user_id: 8,
@@ -84,7 +92,8 @@ export const USER_DATA = [
         name: 'User_009',
         // group: ['區處檢修人員'],
         // email: 'user3@gmail.com',
-        line_state: false
+        line_state: false,
+        email_state: true,
     },
     {
         user_id: 9,
@@ -92,7 +101,8 @@ export const USER_DATA = [
         name: 'User_010',
         // group: ['區處管理者', '運維人員'],
         // email: 'user4@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: true,
     },
     {
         user_id: 10,
@@ -100,7 +110,8 @@ export const USER_DATA = [
         name: 'User_011',
         // group: ['運維人員'],
         // email: 'user5@gmail.com',
-        line_state: true
+        line_state: true,
+        email_state: false,
     },
     {
         user_id: 11,
@@ -108,7 +119,8 @@ export const USER_DATA = [
         name: 'User_012',
         // group: ['區處檢修人員'],
         // email: 'user6@gmail.com',
-        line_state: false
+        line_state: false,
+        email_state: true,
     },
 ];
 // export const LINEGROUPID = [
@@ -200,6 +212,20 @@ function Notify() {
           title: ()=>{return <div class='font-medium text-base'>帳號</div> },
           dataIndex: 'name',
           key: 'name',
+        },
+        {
+            title: ()=>{return <div class='font-medium text-base'>電子信箱連接狀態</div> },
+            dataIndex: 'email_state',
+            key: 'email_state',
+            render: (record) => (
+                <div>
+                    {record ?
+                        <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
+                        :
+                        <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
+                    }
+                </div>
+            )
         },
         {
             title: ()=>{return <div class='font-medium text-base'>LINE 連接狀態</div> },
@@ -423,17 +449,11 @@ function Notify() {
                                 //修改完後的顯示
                                 <span class="font-bold">低於 10% 高於80%</span>
                             } */}
-
                         </div>
-                        {/* {isEdit ?
-                            <div class="flex">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >刪除群組</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={handleSave}>儲存</button>
-                            </div>
-                            :
-                            <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => setIsEdit(true)} >編輯</button>
-                        } */}
-
+                        <div class="flex2">
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
+                        </div>
                     </div>
 
                 </Content>
