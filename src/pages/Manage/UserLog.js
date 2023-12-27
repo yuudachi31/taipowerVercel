@@ -116,7 +116,7 @@ function UserLog() {
   return (
     <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
-        <h2 class="flex-auto font-bold text-2xl">操作管理</h2>
+        <h2 class="flex-auto font-bold text-2xl">檢視記錄檔</h2>
       </Header>
       <Content>
         <Layout>

@@ -33,7 +33,7 @@ const MENU_DATA = [
     },
     {
         route: '/manage/user_log',
-        title: '操作管理',
+        title: '檢視記錄檔',
         name: 'user_log',
         icon: <FolderOpenOutlined />
     },
