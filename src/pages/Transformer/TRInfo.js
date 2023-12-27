@@ -75,7 +75,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       setSelectedMonth(value.month());
     // const parsed = queryString.parse(window.location.search);
       console.log(value.year())
-      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()).then((data) => {
+      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
@@ -104,24 +104,31 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-    
-
-    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+    getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
 
-        saveEachTransInfo(data)
-        getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
-          if (data.errStatus) {
-            console.log(data.errDetail);
-          } else {
-    
-            saveMonthlyRates(data)
-          }
-        })
+        saveMonthlyRates(data)
       }
     })
+
+    // getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+
+    //     saveEachTransInfo(data)
+    //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+    //       if (data.errStatus) {
+    //         console.log(data.errDetail);
+    //       } else {
+    
+    //         saveMonthlyRates(data)
+    //       }
+    //     })
+    //   }
+    // })
 
     // result
 
