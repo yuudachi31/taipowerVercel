@@ -36,20 +36,20 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             <Option value="區處操作員">區處操作員</Option>
           </Select>}
       </Form.Item>
-      <Form.Item name="district" label="負責區域">
+      <Form.Item name="district" label="負責區處">
         {!isEdited && user ? <span>{user.district}</span>:
           <Select
-            placeholder="選擇區域"
+            placeholder="選擇區處"
             allowClear
             size='middle'
             defaultValue={user ? user.district : []}
 
           >
-            <Option value="台北">台北</Option>
-            <Option value="台中">台中</Option>
+            <Option value="台北市區">台北市區</Option>
+            <Option value="台中市區">台中市區</Option>
           </Select>}
       </Form.Item>
-      <Form.Item name="notifygroup" label="通知群組">
+      {/* <Form.Item name="notifygroup" label="通知群組">
         {!isEdited && user ? <span>{user.notifygroup}</span>:
           <Select
             placeholder="選擇群組"
@@ -60,7 +60,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             <Option value="群組一">群組一</Option>
             <Option value="群組二">群組二</Option>
           </Select>}
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item name="line_push" label="Line 帳號推播">
         {!isEdited && user ? <span>{user.line_push}</span> :
           <Select
