@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
+
 import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Rectangle } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 
@@ -24,7 +26,12 @@ function EChartMain({data}) {
         }
         
     }
-
+    const history = useHistory();
+    //Bar點擊
+    const BarClickToDay = () => {
+        // 使用 React Router 导航
+        history.push('/EChartDayPage');
+    }
     return (
         <ResponsiveContainer height={400}>
             <ComposedChart data={data} margin={0} barGap={60}>
@@ -34,9 +41,9 @@ function EChartMain({data}) {
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false}/>
-                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }}/>
-                <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}}/>
-                <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={16} fill="#BDBDBD" activeBar={{ fill: "#939393"}}/>
+                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToDay}/>
+                <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToDay}/>
+                <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={16} fill="#BDBDBD" activeBar={{ fill: "#939393"}} onClick={BarClickToDay}/>
               {/* 這條透明bar是為了hover寫的 */}
                 <Bar isAnimationActive={false} dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent"/>
                 {/* 圖表線 */}
