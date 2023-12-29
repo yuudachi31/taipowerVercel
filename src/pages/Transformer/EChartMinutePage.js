@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
+import { parse } from 'papaparse';
 
 const { Header, Sider, Content } = Layout;
 
@@ -88,14 +89,17 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = queryString.parse(window.location.search);
-    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
-      // getDailyRates().then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
-    //     saveDailyRates(data)
-    //   }
-    })
+    setSelectedYear(parsed.year)
+    setSelectedMonth(parsed.month)
+    setSelectedDay(parsed.day)
+    // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
+    // 
+    // //   if (data.errStatus) {
+    // //     console.log(data.errDetail);
+    // //   } else {
+    // //     saveDailyRates(data)
+    // //   }
+    // })
     // getEachTransformer
     getQuarterRates().then((data) => {
       if (data.errStatus) {
@@ -104,14 +108,14 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-    getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+    // getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //   if (data.errStatus) {
     //     console.log(data.errDetail);
     //   } else {
 
     //     saveMonthlyRates(data)
     //   }
-    })
+    // })
 
     // getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
     //   if (data.errStatus) {
@@ -176,7 +180,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
 
           </div>
-          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay} 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年 06 月 01 日 當日用電圖表</h3>)}
+          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay}日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
 
           <div class="flex flex-1 items-center justify-end">
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>

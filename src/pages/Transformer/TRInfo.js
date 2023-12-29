@@ -88,22 +88,22 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = queryString.parse(window.location.search);
-    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
-      // getDailyRates().then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        saveDailyRates(data)
-      }
-    })
+    // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
+    //   // getDailyRates().then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     saveDailyRates(data)
+    //   }
+    // })
     // getEachTransformer
-    getQuarterRates().then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        saveQuarterRates(data)
-      }
-    })
+    // getQuarterRates().then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     saveQuarterRates(data)
+    //   }
+    // })
     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);

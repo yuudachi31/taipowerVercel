@@ -105,6 +105,7 @@ export const transformerReducer = (state = initialState, action) => {
             'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
             'uti_rate': Math.ceil(element.peak_rate),
             'x_key': month,
+            'year':element.date_year,
             'predict_bars': 0
           })
         } else {
@@ -115,6 +116,7 @@ export const transformerReducer = (state = initialState, action) => {
             'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
             'uti_rate': Math.ceil(element.peak_rate),
             'x_key': month,
+            'year':element.date_year,
             'predict_bars': Math.ceil(element.peak_rate),
           })
         }

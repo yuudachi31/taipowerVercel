@@ -34,15 +34,15 @@ const onChangeMonth = (date, dateString) => {
 function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
  
-  // const handlemonthChange = (value, mode) => {
-  //   if (mode === 'month') {
-  //     setSelectedYear(value.year());
-  //     setSelectedMonth(value.month());
-  //   }
-  // };
+  const handlemonthChange = (value, mode) => {
+    if (mode === 'month') {
+      setSelectedYear(value.year());
+      setSelectedMonth(value.month());
+   }
+  };
   const handledayChange = (value,mode) => {
     
     setSelectedDay(mode);
@@ -68,7 +68,8 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());
-      setSelectedMonth(value.month());
+      setSelectedMonth(value.month()+1);
+      // console.log(value.month())
     // const parsed = queryString.parse(window.location.search);
       console.log(value.year())
       getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
@@ -81,35 +82,37 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
       })
     }
   }
-  // console.log(transformer.dailyRatesList)
-  // useEffect(() => {
-  //   const parsed = queryString.parse(window.location.search);
-  //   getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
-      // getDailyRates().then((data) => {
-  //     if (data.errStatus) {
-  //       console.log(data.errDetail);
-  //     } else {
-  //       saveDailyRates(data)
-  //     }
-  //   })
-  //   // getEachTransformer
-  //   getQuarterRates().then((data) => {
-  //     if (data.errStatus) {
-  //       console.log(data.errDetail);
-  //     } else {
-  //       saveQuarterRates(data)
-  //     }
-  //   })
-  //   getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
-  //     if (data.errStatus) {
-  //       console.log(data.errDetail);
-  //     } else {
+  console.log(transformer.dailyRatesList)
+  useEffect(() => {
+    const parsed = queryString.parse(window.location.search);
+     setSelectedMonth(parsed.month)
+     setSelectedYear(parsed.year)
+    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,parsed.month).then((data) => {
+     
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        saveDailyRates(data)
+      }
+    })
+    // getEachTransformer
+    // getQuarterRates().then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     saveQuarterRates(data)
+    //   }
+    // })
+    // getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
 
-  //       saveMonthlyRates(data)
-  //     }
-  //   })
+    //     saveMonthlyRates(data)
+    //   }
+    // })
 
-  // }, [])
+  }, [])
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
@@ -181,7 +184,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
             {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
             <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
           </div>
-          {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth+1} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 6 月每日用電圖表</h3>)}
+          {selectedMonth ?(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 6 月每日用電圖表</h3>)}
           <div class="flex flex-1 items-center justify-end">
 
             <span class="w-7 h-3 bg-green-500"></span>

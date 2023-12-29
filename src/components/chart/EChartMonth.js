@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 
 import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Rectangle } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
-
+import queryString from "query-string";
+const parsed = queryString.parse(window.location.search);
 function EChartMain({data}) {
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
 
@@ -28,9 +29,10 @@ function EChartMain({data}) {
     }
     const history = useHistory();
     //Bar點擊
-    const BarClickToDay = () => {
+    const BarClickToDay = ({ payload={} }) => {
         // 使用 React Router 导航
-        history.push('/EChartDayPage');
+        console.log(payload)
+        history.push(`/EChartDayPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
     }
     return (
         <ResponsiveContainer height={400}>
