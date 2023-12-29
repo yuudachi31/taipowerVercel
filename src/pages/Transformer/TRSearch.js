@@ -114,10 +114,10 @@ function TRSearch({ transformer, saveTransData }) {
             title: '利用率',
             dataIndex: 'uti_rate',
         },
-        {
-            title: '閥值',
-            dataIndex: 'transformer_threshold',
-        },
+        // {
+        //     title: '閥值',
+        //     dataIndex: 'transformer_threshold',
+        // },
     ];
     const data = [];
 
