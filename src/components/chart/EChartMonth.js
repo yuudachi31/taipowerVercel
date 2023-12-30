@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Rectangle } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 import queryString from "query-string";
-const parsed = queryString.parse(window.location.search);
+
 function EChartMain({data}) {
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
 
@@ -31,7 +31,9 @@ function EChartMain({data}) {
     //Bar點擊
     const BarClickToMonth = ({ payload={} }) => {
         // 使用 React Router 导航
+        const parsed = queryString.parse(window.location.search);
         console.log(payload)
+        console.log(parsed)
         history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
     }
     return (

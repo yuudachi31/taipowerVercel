@@ -21,7 +21,7 @@ export const transformerReducer = (state = initialState, action) => {
             coor: [element.coor, element.div, element.tr_index],
             div: element.div,
             tr_index: 'NA',
-            uti_rate: element.uti_rate,
+            uti_rate: element.uti_rate.toFixed(1),
             cap: element.cap,
             type: element.type,
             // cust_num: element.cust_num,
@@ -37,7 +37,7 @@ export const transformerReducer = (state = initialState, action) => {
             coor: [element.coor, element.div, element.tr_index],
             div: element.div,
             tr_index: element.tr_index,
-            uti_rate: element.uti_rate,
+            uti_rate: element.uti_rate.toFixed(1),
             cap: element.cap,
             type: element.type,
             // cust_num: element.cust_num,
@@ -59,12 +59,12 @@ export const transformerReducer = (state = initialState, action) => {
       action.payload.forEach((element, index) => {
         dailyrates.push({
           key: index,
-          'load_on': Math.ceil(element.peak_rate),
-          'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
-          'load_off': Math.ceil(element.off_peak_rate),
-          'load_total': Math.ceil(element.peak_rate),
-          'uti_rate': Math.ceil(element.peak_rate),
-          'uti_rate_two': Math.ceil(element.off_peak_rate),
+          'load_on': element.peak_rate.toFixed(1),
+          'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
+          'load_off': element.off_peak_rate.toFixed(1),
+          'load_total': element.peak_rate.toFixed(1),
+          'uti_rate': element.peak_rate.toFixed(1),
+          'uti_rate_two': element.off_peak_rate.toFixed(1),
           'x_key': element.date_day
         })
       });
@@ -79,7 +79,7 @@ export const transformerReducer = (state = initialState, action) => {
         if (index != 0 && index % 8 == 0) {
           quarterRates.push({
             key: index,
-            'load': element.uti_rate_15min,
+            'load': element.uti_rate_15min.toFixed(1),
             'x_key': time,
           })
 
