@@ -110,11 +110,11 @@ function TRAbnormal() {
             key: 'rate',
             dataIndex: 'rate',
         },
-        {
-            title: '閥值',
-            key: 'threshold',
-            dataIndex: 'threshold',
-        },
+        // {
+        //     title: '閥值',
+        //     key: 'threshold',
+        //     dataIndex: 'threshold',
+        // },
         {
             title: '危險等級',
             key: 'state',
