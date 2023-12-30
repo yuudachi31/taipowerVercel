@@ -6,9 +6,10 @@ import { getTransformerList } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
+
 //antd
-import { Search ,Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
-import { PrinterOutlined } from '@ant-design/icons';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { PrinterOutlined, AudioOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = ['A222BC3333', 'A222BC1111', 'A222BC2222'];
@@ -17,7 +18,7 @@ const Group = ['TO1', 'TO2', 'TO3'];
 const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
-
+const { Search } = Input;
 
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -111,7 +112,7 @@ function TRSearch({ transformer, saveTransData }) {
             dataIndex: 'cap',
         },
         {
-            title: '利用率',
+            title: '利用率(%)',
             dataIndex: 'uti_rate',
         },
         {
@@ -120,34 +121,6 @@ function TRSearch({ transformer, saveTransData }) {
         },
     ];
     const data = [];
-
-    // console.log(transformer)
-    // function pushData() {
-    //     transformer.transformerList.forEach((element, index) => {
-    //         data.push({
-    //             key: index,
-    //             see: element.coor,
-    //             group: element.div,
-    //             number: 'nan',
-    //             rate: 'nan',
-    //             vol: 'nan',
-    //             notify: 'nan'
-    //         })
-    //     });
-    //     console.log(transformer)
-    // }
-
-    // for (let i = 0; i < 46; i++) {
-    //     data.push({
-    //         key: i,
-    //         see: 'A222BC3333',
-    //         group: `T01`,
-    //         number: '001',
-    //         rate: '70.3',
-    //         vol: 32,
-    //         notify: '是'
-    //     });
-    // }
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
@@ -200,23 +173,28 @@ function TRSearch({ transformer, saveTransData }) {
             },
         ],
     };
+    const [searchText, setSearchText] = useState('');
+    const filteredData = transformer.transformerList.filter(user => user.coor.includes(searchText) || user.div.some(div => div.includes(searchText)));
+    const onSearch = (value, _e, info) => console.log(info?.source, value);
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
-                <button className="btn " style={{ height: 40}}><PrinterOutlined />匯出</button>
+                <button className="btn " style={{ height: 40 }}><PrinterOutlined />匯出</button>
                 <div className="flex">
-                {/* <Search
-            placeholder="請輸入帳號名稱或身份權限"
-            size="large"
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
-
-          /> */}
+                    <Search
+                    
+                        placeholder="input search text"
+                        size="large"
+                        onSearch={onSearch}
+                        style={{
+                            width: 200,
+                        }}
+                    />
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
                     <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
-            <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)} 
+            <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
                 footer={[
                     // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
                     <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,

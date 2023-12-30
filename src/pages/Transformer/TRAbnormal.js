@@ -7,8 +7,9 @@ import { useHistory } from "react-router-dom";
 import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
-
+const { Search } = Input;
 function TRAbnormal() {
+    
     //刪除modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
@@ -106,12 +107,12 @@ function TRAbnormal() {
             dataIndex: 'number',
         }, 
         {
-            title: '利用率',
+            title: '利用率(%)',
             key: 'rate',
             dataIndex: 'rate',
         },
         {
-            title: '閥值',
+            title: '閥值(%)',
             key: 'threshold',
             dataIndex: 'threshold',
         },
@@ -195,15 +196,26 @@ function TRAbnormal() {
             },
         ],
     };
+    const onSearch = (value, _e, info) => console.log(info?.source, value);
+   
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
             <div className="flex">
-                <button className="btn-red mr-7" style={{ height: 40, width: 60 }} onClick={confirm}>刪除</button>
+            
+                <button className="btn-red mr-4" style={{ height: 40}} onClick={confirm}>刪除</button>
                 
-                <button className="btn " style={{ height: 40, width: 80 }}>隔天通知</button>
+                <button className="btn " style={{ height: 40 }}>隔天通知</button>
             </div>
                 <div className="flex">
+                <Search
+                    
+                    placeholder="input search text"
+                    onSearch={onSearch}
+                    style={{
+                        width: 200,
+                    }}
+                />
                     <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
