@@ -4,7 +4,7 @@ import axios from "axios";
 // const baseURL = `https://taipower.azurewebsites.net/`;
 const baseURL = `https://amibackendweb.azurewebsites.net/`;
 
- const glabalToken = document.cookie.split("; ").find((row) => row.startsWith("fltk")).split("=")[1]
+ const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
 //  console.log(glabalToken)
 // //   ? true
 //   : false;
