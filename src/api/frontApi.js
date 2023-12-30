@@ -4,7 +4,7 @@ import axios from "axios";
 // const baseURL = `https://taipower.azurewebsites.net/`;
 const baseURL = `https://amibackendweb.azurewebsites.net/`;
 
-//  const glabalToken = document.cookie.split("; ").find((row) => row.startsWith("fltk")).split("=")[1]
+ const glabalToken = document.cookie.split("; ").find((row) => row.startsWith("fltk")).split("=")[1]
 //  console.log(glabalToken)
 // //   ? true
 //   : false;
@@ -167,6 +167,28 @@ export const postAccountUpload  = async (file) => {
         "Content-Type": "application/json",
         Accept: "application/json",
         // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getRegionUser  = async (regions_id) => {
+  try {
+   
+    const _url = `${baseURL}accounts/${regions_id}`;
+    const result = await axios.post(_url,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
       },
       
     });
