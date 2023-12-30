@@ -31,10 +31,10 @@ function EChartMain({data}) {
     const history = useHistory();
     //Bar點擊
     
-    const BarClickToMinute = ({ payload={} }) => {
+    const BarClickToDay = ({ payload={} }) => {
         const parsed = queryString.parse(window.location.search);
         // 使用 React Router 导航
-        history.push(`/EChartMinutePage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
+        history.push(`/EChartDayPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
     }
 // console.log(data)
     return (
@@ -46,8 +46,8 @@ function EChartMain({data}) {
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false}/>
-                <Bar dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToMinute}/>
-                <Bar dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToMinute}/>
+                <Bar dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToDay}/>
+                <Bar dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToDay}/>
                 <Bar dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent" />
                 {/* 圖表線 */}
                 {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
