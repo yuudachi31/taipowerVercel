@@ -87,7 +87,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
     const parsed = queryString.parse(window.location.search);
      setSelectedMonth(parsed.month)
      setSelectedYear(parsed.year)
-    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,parsed.month).then((data) => {
+    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month).then((data) => {
      
       if (data.errStatus) {
         console.log(data.errDetail);
