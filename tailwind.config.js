@@ -31,6 +31,10 @@ module.exports = {
           200:"#FAFAFA",
           300:"#C4C4C4",
           400:"#7B7B7B",
+        },
+        orange:{
+          400:"#fb923c",
+          300:"#fdba74"
         }
       },
       fontSize: {

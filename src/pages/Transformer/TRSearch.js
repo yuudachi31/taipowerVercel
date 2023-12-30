@@ -7,7 +7,7 @@ import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { Search ,Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const CheckboxGroup = Checkbox.Group;
@@ -203,9 +203,15 @@ function TRSearch({ transformer, saveTransData }) {
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
-                <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button>
+                <button className="btn " style={{ height: 40}}><PrinterOutlined />匯出</button>
                 <div className="flex">
+                {/* <Search
+            placeholder="請輸入帳號名稱或身份權限"
+            size="large"
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
 
+          /> */}
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
                     <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
