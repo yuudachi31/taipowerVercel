@@ -174,7 +174,7 @@ function TRSearch({ transformer, saveTransData }) {
         ],
     };
     const [searchText, setSearchText] = useState('');
-    const filteredData = transformer.transformerList.filter(user => user.coor.includes(searchText) || user.div.some(div => div.includes(searchText)));
+    // const filteredData = transformer.transformerList.filter(user => user.coor.includes(searchText) || user.div.some(div => div.includes(searchText)));
     const onSearch = (value, _e, info) => console.log(info?.source, value);
     return (
         <div className='wrapper px-24 py-4'>
