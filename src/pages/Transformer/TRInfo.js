@@ -113,12 +113,13 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       }
     })
 
-    // getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
 
-    //     saveEachTransInfo(data)
+        saveEachTransInfo(data)
+        }})
     //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //       if (data.errStatus) {
     //         console.log(data.errDetail);

@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
 import { parse } from 'papaparse';
-
+const parsed = queryString.parse(window.location.search);
 const { Header, Sider, Content } = Layout;
 
 const Timeformat = 'HH:mm';
@@ -25,7 +25,9 @@ const Timeformat = 'HH:mm';
 const yearFormat = 'YYYY 年';
 const monthFormat = 'YYYY 年 MM 月';
 const dayFormat = 'YYYY 年 MM 月 DD 日';
-const currentDate = new Date('2022/6/1');
+// const currentDate = new Date('2022/6/1');
+const currentDate = new Date(`${parsed.year}/${parsed.month}/${parsed.day}`);
+
 console.log('currentDate', currentDate)
 const currentMonth = currentDate.getMonth;
 const currentHour = currentDate.getHours;
@@ -51,47 +53,11 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const handledayChange = (value,mode) => {
     
     setSelectedDay(mode);
-    
-  };
-  // console.log(transformer.dailyRatesList)
-
-  const handlePanelChange = (value, mode) => {
-    if (mode === 'year') {
-      setSelectedYear(value.year());
-      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
-
-          saveMonthlyRates(data)
-        }
-      })
-    }
-  };
-  const handlePanelChange_daily =(value,mode)=>{
-    const parsed = queryString.parse(window.location.search);
-    // setSelectedYear(value.year());
-    if (mode === 'month') {
-      setSelectedYear(value.year());
-      setSelectedMonth(value.month());
-    // const parsed = queryString.parse(window.location.search);
-      console.log(value.year())
-      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
-
-          saveDailyRates(data)
-        }
-      })
-    }
-  }
-  // console.log(transformer.dailyRatesList)
-  useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
-     setSelectedMonth(parsed.month)
-     setSelectedYear(parsed.year)
-    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month).then((data) => {
+    let selectedDate = mode.split(" ")
+    setSelectedYear(selectedDate[0])
+    setSelectedMonth(selectedDate[2])
+    setSelectedDay(selectedDate[4])
+    getQuarterRates(parsed.coor, parsed.div, parsed.tr_index,selectedDate[0],selectedDate[2],selectedDate[4]).then((data) => {
      
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -99,21 +65,62 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-    // getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
+  };
+  // console.log(transformer.dailyRatesList)
 
-    //     saveMonthlyRates(data)
-    //   }
-    // })
+  // const handlePanelChange = (value, mode) => {
+  //   if (mode === 'year') {
+  //     setSelectedYear(value.year());
+  //     getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
+  //       if (data.errStatus) {
+  //         console.log(data.errDetail);
+  //       } else {
 
-    // getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
+  //         saveMonthlyRates(data)
+  //       }
+  //     })
+  //   }
+  // };
+  // const handlePanelChange_daily =(value,mode)=>{
+  //   const parsed = queryString.parse(window.location.search);
+  //   // setSelectedYear(value.year());
+  //   if (mode === 'month') {
+  //     setSelectedYear(value.year());
+  //     setSelectedMonth(value.month());
+  //   // const parsed = queryString.parse(window.location.search);
+  //     console.log(value.year())
+  //     getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
+  //       if (data.errStatus) {
+  //         console.log(data.errDetail);
+  //       } else {
 
-    //     saveEachTransInfo(data)
+  //         saveDailyRates(data)
+  //       }
+  //     })
+  //   }
+  // }
+  // console.log(transformer.dailyRatesList)
+  useEffect(() => {
+    const parsed = queryString.parse(window.location.search);
+     setSelectedMonth(parsed.month)
+     setSelectedYear(parsed.year)
+     setSelectedDay(parsed.day)
+     getQuarterRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month,parsed.day).then((data) => {
+     
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        saveQuarterRates(data)
+      }
+    })
+   
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+
+        saveEachTransInfo(data)
+      }})
     //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //       if (data.errStatus) {
     //         console.log(data.errDetail);
@@ -172,7 +179,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
 
           </div>
-          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedDay}日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
+          { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
 
           <div class="flex flex-1 items-center justify-end">
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>

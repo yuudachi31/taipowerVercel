@@ -95,14 +95,13 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         saveDailyRates(data)
       }
     })
-    // getEachTransformer
-    // getQuarterRates().then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
-    //     saveQuarterRates(data)
-    //   }
-    // })
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+
+        saveEachTransInfo(data)
+      }})
     // getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //   if (data.errStatus) {
     //     console.log(data.errDetail);

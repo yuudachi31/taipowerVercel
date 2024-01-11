@@ -99,9 +99,10 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   }
 };
 
-export const getQuarterRates  = async () => {
+export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
   try {
-    const _url = `${baseURL}quarterrates    `;
+    const _url = `${baseURL}quarterrate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -183,7 +184,7 @@ export const getRegionUser  = async (regions_id) => {
   try {
    
     const _url = `${baseURL}accounts/${regions_id}`;
-    const result = await axios.post(_url,
+    const result = await axios.get(_url,
     {
       headers: {
         "Content-Type": "application/json",

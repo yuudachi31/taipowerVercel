@@ -114,7 +114,7 @@ function UserList() {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
 useEffect(()=>{
-  getRegionUser(1)
+  getRegionUser("01")
 })
 
 
