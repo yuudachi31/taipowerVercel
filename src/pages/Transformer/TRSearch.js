@@ -140,12 +140,25 @@ function TRSearch({ transformer, saveTransData }) {
         selectedRowKeys,
         onChange: onSelectChange,
         selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
+
+            {
+                key: 'all',
+                text: '全選當頁',
+                onSelect: (changableRowKeys) => {
+
+                    setSelectedRowKeys(changableRowKeys);
+                }
+            },
+            {
+                key: 'none',
+                text: '清空選項', // 自定义不选的文本名称
+                onSelect: () => {
+                    setSelectedRowKeys([]);
+                },
+            },
             {
                 key: 'odd',
-                text: 'Select Odd Row',
+                text: '選擇奇數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -159,7 +172,7 @@ function TRSearch({ transformer, saveTransData }) {
             },
             {
                 key: 'even',
-                text: 'Select Even Row',
+                text: '選擇偶數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -182,8 +195,8 @@ function TRSearch({ transformer, saveTransData }) {
                 <button className="btn " style={{ height: 40 }}><PrinterOutlined />匯出</button>
                 <div className="flex">
                     <Search
-                    
-                        placeholder="input search text"
+
+                        placeholder="搜尋圖號座標"
                         size="large"
                         onSearch={onSearch}
                         style={{

@@ -209,8 +209,8 @@ function TRAbnormal() {
             </div>
                 <div className="flex">
                 <Search
-                    
-                    placeholder="input search text"
+                    size="large"
+                    placeholder="搜尋圖號座標"
                     onSearch={onSearch}
                     style={{
                         width: 200,
