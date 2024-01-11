@@ -11,7 +11,7 @@ import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer,getQuarterRatesRange} from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -28,7 +28,7 @@ const dayFormat = 'YYYY 年 MM 月 DD 日';
 // const currentDate = new Date('2022/6/1');
 const currentDate = new Date(`${parsed.year}/${parsed.month}/${parsed.day}`);
 
-console.log('currentDate', currentDate)
+// console.log(moment(new Date('2022/5/5'),dayFormat))
 const currentMonth = currentDate.getMonth;
 const currentHour = currentDate.getHours;
 const defaultTimeRange = [currentHour, currentHour];
@@ -43,7 +43,23 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
- 
+ const [interval,setInterval]=useState(
+  {
+    "min_year": 2022,
+    "min_month": 5,
+    "min_day": 1,
+    "max_year": 2022,
+    "max_month": 11,
+    "max_day": 31
+  }
+)
+let disabledDate= (cur)=>{
+  // console.log(cur&&cur<moment().startOf('day'))
+  // console.log(cur&&cur<moment().startOf('day'))
+  // moment(new Date('2022/5/5'),dayFormat)
+  return(cur&&cur<moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)).startOf('day')||cur&&cur>moment(new Date(`${interval.max_year}/${interval.max_month}/${interval.max_day}`)).startOf('day'))
+  }
+console.log()
   // const handlemonthChange = (value, mode) => {
   //   if (mode === 'month') {
   //     setSelectedYear(value.year());
@@ -101,7 +117,9 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // }
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
+    console.log(moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)))
     const parsed = queryString.parse(window.location.search);
+    // let interval = {}
      setSelectedMonth(parsed.month)
      setSelectedYear(parsed.year)
      setSelectedDay(parsed.day)
@@ -113,7 +131,15 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveQuarterRates(data)
       }
     })
-   
+    getQuarterRatesRange(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+     
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setInterval(data[0])
+      }
+    })
+    // let currentDate = new Date(`${parsed.year}/${parsed.month}/${parsed.day}`);
     getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -176,8 +202,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         <Header class="flex items-center justify-between">
           <div class="space-x-3 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, dayFormat)} format={dayFormat} onChange={handledayChange} />
-
+            {/* <DatePicker defaultValue={moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`), dayFormat)}   format={dayFormat} onChange={handledayChange} /> */}
+            <DatePicker defaultValue={moment(currentDate, dayFormat)} disabledDate={disabledDate}  format={dayFormat} onChange={handledayChange} />
           </div>
           { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
 
