@@ -221,3 +221,22 @@ export const getRegionUser  = async (regions_id) => {
     console.log(err.response);
   }
 };
+
+export const getAbnormalTransList = async () => {
+  try {
+    const _url = `${baseURL}transformer_detail/danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};

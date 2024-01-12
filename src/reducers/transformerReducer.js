@@ -1,10 +1,11 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO,SAVE_ABN_TRANS_DATA } from "../utils/actionType/frontActionType";
 
 const initialState = {
   transformerList: [],
   dailyRatesList: [],
   quarterRatesList: [],
   monthlyRatesList: [],
+  ABNtransformerList:[],
   eachTransformerInfo: {
 
   }
@@ -54,6 +55,51 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         transformerList: data,
       };
+      case SAVE_ABN_TRANS_DATA:
+        const abnData = [];
+        action.payload.forEach((element, index) => {
+          if (element.power_type == 'Y接') {
+            abnData.push({
+              key: index,
+              coor: [element.coor, element.div, element.tr_index],
+              div: element.div,
+              tr_index: 'NA',
+              uti_rate: element.uti_rate.toFixed(1),
+              cap: element.cap,
+              // type: element.type,
+              // cust_num: element.cust_num,
+              num: element.num,
+              transformer_threshold: element.transformer_threshold,
+              power_type: element.power_type,
+              // addr: element.addr,
+              // notify: 'nan',
+              danger_lv: [String(element.danger_lv)]
+            })
+          } else {
+            abnData.push({
+              key: index,
+              coor: [element.coor, element.div, element.tr_index],
+              div: element.div,
+              tr_index: element.tr_index,
+              uti_rate: element.uti_rate.toFixed(1),
+              cap: element.cap,
+              // type: element.type,
+              // cust_num: element.cust_num,
+              num: element.num,
+              transformer_threshold: element.transformer_threshold,
+              power_type: element.power_type,
+              // addr: element.addr,
+              // notify: 'nan'
+              danger_lv: [String(element.danger_lv)]
+            })
+          }
+  
+        });
+        return {
+          ...state,
+          ABNtransformerList: abnData,
+        };
+
     case SAVE_DAILYRATES:
       const dailyrates = [];
       action.payload.forEach((element, index) => {
