@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
+import IndustryInfo from "./pages/Transformer/IndustryInfo";
 import EChartMonthPage from "./pages/Transformer/EChartMonthPage";
 import EChartDayPage from "./pages/Transformer/EChartDayPage";
 import AMIInfo from "./pages/Transformer/AMIInfo";
@@ -65,6 +66,10 @@ function App() {
         <Route path="/EChartDayPage">
           <Header />
           <EChartDayPage />
+        </Route>
+        <Route path="/IndustryInfo">
+          <Header />
+          <IndustryInfo />
         </Route>
       </Switch>
     </BrowserRouter>
