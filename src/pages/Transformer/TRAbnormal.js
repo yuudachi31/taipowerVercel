@@ -95,7 +95,7 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             render: text => {
                 return (
                     // <a href='/tr/info' >{text}</a>
-                    <div>{text}</div>
+                    <div>{text[0]}</div>
                 )
             }
         },
