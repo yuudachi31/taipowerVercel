@@ -166,12 +166,25 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
         selectedRowKeys,
         onChange: onSelectChange,
         selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
+            
+            {
+                key: 'all',
+                text: '全選當頁',
+                onSelect: (changableRowKeys) => {
+
+                    setSelectedRowKeys(changableRowKeys);
+                }
+            },
+            {
+                key: 'none',
+                text: '清空選項', // 自定义不选的文本名称
+                onSelect: () => {
+                    setSelectedRowKeys([]);
+                },
+            },
             {
                 key: 'odd',
-                text: 'Select Odd Row',
+                text: '選擇奇數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -185,7 +198,7 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             },
             {
                 key: 'even',
-                text: 'Select Even Row',
+                text: '選擇偶數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -227,8 +240,8 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             </div>
                 <div className="flex">
                 <Search
-                    
-                    placeholder="input search text"
+                    size="large"
+                    placeholder="搜尋圖號座標"
                     onSearch={onSearch}
                     style={{
                         width: 200,
