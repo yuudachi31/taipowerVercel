@@ -108,7 +108,7 @@ function TRSearch({ transformer, saveTransData }) {
             title: '第幾具',
             dataIndex: 'tr_index',
         }, {
-            title: '容量(單位)',
+            title: '容量(KW)',
             dataIndex: 'cap',
         },
         {
