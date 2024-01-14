@@ -58,7 +58,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             defaultValue={user ? user.lock : []}
 
           >
-            <Option value="未鎖定">未鎖定</Option>
+            <Option value="解鎖">解鎖</Option>
             <Option value="鎖定">鎖定</Option>
           </Select>}
       </Form.Item>

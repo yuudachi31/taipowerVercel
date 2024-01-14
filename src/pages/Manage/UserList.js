@@ -20,7 +20,7 @@ export const USER_DATA = [
     email: 'aaa123@gmail.com',
     password: '11111111',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
 
 
   },
@@ -30,7 +30,7 @@ export const USER_DATA = [
     group: ['區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 2,
@@ -38,7 +38,7 @@ export const USER_DATA = [
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 3,
@@ -46,7 +46,7 @@ export const USER_DATA = [
     group: ['區處管理員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 4,
@@ -54,7 +54,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 5,
@@ -62,7 +62,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 6,
@@ -70,7 +70,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 7,
@@ -78,7 +78,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 8,
@@ -86,7 +86,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
   {
     user_id: 9,
@@ -94,7 +94,7 @@ export const USER_DATA = [
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
     district: ['台北市區'],
-    lock:['未鎖定'],
+    lock:['解鎖'],
   },
 ];
 const onChange = (pagination, filters, sorter, extra) => {
