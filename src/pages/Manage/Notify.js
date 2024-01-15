@@ -213,34 +213,34 @@ function Notify() {
           dataIndex: 'name',
           key: 'name',
         },
-        {
-            title: ()=>{return <div class='font-medium text-base'>電子信箱連接狀態</div> },
-            dataIndex: 'email_state',
-            key: 'email_state',
-            render: (record) => (
-                <div>
-                    {record ?
-                        <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
-                        :
-                        <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
-                    }
-                </div>
-            )
-        },
-        {
-            title: ()=>{return <div class='font-medium text-base'>LINE 連接狀態</div> },
-            dataIndex: 'line_state',
-            key: 'line_state',
-            render: (record) => (
-                <div>
-                    {record ?
-                        <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
-                        :
-                        <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
-                    }
-                </div>
-            )
-        },
+        // {
+        //     title: ()=>{return <div class='font-medium text-base'>電子信箱連接狀態</div> },
+        //     dataIndex: 'email_state',
+        //     key: 'email_state',
+        //     render: (record) => (
+        //         <div>
+        //             {record ?
+        //                 <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
+        //                 :
+        //                 <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
+        //             }
+        //         </div>
+        //     )
+        // },
+        // {
+        //     title: ()=>{return <div class='font-medium text-base'>LINE 連接狀態</div> },
+        //     dataIndex: 'line_state',
+        //     key: 'line_state',
+        //     render: (record) => (
+        //         <div>
+        //             {record ?
+        //                 <CheckCircleFilled style={{ fontSize: '20px', color: '#7ACA00' }} />
+        //                 :
+        //                 <CloseCircleFilled style={{ fontSize: '20px', color: '#F66C55' }} />
+        //             }
+        //         </div>
+        //     )
+        // },
         {
           title: ()=>{return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button>},
           key: 'action',
