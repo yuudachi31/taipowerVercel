@@ -49,6 +49,19 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             <Option value="台中市區">台中市區</Option>
           </Select>}
       </Form.Item>
+      <Form.Item name="lock" label="鎖定狀態">
+        {!isEdited && user ? <span>{user.lock}</span>:
+          <Select
+            placeholder="查看狀態"
+            allowClear
+            size='middle'
+            defaultValue={user ? user.lock : []}
+
+          >
+            <Option value="解鎖">解鎖</Option>
+            <Option value="鎖定">鎖定</Option>
+          </Select>}
+      </Form.Item>
       {/* <Form.Item name="notifygroup" label="通知群組">
         {!isEdited && user ? <span>{user.notifygroup}</span>:
           <Select
@@ -61,7 +74,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             <Option value="群組二">群組二</Option>
           </Select>}
       </Form.Item> */}
-      <Form.Item name="line_push" label="Line 帳號推播">
+      {/* <Form.Item name="line_push" label="Line 帳號推播">
         {!isEdited && user ? <span>{user.line_push}</span> :
           <Select
             placeholder="是否連接Line帳號"
@@ -84,7 +97,7 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             <Option value="已連接">已連接</Option>
             <Option value="未連接">未連接</Option>
           </Select>}
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 
