@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import {getAbnormalTransList}from'../../api/frontApi'
+import { saveAbnormalTransData } from '../../actions/transformer';
+import { connect } from "react-redux";
 
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag ,message} from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
-
-function TRAbnormal() {
+const { Search } = Input;
+function TRAbnormal({transformer,saveAbnormalTransData}) {
+    
     //刪除modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
@@ -45,6 +48,7 @@ function TRAbnormal() {
         },
     ]
     const data = [];
+    // console.log(transformer.ABNtransformerList)
     for (let i = 0; i < 45; i+=3) {
         data.push({
             key: i,
@@ -74,7 +78,7 @@ function TRAbnormal() {
             state: ['1'],
         });
     }
-    console.log("data", data)
+    // console.log("data", data)
     const [filteredInfo, setFilteredInfo] = useState({});
     const handleChange = ( pagination, filters ) => {
         console.log('Various parameters', pagination, filters);
@@ -86,29 +90,29 @@ function TRAbnormal() {
     const columns = [
         {
             title: '圖號座標',
-            key: 'see',
-            dataIndex: 'see',
+            key: 'coor',
+            dataIndex: 'coor',
             render: text => {
                 return (
                     // <a href='/tr/info' >{text}</a>
-                    <div>{text}</div>
+                    <div>{text[0]}</div>
                 )
             }
         },
         {
             title: '組別',
-            key: 'group',
-            dataIndex: 'group',
+            key: 'div',
+            dataIndex: 'div',
         },
         {
             title: '第幾具',
-            key: 'number',
-            dataIndex: 'number',
+            key: 'tr_index',
+            dataIndex: 'tr_index',
         }, 
         {
-            title: '利用率',
-            key: 'rate',
-            dataIndex: 'rate',
+            title: '利用率(%)',
+            key: 'uti_rate',
+            dataIndex: 'uti_rate',
         },
         // {
         //     title: '閥值',
@@ -117,33 +121,33 @@ function TRAbnormal() {
         // },
         {
             title: '危險等級',
-            key: 'state',
-            dataIndex: 'state',
+            key: 'danger_lv',
+            dataIndex: 'danger_lv',
             filters: statefilters,
-            filteredValue: filteredInfo.state || null,
+            filteredValue: filteredInfo.danger_lv || null,
             // onFilter: (value, record) => record.state.indexOf(value) === 0,
             
-            onFilter: (value, record) => record.state.includes(value),
+            onFilter: (value, record) => record.danger_lv.includes(value),
             ellipsis: true,
-            render: (_, { state }) => (
+            render: (_, { danger_lv }) => (
                 <>
-                  {state.map((state) => {
+                  {danger_lv?.map((danger_lv) => {
                     let color = 'calendulagold';
-                    if (state === '3') {
+                    if (danger_lv === '3') {
                         color = 'volcano';
-                        state = '重度危險'
+                        danger_lv = '重度危險'
                     }
-                    else if (state === '2') {
+                    else if (danger_lv === '2') {
                         color = 'magenta';
-                        state = '中度危險'
+                        danger_lv = '中度危險'
                     }
-                    else if (state === '1'){
+                    else if (danger_lv === '1'){
                         color = 'gold'
-                        state = '一般危險'
+                        danger_lv = '一般危險'
                     }
                     return (
-                      <Tag color={color} key={state}>
-                        {state}
+                      <Tag color={color} key={danger_lv}>
+                        {danger_lv}
                       </Tag>
                     );
                   })}
@@ -154,7 +158,7 @@ function TRAbnormal() {
 
         const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
     
@@ -162,12 +166,25 @@ function TRAbnormal() {
         selectedRowKeys,
         onChange: onSelectChange,
         selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
+            
+            {
+                key: 'all',
+                text: '全選當頁',
+                onSelect: (changableRowKeys) => {
+
+                    setSelectedRowKeys(changableRowKeys);
+                }
+            },
+            {
+                key: 'none',
+                text: '清空選項', // 自定义不选的文本名称
+                onSelect: () => {
+                    setSelectedRowKeys([]);
+                },
+            },
             {
                 key: 'odd',
-                text: 'Select Odd Row',
+                text: '選擇奇數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -181,7 +198,7 @@ function TRAbnormal() {
             },
             {
                 key: 'even',
-                text: 'Select Even Row',
+                text: '選擇偶數行',
                 onSelect: (changableRowKeys) => {
                     let newSelectedRowKeys = [];
                     newSelectedRowKeys = changableRowKeys.filter((_, index) => {
@@ -195,23 +212,58 @@ function TRAbnormal() {
             },
         ],
     };
+    const onSearch = (value, _e, info) => console.log(info?.source, value);
+   
+    useEffect(()=>{
+        getAbnormalTransList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveAbnormalTransData(data)
+                // pushData()
+            }
+        })
+    })
+
+
+
+
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
             <div className="flex">
-                <button className="btn-red mr-7" style={{ height: 40, width: 60 }} onClick={confirm}>刪除</button>
+            
+                <button className="btn-red mr-4" style={{ height: 40}} onClick={confirm}>刪除</button>
                 
-                <button className="btn " style={{ height: 40, width: 80 }}>隔天通知</button>
+                <button className="btn " style={{ height: 40 }}>隔天通知</button>
             </div>
                 <div className="flex">
+                <Search
+                    size="large"
+                    placeholder="搜尋圖號座標"
+                    onSearch={onSearch}
+                    style={{
+                        width: 200,
+                    }}
+                />
                     <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={data} onChange={handleChange}/>
+            <Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange}/>
         </div>
     );
    
 
 
 
-} export default TRAbnormal;
+} 
+const mapStateToProps = ({ transformerReducer }) => ({
+    transformer: transformerReducer,
+});
+
+const mapDispatchToProps = {
+    saveAbnormalTransData
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TRAbnormal);
+

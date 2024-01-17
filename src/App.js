@@ -11,8 +11,9 @@ import Login from "./pages/Login";
 import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
+import IndustryInfo from "./pages/Transformer/IndustryInfo";
+import EChartMonthPage from "./pages/Transformer/EChartMonthPage";
 import EChartDayPage from "./pages/Transformer/EChartDayPage";
-import EChartMinutePage from "./pages/Transformer/EChartMinutePage";
 import AMIInfo from "./pages/Transformer/AMIInfo";
 import Manage from "./pages/Manage/Manage";
 import DataManage from "./pages/Manage/DataManage";
@@ -58,13 +59,17 @@ function App() {
           <Header />
           < UploadPage />
         </Route>
+        <Route path="/EChartMonthPage">
+          <Header />
+          <EChartMonthPage />
+        </Route>
         <Route path="/EChartDayPage">
           <Header />
           <EChartDayPage />
         </Route>
-        <Route path="/EChartMinutePage">
+        <Route path="/IndustryInfo">
           <Header />
-          <EChartMinutePage />
+          <IndustryInfo />
         </Route>
       </Switch>
     </BrowserRouter>

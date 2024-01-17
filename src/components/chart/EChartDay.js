@@ -28,7 +28,7 @@ function EChartDay({data}) {
     // }, []);
 
     const renderLegend = ({ payload }) => {
-        if (payload.length <= 0) return null
+        if (payload?.length <= 0|| payload==null) return null
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                 <li key={`item-0`}>{`利用率：${payload[0].value}kW`}</li>

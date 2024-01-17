@@ -4,7 +4,7 @@ import axios from "axios";
 // const baseURL = `https://taipower.azurewebsites.net/`;
 const baseURL = `https://amibackendweb.azurewebsites.net/`;
 
-//  const glabalToken = document.cookie.split("; ").find((row) => row.startsWith("fltk")).split("=")[1]
+ const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
 //  console.log(glabalToken)
 // //   ? true
 //   : false;
@@ -99,9 +99,10 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   }
 };
 
-export const getQuarterRates  = async () => {
+export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
   try {
-    const _url = `${baseURL}quarterrates    `;
+    const _url = `${baseURL}quarterrate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -117,6 +118,26 @@ export const getQuarterRates  = async () => {
     console.log(err.response);
   }
 };
+export const getQuarterRatesRange  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}quarterrate/interval/${coor}/${div}/${tr_index}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
   try {
     const _url = `${baseURL}monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
@@ -169,6 +190,47 @@ export const postAccountUpload  = async (file) => {
         // Authorization: `Bearer ${token}`
       },
       
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getRegionUser  = async (regions_id) => {
+  try {
+   
+    const _url = `${baseURL}accounts/${regions_id}`;
+    const result = await axios.get(_url,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getAbnormalTransList = async () => {
+  try {
+    const _url = `${baseURL}transformer_detail/danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
     });
     // console.log(result);
     if (result.status === 200) {

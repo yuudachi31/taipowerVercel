@@ -3,13 +3,21 @@ import {
     SAVE_DAILYRATES,
     SAVE_QUARTERRATES,
     SAVE_MONTHLYRATES,
-    SAVE_EACHTRANSINFO
+    SAVE_EACHTRANSINFO,
+    SAVE_ABN_TRANS_DATA
 } from '../utils/actionType/frontActionType'
 
 export const saveTransData = (data) => {
     // console.log(data)
     return {
         type: SAVE_TRANS_DATA,
+        payload:data
+    }
+}
+export const saveAbnormalTransData = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_ABN_TRANS_DATA,
         payload:data
     }
 }

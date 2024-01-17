@@ -88,22 +88,22 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = queryString.parse(window.location.search);
-    getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
-      // getDailyRates().then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        saveDailyRates(data)
-      }
-    })
+    // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
+    //   // getDailyRates().then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     saveDailyRates(data)
+    //   }
+    // })
     // getEachTransformer
-    getQuarterRates().then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        saveQuarterRates(data)
-      }
-    })
+    // getQuarterRates().then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     saveQuarterRates(data)
+    //   }
+    // })
     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -113,12 +113,13 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       }
     })
 
-    // getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
-    //   if (data.errStatus) {
-    //     console.log(data.errDetail);
-    //   } else {
+    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
 
-    //     saveEachTransInfo(data)
+        saveEachTransInfo(data)
+        }})
     //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //       if (data.errStatus) {
     //         console.log(data.errDetail);
@@ -145,7 +146,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個</span></div>
+          <div>資料表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
           <div>資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">

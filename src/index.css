@@ -38,13 +38,18 @@ body {
   }
   .btn {
     @apply bg-green-400 rounded-sm text-white text-center;
-    @apply py-2 px-3 w-max h-auto;
-    @apply grid grid-flow-col gap-2 items-center;
+    @apply py-1 px-3 w-max h-auto;
+    @apply flex grid-flow-col gap-2 items-center;
   }
   .btn-red {
     @apply bg-red-400 rounded-sm text-white text-center;
     @apply py-2 px-3 w-max h-auto;
     @apply grid grid-flow-col gap-2 items-center;
+  }
+  .btn-orange {
+    @apply bg-orange-400 rounded-sm text-white text-center;
+    @apply py-1 px-3 w-max h-auto;
+    @apply flex grid-flow-col gap-2 items-center;
   }
   
   .btn-manage {

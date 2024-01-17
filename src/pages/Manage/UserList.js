@@ -6,8 +6,8 @@ import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { postAccountUpload } from '../../api/frontApi';
-
+import { postAccountUpload,getRegionUser } from '../../api/frontApi';
+import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
 
@@ -104,9 +104,16 @@ const onChange = (pagination, filters, sorter, extra) => {
 function UserList() {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
-  const onClick = ({ key }) => {
-    console.log("aa")
-  };
+useEffect(()=>{
+  getRegionUser("01")
+})
+
+
+
+
+  // const onClick = ({ key }) => {
+  //   console.log("aa")
+  // };
   const handleFileUpload = () => {
     let file = document.querySelector("[name=file]").files[0];
       let formData = new FormData();
