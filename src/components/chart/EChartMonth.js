@@ -37,19 +37,19 @@ function EChartMain({data}) {
         history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
     }
     return (
-        <ResponsiveContainer height={400}>
+        <ResponsiveContainer height={500}>
             <ComposedChart data={data} margin={0} barGap={60}>
                 <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
                 {/* ticks={ticks_y} */}
                 {/* dataKey="load_total" */}
-                <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
+                <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={6} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false}/>
-                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToMonth}/>
-                <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToMonth}/>
-                <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={16} fill="#BDBDBD" activeBar={{ fill: "#939393"}} onClick={BarClickToMonth}/>
+                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={20} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToMonth}/>
+                <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={20} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToMonth}/>
+                <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={20} fill="#BDBDBD" activeBar={{ fill: "#939393"}} onClick={BarClickToMonth}/>
               {/* 這條透明bar是為了hover寫的 */}
-                <Bar isAnimationActive={false} dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent"/>
+                <Bar isAnimationActive={false} dataKey="load_on" name="離峰利用率" stackId="a" barSize={20} fill="transparent"/>
                 {/* 圖表線 */}
                 <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load_on" stroke="#BDBDBD" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: '#BDBDBD', strokeWidth: 2 }}  />
 
