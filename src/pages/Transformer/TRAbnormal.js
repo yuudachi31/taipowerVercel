@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {getAbnormalTransList}from'../../api/frontApi'
+import {getAbnormalTransList ,getAbnormalTransByCoor}from'../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 
@@ -79,13 +79,25 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
         });
     }
     // console.log("data", data)
-    const [filteredInfo, setFilteredInfo] = useState({});
+    const [filteredInfo, setFilteredInfo] = useState("");
+    const [searchInfo, setSearchInfo] = useState("");
+
     const handleChange = ( pagination, filters ) => {
         console.log('Various parameters', pagination, filters);
         setFilteredInfo(filters);
       };
     const clearFilters = () => {
         setFilteredInfo({});
+        getAbnormalTransList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveAbnormalTransData(data)
+                // pushData()
+                console.log("saveall")
+            }
+        })
     };
     const columns = [
         {
@@ -212,10 +224,8 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             },
         ],
     };
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
-   
-    useEffect(()=>{
-        getAbnormalTransList().then((data) => {
+    const onSearch = (value, _e, info) => {console.log(info?.source, value);
+        getAbnormalTransByCoor(value).then((data)=>{
             if (data.errStatus) {
                 message.error(data.errDetail);
             } else {
@@ -224,7 +234,21 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
                 // pushData()
             }
         })
-    })
+    
+    
+    }
+    useEffect(()=>{
+        getAbnormalTransList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveAbnormalTransData(data)
+                // pushData()
+                console.log("saveall")
+            }
+        })
+    },[])
 
 
 

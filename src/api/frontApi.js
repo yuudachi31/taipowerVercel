@@ -73,6 +73,28 @@ export const getTransformerList = async () => {
     console.log(err.response);
   }
 };
+
+export const getTransformerListByCoor = async (coor) => {
+  try {
+    const _url = `${baseURL}transformer_details/${coor}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+
+
 // 包含 token 的
 // headers: {
 //     authorization: `Bearer ${token}`,
@@ -225,6 +247,25 @@ export const getRegionUser  = async (regions_id) => {
 export const getAbnormalTransList = async () => {
   try {
     const _url = `${baseURL}transformer_detail/danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getAbnormalTransByCoor = async (coor) => {
+  try {
+    const _url = `${baseURL}transformer_details/danger_lv/${coor}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",

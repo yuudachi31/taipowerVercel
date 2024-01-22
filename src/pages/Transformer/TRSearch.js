@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTransformerList } from '../../api/frontApi'
+import { getTransformerList,getTransformerListByCoor} from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -84,6 +84,8 @@ function TRSearch({ transformer, saveTransData }) {
         setIsModalOpen(false);
     };
 
+
+    
     const dataCheck = []
     for (let i = 0; i < 3; i++) {
         dataCheck[i] =
@@ -136,6 +138,19 @@ function TRSearch({ transformer, saveTransData }) {
     const onCheckAllChange = (e) => {
         setCheckedList(e.target.checked ? dataCheck : []);
     };
+    const clearFilters = () => {
+        
+        getTransformerList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveTransData(data)
+                // pushData()
+            }
+        })
+    };
+
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
@@ -188,8 +203,19 @@ function TRSearch({ transformer, saveTransData }) {
     };
     const [searchText, setSearchText] = useState('');
     // const filteredData = transformer.transformerList.filter(user => user.coor.includes(searchText) || user.div.some(div => div.includes(searchText)));
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
-    return (
+    const onSearch = (value, _e, info) => {
+       getTransformerListByCoor(value).then((data) => {
+        if (data.errStatus) {
+            message.error(data.errDetail);
+        } else {
+            // console.log(data)
+            saveTransData(data)
+            // pushData()
+        }
+    })
+    }
+    
+        return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
                 <button className="btn " style={{ height: 40 }}><PrinterOutlined />匯出</button>
@@ -204,7 +230,7 @@ function TRSearch({ transformer, saveTransData }) {
                         }}
                     />
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
-                    <button className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    <button onClick={clearFilters}className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
             <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
