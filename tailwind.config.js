@@ -33,7 +33,7 @@ module.exports = {
           400:"#7B7B7B",
         },
         orange:{
-          400:"#fb923c",
+          400:"#E8A700",
           300:"#fdba74"
         }
       },

@@ -60,3 +60,7 @@ p{
 .recharts-bar-rectangle{
   cursor: pointer;
   }
+
+  #components-transfer-demo-table-transfer .ant-table td {
+    background: transparent;
+  }
