@@ -88,6 +88,103 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       address: `London Park no. ${i}`,
     });
   }
+
+  const mockTags = ['01', '02', '03'];
+  const lsags = ['燈', '力'];
+  // 資料要寫在一起因為穿梭框是用key在判斷資料，不過在思考怎麼樣才比較好
+  const EData = {
+    coor: 'B6744HD20',
+    cap: '50 KWA',
+    div: 'T01',
+    totalNum: 2,
+    type: '燈力、力',
+    mockData: [
+      {
+        id:'1',
+        type: '燈力',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: 'e' + i.toString(),
+          title: `content${i + 1}`,
+          description: `description of content${i + 1}`,
+          electricityNum: `electricityNum of content${i + 1}`,
+          priceDay: `${10 + (i % 4)}`,
+          tenHour: "5%",
+          KW: "1000 kw",
+          address: `address of content${i + 1}`,
+          tag: mockTags[i % 3],
+          // 燈還是力
+          lors: lsags[i % 2],
+        })),
+      },
+      {
+        id:'2',
+        type: '力',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: 'e' + i.toString(),
+          title: `content${i + 1}`,
+          description: `description of content${i + 1}`,
+          electricityNum: `electricityNum of content${i + 1}`,
+          priceDay: `${10 + (i % 4)}`,
+          tenHour: "5%",
+          KW: "1000 kw",
+          address: `address of content${i + 1}`,
+          tag: mockTags[i % 3],
+          lors: '力',
+        })),
+      },
+    ]
+  };
+  const PData = {
+    coor: 'XXXXXXXXX',
+    cap: '50 KWA',
+    div: 'T02',
+    totalNum: 3,
+    type: '力、力、力',
+    mockData: [
+      {
+        key: 'p1',
+        id:'1',
+        type: '力',
+        data:'',
+      },
+      {
+        key: 'p2',
+        id:'2',
+        type: '力',
+        data:'',
+      },
+      {
+        key: 'p3',
+        id:'3',
+        type: '力',
+        data:'',
+      },
+    ]
+  };
+  const eDataTotalNum = EData.totalNum || 0;
+  const pDataTotalNum = PData.totalNum || 0;
+
+  // 找到最大的 totalNum
+  const maxNum = Math.max(eDataTotalNum, pDataTotalNum);
+  console.log('PData', PData, maxNum)
+
+  // 取得所有的 id
+  const allIds = [...new Set([...EData.mockData.map(item => item.id), ...PData.mockData.map(item => item.id)])];
+
+  // 重新封裝資料
+  const mergeData = allIds.map(id => {
+    const EDataItem = EData.mockData.find(item => item.id === id) || { data: '' }
+    const PDataItem = PData.mockData.find(item => item.id === id) || { data: '' }
+
+    return { id, EDataItem, PDataItem };
+  });
+
+  console.log(mergeData);
+  
   return (
     <Layout class="px-20 wrapper">
       <Header class="pt-4 flex space-x-7 items-center">
@@ -121,22 +218,33 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
-          <Col span={12}><div class="font-bold mb-3">T01</div></Col>
-          <Col span={12}><div class="font-bold mb-3">虛擬/既設變壓器組別名稱</div></Col>
+          <Col span={12}><div class="font-bold">T01</div></Col>
+          <Col span={12}><div class="font-bold">虛擬/既設變壓器組別名稱</div></Col>
         </Row>
         
         {/* 每具資料 */}
-        <Content>
-          <Row>
-            <Col span={12}><div class="text-orange-400 mb-2">第一具：燈力</div></Col>
-            <Col span={12}><div class="text-orange-400 mb-2">第一具：燈</div></Col>
-          </Row>
-          <Content class="predict-box">
-            <PredictList/>
-            <Divider />
-            <PredictList/>
+
+        {Array.from({ length: maxNum }).map((_, index) => (
+          <Content class='mt-5'>
+            <Row key={index}>
+              <Col span={12}>
+                {EData.mockData[index] && (
+                  <div class="text-orange-400 mb-2">{`第${index + 1}具：${EData.mockData[index].type}`}</div>
+                )}
+              </Col>
+              <Col span={12}>
+                {PData.mockData[index] && (
+                  <div class="text-orange-400 mb-2">{`第${index + 1}具：${PData.mockData[index].type}`}</div>
+                )}
+              </Col>
+            </Row>
+            <Content class="predict-box">
+              <PredictList data={mergeData[index]}/>
+            </Content>
           </Content>
-        </Content>
+        ))}
+
+
         {/* </div> */}
         <Content class="flex justify-end w-50 gap-2 mt-5" >
           <div class="flex w-100 h-100 gap-2">

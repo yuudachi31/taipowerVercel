@@ -1,9 +1,9 @@
-import { Switch, Table, Tag, Transfer, Layout, Row, Col} from 'antd';
+import { Switch, Table, Tag, Transfer, Tooltip ,Layout, Row, Col} from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import difference from 'lodash/difference';
 import React, { useState } from 'react';
 // Customize Table Transfer
-const TableTransfer = ({ leftColumns, rightColumns, totalDataL, totalDataR, ...restProps }) => (
+const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, data, ...restProps }) => (
   <Transfer {...restProps}>
     {({
       direction,
@@ -13,7 +13,7 @@ const TableTransfer = ({ leftColumns, rightColumns, totalDataL, totalDataR, ...r
       selectedKeys: listSelectedKeys,
       disabled: listDisabled,
     }) => {
-      const columns = direction === 'left' ? leftColumns : rightColumns;
+      const columns = onlyColumns;
       const overView = direction === 'left' ? totalDataL : totalDataR;
       const rowSelection = {
         getCheckboxProps: (item) => ({
@@ -97,10 +97,10 @@ const mockData = Array.from({
   // disabled: i % 4 === 0,
   tag: mockTags[i % 3],
 }));
-const originTargetKeys = mockData
+const originTargetKeys = mockData //設定target table的資料
   .filter((item) => Number(item.key) % 3 > 1)
   .map((item) => item.key);
-const leftTableColumns = [
+const onlyColumns = [
   {
     dataIndex: 'title',
     title: '變壓器形式',
@@ -136,49 +136,20 @@ const leftTableColumns = [
   {
     dataIndex: 'address',
     title: '地址',
-    width: '200',
+    width: '100',
+    ellipsis: {
+      showTitle: false,
+    },
+    render: (address) => (
+      <Tooltip placement="topLeft" title={address}>
+        {address}
+      </Tooltip>
+    ),
   },
 ];
-const rightTableColumns = [
-  {
-    dataIndex: 'title',
-    title: '變壓器形式',
-    sorter: true,
-    width: '100',
-  },
-  {
-    dataIndex: 'electricityNum',
-    title: '電號',
-    width: '150',
-  },
-  {
-    dataIndex: 'tag',
-    title: '相別',
-    width: '100',
-    render: (tag) => <Tag>{tag}</Tag>,
-  },
-  {
-    dataIndex: 'KW',
-    title: '總用電度數',
-    width: '150',
-  },
-  {
-    dataIndex: 'priceDay',
-    title: '計價天數',
-    width: '150',
-  },
-  {
-    dataIndex: 'tenHour',
-    title: '十小時率',
-    width: '150',
-  },
-  {
-    dataIndex: 'address',
-    title: '地址',
-    width: '200',
-  },
-];
-const PredictList = () => {
+
+const PredictList = ({data}) => {
+  console.log('data', data)
   const [targetKeys, setTargetKeys] = useState(originTargetKeys);
   const [disabled, setDisabled] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -202,10 +173,12 @@ const PredictList = () => {
           filterOption={(inputValue, item) =>
             item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
           }
-          leftColumns={leftTableColumns}
-          rightColumns={rightTableColumns}
+          // leftColumns={leftTableColumns}
+          // rightColumns={rightTableColumns}
+          onlyColumns={onlyColumns}
           totalDataL={totalDataL}
           totalDataR={totalDataR}
+          data={data}
         />
         {/* <Switch
           unCheckedChildren="disabled"
