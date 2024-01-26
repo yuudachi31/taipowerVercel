@@ -1,4 +1,4 @@
-import { Switch, Table, Tag, Transfer, Tooltip ,Layout, Row, Col} from 'antd';
+import { Switch, Table, Tag, Transfer, Tooltip ,Layout, Row, Col, Divider} from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import difference from 'lodash/difference';
 import React, { useState } from 'react';
@@ -164,6 +164,23 @@ const PredictList = ({data}) => {
   };
   return (
     <>
+        <TableTransfer
+          dataSource={mockData}
+          targetKeys={targetKeys}
+          // disabled={disabled}
+          showSearch={showSearch}
+          onChange={onChange}
+          filterOption={(inputValue, item) =>
+            item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
+          }
+          // leftColumns={leftTableColumns}
+          // rightColumns={rightTableColumns}
+          onlyColumns={onlyColumns}
+          totalDataL={totalDataL}
+          totalDataR={totalDataR}
+          data={data}
+        />
+        <Divider/>
         <TableTransfer
           dataSource={mockData}
           targetKeys={targetKeys}
