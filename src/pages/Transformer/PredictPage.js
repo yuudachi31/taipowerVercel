@@ -5,7 +5,6 @@ import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
 import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
-import testdata from '../../pages/Transformer/testdata.json';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
 import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer } from '../../api/frontApi'
@@ -90,38 +89,31 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個</span></div>
+          <div>資料表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
           <div>資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap}</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KWA</span></div>
           <div>日期 :<span class="ml-2"></span></div>
         </Content>
-        <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>第幾具 :<span class="ml-2">1/2</span></div>
-          
-        </Content>
-
-        <Content class="relative flex-row w-50 gap-2" >
-          
-          <div class="flex align-end w-100 h-100 gap-2">
-          <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>選擇既有變壓器</button>
-          <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>新增虛擬變壓器</button>
+        <Content class="flex justify-end w-50 gap-2" >
+          <div class="flex w-100 h-100 gap-2" style={{ alignItems:'end' }}>
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>選擇既有變壓器</button>
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>新增虛擬變壓器</button>
           </div>
           {/* <EChartRate /> */}
         </Content>
-
       </Layout>
       <Divider />
       <Layout class="py-1">
-      <h2 class="flex-auto font-normal text-base">負載變壓器規劃</h2>
-      <div class="text-orange-400 mb-2">第一具：燈</div>
-      <div>
-      <div class="text-black font-bold">第一具：燈</div>
-      <PredictList/>
-      </div>
-        </Layout>
+          <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
+          {/* <div class="text-orange-400 mb-2">第一具：燈</div>
+          <div>
+            <div class="text-black font-bold">第一具：燈</div> */}
+            <PredictList/>
+          {/* </div> */}
+      </Layout>
     </Layout>
   );
 
