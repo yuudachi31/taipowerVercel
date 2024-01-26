@@ -1,8 +1,9 @@
-import { Switch, Table, Tag, Transfer } from 'antd';
+import { Switch, Table, Tag, Transfer, Layout, Row, Col} from 'antd';
+import { Content } from 'antd/lib/layout/layout';
 import difference from 'lodash/difference';
 import React, { useState } from 'react';
 // Customize Table Transfer
-const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
+const TableTransfer = ({ leftColumns, rightColumns, totalDataL, totalDataR, ...restProps }) => (
   <Transfer {...restProps}>
     {({
       direction,
@@ -13,6 +14,7 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
       disabled: listDisabled,
     }) => {
       const columns = direction === 'left' ? leftColumns : rightColumns;
+      const overView = direction === 'left' ? totalDataL : totalDataR;
       const rowSelection = {
         getCheckboxProps: (item) => ({
           disabled: listDisabled || item.disabled,
@@ -32,33 +34,67 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
         selectedRowKeys: listSelectedKeys,
       };
       return (
-        <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={filteredItems}
-          size="small"
-          style={{
-            pointerEvents: listDisabled ? 'none' : undefined,
-          }}
-          onRow={({ key, disabled: itemDisabled }) => ({
-            onClick: () => {
-              if (itemDisabled || listDisabled) return;
-              onItemSelect(key, !listSelectedKeys.includes(key));
-            },
-          })}
-        />
+        <>
+          <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={filteredItems}
+            title={() => 
+              <div class="flex justify-between">
+                <div class='font-bold'>第一具：{overView.type}</div>
+                <div>利用率：{overView.thereshold}</div>
+                <div>十小時率：{overView.tenHour}</div>
+              </div>
+            }
+            // size="small"
+            scroll={{
+              x: 1000,
+            }}
+            style={{
+              pointerEvents: listDisabled ? 'none' : undefined,
+            }}
+            onRow={({ key, disabled: itemDisabled }) => ({
+              onClick: () => {
+                if (itemDisabled || listDisabled) return;
+                onItemSelect(key, !listSelectedKeys.includes(key));
+              },
+            })}
+          />
+        </>
+
       );
     }}
   </Transfer>
 );
-const mockTags = ['cat', 'dog', 'bird'];
+const mockTags = ['一具', '二具', '三具'];
+const totalDataL ={
+    coor: 'B6744HD20',
+    type: '燈',
+    isExist: true,
+    thereshold: '40%',
+    tenHour: '50%'
+  }
+;
+const totalDataR ={
+    coor: 'xxxx',
+    type: '燈',
+    isExist: false,
+    thereshold: '0%',
+    tenHour: '0%'
+  }
+;
 const mockData = Array.from({
-  length: 20,
+  length: 10,
 }).map((_, i) => ({
   key: i.toString(),
   title: `content${i + 1}`,
   description: `description of content${i + 1}`,
-  disabled: i % 4 === 0,
+  electricityNum: `electricityNum of content${i + 1}`,
+  priceDay: `${10+ (i % 4)}`,
+  tenHour: "5%",
+  KW: "1000 kw",
+  address: `address of content${i + 1}`,
+  // disabled: i % 4 === 0,
   tag: mockTags[i % 3],
 }));
 const originTargetKeys = mockData
@@ -69,25 +105,77 @@ const leftTableColumns = [
     dataIndex: 'title',
     title: '變壓器形式',
     sorter: true,
+    width: '100',
+  },
+  {
+    dataIndex: 'electricityNum',
+    title: '電號',
+    width: '150',
   },
   {
     dataIndex: 'tag',
-    title: '電號',
-    render: (tag) => <Tag>{tag}</Tag>,
-  },
-  {
-    dataIndex: 'description',
     title: '相別',
+    width: '100',
+    render: (tag) => <Tag>{tag}</Tag>,
   },
   {
     dataIndex: 'KW',
     title: '總用電度數',
+    width: '150',
+  },
+  {
+    dataIndex: 'priceDay',
+    title: '計價天數',
+    width: '150',
+  },
+  {
+    dataIndex: 'tenHour',
+    title: '十小時率',
+    width: '150',
+  },
+  {
+    dataIndex: 'address',
+    title: '地址',
+    width: '200',
   },
 ];
 const rightTableColumns = [
   {
     dataIndex: 'title',
-    title: 'Name',
+    title: '變壓器形式',
+    sorter: true,
+    width: '100',
+  },
+  {
+    dataIndex: 'electricityNum',
+    title: '電號',
+    width: '150',
+  },
+  {
+    dataIndex: 'tag',
+    title: '相別',
+    width: '100',
+    render: (tag) => <Tag>{tag}</Tag>,
+  },
+  {
+    dataIndex: 'KW',
+    title: '總用電度數',
+    width: '150',
+  },
+  {
+    dataIndex: 'priceDay',
+    title: '計價天數',
+    width: '150',
+  },
+  {
+    dataIndex: 'tenHour',
+    title: '十小時率',
+    width: '150',
+  },
+  {
+    dataIndex: 'address',
+    title: '地址',
+    width: '200',
   },
 ];
 const PredictList = () => {
@@ -105,36 +193,38 @@ const PredictList = () => {
   };
   return (
     <>
-      <TableTransfer
-        dataSource={mockData}
-        targetKeys={targetKeys}
-        disabled={disabled}
-        showSearch={showSearch}
-        onChange={onChange}
-        filterOption={(inputValue, item) =>
-          item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
-        }
-        leftColumns={leftTableColumns}
-        rightColumns={rightTableColumns}
-      />
-      <Switch
-        unCheckedChildren="disabled"
-        checkedChildren="disabled"
-        checked={disabled}
-        onChange={triggerDisable}
-        style={{
-          marginTop: 16,
-        }}
-      />
-      <Switch
-        unCheckedChildren="showSearch"
-        checkedChildren="showSearch"
-        checked={showSearch}
-        onChange={triggerShowSearch}
-        style={{
-          marginTop: 16,
-        }}
-      />
+        <TableTransfer
+          dataSource={mockData}
+          targetKeys={targetKeys}
+          // disabled={disabled}
+          showSearch={showSearch}
+          onChange={onChange}
+          filterOption={(inputValue, item) =>
+            item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
+          }
+          leftColumns={leftTableColumns}
+          rightColumns={rightTableColumns}
+          totalDataL={totalDataL}
+          totalDataR={totalDataR}
+        />
+        {/* <Switch
+          unCheckedChildren="disabled"
+          checkedChildren="disabled"
+          checked={disabled}
+          onChange={triggerDisable}
+          style={{
+            marginTop: 16,
+          }}
+        />
+        <Switch
+          unCheckedChildren="showSearch"
+          checkedChildren="showSearch"
+          checked={showSearch}
+          onChange={triggerShowSearch}
+          style={{
+            marginTop: 16,
+          }}
+        /> */}
     </>
   );
 };

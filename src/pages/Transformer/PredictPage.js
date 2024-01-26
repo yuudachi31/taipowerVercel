@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker } from 'antd';
+import { Layout, Divider, Row, Col, Table } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
 import PredictList from './PredictList'
+import predictTestData from './predictTestData.json'
 const { Header, Sider, Content } = Layout;
 
 
@@ -78,6 +79,15 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
 
   }, [])
   const _history = useHistory();
+  const data = [];
+  for (let i = 0; i < 100; i++) {
+    data.push({
+      key: i,
+      name: `Edrward ${i}`,
+      age: 32,
+      address: `London Park no. ${i}`,
+    });
+  }
   return (
     <Layout class="px-20 wrapper">
       <Header class="pt-4 flex space-x-7 items-center">
@@ -105,14 +115,37 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
           {/* <EChartRate /> */}
         </Content>
       </Layout>
+
+      {/* 負載變壓器規劃 */}
       <Divider />
-      <Layout class="py-1">
-          <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
-          {/* <div class="text-orange-400 mb-2">第一具：燈</div>
-          <div>
-            <div class="text-black font-bold">第一具：燈</div> */}
+      <Layout class="py-1 pb-20">
+        <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
+        <Row>
+          <Col span={12}><div class="font-bold mb-3">T01</div></Col>
+          <Col span={12}><div class="font-bold mb-3">虛擬/既設變壓器組別名稱</div></Col>
+        </Row>
+        
+        {/* 每具資料 */}
+        <Content>
+          <Row>
+            <Col span={12}><div class="text-orange-400 mb-2">第一具：燈力</div></Col>
+            <Col span={12}><div class="text-orange-400 mb-2">第一具：燈</div></Col>
+          </Row>
+          <Content class="predict-box">
             <PredictList/>
-          {/* </div> */}
+            <Divider />
+            <PredictList/>
+          </Content>
+        </Content>
+        {/* </div> */}
+        <Content class="flex justify-end w-50 gap-2 mt-5" >
+          <div class="flex w-100 h-100 gap-2">
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>儲存移動</button>
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>結束規劃</button>
+            <button class="btn btn-green bg-green-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>匯出規劃</button>
+          </div>
+          {/* <EChartRate /> */}
+        </Content>
       </Layout>
     </Layout>
   );
