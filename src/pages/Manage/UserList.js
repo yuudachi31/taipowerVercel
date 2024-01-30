@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { postAccountUpload,getRegionUser } from '../../api/frontApi';
+import{saveUserList} from '../../actions/userManage'
+import { connect } from 'react-redux';
 import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
@@ -18,7 +20,7 @@ export const USER_DATA = [
     name: 'User_001',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
+    // password: '11111111',
     district: ['台北市區'],
     lock:['解鎖'],
 
@@ -101,12 +103,20 @@ const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);
 };
 
-function UserList() {
+function UserList({userManage,saveUserList}) {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
 useEffect(()=>{
-  getRegionUser("01")
-})
+  getRegionUser("01").then((data)=>{
+    if (data.errStatus) {
+      console.log(data.errDetail);
+    } else {
+      saveUserList(data)
+      // console.log(data)
+      console.log(userManage)
+    }
+  })
+},[])
 
 
 
@@ -217,7 +227,7 @@ useEffect(()=>{
       <Content>
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
-          <Table columns={columns} dataSource={filteredData} onChange={onChange}
+          <Table columns={columns} dataSource={userManage.userList} onChange={onChange}
             pagination={{
               defaultCurrent: 1,
               total: 50,
@@ -248,7 +258,15 @@ useEffect(()=>{
   );
 
 }
-export default UserList;
+const mapStateToProps = ({ userManageReducer }) => ({
+  userManage: userManageReducer,
+});
+
+const mapDispatchToProps = {
+  saveUserList
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);
 
 // function UserItem({ user }) {
 //   const _history = useHistory()

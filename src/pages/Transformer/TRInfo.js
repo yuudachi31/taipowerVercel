@@ -11,7 +11,7 @@ import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -40,23 +40,42 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
- 
+  const [interval, setInterval] = useState(
+    {
+      "min_year": 2022,
+      "min_month": 5,
+      "min_day": 1,
+      "max_year": 2023,
+      "max_month": 11,
+      "max_day": 31
+    }
+  )
+  let disabledDate = (cur) => {
+    // console.log(cur&&cur<moment().startOf('day'))
+    // console.log(cur&&cur<moment().startOf('day'))
+    // moment(new Date('2022/5/5'),dayFormat)
+    return (cur && cur < moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)).startOf('day') || cur && cur > moment(new Date(`${interval.max_year}/${interval.max_month}/${interval.max_day}`)).startOf('day'))
+  }
   // const handlemonthChange = (value, mode) => {
   //   if (mode === 'month') {
   //     setSelectedYear(value.year());
   //     setSelectedMonth(value.month());
   //   }
   // };
-  const handledayChange = (value,mode) => {
-    
+  const handledayChange = (value, mode) => {
+
     setSelectedDay(mode);
-    
+
   };
   // console.log(transformer.dailyRatesList)
 
   const handlePanelChange = (value, mode) => {
     if (mode === 'year') {
       setSelectedYear(value.year());
+      saveMonthlyRates([{
+        is_predict:3,
+
+      }])
       getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
         if (data.errStatus) {
           console.log(data.errDetail);
@@ -67,15 +86,15 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       })
     }
   };
-  const handlePanelChange_daily =(value,mode)=>{
+  const handlePanelChange_daily = (value, mode) => {
     const parsed = queryString.parse(window.location.search);
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());
       setSelectedMonth(value.month());
-    // const parsed = queryString.parse(window.location.search);
+      // const parsed = queryString.parse(window.location.search);
       console.log(value.year())
-      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
+      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(), value.month() + 1).then((data) => {
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
@@ -88,6 +107,10 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = queryString.parse(window.location.search);
+    saveMonthlyRates([{
+      is_predict:3,
+
+    }])
     // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
     //   // getDailyRates().then((data) => {
     //   if (data.errStatus) {
@@ -104,7 +127,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     //     saveQuarterRates(data)
     //   }
     // })
-    getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
+    getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
@@ -112,19 +135,34 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveMonthlyRates(data)
       }
     })
+    getMonthRatesRange(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setInterval({
+          ...data[0],
+          "min_month": 1,
+          "min_day": 1,
+          "max_month": 12,
+          "max_day": 31
+        })
 
-    getEachTransformer(parsed.coor,parsed.div,parsed.tr_index).then((data) => {
+      }
+    })
+    getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
 
         saveEachTransInfo(data)
-        }})
+      }
+    })
+
     //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //       if (data.errStatus) {
     //         console.log(data.errDetail);
     //       } else {
-    
+
     //         saveMonthlyRates(data)
     //       }
     //     })
@@ -155,13 +193,13 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>第幾具 :<span class="ml-2">1/2</span></div>
-          
+
         </Content>
 
         <Content class="relative flex-col w-40 gap-2" >
           <span class="relative text-base tracking-widest">利用率(%)</span>
           <div class="flex mt-8 w-100 h-100 gap-2">
-            
+
             <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
           </div>
           {/* <EChartRate /> */}
@@ -176,19 +214,19 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           {/* <div class="space-x-3 flex-1"></div> */}
           <div class="space-x-2 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, yearFormat)} format={yearFormat} picker="year" onPanelChange={handlePanelChange}/>
+            <DatePicker defaultValue={moment(currentDate, yearFormat)} disabledDate={disabledDate} format={yearFormat} picker="year" onPanelChange={handlePanelChange} />
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
+          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-col flex-1">
             <div class="flex flex-1 items-center justify-end">
-            <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
+              <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
               <span class="mt-2 ml-2 mr-6">保證利用率</span>
               <span class="mt-2 w-7 h-3 bg-green-500"></span>
               <span class="mt-2 ml-2">尖峰利用率</span>
-              
+
             </div>
             <div class="flex items-center justify-end">
-            <span class="mt-2 bg-gray-300 w-7 h-3"></span>
+              <span class="mt-2 bg-gray-300 w-7 h-3"></span>
               <span class="mt-2 ml-2 mr-6">預估利用率</span>
               <span class="mt-2 w-7 h-3 bg-green-300"></span>
               <span class="mt-2 ml-2">離峰利用率</span>
@@ -204,7 +242,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
 
 
       <Divider />
-      
+
     </Layout>
   );
 

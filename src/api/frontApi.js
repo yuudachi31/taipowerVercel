@@ -121,6 +121,25 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   }
 };
 
+export const getDailyRatesRange  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}dailypeak_rate/interval/${coor}/${div}/${tr_index}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
   try {
     const _url = `${baseURL}quarterrate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
@@ -163,6 +182,26 @@ export const getQuarterRatesRange  = async (coor,div,tr_index) => {
 export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
   try {
     const _url = `${baseURL}monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthRatesRange  = async (coor,div,tr_index) => {
+  try {
+ 
+    const _url = `${baseURL}monthlyrate/interval/${coor}/${div}/${tr_index}   `;
+    console.log(_url)
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -281,3 +320,44 @@ export const getAbnormalTransByCoor = async (coor) => {
     console.log(err.response);
   }
 };
+
+//閥值 threshold transformer_limits
+
+export const getAllThreshold = async () => {
+  try {
+    const _url = `${baseURL}transformer_limits`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getAllRegions = async () => {
+  try {
+    const _url = `${baseURL}regions`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+

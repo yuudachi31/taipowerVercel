@@ -26,13 +26,13 @@ const yearFormat = 'YYYY 年';
 const monthFormat = 'YYYY 年 MM 月';
 const dayFormat = 'YYYY 年 MM 月 DD 日';
 // const currentDate = new Date('2022/6/1');
-const currentDate = new Date(`${parsed.year}/${parsed.month}/${parsed.day}`);
+// let currentDate = new Date(`${parsed.year}/${parsed.month}/${parsed.day}`);
 
 // console.log(moment(new Date('2022/5/5'),dayFormat))
-const currentMonth = currentDate.getMonth;
-const currentHour = currentDate.getHours;
-const defaultTimeRange = [currentHour, currentHour];
-const defaultMonth = [currentMonth, currentMonth];
+// const currentMonth = currentDate.getMonth;
+// const currentHour = currentDate.getHours;
+// const defaultTimeRange = [currentHour, currentHour];
+// const defaultMonth = [currentMonth, currentMonth];
 
 const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
@@ -43,6 +43,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [currentDate,setCurrentDate]=useState(null);
  const [interval,setInterval]=useState(
   {
     "min_year": 2022,
@@ -73,6 +74,7 @@ console.log()
     setSelectedYear(selectedDate[0])
     setSelectedMonth(selectedDate[2])
     setSelectedDay(selectedDate[4])
+    saveQuarterRates([{uti_rate_15min:0},{uti_rate_15min:0},{uti_rate_15min:0}])
     getQuarterRates(parsed.coor, parsed.div, parsed.tr_index,selectedDate[0],selectedDate[2],selectedDate[4]).then((data) => {
      
       if (data.errStatus) {
@@ -117,7 +119,8 @@ console.log()
   // }
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
-    console.log(moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)))
+    saveQuarterRates([{uti_rate_15min:0},{uti_rate_15min:0},{uti_rate_15min:0}])
+    // console.log(moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)))
     const parsed = queryString.parse(window.location.search);
     // let interval = {}
      setSelectedMonth(parsed.month)
@@ -159,7 +162,11 @@ console.log()
     // })
 
     // result
-
+    // setSelectedYear(parsed.year)
+    // setSelectedMonth(parsed.month)
+    // setSelectedDay(parsed.day)
+    // currentDate = new Date(`${selectedYear}/${selectedMonth}/${selectedDay}`);
+    setCurrentDate(new Date(`${parsed.year}/${parsed.month}/${parsed.day}`))
   }, [])
   const _history = useHistory();
   return (
@@ -203,7 +210,7 @@ console.log()
           <div class="space-x-3 flex-1">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             {/* <DatePicker defaultValue={moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`), dayFormat)}   format={dayFormat} onChange={handledayChange} /> */}
-            <DatePicker defaultValue={moment(currentDate, dayFormat)} disabledDate={disabledDate}  format={dayFormat} onChange={handledayChange} />
+            <DatePicker defaultValue={moment(new Date(`${parsed.year}/${parsed.month}/${parsed.day}`), dayFormat)} disabledDate={disabledDate}  format={dayFormat} onChange={handledayChange} />
           </div>
           { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
 
