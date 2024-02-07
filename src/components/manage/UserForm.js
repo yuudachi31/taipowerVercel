@@ -16,28 +16,32 @@ function UserForm({ isEdited, user = null, onFormChange }) {
   return (
     <Form {...layout} name="user-edit" colon={false} labelAlign="left" onValuesChange={handleChange}>
       <Form.Item name="name" label="帳號名稱">
-        {!isEdited && user ? <span>{user.name}</span> : <Input placeholder={ user ? user.name : "請輸入帳號名稱"} size="middle" />}
+        {!isEdited && user ? <span>{user.name}</span> : <Input placeholder={user ? user.name : "請輸入帳號名稱"} size="middle" />}
       </Form.Item>
       <Form.Item name="email" label="信箱">
-        {!isEdited && user ? <span>{user.email}</span> : <Input placeholder={ user ? user.email : "請輸入信箱"} size="middle" />}
+        {!isEdited && user ? <span>{user.email}</span> : <Input placeholder={user ? user.email : "請輸入信箱"} size="middle" />}
       </Form.Item>
       <Form.Item name="group" label="身份權限">
-        {!isEdited && user ? <span>{user.group.join(' / ')}</span> :
+        {!isEdited && user ? <span>{user?.group.join(' / ')}</span> :
           <Select
-            mode="tags"
+            // mode="tags"
             placeholder="請選擇身份"
             defaultValue={user ? user.group : []}
             allowClear
             size='middle'
           >
-            <Option value="總處管理員">總處管理員</Option>
+            {/* <Option value="總處管理員">總處管理員</Option>
             <Option value="總處操作員">總處操作員</Option>
             <Option value="區處管理員">區處管理員</Option>
-            <Option value="區處操作員">區處操作員</Option>
+            <Option value="區處操作員">區處操作員</Option> */}
+            <Option value="區處管理員">區處管理員</Option>
+            <Option value="運維">運維</Option>
+            <Option value="檢修">檢修</Option>
+
           </Select>}
       </Form.Item>
       <Form.Item name="district" label="負責區處">
-        {!isEdited && user ? <span>{user.district}</span>:
+        {!isEdited && user ? <span>{user.district}</span> :
           <Select
             placeholder="選擇區處"
             allowClear
@@ -45,12 +49,19 @@ function UserForm({ isEdited, user = null, onFormChange }) {
             defaultValue={user ? user.district : []}
 
           >
-            <Option value="台北市區">台北市區</Option>
-            <Option value="台中市區">台中市區</Option>
+            {/* <Option value="台北市區">台北市區</Option>
+            <Option value="台中市區">台中市區</Option> */}
+            <Option value="台北市區營業處">台北市區營業處</Option>
+            <Option value="台北南區營業處">台北南區營業處</Option>
+            <Option value="基隆區營業處">基隆區營業處</Option>
+            <Option value="宜蘭區營業處">宜蘭區營業處</Option>
+
+            
+            
           </Select>}
       </Form.Item>
       <Form.Item name="lock" label="鎖定狀態">
-        {!isEdited && user ? <span>{user.lock}</span>:
+        {!isEdited && user ? <span>{user.lock}</span> :
           <Select
             placeholder="查看狀態"
             allowClear

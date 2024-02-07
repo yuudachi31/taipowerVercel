@@ -5,7 +5,7 @@ import axios from "axios";
 const baseURL = `https://amibackendweb.azurewebsites.net/`;
 
  const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
-//  console.log(glabalToken)
+
 // //   ? true
 //   : false;
 
@@ -270,7 +270,7 @@ export const getRegionUser  = async (regions_id) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${glabalToken}`
+        // Authorization: `Bearer ${glabalToken}`
       },
       
     });
@@ -360,4 +360,45 @@ export const getAllRegions = async () => {
     console.log(err.response);
   }
 };
-
+// console(glabalToken)
+// console.log(glabalToken)
+export const patchUserInfo = async (info) => {
+  try {
+    const _url = `${baseURL}account/user`;
+    const result = await axios.patch(_url,info, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const patchRole = async (role,user_id) => {
+  try {
+    const _url = `${baseURL}role`;
+    const result = await axios.patch(_url,{
+      "role_name": role,
+      "user_id": user_id
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+// patchRole()

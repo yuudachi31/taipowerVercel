@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { postAccountUpload,getRegionUser } from '../../api/frontApi';
-import{saveUserList} from '../../actions/userManage'
+import{saveUserListApi,saveUserListEdit} from '../../actions/userManage'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 const { Header, Content } = Layout;
@@ -103,15 +103,16 @@ const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);
 };
 
-function UserList({userManage,saveUserList}) {
+function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
 useEffect(()=>{
-  getRegionUser("01").then((data)=>{
+  console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
+  getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
     if (data.errStatus) {
       console.log(data.errDetail);
     } else {
-      saveUserList(data)
+      saveUserListApi(data)
       // console.log(data)
       console.log(userManage)
     }
@@ -263,7 +264,8 @@ const mapStateToProps = ({ userManageReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveUserList
+  saveUserListApi,
+  saveUserListEdit
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
