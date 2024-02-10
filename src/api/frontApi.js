@@ -2,6 +2,8 @@ import axios from "axios";
 
 // const baseURL = `http://localhost:5000/api/v1/`
 // const baseURL = `https://taipower.azurewebsites.net/`;
+//for docker compose
+// const baseURL = 'http://localhost:80/'
 const baseURL = `https://amibackendweb.azurewebsites.net/`;
 
  const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
