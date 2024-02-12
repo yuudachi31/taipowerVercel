@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { BarChart,ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,Rectangle } from 'recharts';
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
-import queryString from "query-string";
+import qs from "qs";
+// import qs from "qs"
 
 
 function EChartMain({data}) {
@@ -32,7 +33,7 @@ function EChartMain({data}) {
     //Bar點擊
     
     const BarClickToDay = ({ payload={} }) => {
-        const parsed = queryString.parse(window.location.search);
+        const parsed = qs.parse(window.location.search);
         // 使用 React Router 导航
         history.push(`/EChartDayPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
     }

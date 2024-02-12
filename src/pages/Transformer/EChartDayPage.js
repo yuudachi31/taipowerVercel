@@ -15,9 +15,9 @@ import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer,get
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
+import qs from "qs";
 import { parse } from 'papaparse';
-const parsed = queryString.parse(window.location.search);
+const parsed = qs.parse(window.location.search);
 const { Header, Sider, Content } = Layout;
 
 const Timeformat = 'HH:mm';
@@ -39,7 +39,7 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
+  const parsed = qs.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -100,12 +100,12 @@ console.log()
   //   }
   // };
   // const handlePanelChange_daily =(value,mode)=>{
-  //   const parsed = queryString.parse(window.location.search);
+  //   const parsed = qs.parse(window.location.search);
   //   // setSelectedYear(value.year());
   //   if (mode === 'month') {
   //     setSelectedYear(value.year());
   //     setSelectedMonth(value.month());
-  //   // const parsed = queryString.parse(window.location.search);
+  //   // const parsed = qs.parse(window.location.search);
   //     console.log(value.year())
   //     getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
   //       if (data.errStatus) {
@@ -121,7 +121,7 @@ console.log()
   useEffect(() => {
     saveQuarterRates([{uti_rate_15min:0},{uti_rate_15min:0},{uti_rate_15min:0}])
     // console.log(moment(new Date(`${interval.min_year}/${interval.min_month}/${interval.min_day}`)))
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     // let interval = {}
      setSelectedMonth(parsed.month)
      setSelectedYear(parsed.year)

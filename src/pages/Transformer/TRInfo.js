@@ -15,7 +15,7 @@ import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, ge
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
+import qs from "qs";
 
 const { Header, Sider, Content } = Layout;
 
@@ -36,7 +36,7 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
+  const parsed = qs.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -87,12 +87,12 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     }
   };
   const handlePanelChange_daily = (value, mode) => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());
       setSelectedMonth(value.month());
-      // const parsed = queryString.parse(window.location.search);
+      // const parsed = qs.parse(window.location.search);
       console.log(value.year())
       getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(), value.month() + 1).then((data) => {
         if (data.errStatus) {
@@ -106,7 +106,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   }
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     saveMonthlyRates([{
       is_predict:3,
 

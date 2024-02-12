@@ -11,7 +11,7 @@ import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, ge
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
+import qs from "qs";
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,7 +32,7 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
+  const parsed = qs.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -79,13 +79,13 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
     }
   };
   const handlePanelChange_daily = (value, mode) => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());
       setSelectedMonth(value.month() + 1);
       // console.log(value.month())
-      // const parsed = queryString.parse(window.location.search);
+      // const parsed = qs.parse(window.location.search);
       console.log(value.year())
       saveDailyRates([{
         isEmpty:true
@@ -102,7 +102,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
   }
   console.log(transformer.dailyRatesList)
   useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     saveDailyRates([{
         isEmpty:true
       }])
