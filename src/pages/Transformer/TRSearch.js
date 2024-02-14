@@ -217,8 +217,8 @@ function TRSearch({ transformer, saveTransData }) {
     
         return (
         <div className='wrapper px-24 py-4'>
-            <div className="flex justify-between">
-                <button className="btn " style={{ height: 40 }}><PrinterOutlined />匯出</button>
+            <div className="flex justify-end">
+                {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
                 <div className="flex">
                     <Search
 
