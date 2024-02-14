@@ -149,9 +149,9 @@ export const LINEGROUPID = [
         area: "",
         // label: '群組名稱1',
         threshold: [
-          { state: 1, limit_max: '70' },
-          { state: 2, limit_max: '80' },
-          { state: 3, limit_max: '90' },
+          { state: 1, limit_max: '' },
+          { state: 2, limit_max: '' },
+          { state: 3, limit_max: '' },
         ],
       },
       {
@@ -222,9 +222,9 @@ function Notify() {
                                 area: setRegionName(region_data, el),
                                 // label: '群組名稱1',
                                 threshold: [
-                                    { state: 1, limit_max: el.limit_high },
+                                    { state: 1, limit_max: el.limit_low },
                                     { state: 2, limit_max: el.limit_moderate },
-                                    { state: 3, limit_max: el.limit_low },
+                                    { state: 3, limit_max: el.limit_high },
                                 ]
                             }
                         }

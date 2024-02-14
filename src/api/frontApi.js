@@ -311,7 +311,8 @@ export const getAbnormalTransByCoor = async (coor) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
+
       },
     });
     // console.log(result);
@@ -412,6 +413,43 @@ export const deleteDangerTrans = async (coor,div,tr_index) => {
         "Content-Type": "application/json",
         Accept: "application/json",
         // Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getNoticeNextDay = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/transformer_details/next_notice`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const addNoticeNextDay = async (data) => {
+  try {
+    const _url = `${baseURL}/transformer_details/do_notice`;
+    const result = await axios.post(_url,data, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);

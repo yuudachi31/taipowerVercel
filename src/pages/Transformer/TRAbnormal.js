@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans } from '../../api/frontApi'
+import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans, addNoticeNextDay } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 
@@ -25,7 +25,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
         setIsModalOpen(false);
     };
 
-    const OkAction = () => {
+    const confirmOkAction = () => {
         setIsLoading(true)
         if (selectedRowKeys.length < 1) {
             setIsLoading(false)
@@ -56,8 +56,68 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                         }
                     }
                 })
-                console.log(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2])
+                // console.log(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2])
 
+            })
+        }
+    }
+    const noticeOkAction = () => {
+        // setIsLoading(true)
+        if (selectedRowKeys.length < 1) {
+            // setIsLoading(false)
+
+        } else {
+            let noticeList = []
+            selectedRowKeys.forEach((el, index) => {
+                // setIsLoading(true)
+                let ABNtr = transformer.ABNtransformerList[el]
+                // console.log(ABNtr)
+                if (ABNtr.tr_index !== 'NA') {
+                    noticeList.push({
+                        coor: ABNtr.coor[0],
+                        div: ABNtr.coor[1],
+                        tr_index: ABNtr.coor[2]
+                    })
+                } else {
+                    noticeList.push({
+                        coor: ABNtr.coor[0],
+                        div: ABNtr.coor[1],
+                        tr_index: 1
+                    })
+                }
+                //    console.log(noticeList)
+
+
+                // deleteDangerTrans(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2]).then((data) => {
+                //     if (data.errStatus) {
+                //         message.error(data.errDetail);
+                //     } else {
+
+                //         console.log("delete")
+                //         if (index === selectedRowKeys.length - 1) {
+                //             getAbnormalTransList().then((data) => {
+                //                 if (data.errStatus) {
+                //                     message.error(data.errDetail);
+                //                 } else {
+                //                     // console.log(data)
+                //                     saveAbnormalTransData(data)
+                //                     // pushData()
+                //                     console.log("saveall")
+                //                     setIsLoading(false)
+                //                 }
+                //             })
+                //         }
+                //     }
+                // })
+                // console.log(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2])
+
+            })
+            addNoticeNextDay(noticeList).then(data => {
+                if (data.errStatus) {
+                    message.error(data.errDetail);
+                } else {
+                    console.log(data)
+                }
             })
         }
     }
@@ -67,7 +127,17 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
             content: '確定刪除這些異常變壓器？',
             okText: '是',
             cancelText: '否',
-            onOk: OkAction
+            onOk: confirmOkAction
+
+        });
+    };
+    const noticeNextDay = () => {
+        Modal.confirm({
+            title: '隔天通知',
+            content: '確定將所選變壓器設為隔天通知？',
+            okText: '是',
+            cancelText: '否',
+            onOk: noticeOkAction
 
         });
     };
@@ -270,6 +340,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
         ],
     };
     const onSearch = (value, _e, info) => {
+        setIsLoading(true)
         console.log(info?.source, value);
         getAbnormalTransByCoor(value).then((data) => {
             if (data.errStatus) {
@@ -277,6 +348,8 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
             } else {
                 // console.log(data)
                 saveAbnormalTransData(data)
+                setIsLoading(false)
+
                 // pushData()
             }
         })
@@ -309,7 +382,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
                     <button className="btn-red mr-4" style={{ height: 40 }} onClick={confirm}>刪除</button>
 
-                    <button className="btn " style={{ height: 40 }}>隔天通知</button>
+                    <button className="btn " style={{ height: 40 }} onClick={noticeNextDay}>隔天通知</button>
                 </div>
                 <div className="flex">
                     <Search
