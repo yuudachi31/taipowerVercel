@@ -4,6 +4,8 @@ import { Divider, Layout, Input, Table } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
+import { getAllThreshold, getAllRegions } from '../../api/frontApi'
+
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
@@ -15,7 +17,7 @@ const { confirm } = Modal;
 
 export const USER_DATA = [
     {
-        user_id: 0,
+        value: ['00'],
         area: ['台北市區'],
         name: 'User_001',
         // group: ['區處管理者', '運維人員'],
@@ -24,7 +26,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 1,
+        value: ['00'],
         area: ['台北市區', '高雄市區'],
         name: 'User_002',
         // group: ['運維人員'],
@@ -33,7 +35,7 @@ export const USER_DATA = [
         email_state: false
     },
     {
-        user_id: 2,
+        value: ['01'],
         area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_003',
         // group: ['區處檢修人員'],
@@ -42,7 +44,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 3,
+        value: ['02'],
         area: ['台北市區','新北市區'],
         name: 'User_004',
         // group: ['區處管理者', '運維人員'],
@@ -51,7 +53,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 4,
+        value: ['03'],
         area: ['台北市區', '高雄市區'],
         name: 'User_005',
         // group: ['運維人員'],
@@ -60,7 +62,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 5,
+        value: ['04'],
         area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_006',
         // group: ['區處檢修人員'],
@@ -69,7 +71,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 6,
+        value: ['01'],
         area: ['台北市區'],
         name: 'User_007',
         // group: ['區處管理者', '運維人員'],
@@ -78,7 +80,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 7,
+        value: ['02'],
         area: ['台北市區', '高雄市區'],
         name: 'User_008',
         // group: ['運維人員'],
@@ -87,7 +89,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 8,
+        value: ['01'],
         area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_009',
         // group: ['區處檢修人員'],
@@ -96,7 +98,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 9,
+        value: ['01'],
         area: ['台北市區','新北市區'],
         name: 'User_010',
         // group: ['區處管理者', '運維人員'],
@@ -105,7 +107,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 10,
+        value: ['00'],
         area: ['台北市區', '高雄市區'],
         name: 'User_011',
         // group: ['運維人員'],
@@ -114,7 +116,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 11,
+        value: ['11'],
         area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_012',
         // group: ['區處檢修人員'],
@@ -144,7 +146,7 @@ export const USER_DATA = [
 export const LINEGROUPID = [
     {
         value: '1',
-        area: "台北市區",
+        area: "",
         // label: '群組名稱1',
         threshold: [
           { state: 1, limit_max: '70' },
@@ -188,6 +190,7 @@ function Notify() {
     const _history = useHistory()
     //設定Select資料
     const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [isDisabled,setIsDisabled]=useState(true)
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userData, setUserData] = useState(USER_DATA);
@@ -197,15 +200,58 @@ function Notify() {
         setSelectedGroup(selectedGroup);
 
         // 過濾符合條件的帳號
-        const usersInGroup = userData.filter((user) => user.area.includes(selectedGroup.area));
+        const usersInGroup = userData.filter((user) => user.value.includes(selectedGroup.value));
         setFilteredUsers(usersInGroup);
     };
+    
     useEffect(() => {
+        getAllThreshold().then((data) => {
+            if (data.errStatus) {
+                console.log(data.errDetail);
+            } else {
+                getAllRegions().then((region_data) => {
+                    if (region_data.errStatus) {
+                        console.log(region_data.errDetail);
+                    } else {
+
+                        setGroupData(data.map((el) => {
+                            console.log(el.region_id)
+                              return {
+                                value: el.region_id, //區處別
+                                // area: region_id_list[Number(el.region_id)],
+                                area: setRegionName(region_data, el),
+                                // label: '群組名稱1',
+                                threshold: [
+                                    { state: 1, limit_max: el.limit_high },
+                                    { state: 2, limit_max: el.limit_moderate },
+                                    { state: 3, limit_max: el.limit_low },
+                                ]
+                            }
+                        }
+                            
+                         
+                        ))
+                        setIsDisabled(false)
+
+                    }
+                })
+                // console.log()
+                // setGroupData()
+            }
+        })
         // 在組件初始化時進行一次過濾
         const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
     }, []);
+    function setRegionName(region_data, el) {
 
+        const data = region_data.find((rel) => rel.region_id == el.region_id)
+        return data.region_name
+        // let region_name=""
+
+
+
+    }
     //設定table欄位
     const columns = [
         {
@@ -393,6 +439,7 @@ function Notify() {
                                 showSearch
                                 placeholder="Select a person"
                                 optionFilterProp="children"
+                                disabled={isDisabled}
                                 defaultValue={groupData[0].value}
                                 style={{ width: 120 }}
                                 onChange={handleGroupChange}

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {getAbnormalTransList ,getAbnormalTransByCoor}from'../../api/frontApi'
+import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag ,message} from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const { Search } = Input;
-function TRAbnormal({transformer,saveAbnormalTransData}) {
-    
+function TRAbnormal({ transformer, saveAbnormalTransData }) {
+
     //刪除modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -23,15 +24,53 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
+    const OkAction = () => {
+        setIsLoading(true)
+        if (selectedRowKeys.length < 1) {
+            setIsLoading(false)
+
+        } else {
+            selectedRowKeys.forEach((el, index) => {
+                setIsLoading(true)
+                let ABNtr = transformer.ABNtransformerList[el]
+                console.log()
+                deleteDangerTrans(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2]).then((data) => {
+                    if (data.errStatus) {
+                        message.error(data.errDetail);
+                    } else {
+
+                        console.log("delete")
+                        if (index === selectedRowKeys.length - 1) {
+                            getAbnormalTransList().then((data) => {
+                                if (data.errStatus) {
+                                    message.error(data.errDetail);
+                                } else {
+                                    // console.log(data)
+                                    saveAbnormalTransData(data)
+                                    // pushData()
+                                    console.log("saveall")
+                                    setIsLoading(false)
+                                }
+                            })
+                        }
+                    }
+                })
+                console.log(ABNtr.coor[0], ABNtr.coor[1], ABNtr.coor[2])
+
+            })
+        }
+    }
     const confirm = () => {
         Modal.confirm({
-          title: '刪除確認',
-          content: '確定刪除這些異常變壓器？',
-          okText:'是',
-          cancelText:'否',
-          
+            title: '刪除確認',
+            content: '確定刪除這些異常變壓器？',
+            okText: '是',
+            cancelText: '否',
+            onOk: OkAction
+
         });
-      };
+    };
     const _history = useHistory();
     const statefilters = [
         {
@@ -49,7 +88,7 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
     ]
     const data = [];
     // console.log(transformer.ABNtransformerList)
-    for (let i = 0; i < 45; i+=3) {
+    for (let i = 0; i < 45; i += 3) {
         data.push({
             key: i,
             see: 'A222BC3333',
@@ -59,34 +98,35 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             threshold: '80%',
             state: ['3'],
         },
-        {
-            key: i+1,
-            see: 'A222BC3333',
-            group: `T01`,
-            number: '001',
-            rate: '70.3',
-            threshold: '70%',
-            state: ['2'],
-        },
-        {
-            key: i+2,
-            see: 'A222BC3333',
-            group: `T01`,
-            number: '001',
-            rate: '68.9',
-            threshold: '60%',
-            state: ['1'],
-        });
+            {
+                key: i + 1,
+                see: 'A222BC3333',
+                group: `T01`,
+                number: '001',
+                rate: '70.3',
+                threshold: '70%',
+                state: ['2'],
+            },
+            {
+                key: i + 2,
+                see: 'A222BC3333',
+                group: `T01`,
+                number: '001',
+                rate: '68.9',
+                threshold: '60%',
+                state: ['1'],
+            });
     }
     // console.log("data", data)
     const [filteredInfo, setFilteredInfo] = useState("");
     const [searchInfo, setSearchInfo] = useState("");
 
-    const handleChange = ( pagination, filters ) => {
+    const handleChange = (pagination, filters) => {
         console.log('Various parameters', pagination, filters);
         setFilteredInfo(filters);
-      };
+    };
     const clearFilters = () => {
+        setIsLoading(true)
         setFilteredInfo({});
         getAbnormalTransList().then((data) => {
             if (data.errStatus) {
@@ -96,6 +136,7 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
                 saveAbnormalTransData(data)
                 // pushData()
                 console.log("saveall")
+                setIsLoading(false)
             }
         })
     };
@@ -120,7 +161,7 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             title: '第幾具',
             key: 'tr_index',
             dataIndex: 'tr_index',
-        }, 
+        },
         {
             title: '利用率(%)',
             key: 'uti_rate',
@@ -138,47 +179,51 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             filters: statefilters,
             filteredValue: filteredInfo.danger_lv || null,
             // onFilter: (value, record) => record.state.indexOf(value) === 0,
-            
+
             onFilter: (value, record) => record.danger_lv.includes(value),
             ellipsis: true,
             render: (_, { danger_lv }) => (
                 <>
-                  {danger_lv?.map((danger_lv) => {
-                    let color = 'calendulagold';
-                    if (danger_lv === '3') {
-                        color = 'volcano';
-                        danger_lv = '重度危險'
-                    }
-                    else if (danger_lv === '2') {
-                        color = 'magenta';
-                        danger_lv = '中度危險'
-                    }
-                    else if (danger_lv === '1'){
-                        color = 'gold'
-                        danger_lv = '一般危險'
-                    }
-                    return (
-                      <Tag color={color} key={danger_lv}>
-                        {danger_lv}
-                      </Tag>
-                    );
-                  })}
+                    {danger_lv?.map((danger_lv) => {
+                        let color = 'calendulagold';
+                        if (danger_lv === '3') {
+                            color = 'volcano';
+                            danger_lv = '重度危險'
+                        }
+                        else if (danger_lv === '2') {
+                            color = 'magenta';
+                            danger_lv = '中度危險'
+                        }
+                        else if (danger_lv === '1') {
+                            color = 'gold'
+                            danger_lv = '一般危險'
+                        }
+                        return (
+                            <Tag color={color} key={danger_lv}>
+                                {danger_lv}
+                            </Tag>
+                        );
+                    })}
                 </>
-              ),
+            ),
         },
     ];
 
-        const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
         // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        console.log(newSelectedRowKeys)
+
+
         setSelectedRowKeys(newSelectedRowKeys);
+
     };
-    
+
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
         selections: [
-            
+
             {
                 key: 'all',
                 text: '全選當頁',
@@ -224,8 +269,9 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
             },
         ],
     };
-    const onSearch = (value, _e, info) => {console.log(info?.source, value);
-        getAbnormalTransByCoor(value).then((data)=>{
+    const onSearch = (value, _e, info) => {
+        console.log(info?.source, value);
+        getAbnormalTransByCoor(value).then((data) => {
             if (data.errStatus) {
                 message.error(data.errDetail);
             } else {
@@ -234,11 +280,13 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
                 // pushData()
             }
         })
-    
-    
+
+
     }
-    useEffect(()=>{
+    useEffect(() => {
+        setIsLoading(true)
         getAbnormalTransList().then((data) => {
+
             if (data.errStatus) {
                 message.error(data.errDetail);
             } else {
@@ -246,9 +294,10 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
                 saveAbnormalTransData(data)
                 // pushData()
                 console.log("saveall")
+                setIsLoading(false)
             }
         })
-    },[])
+    }, [])
 
 
 
@@ -256,32 +305,35 @@ function TRAbnormal({transformer,saveAbnormalTransData}) {
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-between">
-            <div className="flex">
-            
-                <button className="btn-red mr-4" style={{ height: 40}} onClick={confirm}>刪除</button>
-                
-                <button className="btn " style={{ height: 40 }}>隔天通知</button>
-            </div>
                 <div className="flex">
-                <Search
-                    size="large"
-                    placeholder="搜尋圖號座標"
-                    onSearch={onSearch}
-                    style={{
-                        width: 200,
-                    }}
-                />
+
+                    <button className="btn-red mr-4" style={{ height: 40 }} onClick={confirm}>刪除</button>
+
+                    <button className="btn " style={{ height: 40 }}>隔天通知</button>
+                </div>
+                <div className="flex">
+                    <Search
+                        size="large"
+                        placeholder="搜尋圖號座標"
+                        onSearch={onSearch}
+                        style={{
+                            width: 200,
+                        }}
+                    />
                     <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
                 </div>
             </div>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange}/>
+            {
+                isLoading ? (<></>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
+            }
+
         </div>
     );
-   
 
 
 
-} 
+
+}
 const mapStateToProps = ({ transformerReducer }) => ({
     transformer: transformerReducer,
 });

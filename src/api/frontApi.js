@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const baseURL = `http://localhost:5000/api/v1/`
-// const baseURL = `https://taipower.azurewebsites.net/`;
+// const baseURL = `http://localhost:5000/api/v1`
+// const baseURL = `https://taipower.azurewebsites.net`;
 //for docker compose
-// const baseURL = 'http://localhost:80/'
-const baseURL = `https://amibackendweb.azurewebsites.net/`;
+// const baseURL = 'http://localhost:80'
+const baseURL = `https://amibackendweb.azurewebsites.net`;
 
  const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
 
@@ -14,7 +14,7 @@ const baseURL = `https://amibackendweb.azurewebsites.net/`;
 export const postUser = async (username, password) => {
   try {
     // console.log('in pos');
-    const _url = `${baseURL}security/login`;
+    const _url = `${baseURL}/security/login`;
     const result = await axios.post(
       _url,
       {
@@ -40,7 +40,7 @@ export const postUser = async (username, password) => {
 
 export const getUserRole = async (token) => {
   try {
-    const _url = `${baseURL}security/user/me/`;
+    const _url = `${baseURL}/security/user/me/`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -59,12 +59,12 @@ export const getUserRole = async (token) => {
 
 export const getTransformerList = async () => {
   try {
-    const _url = `${baseURL}transformer_details`;
+    const _url = `${baseURL}/transformer_details`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);
@@ -78,7 +78,7 @@ export const getTransformerList = async () => {
 
 export const getTransformerListByCoor = async (coor) => {
   try {
-    const _url = `${baseURL}transformer_details/${coor}`;
+    const _url = `${baseURL}/transformer_details/${coor}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export const getTransformerListByCoor = async (coor) => {
 //     const _url = `${baseURL}/dailypeak_rate/coor/${coor}/${div}/${date_year}/${date_month}   `;
 export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
   try {
-    const _url = `${baseURL}dailypeak_rate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
+    const _url = `${baseURL}/dailypeak_rate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -125,7 +125,7 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
 
 export const getDailyRatesRange  = async (coor,div,tr_index) => {
   try {
-    const _url = `${baseURL}dailypeak_rate/interval/${coor}/${div}/${tr_index}   `;
+    const _url = `${baseURL}/dailypeak_rate/interval/${coor}/${div}/${tr_index}   `;
     console.log(_url)
     const result = await axios.get(_url, {
       headers: {
@@ -144,7 +144,7 @@ export const getDailyRatesRange  = async (coor,div,tr_index) => {
 };
 export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
   try {
-    const _url = `${baseURL}quarterrate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    const _url = `${baseURL}/quarterrate/coor/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
     console.log(_url)
     const result = await axios.get(_url, {
       headers: {
@@ -163,7 +163,7 @@ export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,da
 };
 export const getQuarterRatesRange  = async (coor,div,tr_index) => {
   try {
-    const _url = `${baseURL}quarterrate/interval/${coor}/${div}/${tr_index}   `;
+    const _url = `${baseURL}/quarterrate/interval/${coor}/${div}/${tr_index}   `;
     console.log(_url)
     const result = await axios.get(_url, {
       headers: {
@@ -183,7 +183,7 @@ export const getQuarterRatesRange  = async (coor,div,tr_index) => {
 
 export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
   try {
-    const _url = `${baseURL}monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
+    const _url = `${baseURL}/monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -202,7 +202,7 @@ export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
 export const getMonthRatesRange  = async (coor,div,tr_index) => {
   try {
  
-    const _url = `${baseURL}monthlyrate/interval/${coor}/${div}/${tr_index}   `;
+    const _url = `${baseURL}/monthlyrate/interval/${coor}/${div}/${tr_index}   `;
     console.log(_url)
     const result = await axios.get(_url, {
       headers: {
@@ -223,7 +223,7 @@ export const getMonthRatesRange  = async (coor,div,tr_index) => {
 export const getEachTransformer  = async (cust_id,div,tr_index) => {
   try {
    
-    const _url = `${baseURL}transformer_details/${cust_id}/${div}/${tr_index}`;
+    const _url = `${baseURL}/transformer_details/${cust_id}/${div}/${tr_index}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -243,7 +243,7 @@ export const getEachTransformer  = async (cust_id,div,tr_index) => {
 export const postAccountUpload  = async (file) => {
   try {
    
-    const _url = `${baseURL}account/upload_account`;
+    const _url = `${baseURL}/account/upload_account`;
     const result = await axios.post(_url, 
       file
     ,{
@@ -266,7 +266,7 @@ export const postAccountUpload  = async (file) => {
 export const getRegionUser  = async (regions_id) => {
   try {
    
-    const _url = `${baseURL}accounts/${regions_id}`;
+    const _url = `${baseURL}/accounts/${regions_id}`;
     const result = await axios.get(_url,
     {
       headers: {
@@ -287,12 +287,12 @@ export const getRegionUser  = async (regions_id) => {
 
 export const getAbnormalTransList = async () => {
   try {
-    const _url = `${baseURL}transformer_detail/danger_lvs`;
+    const _url = `${baseURL}/transformer_detail/danger_lvs`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);
@@ -306,7 +306,7 @@ export const getAbnormalTransList = async () => {
 
 export const getAbnormalTransByCoor = async (coor) => {
   try {
-    const _url = `${baseURL}transformer_details/danger_lv/${coor}`;
+    const _url = `${baseURL}/transformer_details/danger_lv/${coor}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -327,7 +327,7 @@ export const getAbnormalTransByCoor = async (coor) => {
 
 export const getAllThreshold = async () => {
   try {
-    const _url = `${baseURL}transformer_limits`;
+    const _url = `${baseURL}/transformer_limits`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -346,7 +346,7 @@ export const getAllThreshold = async () => {
 
 export const getAllRegions = async () => {
   try {
-    const _url = `${baseURL}regions`;
+    const _url = `${baseURL}/regions`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
@@ -366,7 +366,7 @@ export const getAllRegions = async () => {
 // console.log(glabalToken)
 export const patchUserInfo = async (info) => {
   try {
-    const _url = `${baseURL}account/user`;
+    const _url = `${baseURL}/account/user`;
     const result = await axios.patch(_url,info, {
       headers: {
         "Content-Type": "application/json",
@@ -384,7 +384,7 @@ export const patchUserInfo = async (info) => {
 };
 export const patchRole = async (role,user_id) => {
   try {
-    const _url = `${baseURL}role`;
+    const _url = `${baseURL}/role`;
     const result = await axios.patch(_url,{
       "role_name": role,
       "user_id": user_id
@@ -404,3 +404,21 @@ export const patchRole = async (role,user_id) => {
   }
 };
 // patchRole()
+export const deleteDangerTrans = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/transformer_detail/delete/${coor}/${div}/${tr_index}`;
+    const result = await axios.post(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};

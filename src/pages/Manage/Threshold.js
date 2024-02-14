@@ -74,7 +74,7 @@ export const LINEGROUPID = [
     //     label: '群組名稱4',
     //     threshold: [
     //       { state: 1, limit_max: '74' },
-    //       { state: 2, limit_max: '84' },
+    //       { state: 2, limit_max: '84' },LINEGROUPID
     //       { state: 3, limit_max: '94' },
     //     ],
     //   },
@@ -89,6 +89,7 @@ function Threshold() {
     //設定select內容
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
+    const [isDisabled,setIsDisabled]=useState(true)
     const handleGroupChange = (value) => {
         // console.log("aa")
         const selectedGroup = groupData.find((group) => group.value === value);
@@ -132,14 +133,14 @@ function Threshold() {
         console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
         setIsEdit(false);
     };
-    function setRegionName(region_data,el){
-      
-            const data=region_data.find((rel)=> rel.region_id==el.region_id)
-            return data.region_name
-                // let region_name=""
-           
-            
-    
+    function setRegionName(region_data, el) {
+
+        const data = region_data.find((rel) => rel.region_id == el.region_id)
+        return data.region_name
+        // let region_name=""
+
+
+
     }
     // const region_id_list = [
     //     '台北市區', '台北市區', '台北市區', '台北市區', '台北市區', '台北市區', '台北市區', '台北市區', '新北市區', '桃園市區', '新竹市區', '苗栗市區', '台中市區', '南投市區', '彰化市區', '雲林市區', '嘉義市區', '台南市區', '高雄市區', '屏東市區', '台東市區', '花蓮市區', '宜蘭市區', '基隆市區'
@@ -158,7 +159,7 @@ function Threshold() {
                             {
                                 value: el.region_id, //區處別
                                 // area: region_id_list[Number(el.region_id)],
-                                area:setRegionName(region_data,el),
+                                area: setRegionName(region_data, el),
                                 // label: '群組名稱1',
                                 threshold: [
                                     { state: 1, limit_max: el.limit_high },
@@ -168,7 +169,7 @@ function Threshold() {
                             }
                         )))
 
-
+                        setIsDisabled(false)
                     }
                 })
                 // console.log()
@@ -294,6 +295,7 @@ function Threshold() {
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
                                 style={{ width: 120 }}
+                                disabled={isDisabled}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
