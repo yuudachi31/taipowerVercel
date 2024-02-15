@@ -298,8 +298,8 @@ const editClicked=()=>{
                                 placeholder="Select a person"
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
-                                style={{ width: 120 }}
-                                disabled={isLoading}
+                                style={{ width: 200 }}
+                                disabled={isDisabled}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
