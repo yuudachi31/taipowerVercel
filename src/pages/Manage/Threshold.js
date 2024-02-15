@@ -299,7 +299,7 @@ const editClicked=()=>{
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
                                 style={{ width: 200 }}
-                                disabled={isDisabled}
+                                disabled={isLoading}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
