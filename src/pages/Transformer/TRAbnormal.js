@@ -393,7 +393,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                             width: 200,
                         }}
                     />
-                    <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    {/* <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button> */}
                 </div>
             </div>
             {

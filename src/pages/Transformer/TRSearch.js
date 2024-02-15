@@ -225,7 +225,7 @@ function TRSearch({ transformer, saveTransData }) {
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-end">
                 {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
-                <div className="flex">
+                <div className="flex mb-2">
                     <Search
 
                         placeholder="搜尋圖號座標"
@@ -236,7 +236,7 @@ function TRSearch({ transformer, saveTransData }) {
                         }}
                     />
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
-                    <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    {/* <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button> */}
                 </div>
             </div>
             <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
