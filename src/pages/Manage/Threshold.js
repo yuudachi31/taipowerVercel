@@ -1,10 +1,10 @@
 //閥值管理
 //antd
-import { Divider, Layout, Input } from 'antd';
+import { Divider, Layout, Input, Spin } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
-import { getAllThreshold, getAllRegions } from '../../api/frontApi'
+import { getAllThreshold, getAllRegions, postRegionThreshold } from '../../api/frontApi'
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
@@ -111,26 +111,41 @@ function Threshold() {
         const value = e.target.value;
         setEditedThresholds((prev) => {
             const newThresholds = { ...prev };
-            newThresholds[groupId][index].limit_max = value;
+            // newThresholds[groupId][index].limit_max = value;
+            newThresholds.threshold[index].limit_max = value
             return newThresholds;
         });
     };
 
-    const handleSave = (groupId) => {
-        console.log("save", groupId, editedThresholds[groupId]);
-        const newGroupData = groupData.map((item) => {
-            if (item.value === groupId) {
-                return {
-                    ...item,
-                    threshold: editedThresholds[groupId],
-                };
+    const handleSave = () => {
+        setIsLoading(true)
+        // console.log("save", groupId, editedThresholds[groupId]);
+        // const newGroupData = groupData.map((item) => {
+        //     if (item.value === groupId) {
+        //         return {
+        //             ...item,
+        //             threshold: editedThresholds[groupId],
+        //         };
+        //     }
+        //     return item;
+        // });
+        // setGroupData(newGroupData);
+        // const selectedGroup = newGroupData.find((group) => group.value === groupId);
+        // setSelectedGroup(selectedGroup);
+        // console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
+        // console.log(editedThresholds)
+        postRegionThreshold({
+            region_id: editedThresholds.value,
+            limit_high: editedThresholds.threshold[2].limit_max,
+            limit_moderate: editedThresholds.threshold[1].limit_max,
+            limit_low: editedThresholds.threshold[0].limit_max
+        }).then((data) => {
+            if (data.errStatus) {
+                console.log(data.errDetail);
+            } else {
+                setIsLoading(false)
             }
-            return item;
-        });
-        setGroupData(newGroupData);
-        const selectedGroup = newGroupData.find((group) => group.value === groupId);
-        setSelectedGroup(selectedGroup);
-        console.log("newGroupData", newGroupData, groupData, editedThresholds[groupId], selectedGroup);
+        })
         setIsEdit(false);
     };
     function setRegionName(region_data, el) {
@@ -180,11 +195,11 @@ function Threshold() {
     }, [])
 
 
-const editClicked=()=>{
-    setEditedThresholds(selectedListGroup)
-    setIsEdit(true)
+    const editClicked = () => {
+        setEditedThresholds(selectedListGroup)
+        setIsEdit(true)
 
-}
+    }
     //刪除群組Confirm
     const showConfirm = (groupId) => {
         confirm({
@@ -314,73 +329,85 @@ const editClicked=()=>{
                             </Select>
                         }
                     </div>
-                    <div class=" px-10 pb-10 flex justify-between">
-                        <div class="flex">
-                            <span class="font-bold">警告門檻：</span>
-                            {/* 修改  */}
-                            {isEdit ?
-                                <div class="flex">
-                                    <div>
-                                        {editedThresholds.threshold.map((item, index) => (
-                                            <div key={item.state} className="flex mb-3">
-                                                <div className="flex row">
-                                                    <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
-                                                        {item.state === 1 && '一般'}
-                                                        {item.state === 2 && '中度'}
-                                                        {item.state === 3 && '重度'}
-                                                    </p>
-                                                    <p className="mr-2">警告門檻：高於 </p>
-                                                    <p className="w-16 mr-2">
-                                                        <Input
-                                                            value={item.limit_max}
-                                                            onChange={(e) => handleInputChange(e, selectedListGroup.value, index)}
-                                                        />
-                                                    </p>
-                                                    <p className="mr-2"> %</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                :
-                                //修改完後的顯示
-                                <div class="flex">
-                                    <div>
-                                        {/* <div  class="flex row "> */}
-                                        {selectedListGroup.threshold.map((item) => (
-                                            <div key={item.state} className="flex mb-3">
-                                                <div class="flex row ">
-                                                    <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
-                                                        {item.state === 1 && '一般'}
-                                                        {item.state === 2 && '中度'}
-                                                        {item.state === 3 && '重度'}
-                                                    </p>
-                                                    <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {/* </div> */}
-                                    </div>
-                                </div>
-                            }
-
-                        </div>
-                        {isEdit ?
-                            <div class="flex2">
-                                {/* <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showConfirm(selectedListGroup.value)}>刪除群組</button> */}
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave(selectedListGroup.value)}>儲存</button>
+                    {
+                        isLoading ?
+                            <div className=" px-10 pb-10 flex center">                               
+                                    <Spin  tip="Loading" size="large">
+                                        <div className="content" />
+                                    </Spin>                              
                             </div>
                             :
-                            isLoading?
-                            <></>
-                            :
-                            <div class="flex2">
-                                <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={editClicked} >編輯</button>
+                            <div class=" px-10 pb-10 flex justify-between">
+                                <div class="flex">
+                                    <span class="font-bold">警告門檻：</span>
+                                    {/* 修改  */}
+                                    {
+                                        isEdit ?
+                                            <div class="flex">
+                                                <div>
+                                                    {editedThresholds.threshold.map((item, index) => (
+                                                        <div key={item.state} className="flex mb-3">
+                                                            <div className="flex row">
+                                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                                    {item.state === 1 && '一般'}
+                                                                    {item.state === 2 && '中度'}
+                                                                    {item.state === 3 && '重度'}
+                                                                </p>
+                                                                <p className="mr-2">警告門檻：高於 </p>
+                                                                <p className="w-16 mr-2">
+                                                                    <Input
+                                                                        value={item.limit_max}
+                                                                        onChange={(e) => handleInputChange(e, selectedListGroup.value, index)}
+                                                                    />
+                                                                </p>
+                                                                <p className="mr-2"> %</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            :
+                                            //修改完後的顯示
+                                            <div class="flex">
+                                                <div>
+                                                    {/* <div  class="flex row "> */}
+                                                    {selectedListGroup.threshold.map((item) => (
+                                                        <div key={item.state} className="flex mb-3">
+                                                            <div class="flex row ">
+                                                                <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                                                    {item.state === 1 && '一般'}
+                                                                    {item.state === 2 && '中度'}
+                                                                    {item.state === 3 && '重度'}
+                                                                </p>
+                                                                <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {/* </div> */}
+                                                </div>
+
+                                            </div>
+                                    }
+
+                                </div>
+                                {isEdit ?
+                                    <div class="flex2">
+                                        {/* <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showConfirm(selectedListGroup.value)}>刪除群組</button> */}
+                                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave()}>儲存</button>
+                                    </div>
+                                    :
+                                    isLoading ?
+                                        <></>
+                                        :
+                                        <div class="flex2">
+                                            <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={editClicked} >編輯</button>
+                                        </div>
+                                }
+
+
                             </div>
-                        }
+                    }
 
-
-                    </div>
 
                 </Content>
             </Content>

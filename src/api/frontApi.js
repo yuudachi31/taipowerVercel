@@ -460,3 +460,21 @@ export const addNoticeNextDay = async (data) => {
     console.log(err.response);
   }
 };
+export const postRegionThreshold = async (data) => {
+  try {
+    const _url = `${baseURL}/transformer_limit/update_Limit`;
+    const result = await axios.post(_url,data, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
