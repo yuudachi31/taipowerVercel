@@ -88,6 +88,7 @@ function Threshold() {
 
     //設定select內容
     const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [tempSaving, setTempSaving] = useState({});
     const [selectedListGroup, setSelectedGroup] = useState(groupData[0]);
     const [isLoading, setIsLoading] = useState(true)
     const handleGroupChange = (value) => {
@@ -107,14 +108,21 @@ function Threshold() {
         return initialThresholds;
     });
 
-    const handleInputChange = (e, groupId, index) => {
+    const handleInputChange = (e, index) => {
+        console.log(tempSaving)
         const value = e.target.value;
-        setEditedThresholds((prev) => {
-            const newThresholds = { ...prev };
-            // newThresholds[groupId][index].limit_max = value;
-            newThresholds.threshold[index].limit_max = value
-            return newThresholds;
-        });
+        const newthreshold = [...editedThresholds.threshold]
+        newthreshold[index].limit_max = value
+        setEditedThresholds(
+            (prev) => {
+                console.log(prev)
+                const newThresholds = { ...prev };
+                // newThresholds[groupId][index].limit_max = value;
+                newThresholds.threshold[index].limit_max = Number(value)
+                return newThresholds;
+            }
+            // {...editedThresholds,threshold: [...newthreshold]}
+        );
     };
 
     const handleSave = () => {
@@ -196,25 +204,42 @@ function Threshold() {
 
 
     const editClicked = () => {
-        setEditedThresholds(selectedListGroup)
+        setTempSaving(
+            {
+                area: selectedListGroup.area,
+                threshold: [
+                    { state: 1, limit_max: selectedListGroup.threshold[0].limit_max },
+                    { state: 2, limit_max: selectedListGroup.threshold[1].limit_max },
+                    { state: 3, limit_max: selectedListGroup.threshold[2].limit_max },
+                ],
+                value: selectedListGroup.value
+            }
+        )
+        setEditedThresholds({ ...selectedListGroup })
         setIsEdit(true)
 
     }
     //刪除群組Confirm
-    const showConfirm = (groupId) => {
-        confirm({
-            title: '刪除群組',
-            icon: <ExclamationCircleOutlined />,
-            content: '確定刪除這個群組資料？',
-            onOk: () => handleOk(groupId),
-            //   onCancel: () => handleCancel(),
-            okText: "刪除",
-            cancelText: "取消",
-            okButtonProps: {
-                danger: true,
-            }
-        });
+    const showCancel = () => {
+        // confirm({
+        //     title: '刪除群組',
+        //     icon: <ExclamationCircleOutlined />,
+        //     content: '確定刪除這個群組資料？',
+        //     onOk: () => handleOk(groupId),
+        //     //   onCancel: () => handleCancel(),
+        //     okText: "刪除",
+        //     cancelText: "取消",
+        //     okButtonProps: {
+        //         danger: true,
+        //     }
+        // });
         // setIsModalOpen(true);
+        // setSelectedGroup(selectedListGroup)
+
+        setEditedThresholds({ ...selectedListGroup })
+        setIsEdit(false)
+        console.log(tempSaving)
+        setSelectedGroup({ ...tempSaving })
     };
     const handleOk = (groupId) => {
         handleDelete(groupId)
@@ -331,10 +356,10 @@ function Threshold() {
                     </div>
                     {
                         isLoading ?
-                            <div className=" px-10 pb-10 flex center">                               
-                                    <Spin  tip="Loading" size="large">
-                                        <div className="content" />
-                                    </Spin>                              
+                            <div className=" px-10 pb-10 flex center">
+                                <Spin tip="Loading" size="large">
+                                    <div className="content" />
+                                </Spin>
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
@@ -350,14 +375,14 @@ function Threshold() {
                                                             <div className="flex row">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
-                                                                    {item.state === 2 && '中度'}
+                                                                    {item.state === 2 && '中度a'}
                                                                     {item.state === 3 && '重度'}
                                                                 </p>
                                                                 <p className="mr-2">警告門檻：高於 </p>
                                                                 <p className="w-16 mr-2">
                                                                     <Input
                                                                         value={item.limit_max}
-                                                                        onChange={(e) => handleInputChange(e, selectedListGroup.value, index)}
+                                                                        onChange={(e) => handleInputChange(e, index)}
                                                                     />
                                                                 </p>
                                                                 <p className="mr-2"> %</p>
@@ -376,7 +401,7 @@ function Threshold() {
                                                             <div class="flex row ">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
-                                                                    {item.state === 2 && '中度'}
+                                                                    {item.state === 2 && '中度z'}
                                                                     {item.state === 3 && '重度'}
                                                                 </p>
                                                                 <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
@@ -392,7 +417,7 @@ function Threshold() {
                                 </div>
                                 {isEdit ?
                                     <div class="flex2">
-                                        {/* <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showConfirm(selectedListGroup.value)}>刪除群組</button> */}
+                                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showCancel()}>取消</button>
                                         <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave()}>儲存</button>
                                     </div>
                                     :
