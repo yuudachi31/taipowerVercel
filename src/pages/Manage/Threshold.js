@@ -297,7 +297,7 @@ function Threshold() {
                         {isEdit ?
                             <Select
                                 defaultValue={groupData[0].value}
-                                style={{ width: 120 }}
+                                style={{ width: 200 }}
                                 onChange={handleGroupChange}
                                 disabled
                             >
@@ -331,10 +331,10 @@ function Threshold() {
                     </div>
                     {
                         isLoading ?
-                            <div className=" px-10 pb-10 flex center">                               
-                                    <Spin  tip="Loading" size="large">
-                                        <div className="content" />
-                                    </Spin>                              
+                            <div>                               
+                                <Spin  tip="Loading" size="large">
+                                    <div className="content" />
+                                </Spin>                              
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
