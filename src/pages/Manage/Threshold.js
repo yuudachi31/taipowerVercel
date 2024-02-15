@@ -88,8 +88,8 @@ function Threshold() {
 
     //設定select內容
     const [groupData, setGroupData] = useState(LINEGROUPID);
-    const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
-    const [isDisabled,setIsDisabled]=useState(true)
+    const [selectedListGroup, setSelectedGroup] = useState(groupData[0]);
+    const [isLoading, setIsLoading] = useState(true)
     const handleGroupChange = (value) => {
         // console.log("aa")
         const selectedGroup = groupData.find((group) => group.value === value);
@@ -154,8 +154,7 @@ function Threshold() {
                     if (region_data.errStatus) {
                         console.log(region_data.errDetail);
                     } else {
-
-                        setGroupData(data.map((el) => (
+                        let listedData = data.map((el) => (
                             {
                                 value: el.region_id, //區處別
                                 // area: region_id_list[Number(el.region_id)],
@@ -167,9 +166,10 @@ function Threshold() {
                                     { state: 3, limit_max: el.limit_high },
                                 ]
                             }
-                        )))
-
-                        setIsDisabled(false)
+                        ))
+                        setGroupData(listedData)
+                        setSelectedGroup(listedData[0])
+                        setIsLoading(false)
                     }
                 })
                 // console.log()
@@ -180,7 +180,11 @@ function Threshold() {
     }, [])
 
 
+const editClicked=()=>{
+    setEditedThresholds(selectedListGroup)
+    setIsEdit(true)
 
+}
     //刪除群組Confirm
     const showConfirm = (groupId) => {
         confirm({
@@ -210,7 +214,7 @@ function Threshold() {
         const newGroup = groupData.filter((group) => group.value !== groupId);
         setGroupData(newGroup);
         setSelectedGroup(newGroup[0]);
-        console.log("delete", newGroup, groupId, groupData, selectedGroup)
+        console.log("delete", newGroup, groupId, groupData, selectedListGroup)
     }
 
     // //新增帳號modal
@@ -295,7 +299,7 @@ function Threshold() {
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
                                 style={{ width: 120 }}
-                                disabled={isDisabled}
+                                disabled={isLoading}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
@@ -317,7 +321,7 @@ function Threshold() {
                             {isEdit ?
                                 <div class="flex">
                                     <div>
-                                        {editedThresholds[selectedGroup.value].map((item, index) => (
+                                        {editedThresholds.threshold.map((item, index) => (
                                             <div key={item.state} className="flex mb-3">
                                                 <div className="flex row">
                                                     <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
@@ -329,7 +333,7 @@ function Threshold() {
                                                     <p className="w-16 mr-2">
                                                         <Input
                                                             value={item.limit_max}
-                                                            onChange={(e) => handleInputChange(e, selectedGroup.value, index)}
+                                                            onChange={(e) => handleInputChange(e, selectedListGroup.value, index)}
                                                         />
                                                     </p>
                                                     <p className="mr-2"> %</p>
@@ -343,7 +347,7 @@ function Threshold() {
                                 <div class="flex">
                                     <div>
                                         {/* <div  class="flex row "> */}
-                                        {selectedGroup.threshold.map((item) => (
+                                        {selectedListGroup.threshold.map((item) => (
                                             <div key={item.state} className="flex mb-3">
                                                 <div class="flex row ">
                                                     <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
@@ -363,12 +367,15 @@ function Threshold() {
                         </div>
                         {isEdit ?
                             <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showConfirm(selectedGroup.value)}>刪除群組</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave(selectedGroup.value)}>儲存</button>
+                                {/* <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showConfirm(selectedListGroup.value)}>刪除群組</button> */}
+                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave(selectedListGroup.value)}>儲存</button>
                             </div>
                             :
+                            isLoading?
+                            <></>
+                            :
                             <div class="flex2">
-                                <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={() => setIsEdit(true)} >編輯</button>
+                                <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={editClicked} >編輯</button>
                             </div>
                         }
 
