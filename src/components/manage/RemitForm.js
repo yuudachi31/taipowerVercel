@@ -27,7 +27,7 @@ function UserInfo({ isEdited, user = null }) {
             <Option value="台中">台中</Option>
           </Select>}
       </Form.Item>
-      <Form.Item name="district" label="群組">
+      {/* <Form.Item name="district" label="群組">
         {!isEdited && user ? <span>台北</span> :
           <Select
             placeholder="選擇群組"
@@ -48,7 +48,7 @@ function UserInfo({ isEdited, user = null }) {
             <Option value="第一具">第一具</Option>
             <Option value="第二具">第二具</Option>
           </Select>}
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 
