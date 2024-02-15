@@ -397,7 +397,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                 </div>
             </div>
             {
-                isLoading ? (<></>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
+                isLoading ? (<></>) : (<Table  columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
             }
 
         </div>

@@ -271,7 +271,7 @@ function TRSearch({ transformer, saveTransData }) {
             </Modal>
 
             {
-                isLoading ? (<></>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.transformerList} />)
+                isLoading ? (<></>) : (<Table  columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>
