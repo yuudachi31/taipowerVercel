@@ -73,6 +73,8 @@ export const getTransformerList = async () => {
     }
   } catch (err) {
     console.log(err.response);
+    return err.response.status
+
   }
 };
 

@@ -22,17 +22,35 @@ const { Search } = Input;
 
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const fetchData = ()=>{
+        getTransformerList().then((data) => {
+            if (data==401) {
+
+            } else {
+                saveTransData(data)
+                setIsLoading(false)
+               
+            }
+        }).catch((error) => {
+            
+            console.log("s");
+          });
+    }
     useEffect(() => {
         getTransformerList().then((data) => {
-            if (data.errStatus) {
-                message.error(data.errDetail);
+            if (data==401) {
+                window.location.reload()
             } else {
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
                 // pushData()
             }
-        })
+        }).catch((error) => {
+            // 處理其他錯誤，例如網絡錯誤等
+            // message.error("登入失敗，請檢查帳號密碼是否正確。");
+            console.log("s");
+          });
 
 
     }, []);

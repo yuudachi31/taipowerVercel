@@ -375,7 +375,7 @@ function Threshold() {
                                                             <div className="flex row">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
-                                                                    {item.state === 2 && '中度a'}
+                                                                    {item.state === 2 && '中度'}
                                                                     {item.state === 3 && '重度'}
                                                                 </p>
                                                                 <p className="mr-2">警告門檻：高於 </p>
@@ -401,7 +401,7 @@ function Threshold() {
                                                             <div class="flex row ">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
-                                                                    {item.state === 2 && '中度z'}
+                                                                    {item.state === 2 && '中度'}
                                                                     {item.state === 3 && '重度'}
                                                                 </p>
                                                                 <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
