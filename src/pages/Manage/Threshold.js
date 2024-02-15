@@ -294,7 +294,7 @@ function Threshold() {
                                 placeholder="Select a person"
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
-                                style={{ width: 120 }}
+                                style={{ width: 200 }}
                                 disabled={isDisabled}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
