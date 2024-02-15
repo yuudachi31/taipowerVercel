@@ -384,7 +384,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
                     <button className="btn " style={{ height: 40 }} onClick={noticeNextDay}>隔天通知</button>
                 </div>
-                <div className="flex">
+                <div className="flex mb-2">
                     <Search
                         size="large"
                         placeholder="搜尋圖號座標"
