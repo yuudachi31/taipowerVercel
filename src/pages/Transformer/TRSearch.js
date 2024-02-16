@@ -22,17 +22,35 @@ const { Search } = Input;
 
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const fetchData = ()=>{
+        getTransformerList().then((data) => {
+            if (data==401) {
+
+            } else {
+                saveTransData(data)
+                setIsLoading(false)
+               
+            }
+        }).catch((error) => {
+            
+            console.log("s");
+          });
+    }
     useEffect(() => {
         getTransformerList().then((data) => {
-            if (data.errStatus) {
-                message.error(data.errDetail);
+            if (data==401) {
+                window.location.reload()
             } else {
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
                 // pushData()
             }
-        })
+        }).catch((error) => {
+            // 處理其他錯誤，例如網絡錯誤等
+            // message.error("登入失敗，請檢查帳號密碼是否正確。");
+            console.log("s");
+          });
 
 
     }, []);
@@ -225,7 +243,7 @@ function TRSearch({ transformer, saveTransData }) {
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-end">
                 {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
-                <div className="flex">
+                <div className="flex mb-2">
                     <Search
 
                         placeholder="搜尋圖號座標"
@@ -236,7 +254,7 @@ function TRSearch({ transformer, saveTransData }) {
                         }}
                     />
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
-                    <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    {/* <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button> */}
                 </div>
             </div>
             <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
@@ -271,7 +289,7 @@ function TRSearch({ transformer, saveTransData }) {
             </Modal>
 
             {
-                isLoading ? (<></>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.transformerList} />)
+                isLoading ? (<></>) : (<Table  columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>

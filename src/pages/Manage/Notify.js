@@ -1,6 +1,6 @@
 //推播管理
 //antd
-import { Divider, Layout, Input, Table } from 'antd';
+import { Divider, Layout, Input, Table, Spin } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
@@ -191,6 +191,7 @@ function Notify() {
     //設定Select資料
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [isDisabled,setIsDisabled]=useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userData, setUserData] = useState(USER_DATA);
@@ -232,7 +233,7 @@ function Notify() {
                          
                         ))
                         setIsDisabled(false)
-
+                        setIsLoading(false)
                     }
                 })
                 // console.log()
@@ -379,11 +380,13 @@ function Notify() {
         } else {
             // 帳號不存在於群組中，新增群組
             existingUser.area.push(selectedGroup.area);
-            setModalContent(
-            <p className="text-green-500">
-                *帳號成功添加到此群組。
-            </p>
-            );
+            // setModalContent(
+            // <p className="text-green-500">
+            //     *帳號成功添加到此群組。
+            // </p>
+            // );
+            setNewAccountName('');
+            setModalContent(null);
             setIsadduserModalOpen(false);
             console.log('new user data', existingUser, userData)
         }
@@ -409,7 +412,7 @@ function Notify() {
     };
 
     return (
-        <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
+        <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
             <Content>
                 <Header class="pt-4 pb-8 flex space-x-7 items-center">
                     <h2 class="flex-auto font-bold text-2xl">推播管理</h2>
@@ -439,9 +442,9 @@ function Notify() {
                                 showSearch
                                 placeholder="Select a person"
                                 optionFilterProp="children"
-                                disabled={isDisabled}
                                 defaultValue={groupData[0].value}
-                                style={{ width: 120 }}
+                                style={{ width: 200 }}
+                                disabled={isDisabled}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
@@ -455,59 +458,69 @@ function Notify() {
                                 ))}
                             </Select>
                     </div>
-                    <div class=" px-10 pb-10 flex justify-between">
-                        <div class="flex">
-                            <span class="font-bold">警告門檻：</span>
-                            <div>
-                                {/* <div  class="flex row "> */}
-                                {selectedGroup.threshold.map((item) => (
-                                    <div key={item.state} className="flex mb-3">
-                                    <div class="flex row ">
-                                        <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
-                                        {item.state === 1 && '一般'}
-                                        {item.state === 2 && '中度'}
-                                        {item.state === 3 && '重度'}
-                                        </p>
-                                        <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
-                                    </div>
-                                    </div>
-                                ))}
-                                {/* </div> */}
-                            </div>
-                            {/* 修改  */}
-                            {/* {isEdit ? 
-                                <div class="flex">
-                                    <div>
-                                    <div  class="flex row ">
-                                        <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
-                                    </div>
-                                    </div>
+                    {
+                    isLoading ?
+                        <div>                               
+                            <Spin  tip="Loading" size="large">
+                                <div className="content" />
+                            </Spin>                              
+                        </div>
+                        :
+                        <div class=" px-10 pb-10 flex justify-between">
+                            <div class="flex">
+                                <span class="font-bold">警告門檻：</span>
+                                <div>
+                                    {/* <div  class="flex row "> */}
+                                    {selectedGroup.threshold.map((item) => (
+                                        <div key={item.state} className="flex mb-3">
+                                        <div class="flex row ">
+                                            <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                            {item.state === 1 && '一般'}
+                                            {item.state === 2 && '中度'}
+                                            {item.state === 3 && '重度'}
+                                            </p>
+                                            <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                        </div>
+                                        </div>
+                                    ))}
+                                    {/* </div> */}
                                 </div>
-                                :
-                                //修改完後的顯示
-                                <span class="font-bold">低於 10% 高於80%</span>
-                            } */}
+                                {/* 修改  */}
+                                {/* {isEdit ? 
+                                    <div class="flex">
+                                        <div>
+                                        <div  class="flex row ">
+                                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    :
+                                    //修改完後的顯示
+                                    <span class="font-bold">低於 10% 高於80%</span>
+                                } */}
+                            </div>
+                            <div class="flex2">
+                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
+                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
+                            </div>
                         </div>
-                        <div class="flex2">
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
-                        </div>
-                    </div>
-
+                    }
                 </Content>
             </Content>
             <div class="my-7 font-bold text-base">推播帳號列表</div>
+            {
+            isLoading ? <></>
+            :
             <Content>
-
                 <Layout class="p-7 bg-white">
                     {/* <Header class="pl-16 user-grid-row h-14 bg-gray-200 font-medium text-base account-list"> */}
                         {/* <div >帳號</div> */}
@@ -547,7 +560,8 @@ function Notify() {
                         </div> */}
                     </Content>
                 </Layout>
-            </Content>
+            </Content>  
+            }
         </Layout>
     );
 

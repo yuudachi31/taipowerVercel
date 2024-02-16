@@ -73,6 +73,8 @@ export const getTransformerList = async () => {
     }
   } catch (err) {
     console.log(err.response);
+    return err.response.status
+
   }
 };
 
@@ -445,6 +447,24 @@ export const getNoticeNextDay = async (coor,div,tr_index) => {
 export const addNoticeNextDay = async (data) => {
   try {
     const _url = `${baseURL}/transformer_details/do_notice`;
+    const result = await axios.post(_url,data, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const postRegionThreshold = async (data) => {
+  try {
+    const _url = `${baseURL}/transformer_limit/update_Limit`;
     const result = await axios.post(_url,data, {
       headers: {
         "Content-Type": "application/json",

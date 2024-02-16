@@ -15,7 +15,7 @@ export const transformerReducer = (state = initialState, action) => {
   switch (action.type) {
     case SAVE_TRANS_DATA:
       const data = [];
-      action.payload.forEach((element, index) => {
+      action.payload?.forEach((element, index) => {
         if (element.power_type == 'Y接') {
           data.push({
             key: index,
