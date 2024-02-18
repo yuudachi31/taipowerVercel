@@ -35,7 +35,7 @@ function EChartMain({data}) {
     const BarClickToDay = ({ payload={} }) => {
         const parsed = qs.parse(window.location.search);
         // 使用 React Router 导航
-        history.push(`/EChartDayPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
+        history.push(`/EChartDayPage?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
     }
 // console.log(data)
     return (

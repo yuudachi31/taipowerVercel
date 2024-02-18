@@ -34,7 +34,7 @@ function EChartMain({data}) {
         const parsed = qs.parse(window.location.search);
         console.log(payload)
         console.log(parsed)
-        history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+        history.push(`/EChartMonthPage?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
     }
     return (
         <ResponsiveContainer height={500}>
