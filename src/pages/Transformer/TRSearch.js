@@ -117,7 +117,7 @@ function TRSearch({ transformer, saveTransData }) {
             dataIndex: 'coor',
             render: text => {
                 return (
-                    <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
+                    <Link to={'/tr/info/coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
             }
         },
