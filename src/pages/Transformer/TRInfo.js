@@ -107,6 +107,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   // console.log(transformer.dailyRatesList)
   useEffect(() => {
     const parsed = qs.parse(window.location.search);
+    console.log("test:",parsed)
     saveMonthlyRates([{
       is_predict:3,
 
