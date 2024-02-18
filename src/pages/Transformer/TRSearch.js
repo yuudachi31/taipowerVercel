@@ -22,50 +22,26 @@ const { Search } = Input;
 
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const fetchData = ()=>{
+    const fetchData = () => {
         getTransformerList().then((data) => {
-            if (data==401) {
+            if (data == 401) {
 
             } else {
                 saveTransData(data)
                 setIsLoading(false)
-               
+
             }
         }).catch((error) => {
-            
+
             console.log("s");
-          });
+        });
     }
-    useEffect(() => {
-        getTransformerList().then((data) => {
-            if (data==401) {
-                window.location.reload()
-            } else {
-                // console.log(data)
-                saveTransData(data)
-                setIsLoading(false)
-                // pushData()
-            }
-        }).catch((error) => {
-            // 處理其他錯誤，例如網絡錯誤等
-            // message.error("登入失敗，請檢查帳號密碼是否正確。");
-            console.log("s");
-          });
-
-
-    }, []);
     useEffect(() => {
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
         const todayString = today.toISOString().slice(0, 10);
 
-        if (!lastPopupDate || lastPopupDate !== todayString) {
-            // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
-            setIsModalVisible(true);
 
-            // 更新弹窗日期为今天
-            localStorage.setItem('lastPopupDate', todayString);
-        }
         // 设置定时器，在凌晨12点时清除弹窗记录
         const clearPopupAtMidnight = () => {
             const now = new Date();
@@ -77,9 +53,7 @@ function TRSearch({ transformer, saveTransData }) {
         // 每隔一段时间检查是否到达凌晨12点
         const interval = setInterval(clearPopupAtMidnight, 60000); // 每分钟检查一次
 
-        return () => {
-            clearInterval(interval); // 清除定时器
-        };
+
 
         // // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         // const timer = setTimeout(() => {
@@ -88,6 +62,35 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
+
+
+        getTransformerList().then((data) => {
+            if (data == 401) {
+                window.location.reload()
+            } else {
+                // console.log(data)
+                saveTransData(data)
+                setIsLoading(false)
+                if (!lastPopupDate || lastPopupDate !== todayString) {
+                    // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
+                    setIsModalVisible(true);
+
+                    // 更新弹窗日期为今天
+                    localStorage.setItem('lastPopupDate', todayString);
+                }
+                // pushData()
+            }
+        }).catch((error) => {
+            // 處理其他錯誤，例如網絡錯誤等
+            // message.error("登入失敗，請檢查帳號密碼是否正確。");
+            console.log("s");
+        });
+
+        return () => {
+            clearInterval(interval); // 清除定时器
+        };
+    }, []);
+    useEffect(() => {
 
     }, []);
     const _history = useHistory();
@@ -289,7 +292,7 @@ function TRSearch({ transformer, saveTransData }) {
             </Modal>
 
             {
-                isLoading ? (<></>) : (<Table  columns={columns} dataSource={transformer.transformerList} />)
+                isLoading ? (<></>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>
