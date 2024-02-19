@@ -1,5 +1,5 @@
 //antd
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select,Spin } from 'antd';
 
 const { Option } = Select;
 
@@ -8,12 +8,19 @@ const layout = {
   wrapperCol: { span: 4 },
 };
 
-function UserForm({ isEdited, user = null, onFormChange }) {
+function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }) {
   const handleChange = (changedValues) => {
     console.log('Changed values:', changedValues);
     onFormChange(changedValues);
   };
-  return (
+  return (<>{
+    isLoading?(<div>                               
+      <Spin  tip="載入中" size="large">
+          <div className="content" />
+      </Spin>                              
+  </div>  ):(
+    
+  
     <Form {...layout} name="user-edit" colon={false} labelAlign="left" onValuesChange={handleChange}>
       <Form.Item name="name" label="帳號名稱">
         {!isEdited && user ? <span>{user.name}</span> : <Input placeholder={user ? user.name : "請輸入帳號名稱"} size="middle" />}
@@ -110,6 +117,9 @@ function UserForm({ isEdited, user = null, onFormChange }) {
           </Select>}
       </Form.Item> */}
     </Form>
+    )
+  }
+    </>
   );
 
 }

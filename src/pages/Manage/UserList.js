@@ -1,6 +1,6 @@
 //帳號管理
 //antd
-import { Divider, Layout, Input, Table } from 'antd';
+import { Divider, Layout, Input, Table ,Spin} from 'antd';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
@@ -106,6 +106,7 @@ const onChange = (pagination, filters, sorter, extra) => {
 function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(true)
 useEffect(()=>{
   console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
   getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
@@ -114,6 +115,7 @@ useEffect(()=>{
     } else {
       saveUserListApi(data)
       // console.log(data)
+      setIsLoading(false)
       console.log(userManage)
     }
   })
@@ -228,7 +230,10 @@ useEffect(()=>{
       <Content>
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
-          <Table columns={columns} dataSource={userManage.userList} onChange={onChange}
+         
+          { isLoading?<Spin  tip="載入中" size="large">
+                                <div className="content" />
+                            </Spin>    :<Table columns={columns} dataSource={userManage.userList} onChange={onChange}
             pagination={{
               defaultCurrent: 1,
               total: 50,
@@ -236,6 +241,9 @@ useEffect(()=>{
                 marginRight: '20px',
               },
             }} />
+
+          }
+          
           {/* <div class="col-span-1">帳號名稱</div>
             <div>身份權限</div> */}
           {/* <Dropdown menu={{ items }}>
