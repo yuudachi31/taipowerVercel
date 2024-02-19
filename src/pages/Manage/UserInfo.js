@@ -134,7 +134,7 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
       </Header>
       <Content class="h-08 bg-white">
         <Content class="h-08 px-14 py-12">
-          <UserForm isEdited={isEdited} user={userManage.userList.find((el) => el.user_id == userId)} onFormChange={handleFormChange} />
+          <UserForm isLoading={isLoading} setIsloading={setIsloading}isEdited={isEdited} user={userManage.userList.find((el) => el.user_id == userId)} onFormChange={handleFormChange} />
         </Content>
         <Divider />
         <Footer class="grid grid-cols-2 px-7">

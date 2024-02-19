@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker } from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker,Spin } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -40,6 +40,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isLoadingtop, setIsLoadingTop] = useState(true);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -76,11 +78,12 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         is_predict:3,
 
       }])
+      setIsLoadingbottom(true)
       getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
-
+          setIsLoadingbottom(false)
           saveMonthlyRates(data)
         }
       })
@@ -132,7 +135,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-
+        setIsLoadingbottom(false)
         saveMonthlyRates(data)
       }
     })
@@ -154,7 +157,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-
+        setIsLoadingTop(false)
         saveEachTransInfo(data)
       }
     })
@@ -176,7 +179,13 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
-      <Header class="pt-4 flex space-x-7 items-center">
+      { isLoadingtop ? (
+                <> 
+                <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> 
+                </>) : (<>
+                  <Header class="pt-4 flex space-x-7 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
         <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
@@ -206,7 +215,8 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           {/* <EChartRate /> */}
         </Content>
 
-      </Layout>
+      </Layout></>)}
+     
       <Divider />
 
 
@@ -236,8 +246,21 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         </Header>
 
         <Content class="flex mb-20 justify-center items-center">
-          <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
-          <EChartMonth data={transformer.monthlyRatesList} />
+       
+          {
+                isLoadingbottom ? (
+                <> 
+              
+                <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> 
+                </>) : (  <>
+                  <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
+                <EChartMonth data={transformer.monthlyRatesList} />
+                </> )
+            }
+         
+       
         </Content>
       </Layout>
 

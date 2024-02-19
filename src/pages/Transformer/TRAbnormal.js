@@ -6,7 +6,7 @@ import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message,Spin } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const { Search } = Input;
@@ -397,7 +397,9 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                 </div>
             </div>
             {
-                isLoading ? (<></>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
+                isLoading ? (<><Spin tip="載入中" size="large">
+                <div className="content" />
+            </Spin> </>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
             }
 
         </div>

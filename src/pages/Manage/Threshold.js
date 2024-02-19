@@ -357,9 +357,9 @@ function Threshold() {
                     {
                         isLoading ?
                             <div>                               
-                                <Spin  tip="Loading" size="large">
-                                    <div className="content" />
-                                </Spin>                              
+                                 <Spin  tip="載入中" size="large">
+                                <div className="content" />
+                            </Spin>                            
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">

@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message, Spin } from 'antd';
 import { PrinterOutlined, AudioOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const CheckboxGroup = Checkbox.Group;
@@ -22,50 +22,48 @@ const { Search } = Input;
 
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const fetchData = ()=>{
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+
+    
+    const fetchData = () => {
         getTransformerList().then((data) => {
-            if (data==401) {
+            if (data == 401) {
 
             } else {
                 saveTransData(data)
                 setIsLoading(false)
-               
+
             }
         }).catch((error) => {
-            
+
             console.log("s");
-          });
+        });
+    }
+    const _logout = (e) => {
+        document.cookie = "fltk=''" + ";path=/";
+        document.cookie = "flid=''" + ";path=/";
+        document.cookie = "fln=" + ";path=/";
+        document.cookie = "user_id=" + ";path=/";
+        document.cookie = "email=" + ";path=/";
+        document.cookie = "chat_id=" + ";path=/";
+        document.cookie = "user_name=" + ";path=/";
+        document.cookie = "region_id=" + ";path=/";
+        document.cookie = "region_name=" + ";path=/";
+        document.cookie = "roles=" + ";path=/";
+        //筆記: 有出現同名cookie的現象，結果是因為path或max-age參數如果不同會被認為不同cookie
+        //另外cookie的預設max-age是-1，即關閉瀏覽器就會刪除
+        // console.log("logout!")
+        // console.log(document.cookie);
+        _history.push('/login')
     }
     useEffect(() => {
-        getTransformerList().then((data) => {
-            if (data==401) {
-                window.location.reload()
-            } else {
-                // console.log(data)
-                saveTransData(data)
-                setIsLoading(false)
-                // pushData()
-            }
-        }).catch((error) => {
-            // 處理其他錯誤，例如網絡錯誤等
-            // message.error("登入失敗，請檢查帳號密碼是否正確。");
-            console.log("s");
-          });
 
-
-    }, []);
-    useEffect(() => {
+        // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
         const todayString = today.toISOString().slice(0, 10);
+        // console.log(todayString)
 
-        if (!lastPopupDate || lastPopupDate !== todayString) {
-            // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
-            setIsModalVisible(true);
-
-            // 更新弹窗日期为今天
-            localStorage.setItem('lastPopupDate', todayString);
-        }
         // 设置定时器，在凌晨12点时清除弹窗记录
         const clearPopupAtMidnight = () => {
             const now = new Date();
@@ -77,9 +75,7 @@ function TRSearch({ transformer, saveTransData }) {
         // 每隔一段时间检查是否到达凌晨12点
         const interval = setInterval(clearPopupAtMidnight, 60000); // 每分钟检查一次
 
-        return () => {
-            clearInterval(interval); // 清除定时器
-        };
+
 
         // // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         // const timer = setTimeout(() => {
@@ -88,6 +84,47 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
+
+
+        getTransformerList().then((data) => {
+            if (data == 401) {
+                if (Number(localStorage.getItem('resetTime')) == 1) {
+                    console.log("aabb")
+                    localStorage.removeItem('resetTime');
+
+                    setLogoutModalVisible(true)
+                } else {
+                    console.log("aacc")
+                    localStorage.setItem('resetTime', 1)
+                    window.location.reload()
+                }
+
+
+            } else {
+
+                // console.log(data)
+                saveTransData(data)
+                setIsLoading(false)
+                if (!lastPopupDate || lastPopupDate !== todayString) {
+                    // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
+                    setIsModalVisible(true);
+
+                    // 更新弹窗日期为今天
+                    localStorage.setItem('lastPopupDate', todayString);
+                }
+                // pushData()
+            }
+        }).catch((error) => {
+            // 處理其他錯誤，例如網絡錯誤等
+            // message.error("登入失敗，請檢查帳號密碼是否正確。");
+            console.log(error);
+        });
+
+        return () => {
+            clearInterval(interval); // 清除定时器
+        };
+    }, []);
+    useEffect(() => {
 
     }, []);
     const _history = useHistory();
@@ -287,9 +324,30 @@ function TRSearch({ transformer, saveTransData }) {
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
             </Modal>
-
+            <Modal title="登入逾時" open={logoutModalVisible} onCancel={() => { setLogoutModalVisible(false); _logout() }}
+                footer={[
+                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                    <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
+                ]}
+            >
+                <div >
+                    請重新登入系統
+                </div>
+                {/* <div class="flex mb-3"><div class=" w-72">
+                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
+                        </div>
+                        </div>
+                    <div class="flex mb-3">
+                        <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
+                        </div> */}
+            </Modal>
             {
-                isLoading ? (<></>) : (<Table  columns={columns} dataSource={transformer.transformerList} />)
+                isLoading ? (
+                <> 
+                <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> 
+                </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>

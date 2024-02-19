@@ -461,7 +461,7 @@ function Notify() {
                     {
                     isLoading ?
                         <div>                               
-                            <Spin  tip="Loading" size="large">
+                            <Spin  tip="載入中" size="large">
                                 <div className="content" />
                             </Spin>                              
                         </div>
