@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker } from 'antd';
+import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import moment from 'moment';
 import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
@@ -36,6 +36,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -94,7 +95,6 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
-
           saveDailyRates(data)
         }
       })
@@ -114,6 +114,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         console.log(data.errDetail);
       } else {
         saveDailyRates(data)
+        setIsLoadingbottom(false)
       }
     })
     getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
@@ -226,11 +227,22 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
             <span class="ml-2">離峰利用率</span>
           </div>
         </Header>
-        <Content class="flex justify-center items-center mt-14 mb-20 w-full">
-          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
-          <EChartMain data={transformer.dailyRatesList} />
-          {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
-        </Content>
+        {
+          isLoadingbottom ? (
+          <> 
+            <div style={{height:'200px'}}>
+              <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
+                <div className="content" />
+              </Spin> 
+            </div>
+          </>) : (  
+            
+            <Content class="flex justify-center items-center mt-14 mb-20 w-full">
+              <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
+              <EChartMain data={transformer.dailyRatesList} />
+              {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
+            </Content>
+          )}
       </Layout>
 
       {/* <Layout>

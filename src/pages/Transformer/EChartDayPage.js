@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker } from 'antd';
+import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -43,6 +43,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
   const [currentDate,setCurrentDate]=useState(null);
  const [interval,setInterval]=useState(
   {
@@ -76,11 +77,12 @@ console.log()
     setSelectedDay(selectedDate[4])
     saveQuarterRates([{uti_rate_15min:0},{uti_rate_15min:0},{uti_rate_15min:0}])
     getQuarterRates(parsed.coor, parsed.div, parsed.tr_index,selectedDate[0],selectedDate[2],selectedDate[4]).then((data) => {
-     
+    
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
         saveQuarterRates(data)
+
       }
     })
   };
@@ -132,6 +134,7 @@ console.log()
         console.log(data.errDetail);
       } else {
         saveQuarterRates(data)
+        setIsLoadingbottom(false)
       }
     })
     getQuarterRatesRange(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
@@ -223,11 +226,21 @@ console.log()
 
         </Header>
 
-
+        {
+          isLoadingbottom ? (
+          <> 
+            <div style={{height:'200px'}}>
+              <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
+                <div className="content" />
+              </Spin> 
+            </div>
+          </>) : (  
+            
         <Content class="flex justify-center items-center mt-10 mb-20 w-full">
           <span class="min-w-max h-8 -mr-9 transform -rotate-90 text-center">利用率 (%)</span>
           <EChartDay data={transformer.quarterRatesList} />
         </Content>
+        )}
       </Layout>
     </Layout>
   );

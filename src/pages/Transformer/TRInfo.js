@@ -179,12 +179,16 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   return (
     <Layout class="px-20 wrapper">
       { isLoadingtop ? (
-                <> 
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (<>
-                  <Header class="pt-4 flex space-x-7 items-center">
+      <> 
+      <div style={{height:'200px'}}>
+        <Spin tip="載入中" size="large" style={{height:'200px'}}>
+          <div className="content" />
+        </Spin> 
+      </div>
+      </>
+        ) : (
+      <>
+      <Header class="pt-4 flex space-x-7 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
         <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
@@ -243,29 +247,21 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             </div>
           </div>
         </Header>
-
-        <Content class="flex mb-20 justify-center items-center">
-       
-          {
-                isLoadingbottom ? (
-                <> 
-              
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (  <>
-                  <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
-                <EChartMonth data={transformer.monthlyRatesList} />
-                </> )
-            }
-         
-       
-        </Content>
+        {
+          isLoadingbottom ? (
+          <> 
+            <Spin tip="圖表載入中" size="large">
+              <div className="content" />
+            </Spin> 
+          </>) : (  
+          <>
+            <Content class="flex mb-20 justify-center items-center">
+              <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
+              <EChartMonth data={transformer.monthlyRatesList} />
+            </Content>
+          </> )}       
       </Layout>
-
-
-      <Divider />
-
+      {/* <Divider /> */}
     </Layout>
   );
 

@@ -196,7 +196,7 @@ useEffect(()=>{
   ]
   const filteredData = USER_DATA.filter(user => user.name.includes(searchText) || user.group.some(group => group.includes(searchText)));
   return (
-    <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
+    <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
         <h2 class="flex-auto font-bold text-2xl">帳號管理</h2>
         <div class="flex h-10">
@@ -231,16 +231,20 @@ useEffect(()=>{
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
          
-          { isLoading?<Spin  tip="載入中" size="large">
-                                <div className="content" />
-                            </Spin>    :<Table columns={columns} dataSource={userManage.userList} onChange={onChange}
-            pagination={{
-              defaultCurrent: 1,
-              total: 50,
-              style: {
-                marginRight: '20px',
-              },
-            }} />
+          { 
+            isLoading?
+              <Spin  tip="載入中" size="large" style={{marginTop:'112px'}}>
+                <div className="content" />
+              </Spin>    
+              :
+              <Table columns={columns} dataSource={userManage.userList} onChange={onChange}
+                pagination={{
+                  defaultCurrent: 1,
+                  total: 50,
+                  style: {
+                    marginRight: '20px',
+                  },
+              }} />
 
           }
           
