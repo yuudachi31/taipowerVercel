@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
+import {getAbnormalTransList, getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -19,12 +19,17 @@ const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 const { Search } = Input;
-
+const containerStyle = {
+    width: '100%',
+    height: 100,
+    overflow: 'auto',
+    border: '1px solid #40a9ff',
+  };
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
-    
+const [abnormalTransData,setAbnormalTransData]= useState([]);
+    const [isModalDataLoading,setIsModalDataLoading]=useState(true);
     const fetchData = () => {
         getTransformerList().then((data) => {
             if (data == 401) {
@@ -57,7 +62,7 @@ function TRSearch({ transformer, saveTransData }) {
         _history.push('/login')
     }
     useEffect(() => {
-
+        
         // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
@@ -101,14 +106,24 @@ function TRSearch({ transformer, saveTransData }) {
 
 
             } else {
-
+                getAbnormalTransList().then((data) => {
+                    if (data.errStatus) {
+                        message.error(data.errDetail);
+                    } else {
+                        // console.log(data)
+                        setAbnormalTransData(data)
+                        // pushData()
+                        console.log("saveall")
+                        setIsModalDataLoading(false)
+                    }
+                })
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
                 if (!lastPopupDate || lastPopupDate !== todayString) {
                     // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
                     setIsModalVisible(true);
-
+                    
                     // 更新弹窗日期为今天
                     localStorage.setItem('lastPopupDate', todayString);
                 }
@@ -300,22 +315,27 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
                 ]}
             >
-                <div >
-                    <Row >
-                        <Col span={6}>圖號座標</Col>
-                        <Col span={6}>組別</Col>
-                        <Col span={6}>利用率（%）</Col>
-                        <Col span={6}>日期</Col>
-                    </Row>
-                    {plainOptions.map((option, index) => (
-                        <Row key={index}>
-                            <Col span={6}>{option}</Col>
-                            <Col span={6}>{Group[index]}</Col>
-                            <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
-                            <Col span={6}>{Time[index]}</Col>
+                {
+                    isModalDataLoading?(<> <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> </>):( <div style={containerStyle}>
+                        <Row >
+                            <Col span={6}>圖號座標</Col>
+                            <Col span={6}>組別</Col>
+                            <Col span={6}>利用率（%）</Col>
+                            <Col span={6}>日期</Col>
                         </Row>
-                    ))}
-                </div>
+                        {abnormalTransData.map((data, index) => (
+                            <Row key={index}>
+                                <Col span={6}>{data.coor}</Col>
+                                <Col span={6}>{data.div}</Col>
+                                <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                <Col span={6}>{Time[index]}</Col>
+                            </Row>
+                        ))}
+                    </div>)
+                }
+               
                 {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
