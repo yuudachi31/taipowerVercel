@@ -281,3 +281,26 @@ export const getAbnormalTransByCoor = async (coor) => {
     console.log(err.response);
   }
 };
+
+//line推播用
+export const postEventbyID = async (user_id) => {
+  var _usertoken = document.cookie.split('; ').find(row => row.startsWith('fltk')).split('=')[1];
+  console.log('推播的usertoken：' ,_usertoken)
+  try {
+      const _url = `${baseURL}linebot/send`
+      const result = await axios.post(_url, user_id,{
+          headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${_usertoken}`,
+          }
+      })
+      if (result) {
+          console.log(result)
+          if (result.status === 200) {
+              return (true)
+          }
+      }
+  } catch (err) {
+      console.log(err.response);
+  }
+}
