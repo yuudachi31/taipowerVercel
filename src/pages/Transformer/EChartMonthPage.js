@@ -164,7 +164,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap}</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KW</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>第幾具 :<span class="ml-2">1/2</span></div>
