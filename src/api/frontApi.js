@@ -62,7 +62,7 @@ export const getTransformerList = async () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);
@@ -251,7 +251,7 @@ export const getAbnormalTransList = async () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);

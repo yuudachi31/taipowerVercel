@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
-import { postEventbyID } from "../../api/frontApi"
+import { postEventbyID ,getAbnormalTransList} from "../../api/frontApi"
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
@@ -192,6 +192,7 @@ function Notify() {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userData, setUserData] = useState(USER_DATA);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [abnormalTRList,setAbnormalTRList]= useState([]);
     // 切換群組時更新列表資訊
     const handleGroupChange = (value) => {
         const selectedGroup = groupData.find((group) => group.value === value);
@@ -201,10 +202,23 @@ function Notify() {
         const usersInGroup = userData.filter((user) => user.area.includes(selectedGroup.area));
         setFilteredUsers(usersInGroup);
     };
+    console.log("aaa")
     useEffect(() => {
         // 在組件初始化時進行一次過濾
         const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
+       
+        getAbnormalTransList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                console.log(data)
+                setAbnormalTRList(data)
+                // pushData()
+                console.log("saveall")
+            }
+        })
     }, []);
 
     //設定table欄位
