@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, Row, Col, Modal, Form, Input, InputNumber, Cascader, Button, Select } from 'antd';
+import { Layout, Divider, Row, Col, Modal, Form, Input, message, Cascader, Button, Select } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
@@ -209,6 +209,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
     return { id, EDataItem, PDataItem };
   });
 
+  //設定容量
   const opacityOptions = [
     {
       value: '10 KVA',
@@ -232,13 +233,14 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
     },
   ];
 
-  console.log(mergeData);
-  const tailLayout = {
-    wrapperCol: {
-      offset: 8,
-      span: 16,
-    },
+  //更新利用率loading
+  const theresholdSuccess = () => {
+    message.loading('正在計算並更新利用率中...', 3, () => {
+      message.success('已更新！');
+    });
   };
+
+  console.log(mergeData);
   
   return (
     <Layout class="px-20 wrapper">
@@ -418,7 +420,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
             <Content class="predict-box">
               <PredictList data={mergeData[index]}/>
               <div class="flex" style={{justifyContent:'flex-end'}}>
-                <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>更新利用率</button>
+                <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={theresholdSuccess}>更新利用率</button>
               </div>
               
             </Content>
@@ -430,7 +432,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
         <Content class="flex justify-end w-50 gap-2 mt-5" >
           <div class="flex w-100 h-100 gap-2">
             <button class="btn btn-red bg-red-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>結束規劃</button>
-            <button class="btn btn-green bg-green-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>匯出規劃</button>
+            <button class="btn-orange-outline border-orange-400 flex-end" onClick={() => { _history.push(`/EChartMonthPage`) }}>匯出規劃</button>
           </div>
           {/* <EChartRate /> */}
         </Content>
