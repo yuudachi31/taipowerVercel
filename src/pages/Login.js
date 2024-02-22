@@ -1,10 +1,11 @@
 import { useHistory } from "react-router-dom";
+import { useState } from 'react';
 import { useDispatch } from "react-redux";
 import rainbowLogo from "../assets/icon/logo-rainbow.png";
 
 import { postUser, getUserRole } from "../api/frontApi";
 import { resetTest, loginAction,storeUserInfo } from "../actions/frontAction";
-import { Form, Input, message } from "antd";
+import { Form, Input, message, Button } from "antd";
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
@@ -32,15 +33,15 @@ console.log(document.cookie)
 
 
 function Login({ user, resetTest, loginAction,storeUserInfo }) {
-
- 
   const _history = useHistory();
+  const [isLoading, setIsLoading] = useState(false)
   // const testbtn = () => {
   //   console.log(user);
   //   resetTest(10)
   console.log(user);
   // };
   const _handleLogin = (values) => {
+    setIsLoading(true)
     postUser(values.username, values.password).then((data) => {
       if (data && data.errStatus) {
         message.error(data.errDetail);
@@ -65,6 +66,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
         storeUserInfo(userData);
         // console.log(userData);
         // console.log(document.cookie);
+        setIsLoading(false)
         _history.push("/tr/search");
         // console.log("3")
         });
@@ -99,7 +101,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
                   <div className="flex items-center">
                     {/* <img src={rainbowLogo} className="w-12 h-12" /> */}
                     <div className="text-base font-extrabold ml-2">
-                      變壓器查詢列表
+                      配電變壓器之負載變化預測及利用率分析研究
                     </div>
                   </div>
                 </Form.Item>
@@ -150,7 +152,9 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
               </div>
               <div className="flex justify-center">
                 <Form.Item>
-                  <button className="btn">登入</button>
+                  {
+                    isLoading ? <Button className="btn" type="primary" loading>登入</Button> : <button className="btn">登入</button>
+                  }
                 </Form.Item>
               </div>
             </Form>
