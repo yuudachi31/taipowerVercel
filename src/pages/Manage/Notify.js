@@ -219,7 +219,7 @@ function Notify() {
                     } else {
 
                         setGroupData(data.map((el) => {
-                            console.log(el.region_id)
+                            // console.log(el.region_id)
                               return {
                                 value: el.region_id, //區處別
                                 // area: region_id_list[Number(el.region_id)],
@@ -421,10 +421,10 @@ function Notify() {
             icon: <ExclamationCircleOutlined />,
             content: '確定要進行Line推播嗎？',
             onOk() {
-                console.log(user_id);
+                console.log(abnormalTRList);
                 console.log('OK');
                 setIsModalVisible(false);
-                _handleSend();
+                _handleSend(user_id);
             },
             onCancel() {
                 console.log('Cancel');
@@ -435,10 +435,10 @@ function Notify() {
         });
         
     }
-    const _handleSend = async () => {
+    const _handleSend = async (user_id) => {
         console.log(`事件`)
         // const dis = _district.join('_')
-        const send = await postEventbyID(user_id);
+        const send = await postEventbyID(user_id,abnormalTRList);
         if (send) {
             success();
         } else {
