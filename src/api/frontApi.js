@@ -487,11 +487,12 @@ export const postEmailNotify = async (data) => {
   try {
     const _url = `https://ami-alertemail-sendgrid.vercel.app/send-email/`;
     const result = await axios.post(_url,null, {
-      params:{
-        emails:"['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com']",
-        subject:"title",
-        content:"<p>TEstText</p>"
-      },
+      params:data,
+      // params:{
+      //   emails:"['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com']",
+      //   subject:"title",
+      //   content:"<p>TEstText</p>"
+      // },
       
       // paramsSerializer: params => {
         
@@ -515,3 +516,22 @@ export const postEmailNotify = async (data) => {
 // postEmailNotify()
 console.log(`<p>${'TEstText'}</p>`)
 
+
+export const getAllUser = async () => {
+  try {
+    const _url = `${baseURL}/accounts/all`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};

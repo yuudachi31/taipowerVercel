@@ -341,7 +341,7 @@ function TRSearch({ transformer, saveTransData }) {
                                 {data.power_type == "Y接" ?
                                     <Col span={6}>NA</Col>
                                     : 
-                                    <Col span={6}>{data.num}</Col>
+                                    <Col span={6}>{data.tr_index}</Col>
                                 }
 
 
