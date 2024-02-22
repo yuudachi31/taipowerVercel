@@ -512,6 +512,6 @@ export const postEmailNotify = async (data) => {
     console.log(err.response);
   }
 };
-postEmailNotify()
+// postEmailNotify()
 console.log(`<p>${'TEstText'}</p>`)
 
