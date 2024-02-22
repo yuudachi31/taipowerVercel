@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {getAbnormalTransList, getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
+import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -24,12 +24,12 @@ const containerStyle = {
     height: 100,
     overflow: 'auto',
     border: '1px solid #40a9ff',
-  };
+};
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-const [abnormalTransData,setAbnormalTransData]= useState([]);
-    const [isModalDataLoading,setIsModalDataLoading]=useState(true);
+    const [abnormalTransData, setAbnormalTransData] = useState([]);
+    const [isModalDataLoading, setIsModalDataLoading] = useState(true);
     const fetchData = () => {
         getTransformerList().then((data) => {
             if (data == 401) {
@@ -61,8 +61,16 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
         // console.log(document.cookie);
         _history.push('/login')
     }
+
+    // const testArr=['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com'] 
+    const params = new URLSearchParams();
+    // testArr.forEach((value, index) => { 
+    //     params.append(`arr[${index}]`, value); 
+    // });
+
+
     useEffect(() => {
-        
+        // postEmailNotify(params)
         // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
@@ -123,7 +131,7 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                 if (!lastPopupDate || lastPopupDate !== todayString) {
                     // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
                     setIsModalVisible(true);
-                    
+
                     // 更新弹窗日期为今天
                     localStorage.setItem('lastPopupDate', todayString);
                 }
@@ -316,26 +324,34 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                 ]}
             >
                 {
-                    isModalDataLoading?(<> <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> </>):( <div style={containerStyle}>
+                    isModalDataLoading ? (<> <Spin tip="載入中" size="large">
+                        <div className="content" />
+                    </Spin> </>) : (<div style={containerStyle}>
                         <Row >
                             <Col span={6}>圖號座標</Col>
                             <Col span={6}>組別</Col>
+                            <Col span={6}>第幾具</Col>
                             <Col span={6}>利用率（%）</Col>
-                            <Col span={6}>日期</Col>
+                            {/* <Col span={6}>日期</Col> */}
                         </Row>
                         {abnormalTransData.map((data, index) => (
                             <Row key={index}>
                                 <Col span={6}>{data.coor}</Col>
                                 <Col span={6}>{data.div}</Col>
+                                {data.power_type == "Y接" ?
+                                    <Col span={6}>NA</Col>
+                                    : 
+                                    <Col span={6}>{data.num}</Col>
+                                }
+
+
                                 <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
-                                <Col span={6}>{Time[index]}</Col>
+                                {/* <Col span={6}>{Time[index]}</Col> */}
                             </Row>
                         ))}
                     </div>)
                 }
-               
+
                 {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
@@ -363,11 +379,11 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
             </Modal>
             {
                 isLoading ? (
-                <> 
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
+                    <>
+                        <Spin tip="載入中" size="large">
+                            <div className="content" />
+                        </Spin>
+                    </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>
