@@ -57,6 +57,24 @@ p{
 #test-upload-user-label{
   cursor: pointer;
 }
+
+
+/* 圖表bar pointer */
 .recharts-bar-rectangle{
   cursor: pointer;
-  }
+}
+
+/* 負載分割 */
+#components-transfer-demo-table-transfer .ant-table td {
+  background: transparent;
+}
+
+.predict-box {
+  padding: 16px;
+  color: #282c34;
+  border: 1px solid rgba(0,0,0,.06)
+}
+
+.ant-transfer-customize-list .ant-transfer-list{
+  width: 40%;
+}

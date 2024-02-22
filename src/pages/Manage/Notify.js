@@ -1,9 +1,11 @@
 //推播管理
 //antd
-import { Divider, Layout, Input, Table } from 'antd';
+import { Divider, Layout, Input, Table, Spin } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined} from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm,message } from 'antd';
 import { useState, useEffect } from 'react';
+import { getAllThreshold, getAllRegions } from '../../api/frontApi'
+
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
@@ -15,7 +17,7 @@ const { confirm } = Modal;
 
 export const USER_DATA = [
     {
-        user_id: 0,
+        value: ['00'],
         area: ['台北市區'],
         name: 'User_001',
         // group: ['區處管理者', '運維人員'],
@@ -24,7 +26,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 1,
+        value: ['00'],
         area: ['台北市區', '高雄市區'],
         name: 'User_002',
         // group: ['運維人員'],
@@ -33,7 +35,7 @@ export const USER_DATA = [
         email_state: false
     },
     {
-        user_id: 2,
+        value: ['01'],
         area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_003',
         // group: ['區處檢修人員'],
@@ -42,7 +44,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 3,
+        value: ['02'],
         area: ['台北市區','新北市區'],
         name: 'User_004',
         // group: ['區處管理者', '運維人員'],
@@ -51,7 +53,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 4,
+        value: ['03'],
         area: ['台北市區', '高雄市區'],
         name: 'User_005',
         // group: ['運維人員'],
@@ -60,7 +62,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 5,
+        value: ['04'],
         area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_006',
         // group: ['區處檢修人員'],
@@ -69,7 +71,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 6,
+        value: ['01'],
         area: ['台北市區'],
         name: 'User_007',
         // group: ['區處管理者', '運維人員'],
@@ -78,7 +80,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 7,
+        value: ['02'],
         area: ['台北市區', '高雄市區'],
         name: 'User_008',
         // group: ['運維人員'],
@@ -87,7 +89,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 8,
+        value: ['01'],
         area: ['台北市區','新竹市區', '高雄市區'],
         name: 'User_009',
         // group: ['區處檢修人員'],
@@ -96,7 +98,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 9,
+        value: ['01'],
         area: ['台北市區','新北市區'],
         name: 'User_010',
         // group: ['區處管理者', '運維人員'],
@@ -105,7 +107,7 @@ export const USER_DATA = [
         email_state: true,
     },
     {
-        user_id: 10,
+        value: ['00'],
         area: ['台北市區', '高雄市區'],
         name: 'User_011',
         // group: ['運維人員'],
@@ -114,7 +116,7 @@ export const USER_DATA = [
         email_state: false,
     },
     {
-        user_id: 11,
+        value: ['11'],
         area: ['台北市區','新竹市區', '新北市區'],
         name: 'User_012',
         // group: ['區處檢修人員'],
@@ -144,12 +146,12 @@ export const USER_DATA = [
 export const LINEGROUPID = [
     {
         value: '1',
-        area: "台北市區",
+        area: "",
         // label: '群組名稱1',
         threshold: [
-          { state: 1, limit_max: '70' },
-          { state: 2, limit_max: '80' },
-          { state: 3, limit_max: '90' },
+          { state: 1, limit_max: '' },
+          { state: 2, limit_max: '' },
+          { state: 3, limit_max: '' },
         ],
       },
       {
@@ -188,6 +190,8 @@ function Notify() {
     const _history = useHistory()
     //設定Select資料
     const [groupData, setGroupData] = useState(LINEGROUPID);
+    const [isDisabled,setIsDisabled]=useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userData, setUserData] = useState(USER_DATA);
@@ -199,11 +203,46 @@ function Notify() {
         setSelectedGroup(selectedGroup);
 
         // 過濾符合條件的帳號
-        const usersInGroup = userData.filter((user) => user.area.includes(selectedGroup.area));
+        const usersInGroup = userData.filter((user) => user.value.includes(selectedGroup.value));
         setFilteredUsers(usersInGroup);
     };
     console.log("aaa")
+
     useEffect(() => {
+        getAllThreshold().then((data) => {
+            if (data.errStatus) {
+                console.log(data.errDetail);
+            } else {
+                getAllRegions().then((region_data) => {
+                    if (region_data.errStatus) {
+                        console.log(region_data.errDetail);
+                    } else {
+
+                        setGroupData(data.map((el) => {
+                            console.log(el.region_id)
+                              return {
+                                value: el.region_id, //區處別
+                                // area: region_id_list[Number(el.region_id)],
+                                area: setRegionName(region_data, el),
+                                // label: '群組名稱1',
+                                threshold: [
+                                    { state: 1, limit_max: el.limit_low },
+                                    { state: 2, limit_max: el.limit_moderate },
+                                    { state: 3, limit_max: el.limit_high },
+                                ]
+                            }
+                        }
+                            
+                         
+                        ))
+                        setIsDisabled(false)
+                        setIsLoading(false)
+                    }
+                })
+                // console.log()
+                // setGroupData()
+            }
+        })
         // 在組件初始化時進行一次過濾
         const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
@@ -220,7 +259,15 @@ function Notify() {
             }
         })
     }, []);
+    function setRegionName(region_data, el) {
 
+        const data = region_data.find((rel) => rel.region_id == el.region_id)
+        return data.region_name
+        // let region_name=""
+
+
+
+    }
     //設定table欄位
     const columns = [
         {
@@ -348,11 +395,13 @@ function Notify() {
         } else {
             // 帳號不存在於群組中，新增群組
             existingUser.area.push(selectedGroup.area);
-            setModalContent(
-            <p className="text-green-500">
-                *帳號成功添加到此群組。
-            </p>
-            );
+            // setModalContent(
+            // <p className="text-green-500">
+            //     *帳號成功添加到此群組。
+            // </p>
+            // );
+            setNewAccountName('');
+            setModalContent(null);
             setIsadduserModalOpen(false);
             console.log('new user data', existingUser, userData)
         }
@@ -418,7 +467,7 @@ function Notify() {
     };
 
     return (
-        <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
+        <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
             <Content>
                 <Header class="pt-4 pb-8 flex space-x-7 items-center">
                     <h2 class="flex-auto font-bold text-2xl">推播管理</h2>
@@ -449,7 +498,8 @@ function Notify() {
                                 placeholder="Select a person"
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
-                                style={{ width: 120 }}
+                                style={{ width: 200 }}
+                                disabled={isDisabled}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
                                 filterOption={(input, option) =>
@@ -463,64 +513,85 @@ function Notify() {
                                 ))}
                             </Select>
                     </div>
-                    <div class=" px-10 pb-10 flex justify-between">
-                        <div class="flex">
-                            <span class="font-bold">警告門檻：</span>
-                            <div>
-                                {/* <div  class="flex row "> */}
-                                {selectedGroup.threshold.map((item) => (
-                                    <div key={item.state} className="flex mb-3">
-                                    <div class="flex row ">
-                                        <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
-                                        {item.state === 1 && '一般'}
-                                        {item.state === 2 && '中度'}
-                                        {item.state === 3 && '重度'}
-                                        </p>
-                                        <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
-                                    </div>
-                                    </div>
-                                ))}
-                                {/* </div> */}
-                            </div>
-                            {/* 修改  */}
-                            {/* {isEdit ? 
-                                <div class="flex">
-                                    <div>
-                                    <div  class="flex row ">
-                                        <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
-                                    </div>
-                                    <div  class="flex row">
-                                        <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
-                                        <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
-                                    </div>
-                                    </div>
+                    {
+                    isLoading ?
+                        <div>                               
+                            <Spin  tip="載入中" size="large">
+                                <div className="content" />
+                            </Spin>                              
+                        </div>
+                        :
+                        <div class=" px-10 pb-10 flex justify-between">
+                            <div class="flex">
+                                <span class="font-bold">警告門檻：</span>
+                                <div>
+                                    {/* <div  class="flex row "> */}
+                                    {selectedGroup.threshold.map((item) => (
+                                        <div key={item.state} className="flex mb-3">
+                                        <div class="flex row ">
+                                            <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
+                                            {item.state === 1 && '一般'}
+                                            {item.state === 2 && '中度'}
+                                            {item.state === 3 && '重度'}
+                                            </p>
+                                            <p class="mr-2">警告門檻：{`高於 ${item.limit_max}`} %</p>
+                                        </div>
+                                        </div>
+                                    ))}
+                                    {/* </div> */}
                                 </div>
-                                :
-                                //修改完後的顯示
-                                <span class="font-bold">低於 10% 高於80%</span>
-                            } */}
+                                {/* 修改  */}
+                                {/* {isEdit ? 
+                                    <div class="flex">
+                                        <div>
+                                        <div  class="flex row ">
+                                            <div class="flex mb-3"><p class="mr-2">一般 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">中度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                        <div  class="flex row">
+                                            <div class="flex mb-3"><p class="mr-2">重度 警告門檻：低於 </p><div class=" w-16 mr-2"><Input /></div><p> %</p></div>
+                                            <div class="flex mb-3"><p class="mr-2">高於</p><div class=" w-16 mr-2 "><Input /></div><p> %</p></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    :
+                                    //修改完後的顯示
+                                    <span class="font-bold">低於 10% 高於80%</span>
+                                } */}
+                            </div>
+                            <Modal title="確認推播" visible={isModalVisible} >
+                            </Modal>
+                            <div class="flex2">
+                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
+                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={showlineConfirm} >LINE 推播</button>
+                            </div>
                         </div>
-                        <Modal title="確認推播" visible={isModalVisible} >
-                                </Modal>
-                        <div class="flex2">
+
+                    //     <Modal title="確認推播" visible={isModalVisible} >
+                    //             </Modal>
+                    //     <div class="flex2">
                                 
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
-                                <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={showlineConfirm} >LINE 推播</button>
-                        </div>
+                    //             <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
+                    //             <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={showlineConfirm} >LINE 推播</button>
+                    //     </div>
                     
-                    </div>
+                    // </div>
                     
+
+
+                    }
 
                 </Content>
             </Content>
             <div class="my-7 font-bold text-base">推播帳號列表</div>
+            {
+            isLoading ? <></>
+            :
             <Content>
-
                 <Layout class="p-7 bg-white">
                     {/* <Header class="pl-16 user-grid-row h-14 bg-gray-200 font-medium text-base account-list"> */}
                         {/* <div >帳號</div> */}
@@ -560,7 +631,8 @@ function Notify() {
                         </div> */}
                     </Content>
                 </Layout>
-            </Content>
+            </Content>  
+            }
         </Layout>
     );
 

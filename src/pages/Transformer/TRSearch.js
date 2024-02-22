@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTransformerList,getTransformerListByCoor} from '../../api/frontApi'
+import {getAbnormalTransList, getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, message, Spin } from 'antd';
 import { PrinterOutlined, AudioOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const CheckboxGroup = Checkbox.Group;
@@ -19,34 +19,56 @@ const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 const { Search } = Input;
-
+const containerStyle = {
+    width: '100%',
+    height: 100,
+    overflow: 'auto',
+    border: '1px solid #40a9ff',
+  };
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    useEffect(() => {
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+const [abnormalTransData,setAbnormalTransData]= useState([]);
+    const [isModalDataLoading,setIsModalDataLoading]=useState(true);
+    const fetchData = () => {
         getTransformerList().then((data) => {
-            if (data.errStatus) {
-                message.error(data.errDetail);
+            if (data == 401) {
+
             } else {
-                // console.log(data)
                 saveTransData(data)
-                // pushData()
+                setIsLoading(false)
+
             }
-        })
+        }).catch((error) => {
 
-
-    }, []);
+            console.log("s");
+        });
+    }
+    const _logout = (e) => {
+        document.cookie = "fltk=''" + ";path=/";
+        document.cookie = "flid=''" + ";path=/";
+        document.cookie = "fln=" + ";path=/";
+        document.cookie = "user_id=" + ";path=/";
+        document.cookie = "email=" + ";path=/";
+        document.cookie = "chat_id=" + ";path=/";
+        document.cookie = "user_name=" + ";path=/";
+        document.cookie = "region_id=" + ";path=/";
+        document.cookie = "region_name=" + ";path=/";
+        document.cookie = "roles=" + ";path=/";
+        //筆記: 有出現同名cookie的現象，結果是因為path或max-age參數如果不同會被認為不同cookie
+        //另外cookie的預設max-age是-1，即關閉瀏覽器就會刪除
+        // console.log("logout!")
+        // console.log(document.cookie);
+        _history.push('/login')
+    }
     useEffect(() => {
+        
+        // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
         const todayString = today.toISOString().slice(0, 10);
+        // console.log(todayString)
 
-        if (!lastPopupDate || lastPopupDate !== todayString) {
-            // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
-            setIsModalVisible(true);
-
-            // 更新弹窗日期为今天
-            localStorage.setItem('lastPopupDate', todayString);
-        }
         // 设置定时器，在凌晨12点时清除弹窗记录
         const clearPopupAtMidnight = () => {
             const now = new Date();
@@ -58,9 +80,7 @@ function TRSearch({ transformer, saveTransData }) {
         // 每隔一段时间检查是否到达凌晨12点
         const interval = setInterval(clearPopupAtMidnight, 60000); // 每分钟检查一次
 
-        return () => {
-            clearInterval(interval); // 清除定时器
-        };
+
 
         // // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
         // const timer = setTimeout(() => {
@@ -69,6 +89,57 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
+
+
+        getTransformerList().then((data) => {
+            if (data == 401) {
+                if (Number(localStorage.getItem('resetTime')) == 1) {
+                    console.log("aabb")
+                    localStorage.removeItem('resetTime');
+
+                    setLogoutModalVisible(true)
+                } else {
+                    console.log("aacc")
+                    localStorage.setItem('resetTime', 1)
+                    window.location.reload()
+                }
+
+
+            } else {
+                getAbnormalTransList().then((data) => {
+                    if (data.errStatus) {
+                        message.error(data.errDetail);
+                    } else {
+                        // console.log(data)
+                        setAbnormalTransData(data)
+                        // pushData()
+                        console.log("saveall")
+                        setIsModalDataLoading(false)
+                    }
+                })
+                // console.log(data)
+                saveTransData(data)
+                setIsLoading(false)
+                if (!lastPopupDate || lastPopupDate !== todayString) {
+                    // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
+                    setIsModalVisible(true);
+                    
+                    // 更新弹窗日期为今天
+                    localStorage.setItem('lastPopupDate', todayString);
+                }
+                // pushData()
+            }
+        }).catch((error) => {
+            // 處理其他錯誤，例如網絡錯誤等
+            // message.error("登入失敗，請檢查帳號密碼是否正確。");
+            console.log(error);
+        });
+
+        return () => {
+            clearInterval(interval); // 清除定时器
+        };
+    }, []);
+    useEffect(() => {
 
     }, []);
     const _history = useHistory();
@@ -85,7 +156,7 @@ function TRSearch({ transformer, saveTransData }) {
     };
 
 
-    
+
     const dataCheck = []
     for (let i = 0; i < 3; i++) {
         dataCheck[i] =
@@ -123,6 +194,7 @@ function TRSearch({ transformer, saveTransData }) {
         // },
     ];
     const data = [];
+    const [isLoading, setIsLoading] = useState(true);
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
@@ -139,13 +211,14 @@ function TRSearch({ transformer, saveTransData }) {
         setCheckedList(e.target.checked ? dataCheck : []);
     };
     const clearFilters = () => {
-        
+
         getTransformerList().then((data) => {
             if (data.errStatus) {
                 message.error(data.errDetail);
             } else {
                 // console.log(data)
                 saveTransData(data)
+                setIsLoading(false)
                 // pushData()
             }
         })
@@ -204,22 +277,25 @@ function TRSearch({ transformer, saveTransData }) {
     const [searchText, setSearchText] = useState('');
     // const filteredData = transformer.transformerList.filter(user => user.coor.includes(searchText) || user.div.some(div => div.includes(searchText)));
     const onSearch = (value, _e, info) => {
-       getTransformerListByCoor(value).then((data) => {
-        if (data.errStatus) {
-            message.error(data.errDetail);
-        } else {
-            // console.log(data)
-            saveTransData(data)
-            // pushData()
-        }
-    })
+        setIsLoading(true)
+        getTransformerListByCoor(value).then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                saveTransData(data)
+                setIsLoading(false)
+
+                // pushData()
+            }
+        })
     }
-    
-        return (
+
+    return (
         <div className='wrapper px-24 py-4'>
-            <div className="flex justify-between">
-                <button className="btn " style={{ height: 40 }}><PrinterOutlined />匯出</button>
-                <div className="flex">
+            <div className="flex justify-end">
+                {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
+                <div className="flex mb-2">
                     <Search
 
                         placeholder="搜尋圖號座標"
@@ -230,7 +306,7 @@ function TRSearch({ transformer, saveTransData }) {
                         }}
                     />
                     {/* <button className="btn rounded-sm mr-7" style={{ height: 40, width: 100 }} onClick={() => { _history.push(`/tr/abnormal`) }}>異常變壓器</button> */}
-                    <button onClick={clearFilters}className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    {/* <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button> */}
                 </div>
             </div>
             <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
@@ -239,21 +315,43 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
                 ]}
             >
-                <div >
-                    <Row >
-                        <Col span={6}>圖號座標</Col>
-                        <Col span={6}>組別</Col>
-                        <Col span={6}>利用率（%）</Col>
-                        <Col span={6}>日期</Col>
-                    </Row>
-                    {plainOptions.map((option, index) => (
-                        <Row key={index}>
-                            <Col span={6}>{option}</Col>
-                            <Col span={6}>{Group[index]}</Col>
-                            <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
-                            <Col span={6}>{Time[index]}</Col>
+                {
+                    isModalDataLoading?(<> <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> </>):( <div style={containerStyle}>
+                        <Row >
+                            <Col span={6}>圖號座標</Col>
+                            <Col span={6}>組別</Col>
+                            <Col span={6}>利用率（%）</Col>
+                            <Col span={6}>日期</Col>
                         </Row>
-                    ))}
+                        {abnormalTransData.map((data, index) => (
+                            <Row key={index}>
+                                <Col span={6}>{data.coor}</Col>
+                                <Col span={6}>{data.div}</Col>
+                                <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                <Col span={6}>{Time[index]}</Col>
+                            </Row>
+                        ))}
+                    </div>)
+                }
+               
+                {/* <div class="flex mb-3"><div class=" w-72">
+                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
+                        </div>
+                        </div>
+                    <div class="flex mb-3">
+                        <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
+                        </div> */}
+            </Modal>
+            <Modal title="登入逾時" open={logoutModalVisible} onCancel={() => { setLogoutModalVisible(false); _logout() }}
+                footer={[
+                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                    <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
+                ]}
+            >
+                <div >
+                    請重新登入系統
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
@@ -263,8 +361,14 @@ function TRSearch({ transformer, saveTransData }) {
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
             </Modal>
-
-            <Table rowSelection={rowSelection} columns={columns} dataSource={transformer.transformerList} />
+            {
+                isLoading ? (
+                <> 
+                <Spin tip="載入中" size="large">
+                    <div className="content" />
+                </Spin> 
+                </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
+            }
 
         </div>
     );

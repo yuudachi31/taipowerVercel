@@ -134,6 +134,7 @@
 //   return (
 //     <Layout class="px-20 wrapper">
       
+// <<<<<<< HEAD
 //       <Divider />
 //       <Layout class="flex justify-between py-2">
 //         <Content class="text-base tracking-widest space-y-5 flex-col">
@@ -147,19 +148,34 @@
 //         </Content>
 //         <Content class="text-base tracking-widest space-y-5 flex-col">
 //           <div>第幾具 :<span class="ml-2">1/2</span></div>
+// =======
+//       <Divider />
+//       <Layout class="flex justify-between py-2">
+//         <Content class="text-base tracking-widest space-y-5 flex-col">
+//           <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
+//           <div>資料表數 :<span class="ml-2">10 個</span></div>
+//           <div>資料完整度 :<span class="ml-2">10 %</span></div>
+//         </Content>
+//         <Content class="text-base tracking-widest space-y-5 flex-col">
+//           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
+//           <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap}</span></div>
+//         </Content>
+//         <Content class="text-base tracking-widest space-y-5 flex-col">
+//           <div>第幾具 :<span class="ml-2">1/2</span></div>
+// >>>>>>> normalBranch
           
-//         </Content>
+// //         </Content>
 
-//         <Content class="relative flex-col w-40 gap-2" >
-//           <span class="relative text-base tracking-widest">利用率(%)</span>
-//           <div class="flex mt-8 w-100 h-100 gap-2">
+// //         <Content class="relative flex-col w-40 gap-2" >
+// //           <span class="relative text-base tracking-widest">利用率(%)</span>
+// //           <div class="flex mt-8 w-100 h-100 gap-2">
             
-//             <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
-//           </div>
-//           {/* <EChartRate /> */}
-//         </Content>
+// //             <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
+// //           </div>
+// //           {/* <EChartRate /> */}
+// //         </Content>
 
-//       </Layout>
+// //       </Layout>
 //       <Divider />
 //       <IndustryInfoChart />   
 //     </Layout>

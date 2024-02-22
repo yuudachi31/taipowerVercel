@@ -15,7 +15,7 @@ export const transformerReducer = (state = initialState, action) => {
   switch (action.type) {
     case SAVE_TRANS_DATA:
       const data = [];
-      action.payload.forEach((element, index) => {
+      action.payload?.forEach((element, index) => {
         if (element.power_type == 'Y接') {
           data.push({
             key: index,
@@ -103,16 +103,19 @@ export const transformerReducer = (state = initialState, action) => {
     case SAVE_DAILYRATES:
       const dailyrates = [];
       action.payload.forEach((element, index) => {
-        dailyrates.push({
-          key: index,
-          'load_on': element.peak_rate.toFixed(1),
-          'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
-          'load_off': element.off_peak_rate.toFixed(1),
-          'load_total': element.peak_rate.toFixed(1),
-          'uti_rate': element.peak_rate.toFixed(1),
-          'uti_rate_two': element.off_peak_rate.toFixed(1),
-          'x_key': element.date_day
-        })
+        if(!element.isEmpty){
+          dailyrates.push({
+            key: index,
+            'load_on': element.peak_rate.toFixed(1),
+            'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
+            'load_off': element.off_peak_rate.toFixed(1),
+            'load_total': element.peak_rate.toFixed(1),
+            'uti_rate': element.peak_rate.toFixed(1),
+            'uti_rate_two': element.off_peak_rate.toFixed(1),
+            'x_key': element.date_day
+          })
+        }
+       
       });
       return {
         ...state,
@@ -154,7 +157,13 @@ export const transformerReducer = (state = initialState, action) => {
             'year':element.date_year,
             'predict_bars': 0
           })
-        } else {
+        }else if (element.is_predict == 3) {
+          monthlyRates.push({
+           
+          })
+        } 
+        
+        else {
           monthlyRates.push({
             'load_on': Math.ceil(element.peak_rate),
             'load_on_forChart': 0,

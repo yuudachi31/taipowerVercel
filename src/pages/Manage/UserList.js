@@ -1,12 +1,14 @@
 //帳號管理
 //antd
-import { Divider, Layout, Input, Table } from 'antd';
+import { Divider, Layout, Input, Table ,Spin} from 'antd';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { postAccountUpload,getRegionUser } from '../../api/frontApi';
+import{saveUserListApi,saveUserListEdit} from '../../actions/userManage'
+import { connect } from 'react-redux';
 import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
@@ -18,7 +20,7 @@ export const USER_DATA = [
     name: 'User_001',
     group: ['區處管理員', '區處操作員'],
     email: 'aaa123@gmail.com',
-    password: '11111111',
+    // password: '11111111',
     district: ['台北市區'],
     lock:['解鎖'],
 
@@ -101,12 +103,23 @@ const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);
 };
 
-function UserList() {
+function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(true)
 useEffect(()=>{
-  getRegionUser("01")
-})
+  console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
+  getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
+    if (data.errStatus) {
+      console.log(data.errDetail);
+    } else {
+      saveUserListApi(data)
+      // console.log(data)
+      setIsLoading(false)
+      console.log(userManage)
+    }
+  })
+},[])
 
 
 
@@ -183,7 +196,7 @@ useEffect(()=>{
   ]
   const filteredData = USER_DATA.filter(user => user.name.includes(searchText) || user.group.some(group => group.includes(searchText)));
   return (
-    <Layout class="px-20 py-12 manage-wrapper bg-gray-100">
+    <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
         <h2 class="flex-auto font-bold text-2xl">帳號管理</h2>
         <div class="flex h-10">
@@ -217,14 +230,24 @@ useEffect(()=>{
       <Content>
         <Layout>
           {/* <Header class="pl-16 user-grid-row h-14 bg-purple-400 text-white font-medium text-base"> */}
-          <Table columns={columns} dataSource={filteredData} onChange={onChange}
-            pagination={{
-              defaultCurrent: 1,
-              total: 50,
-              style: {
-                marginRight: '20px',
-              },
-            }} />
+         
+          { 
+            isLoading?
+              <Spin  tip="載入中" size="large" style={{marginTop:'112px'}}>
+                <div className="content" />
+              </Spin>    
+              :
+              <Table columns={columns} dataSource={userManage.userList} onChange={onChange}
+                pagination={{
+                  defaultCurrent: 1,
+                  total: 50,
+                  style: {
+                    marginRight: '20px',
+                  },
+              }} />
+
+          }
+          
           {/* <div class="col-span-1">帳號名稱</div>
             <div>身份權限</div> */}
           {/* <Dropdown menu={{ items }}>
@@ -248,7 +271,16 @@ useEffect(()=>{
   );
 
 }
-export default UserList;
+const mapStateToProps = ({ userManageReducer }) => ({
+  userManage: userManageReducer,
+});
+
+const mapDispatchToProps = {
+  saveUserListApi,
+  saveUserListEdit
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);
 
 // function UserItem({ user }) {
 //   const _history = useHistory()

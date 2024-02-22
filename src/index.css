@@ -10,6 +10,9 @@ body {
   letter-spacing: 0.03em;
 }
 
+.bg-not-active{
+  background-color: rgb(199, 199, 199);
+}
 #root {
   width: 100%;
 }

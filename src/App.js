@@ -12,6 +12,7 @@ import TRInfo from "./pages/Transformer/TRInfo";
 import TRSearch from "./pages/Transformer/TRSearch";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import IndustryInfo from "./pages/Transformer/IndustryInfo";
+import PredictPage from "./pages/Transformer/PredictPage";
 import EChartMonthPage from "./pages/Transformer/EChartMonthPage";
 import EChartDayPage from "./pages/Transformer/EChartDayPage";
 import AMIInfo from "./pages/Transformer/AMIInfo";
@@ -70,6 +71,10 @@ function App() {
         <Route path="/IndustryInfo">
           <Header />
           <IndustryInfo />
+        </Route>
+        <Route path="/PredictPage">
+          <Header />
+          <PredictPage />
         </Route>
       </Switch>
     </BrowserRouter>

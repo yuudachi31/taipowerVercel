@@ -17,141 +17,141 @@ export const LOG_DATA = [
   // },
   {
     user_id:'001',
-    user_name:'001',
-    region_name:'005',
+    user_name:'name 001',
+    region_name:'總處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/19'
   },
   {
     user_id:'002',
-    user_name:'002',
-    region_name:'005',
+    user_name:'name 002',
+    region_name:'區處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/18'
   },
   {
     user_id:'003',
-    user_name:'003',
-    region_name:'005',
+    user_name:'name 003',
+    region_name:'區處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/17'
   },
   {
     user_id:'004',
-    user_name:'004',
-    region_name:'005',
+    user_name:'name 004',
+    region_name:'區處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/16'
   },
   {
     user_id:'005',
-    user_name:'005',
-    region_name:'005',
+    user_name:'name 005',
+    region_name:'區處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/15'
   },
   {
     user_id:'006',
-    user_name:'006',
-    region_name:'005',
+    user_name:'name 006',
+    region_name:'區處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/14'
   },
   {
     user_id:'007',
-    user_name:'007',
-    region_name:'005',
+    user_name:'name 007',
+    region_name:'區處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/13'
   },
   {
     user_id:'008',
-    user_name:'008',
-    region_name:'005',
+    user_name:'name 008',
+    region_name:'區處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/12'
   },
   {
     user_id:'009',
-    user_name:'009',
-    region_name:'005',
+    user_name:'name 009',
+    region_name:'區處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/11'
   },
   {
     user_id:'010',
-    user_name:'010',
-    region_name:'005',
+    user_name:'name 010',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/10'
   },
   {
     user_id:'011',
-    user_name:'011',
-    region_name:'005',
+    user_name:'name 011',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/09'
   },
   {
     user_id:'012',
-    user_name:'012',
-    region_name:'005',
+    user_name:'name 012',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/08'
   },
   {
     user_id:'013',
-    user_name:'013',
-    region_name:'005',
+    user_name:'name 013',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/07'
   },
   {
     user_id:'014',
-    user_name:'014',
-    region_name:'005',
+    user_name:'name 014',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/06'
   },
   {
     user_id:'015',
-    user_name:'015',
-    region_name:'005',
+    user_name:'name 015',
+    region_name:'總處管理員',
     event: 'B100 Login',
     grant_time: '2023/11/05'
   },
   {
     user_id:'016',
-    user_name:'016',
-    region_name:'005',
+    user_name:'name 016',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/04'
   },
   {
     user_id:'017',
-    user_name:'017',
-    region_name:'005',
+    user_name:'name 017',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/03'
   },
   {
     user_id:'018',
-    user_name:'018',
-    region_name:'005',
+    user_name:'name 018',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/02'
   },
   {
     user_id:'019',
-    user_name:'019',
-    region_name:'005',
+    user_name:'name 019',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/11/01'
   },
   {
     user_id:'020',
-    user_name:'020',
-    region_name:'005',
+    user_name:'name 020',
+    region_name:'總處操作員',
     event: 'B100 Login',
     grant_time: '2023/10/30'
   },
