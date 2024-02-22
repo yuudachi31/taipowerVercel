@@ -78,3 +78,7 @@ p{
 .ant-transfer-customize-list .ant-transfer-list{
   width: 40%;
 }
+
+.anticon {
+  vertical-align: 0em;
+}
