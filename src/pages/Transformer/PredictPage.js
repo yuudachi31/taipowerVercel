@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, Row, Col, Table } from 'antd';
+import { Layout, Divider, Row, Col, Modal, Form, Input, InputNumber, Cascader, Button, Select } from 'antd';
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
@@ -10,7 +10,7 @@ import { data_main, data_month } from '../../components/chart/TempData'
 import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import PredictList from './PredictList'
 import predictTestData from './predictTestData.json'
@@ -33,8 +33,6 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
- 
- 
   const handledayChange = (value,mode) => {
     
     setSelectedDay(mode);
@@ -73,21 +71,49 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       })
     }
   }
-  // console.log(transformer.dailyRatesList)
-  useEffect(() => {
-    const parsed = queryString.parse(window.location.search);
 
-  }, [])
-  const _history = useHistory();
-  const data = [];
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      name: `Edrward ${i}`,
-      age: 32,
-      address: `London Park no. ${i}`,
-    });
-  }
+  //設定新變壓器Modal
+  const [isaddFakeOpen, setIsaddFakeOpen] = useState(false);
+  const [isaddExistOpen, setIsaddExistOpen] = useState(false);
+
+  const showaddFakeModal = () => {
+    setIsaddFakeOpen(true);
+  };
+  const handleCancel = () => {
+    setIsaddFakeOpen(false);
+    setIsaddExistOpen(false);
+  };
+  const handlefakeData = (values) => {
+    console.log("虛擬變壓器資料", values);
+    setIsaddFakeOpen(false);
+  };
+
+  const showaddExistModal = () => {
+    setIsaddExistOpen(true);
+  };
+  const handleExistOk = () => {
+
+    setIsaddExistOpen(false);
+  };
+  const onSearch = (value) => {
+    console.log('search:', value);
+  };
+
+    // console.log(transformer.dailyRatesList)
+  useEffect(() => {
+      const parsed = queryString.parse(window.location.search);
+
+    }, [])
+    const _history = useHistory();
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+      data.push({
+        key: i,
+        name: `Edrward ${i}`,
+        age: 32,
+        address: `London Park no. ${i}`,
+      });
+    }
 
   const mockTags = ['01', '02', '03'];
   const lsags = ['燈', '力'];
@@ -183,16 +209,168 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
     return { id, EDataItem, PDataItem };
   });
 
+  const opacityOptions = [
+    {
+      value: '10 KVA',
+      label: '10 KVA',
+    },
+    {
+      value: '50 KVA',
+      label: '50 KVA',
+    },
+    {
+      value: '100 KVA',
+      label: '100 KVA',
+    },
+    {
+      value: '150 KVA',
+      label: '150 KVA',
+    },
+    {
+      value: '200 KVA',
+      label: '200 KVA',
+    },
+  ];
+
   console.log(mergeData);
+  const tailLayout = {
+    wrapperCol: {
+      offset: 8,
+      span: 16,
+    },
+  };
   
   return (
     <Layout class="px-20 wrapper">
+        {/* 設定虛擬變壓器 */}
+        <Modal
+          title="設定虛擬變壓器"
+          open={isaddFakeOpen}
+          // onOk={handleOk}
+          onCancel={handleCancel}
+          // okText="確認"
+          // cancelText="取消"
+          footer={null}
+        >
+          <Form
+            labelCol={{
+              span: 5,
+            }}
+            layout="horizontal"
+            onFinish={handlefakeData}
+          >
+            <Form.Item label="變壓器名稱" name="變壓器名稱" placeholder="請輸入變壓器名稱" rules={[{ required: true, message: '請輸入變壓器名稱',} ]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="群組名稱" name="群組名稱" placeholder="請輸入群組名稱" rules={[{ required: true, message: '請輸入群組名稱',} ]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="變壓器型態" name="變壓器型態" rules={[
+              {
+                required: true,
+                message: '請選擇變壓器型態',
+              },
+            ]}>
+              <Cascader
+                placeholder="請選擇變壓器型態"
+                options={[
+                  {
+                    value: '一具',
+                    label: '一具',
+                    children: [
+                      {
+                        value: '燈',
+                        label: '燈',
+                      },
+                    ],
+                  },
+                  {
+                    value: '二具',
+                    label: '二具',
+                    children: [
+                      {
+                        value: '燈力',
+                        label: '燈力',
+                      },
+                      {
+                        value: '力力',
+                        label: '力力',
+                      },
+                    ],
+                  },
+                  {
+                    value: '三具',
+                    label: '三具',
+                    children: [
+                      {
+                        value: '力力力',
+                        label: '力力力',
+                      },
+                    ],
+                  },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item label="容量" name="容量" rules={[{ required: true,  message: '請輸入容量'} ]}>
+              <Select
+                placeholder="請選擇容量"
+                style={{
+                  width: 120,
+                }}
+                options= {opacityOptions}
+              />
+            </Form.Item>
+            <Form.Item style={{textAlign: 'right',}}> 
+              <Button style={{marginRight:'8px'}} htmlType="button" onClick={handleCancel}>
+                取消
+              </Button>
+              <Button type="primary" htmlType="submit">
+                確認
+              </Button>
+          </Form.Item>
+          </Form>
+      </Modal>
+      {/* 選擇既有變壓器 */}
+      <Modal
+          title="選擇既有變壓器"
+          open={isaddExistOpen}
+          onOk={handleExistOk}
+          onCancel={handleCancel}
+          okText="確認"
+          cancelText="取消"
+        >
+          <Select
+            showSearch
+            placeholder="請選擇變壓器"
+            optionFilterProp="children"
+            onSearch={onSearch}
+            filterOption={(input, option) =>
+              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+            }
+            options={[
+              {
+                value: 'B6744HD57',
+                label: 'B6744HD57',
+              },
+              {
+                value: 'B6744GD11',
+                label: 'B6744GD11',
+              },
+              {
+                value: 'B6744GD11',
+                label: 'B6744GD11',
+              },
+            ]}
+          />
+      </Modal>
       <Header class="pt-4 flex space-x-7 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
         <button class="btn flex" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>返回月圖表</button>
       </Header>
       <Divider />
+
+      {/* 負載變壓器資料*/}
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
@@ -202,12 +380,12 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
           <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KWA</span></div>
-          <div>日期 :<span class="ml-2"></span></div>
+          {/* <div>日期 :{selectedMonth ? (<span class="ml-2">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</span>) : (<span class="ml-2">2022 年度 6 月每日用電圖表</span>)}</div> */}
         </Content>
         <Content class="flex justify-end w-50 gap-2" >
           <div class="flex w-100 h-100 gap-2" style={{ alignItems:'end' }}>
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>選擇既有變壓器</button>
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>新增虛擬變壓器</button>
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={showaddExistModal}>選擇既有變壓器</button>
+            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={showaddFakeModal}>新增虛擬變壓器</button>
           </div>
           {/* <EChartRate /> */}
         </Content>
@@ -218,12 +396,11 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
-          <Col span={12}><div class="font-bold">T01</div></Col>
-          <Col span={12}><div class="font-bold">虛擬/既設變壓器組別名稱</div></Col>
+          <Col span={12}><div class="font-bold">原變壓器：T01</div></Col>
+          <Col span={12}><div class="font-bold">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
         </Row>
         
         {/* 每具資料 */}
-
         {Array.from({ length: maxNum }).map((_, index) => (
           <Content class='mt-5'>
             <Row key={index}>
@@ -240,16 +417,19 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
             </Row>
             <Content class="predict-box">
               <PredictList data={mergeData[index]}/>
+              <div class="flex" style={{justifyContent:'flex-end'}}>
+                <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>更新利用率</button>
+              </div>
+              
             </Content>
           </Content>
         ))}
 
-
+        {/* 結束與匯出 */}
         {/* </div> */}
         <Content class="flex justify-end w-50 gap-2 mt-5" >
           <div class="flex w-100 h-100 gap-2">
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>儲存移動</button>
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>結束規劃</button>
+            <button class="btn btn-red bg-red-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>結束規劃</button>
             <button class="btn btn-green bg-green-400 flex-end" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>匯出規劃</button>
           </div>
           {/* <EChartRate /> */}
@@ -267,3 +447,4 @@ const mapDispatchToProps = {
   saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Predict);
+
