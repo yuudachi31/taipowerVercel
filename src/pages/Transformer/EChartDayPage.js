@@ -184,12 +184,12 @@ console.log()
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
+          <div>住戶表數 :<span class="ml-2">10 個</span></div>
+          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KW</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>第幾具 :<span class="ml-2">1/2</span></div>
