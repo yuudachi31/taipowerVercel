@@ -654,7 +654,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
                         <div class="flex justify-end py-3 border-purple-400">
                             <Pagination defaultCurrent={1} total={50} />
                         </div> */}
-                        <table>
+                        {/* <table>
                 <tr>
                     <th>圖號座標</th>
                     <th>組別</th>
@@ -673,7 +673,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                 </tr>
                             })
     
-                        }  </table>
+                        }  </table> */}
                             </Content>
                         </Layout>
                     </Content>
