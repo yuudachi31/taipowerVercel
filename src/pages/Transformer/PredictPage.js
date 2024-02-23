@@ -381,12 +381,12 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
+          <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
+          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KWA</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
           {/* <div>日期 :{selectedMonth ? (<span class="ml-2">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</span>) : (<span class="ml-2">2022 年度 6 月每日用電圖表</span>)}</div> */}
         </Content>
         <Content class="flex justify-end w-50 gap-2" >
