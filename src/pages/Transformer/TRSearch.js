@@ -21,9 +21,11 @@ const defaultCheckedList = [];
 const { Search } = Input;
 const containerStyle = {
     width: '100%',
-    height: 100,
+    height: 200,
     overflow: 'auto',
-    border: '1px solid #40a9ff',
+    // border: '1px solid #f0f0f0',
+    padding: '4px 8px 4px 8px',
+    borderRadius: '3px'
 };
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -179,7 +181,8 @@ function TRSearch({ transformer, saveTransData }) {
                 return (
                     <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
-            }
+            },
+            width: '20%'
         },
         {
             title: '組別',
@@ -324,31 +327,34 @@ function TRSearch({ transformer, saveTransData }) {
                 ]}
             >
                 {
-                    isModalDataLoading ? (<> <Spin tip="載入中" size="large">
-                        <div className="content" />
-                    </Spin> </>) : (<div style={containerStyle}>
-                        <Row >
+                    isModalDataLoading ? (<> 
+                        <div style={{height:'200px'}}>
+                            <Spin tip="載入中" size="large" style={{height:'200px'}}>
+                                <div className="content" />
+                            </Spin> 
+                        </div> </>) : (<div style={containerStyle}>
+                        <Row style={{marginBottom:'8px'}} className='font-bold'>
                             <Col span={6}>圖號座標</Col>
                             <Col span={6}>組別</Col>
                             <Col span={6}>第幾具</Col>
                             <Col span={6}>利用率（%）</Col>
                             {/* <Col span={6}>日期</Col> */}
                         </Row>
-                        {abnormalTransData.map((data, index) => (
-                            <Row key={index}>
-                                <Col span={6}>{data.coor}</Col>
-                                <Col span={6}>{data.div}</Col>
-                                {data.power_type == "Y接" ?
-                                    <Col span={6}>NA</Col>
-                                    : 
-                                    <Col span={6}>{data.tr_index}</Col>
-                                }
+                            {abnormalTransData.map((data, index) => (
+                                <Row key={index} style={{borderBottom:'1px solid #f0f0f0', height:'28px'}}>
+                                    <Col span={6}>{data.coor}</Col>
+                                    <Col span={6}>{data.div}</Col>
+                                    {data.power_type == "Y接" ?
+                                        <Col span={6}>NA</Col>
+                                        : 
+                                        <Col span={6}>{data.tr_index}</Col>
+                                    }
 
 
-                                <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
-                                {/* <Col span={6}>{Time[index]}</Col> */}
-                            </Row>
-                        ))}
+                                    <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                    {/* <Col span={6}>{Time[index]}</Col> */}
+                                </Row>
+                            ))}
                     </div>)
                 }
 
@@ -366,7 +372,7 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
                 ]}
             >
-                <div >
+                <div>
                     請重新登入系統
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">

@@ -78,3 +78,12 @@ p{
 .ant-transfer-customize-list .ant-transfer-list{
   width: 40%;
 }
+/*列表字體*/
+.ant-table-content{
+  font-size: 17px;
+  color: #282c34;
+}
+
+.anticon {
+  vertical-align: 0em;
+}

@@ -150,7 +150,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
-      <Header class="pt-4 flex space-x-7 items-center">
+      <Header class="pt-4 flex space-x-3 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage`) }}>負載分割</button>
         <button class="btn flex" type="primary" onClick={() => { _history.push(`/tr/info/?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>返回年圖表</button>
@@ -159,12 +159,12 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
+          <div>住戶表數 :<span class="ml-2">10 個</span></div>
+          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KW</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>第幾具 :<span class="ml-2">1/2</span></div>
