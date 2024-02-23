@@ -414,7 +414,7 @@ function Notify() {
         );
         }
     };
-    const user_id="U15f78caf74ae1efbf7f593a8e9e7f9e8"
+    const channel_id="U15f78caf74ae1efbf7f593a8e9e7f9e8"
     //line 推播
     function showlineConfirm() {
         confirm({
@@ -424,7 +424,7 @@ function Notify() {
                 console.log(abnormalTRList);
                 console.log('OK');
                 setIsModalVisible(false);
-                _handleSend(user_id);
+                _handleSend(channel_id);
             },
             onCancel() {
                 console.log('Cancel');
@@ -435,10 +435,10 @@ function Notify() {
         });
         
     }
-    const _handleSend = async (user_id) => {
+    const _handleSend = async (channel_id) => {
         console.log(`事件`)
         // const dis = _district.join('_')
-        const send = await postEventbyID(user_id,abnormalTRList);
+        const send = await postEventbyID(channel_id,abnormalTRList);
         if (send) {
             success();
         } else {
