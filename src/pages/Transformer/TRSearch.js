@@ -179,7 +179,8 @@ function TRSearch({ transformer, saveTransData }) {
                 return (
                     <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
-            }
+            },
+            width: '20%'
         },
         {
             title: '組別',
@@ -324,9 +325,12 @@ function TRSearch({ transformer, saveTransData }) {
                 ]}
             >
                 {
-                    isModalDataLoading ? (<> <Spin tip="載入中" size="large">
+                    isModalDataLoading ? (<>
+                    <Spin tip="載入中" size="large">
                         <div className="content" />
-                    </Spin> </>) : (<div style={containerStyle}>
+                    </Spin>
+                    </>) : (
+                    <div style={containerStyle}>
                         <Row >
                             <Col span={6}>圖號座標</Col>
                             <Col span={6}>組別</Col>
@@ -340,7 +344,7 @@ function TRSearch({ transformer, saveTransData }) {
                                 <Col span={6}>{data.div}</Col>
                                 {data.power_type == "Y接" ?
                                     <Col span={6}>NA</Col>
-                                    : 
+                                    :
                                     <Col span={6}>{data.tr_index}</Col>
                                 }
 
@@ -366,7 +370,7 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
                 ]}
             >
-                <div >
+                <div>
                     請重新登入系統
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">
