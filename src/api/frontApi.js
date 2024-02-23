@@ -490,15 +490,16 @@ export const postEventbyID = async (user_id,data) => {
   var _usertoken = document.cookie.split('; ').find(row => row.startsWith('fltk')).split('=')[1];
   console.log('推播的usertoken：' ,_usertoken)
   console.log(user_id)
+  console.log('DATA：' ,data)
+  
   try {
       const _url = `http://localhost:80/linebot/send/${user_id}`
-      const result = await axios.post(_url,null,{
-        params:data,
+      const result = await axios.post(_url,data,{
+
           headers: {
               'Accept': 'application/json',
               'Authorization': `Bearer ${_usertoken}`,
           },
-          body: JSON.stringify(data),
       })
       if (result) {
           console.log(result)
