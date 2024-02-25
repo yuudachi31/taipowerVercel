@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { renderCustomXTick, renderCustomYLeftTick } from './CustomRender'
+import { renderCustomXTick, renderCustomYLeftTick, renderCustomXTickDay } from './CustomRender'
 
 function EChartDay({data}) {
     // const [data, setData] = useState(0);
@@ -36,11 +36,12 @@ function EChartDay({data}) {
         );
     }
 
+
     return (
-        <ResponsiveContainer height={400}>
+        <ResponsiveContainer height={430}>
             <ComposedChart data={data} barGap={60} margin={0} >
-                <XAxis dataKey="x_key" tickLine={false}  tick={renderCustomXTick} />
-                <YAxis dataKey="load" orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
+                <XAxis dataKey="x_key" tickLine={false} interval={0} tick={renderCustomXTickDay} />
+                <YAxis allowDataOverflow={true} dataKey="load" orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick } />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 {/* 負載量Hover(搭配BarChart) */}
                 <Tooltip content={renderLegend} />

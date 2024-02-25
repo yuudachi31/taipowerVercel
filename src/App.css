@@ -87,3 +87,10 @@ p{
 .anticon {
   vertical-align: 0em;
 }
+/*圖表X Y軸字體*/
+.recharts-cartesian-axis-ticks{
+  font-size: 16px;
+}
+.recharts-cartesian-axis-ticks{
+  font-size: 16px;
+}
