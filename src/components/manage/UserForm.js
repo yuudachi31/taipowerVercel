@@ -7,7 +7,104 @@ const layout = {
   labelCol: { span: 3 },
   wrapperCol: { span: 4 },
 };
-
+const region_list=[
+  {
+      "region_id": "00",
+      "region_name": "台北市區營業處"
+  },
+  {
+      "region_id": "01",
+      "region_name": "台北南區營業處"
+  },
+  {
+      "region_id": "02",
+      "region_name": "基隆區營業處"
+  },
+  {
+      "region_id": "03",
+      "region_name": "宜蘭區營業處"
+  },
+  {
+      "region_id": "04",
+      "region_name": "桃園區營業處"
+  },
+  {
+      "region_id": "05",
+      "region_name": "台北西區營業處"
+  },
+  {
+      "region_id": "06",
+      "region_name": "新竹區營業處"
+  },
+  {
+      "region_id": "07",
+      "region_name": "台中區營業處"
+  },
+  {
+      "region_id": "08",
+      "region_name": "彰化區營業處"
+  },
+  {
+      "region_id": "09",
+      "region_name": "嘉義區營業處"
+  },
+  {
+      "region_id": "10",
+      "region_name": "台南區營業處"
+  },
+  {
+      "region_id": "11",
+      "region_name": "高雄區營業處"
+  },
+  {
+      "region_id": "12",
+      "region_name": "屏東區營業處"
+  },
+  {
+      "region_id": "13",
+      "region_name": "花蓮區營業處"
+  },
+  {
+      "region_id": "14",
+      "region_name": "台東區營業處"
+  },
+  {
+      "region_id": "15",
+      "region_name": "澎湖區營業處"
+  },
+  {
+      "region_id": "16",
+      "region_name": "台北北區營業處"
+  },
+  {
+      "region_id": "17",
+      "region_name": "南投區營業處"
+  },
+  {
+      "region_id": "18",
+      "region_name": "鳳山區營業處"
+  },
+  {
+      "region_id": "19",
+      "region_name": "雲林區營業處"
+  },
+  {
+      "region_id": "20",
+      "region_name": "新營區營業處"
+  },
+  {
+      "region_id": "21",
+      "region_name": "苗栗區營業處"
+  },
+  {
+      "region_id": "22",
+      "region_name": "金門區營業處"
+  },
+  {
+      "region_id": "23",
+      "region_name": "馬祖區營業處"
+  }
+]
 function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }) {
   const handleChange = (changedValues) => {
     console.log('Changed values:', changedValues);
@@ -47,21 +144,26 @@ function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }
 
           </Select>}
       </Form.Item>
-      <Form.Item name="district" label="負責區處">
-        {!isEdited && user ? <span>{user.district}</span> :
+      <Form.Item name="district2" label="負責區處">
+        {!isEdited && user ? <span>{user.district2.region_name[0]}</span> :
           <Select
             placeholder="選擇區處"
             allowClear
             size='middle'
-            defaultValue={user ? user.district : []}
+            defaultValue={user ? user.district2.region_name[0]: []}
 
           >
             {/* <Option value="台北市區">台北市區</Option>
             <Option value="台中市區">台中市區</Option> */}
-            <Option value="台北市區營業處">台北市區營業處</Option>
-            <Option value="台北南區營業處">台北南區營業處</Option>
+            {
+              region_list.map((el,index)=>(
+                <Option value={el.region_id}>{el.region_name}</Option>
+              ))
+            }
+           
+            {/* <Option value="台北南區營業處">台北南區營業處</Option>
             <Option value="基隆區營業處">基隆區營業處</Option>
-            <Option value="宜蘭區營業處">宜蘭區營業處</Option>
+            <Option value="宜蘭區營業處">宜蘭區營業處</Option> */}
 
             
             
