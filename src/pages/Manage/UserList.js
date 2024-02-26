@@ -103,10 +103,17 @@ const onChange = (pagination, filters, sorter, extra) => {
   console.log('params', pagination, filters, sorter, extra);
 };
 
+
+
 function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const _history = useHistory()
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true)
+    //當切換成不同群組時將列表切回第一頁
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePaginationChange = (page) => {
+      setCurrentPage(page);
+  };
 useEffect(()=>{
   console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
   getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
@@ -237,14 +244,7 @@ useEffect(()=>{
                 <div className="content" />
               </Spin>    
               :
-              <Table columns={columns} dataSource={userManage.userList} onChange={onChange}
-                pagination={{
-                  defaultCurrent: 1,
-                  total: 50,
-                  style: {
-                    marginRight: '20px',
-                  },
-              }} />
+              <Table columns={columns} dataSource={userManage.userList} onChange={onChange} pagination={{ current: currentPage, total: userManage.userList.length, onChange: handlePaginationChange, style:{marginRight:'20px'} }} />
 
           }
           
