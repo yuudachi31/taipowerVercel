@@ -563,7 +563,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
     const _handleSend = async (channel_id) => {
         console.log(`事件`)
         // const dis = _district.join('_')
-        const send = await postEventbyID(channel_id,abnormalTRList);
+        const send = await postEventbyID(channel_id,transformer.ABNtransformerList);
         if (send) {
             success();
         } else {
