@@ -44,20 +44,28 @@ function AMIimport() {
     }
 
     return (
-        <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
-            <Content>
+        <Layout class="h-screen px-20 py-12 manage-wrapper bg-gray-100">
                 <Header class="pt-4 pb-8 flex space-x-7 items-center">
-                    <h2 class="flex-auto font-bold text-2xl">智慧電表匯入</h2>
+                    <h2 class="flex-auto font-bold text-2xl">資料匯入</h2>
 
                 </Header>
-                <Content class=" bg-white">
-                    <div class=" p-10">
-                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" >智慧電表資料匯入</button>
+                <Content class="h-08 bg-white">
+                    <Content class="h-08 px-14 py-12">
+                        <div class="flex">
+                            <button class="btn-manage justify-self-end mr-4" >NBS</button>
 
+                            <button class="btn-manage justify-self-end mr-4" >MDMS</button>
+        
+                            <button class="btn-manage justify-self-end mr-4" >DMQS用戶資料查詢</button>
+        
+                            <button class="btn-manage justify-self-end mr-4" >DMQS變壓器查詢</button>
+                        </div>
+                    </Content>
+                    <Divider />
+                    <div className="remitBotton">
+                        <button class="btn-manage justify-self-end mr-4 btn-manage-full " >計算</button>
                     </div>
-
                 </Content>
-            </Content>
            
         </Layout>
     );
