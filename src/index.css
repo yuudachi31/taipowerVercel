@@ -90,6 +90,9 @@ body {
   .h-08{
     height:80%;
   }
+  .h-02{
+    height:20%;
+  }
   .w-8xl {
     width: 1440px;
   }

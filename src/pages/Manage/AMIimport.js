@@ -44,29 +44,24 @@ function AMIimport() {
     }
 
     return (
-        <Layout class="h-screen px-20 py-12 manage-wrapper bg-gray-100">
-                <Header class="pt-4 pb-8 flex space-x-7 items-center">
-                    <h2 class="flex-auto font-bold text-2xl">資料匯入</h2>
-
-                </Header>
-                <Content class="h-08 bg-white">
-                    <Content class="h-08 px-14 py-12">
-                        <div class="flex">
-                            <button class="btn-manage justify-self-end mr-4" >NBS</button>
-
-                            <button class="btn-manage justify-self-end mr-4" >MDMS</button>
-        
-                            <button class="btn-manage justify-self-end mr-4" >DMQS用戶資料查詢</button>
-        
-                            <button class="btn-manage justify-self-end mr-4" >DMQS變壓器查詢</button>
-                        </div>
-                    </Content>
+        <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
+            <Header class="pt-4 pb-8 flex space-x-7 items-center">
+                <h2 class="flex-auto font-bold text-2xl">資料匯入</h2>
+            </Header>
+            <Content class="flex h-08 bg-white" style={{ flexDirection:'column', justifyContent:'space-between'}}>
+                <div class="flex p-10 text-normal">
+                    <button class="btn-manage justify-self-end mr-4" >NBS</button>
+                    <button class="btn-manage justify-self-end mr-4" >MDMS</button>
+                    <button class="btn-manage justify-self-end mr-4" >DMQS用戶資料查詢</button>
+                    <button class="btn-manage justify-self-end mr-4" >DMQS變壓器查詢</button>
+                </div>
+                <div>
                     <Divider />
-                    <div className="remitBotton">
-                        <button class="btn-manage justify-self-end mr-4 btn-manage-full " >計算</button>
+                    <div className="remitBotton pr-10 pb-7" >
+                        <button class="btn-manage justify-self-end btn-manage-full text-normal" >計算</button>
                     </div>
-                </Content>
-           
+                </div>
+            </Content>
         </Layout>
     );
 

@@ -94,3 +94,8 @@ p{
 .recharts-cartesian-axis-ticks{
   font-size: 16px;
 }
+
+/* 資料管理 */
+.ant-picker-input > input {
+  font-size: 16px;
+}
