@@ -560,14 +560,14 @@ function Notify({ transformer, saveAbnormalTransData }) {
                     </Modal> */}
                 </Header>
                 <Content class=" bg-white">
-                    <div class=" p-10">
+                    <div class=" p-10 text-normal">
                         <span class="font-bold">推播區處：</span>
                         <Select
                             showSearch
                             placeholder="Select a person"
                             optionFilterProp="children"
                             defaultValue={groupData[0].value}
-                            style={{ width: 200 }}
+                            style={{ width: 200, fontSize:'16px'}}
                             disabled={isLoading || isDisabled}
                             onChange={handleGroupChange}
                             onSearch={onSearch}
@@ -591,13 +591,13 @@ function Notify({ transformer, saveAbnormalTransData }) {
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
-                                <div class="flex">
+                                <div class="flex text-normal">
                                     <span class="font-bold">警告門檻：</span>
                                     <div>
                                         {/* <div  class="flex row "> */}
                                         {selectedGroup.threshold.map((item) => (
-                                            <div key={item.state} className="flex mb-3">
-                                                <div class="flex row ">
+                                            <div key={item.state} className="flex">
+                                                <div class="flex row text-normal">
                                                     <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                         {item.state === 1 && '一般'}
                                                         {item.state === 2 && '中度'}

@@ -112,7 +112,7 @@ function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }
   };
   return (<>{
     isLoading?(<div>                               
-      <Spin  tip="載入中" size="large">
+      <Spin  style={{height:'400px'}} tip="載入中" size="large">
           <div className="content" />
       </Spin>                              
   </div>  ):(
