@@ -100,7 +100,7 @@ function transformerImport() {
                 </div>
             </Content> */}
             <Header class="pt-4 pb-8 flex space-x-7 items-center">
-                <h2 class="flex-auto font-bold text-2xl">變壓器匯入</h2>
+                <h2 class="flex-auto font-bold text-2xl">行業別匯出</h2>
             </Header>
                 <Content class="flex h-08 bg-white" style={{ flexDirection:'column', justifyContent:'space-between'}}>
                     <div class="flex p-10 ">
