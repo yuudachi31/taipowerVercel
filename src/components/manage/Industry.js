@@ -50,7 +50,7 @@ function Industry({ isEdited, user = null }) {
         </Space>
       </Form.Item>
       <Form.Item name="time">
-        <Space direction="horizontal" size={12}>
+        <Space direction="horizontal">
           <span className='text-normal font-bold'>時間選擇：</span> 
           <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
         </Space>
