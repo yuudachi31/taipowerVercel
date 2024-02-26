@@ -38,6 +38,9 @@ export const userManageReducer = (state = initialState, action) => {
             chat_id:element.chat_id,
             region_id:element.region_id,
             district: [element.region_name],
+            district2:{region_id:[element.region_id],
+            region_name:[element.region_name]
+            },
             lock: element.login_locked ? ['鎖定'] : ['解鎖'],
           })
         }

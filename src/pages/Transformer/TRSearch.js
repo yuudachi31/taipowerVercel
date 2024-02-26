@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {getAbnormalTransList, getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
+import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -21,15 +21,17 @@ const defaultCheckedList = [];
 const { Search } = Input;
 const containerStyle = {
     width: '100%',
-    height: 100,
+    height: 200,
     overflow: 'auto',
-    border: '1px solid #40a9ff',
-  };
+    // border: '1px solid #f0f0f0',
+    padding: '4px 8px 4px 8px',
+    borderRadius: '3px'
+};
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-const [abnormalTransData,setAbnormalTransData]= useState([]);
-    const [isModalDataLoading,setIsModalDataLoading]=useState(true);
+    const [abnormalTransData, setAbnormalTransData] = useState([]);
+    const [isModalDataLoading, setIsModalDataLoading] = useState(true);
     const fetchData = () => {
         getTransformerList().then((data) => {
             if (data == 401) {
@@ -61,8 +63,16 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
         // console.log(document.cookie);
         _history.push('/login')
     }
+
+    // const testArr=['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com'] 
+    const params = new URLSearchParams();
+    // testArr.forEach((value, index) => { 
+    //     params.append(`arr[${index}]`, value); 
+    // });
+
+
     useEffect(() => {
-        
+        // postEmailNotify(params)
         // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
@@ -123,7 +133,7 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                 if (!lastPopupDate || lastPopupDate !== todayString) {
                     // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
                     setIsModalVisible(true);
-                    
+
                     // 更新弹窗日期为今天
                     localStorage.setItem('lastPopupDate', todayString);
                 }
@@ -171,7 +181,8 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                 return (
                     <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
-            }
+            },
+            width: '20%'
         },
         {
             title: '組別',
@@ -316,26 +327,37 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                 ]}
             >
                 {
-                    isModalDataLoading?(<> <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> </>):( <div style={containerStyle}>
-                        <Row >
+                    isModalDataLoading ? (<> 
+                        <div style={{height:'200px'}}>
+                            <Spin tip="載入中" size="large" style={{height:'200px'}}>
+                                <div className="content" />
+                            </Spin> 
+                        </div> </>) : (<div style={containerStyle}>
+                        <Row style={{marginBottom:'8px'}} className='font-bold'>
                             <Col span={6}>圖號座標</Col>
                             <Col span={6}>組別</Col>
+                            <Col span={6}>第幾具</Col>
                             <Col span={6}>利用率（%）</Col>
-                            <Col span={6}>日期</Col>
+                            {/* <Col span={6}>日期</Col> */}
                         </Row>
-                        {abnormalTransData.map((data, index) => (
-                            <Row key={index}>
-                                <Col span={6}>{data.coor}</Col>
-                                <Col span={6}>{data.div}</Col>
-                                <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
-                                <Col span={6}>{Time[index]}</Col>
-                            </Row>
-                        ))}
+                            {abnormalTransData.map((data, index) => (
+                                <Row key={index} style={{borderBottom:'1px solid #f0f0f0', height:'28px'}}>
+                                    <Col span={6}>{data.coor}</Col>
+                                    <Col span={6}>{data.div}</Col>
+                                    {data.power_type == "Y接" ?
+                                        <Col span={6}>NA</Col>
+                                        : 
+                                        <Col span={6}>{data.tr_index}</Col>
+                                    }
+
+
+                                    <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                    {/* <Col span={6}>{Time[index]}</Col> */}
+                                </Row>
+                            ))}
                     </div>)
                 }
-               
+
                 {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
@@ -350,7 +372,7 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
                     <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
                 ]}
             >
-                <div >
+                <div>
                     請重新登入系統
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">
@@ -363,11 +385,11 @@ const [abnormalTransData,setAbnormalTransData]= useState([]);
             </Modal>
             {
                 isLoading ? (
-                <> 
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
+                    <>
+                        <Spin tip="載入中" size="large">
+                            <div className="content" />
+                        </Spin>
+                    </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>
