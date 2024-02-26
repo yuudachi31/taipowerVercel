@@ -103,14 +103,14 @@ function TRSearch({ transformer, saveTransData }) {
 
         getTransformerList().then((data) => {
             if (data == 401) {
-                if (Number(localStorage.getItem('resetTime')) == 1) {
+                if (Number(localStorage.getItem('resetTime')) == 2) {
                     console.log("aabb")
                     localStorage.removeItem('resetTime');
 
                     setLogoutModalVisible(true)
                 } else {
                     console.log("aacc")
-                    localStorage.setItem('resetTime', 1)
+                    localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime'))+1)
                     window.location.reload()
                 }
 

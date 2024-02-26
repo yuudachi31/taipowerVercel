@@ -14,6 +14,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import PredictList from './PredictList'
 import predictTestData from './predictTestData.json'
+
+
 const { Header, Sider, Content } = Layout;
 
 
@@ -33,6 +35,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isLoadingtop, setIsLoadingTop] = useState(true);
   const handledayChange = (value,mode) => {
     
     setSelectedDay(mode);
@@ -102,7 +105,14 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
     // console.log(transformer.dailyRatesList)
   useEffect(() => {
       const parsed = queryString.parse(window.location.search);
-
+      getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+          setIsLoadingTop(false)
+          saveEachTransInfo(data)
+        }
+      })
     }, [])
     const _history = useHistory();
     const data = [];
@@ -368,7 +378,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Header class="pt-4 flex space-x-7 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
         {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
-        <button class="btn flex" type="primary" onClick={() => { _history.push(`/EChartMonthPage`) }}>返回月圖表</button>
+        <button class="btn flex" type="primary" onClick={() => { _history.goBack() }}>返回上一頁</button>
       </Header>
       <Divider />
 
