@@ -507,7 +507,7 @@ export const postEmailNotify = async (data) => {
     });
     // console.log(result);
     if (result.status === 200) {
-      return result.data;
+      return result;
     }
   } catch (err) {
     console.log(err.response);

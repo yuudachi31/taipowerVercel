@@ -1,6 +1,6 @@
 //推播管理
 //antd
-import { Divider, Layout, Input, Table, Spin } from 'antd';
+import { Divider, Layout, Input, Table, Spin,message } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
@@ -328,6 +328,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
 
     //當切換成不同群組時將列表切回第一頁
     const [currentPage, setCurrentPage] = useState(1);
+    const [isMailLoading,setIsMailLoading ] = useState(false);
     const handlePaginationChange = (page) => {
         setCurrentPage(page);
     };
@@ -341,9 +342,21 @@ function Notify({ transformer, saveAbnormalTransData }) {
         console.log("save")
         setIsEdit(false)
     }
+    const sendMailModal =()=>{
+        Modal.confirm({
+            icon:<ExclamationCircleOutlined/>,
+            title: '推播確認',
+            content: '確定要進行Email推播嗎？',
+            okText: '是',
+            cancelText: '否',
+            onOk: sendMail
+
+        });
+    }
     const sendMail = () => {
-        console.log(selectedGroup)
-        console.log(filteredUsers)
+        setIsMailLoading(true)
+        // console.log(selectedGroup)
+        // console.log(filteredUsers)
         if (filteredUsers.length > 0) {
             let emailArr = filteredUsers.map((el) => el.email)
             console.log(`[${emailArr.toString()}]`)
@@ -369,34 +382,34 @@ function Notify({ transformer, saveAbnormalTransData }) {
 
                     }  </table>`)
             postEmailNotify({
-                emails: `[${emailArr.toString()}]`,
-                // emails:"['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com']",
+                // emails: `[${emailArr.toString()}]`,
+                emails:"['yuudachi31@zcjh.ntpc.edu.tw']",
                 subject: "變壓器異常通知",
-                content:`  <table>
-                <tr>
-                    <th>圖號座標   </th>
-                    <th>組別  </th>
-                    <th>第幾具</th>
-                    <th>利用率</th>
-                    <th>危險等級</th>
+                content:`  <table style=' font-size:20px;'>
+                <tr >
+                    <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;'>圖號座標   </th>
+                    <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;'>組別  </th>
+                    <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;padding:0 10px;'>第幾具</th>
+                    <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;padding:0 10px;'>利用率</th>
+                   
                 </tr>
                         ${
                             transformer.ABNtransformerList.map((el,index) => {
                                 if(index%2==0){
-                                    return  "<tr style='text-align:right;'>"+
-                                    `<td>${el.coor[0]}</td>
-                                    <td style='background-color:#d0fca4;'>${el.div}</td>
+                                    return  "<tr style='text-align:center;'>"+
+                                    `<td style='padding:0 10px;'>${el.coor[0]}</td>
+                                    <td style='background-color:#d0fca4; padding:0 10px;'>${el.div}</td>
                                     <td>${el.tr_index}${el.tr_index=="NA"?"":"/"+el.num}</td>
                                     <td style='background-color:#d0fca4;'>${el.uti_rate}</td>
-                                    <td style='text-align:right;'>${el.danger_lv[0]}</td>`
+                                   `
                                 +"</tr>"
                                 }else{
-                                    return  "<tr style='text-align:right;'>"+
-                                    `<td style='background-color:#d0fca4;'>${el.coor[0]}</td>
-                                    <td >${el.div}</td>
+                                    return  "<tr style='text-align:center; font-size:20px;'>"+
+                                    `<td style='background-color:#d0fca4;padding:0 10px;'>${el.coor[0]}</td>
+                                    <td style='padding:0 10px;'>${el.div}</td>
                                     <td style='background-color:#d0fca4;'>${el.tr_index}${el.tr_index=="NA"?"":"/"+el.num}</td>
                                     <td '>${el.uti_rate}</td>
-                                    <td style='background-color:#d0fca4;'>${el.danger_lv[0]}</td>`
+                                  `
                                 +"</tr>"
                                 }
                              
@@ -405,7 +418,22 @@ function Notify({ transformer, saveAbnormalTransData }) {
                         }  </table>`
 
                   
-            })
+            }).then((data)=>{
+                if(data.status==200){
+                    setIsMailLoading(false)
+                    message.success("發送成功!")
+                }else{
+                    setIsMailLoading(false)
+                    message.error("發送失敗");
+                console.error("Login failed:", data);
+                }
+            }).catch((error) => {
+                // 處理其他錯誤，例如網絡錯誤等
+                setIsMailLoading(false)
+                message.error("發送失敗");
+                console.error("Login failed:", error);
+                
+              });
         }
 
 
@@ -605,7 +633,9 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                 } */}
                                 </div>
                                 <div class="flex2">
-                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={sendMail} >電子信箱推播</button>
+                                
+                                    <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
+                                
                                     <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
                                 </div>
                             </div>
