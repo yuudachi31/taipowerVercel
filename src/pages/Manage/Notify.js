@@ -7,7 +7,7 @@ import { Divider, Layout, Input, Table, Spin } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { useState, useEffect } from 'react';
-import { getAllThreshold, getAllRegions, getAllUser, getAbnormalTransList, postEmailNotify } from '../../api/frontApi'
+import { getAllThreshold, getAllRegions, getAllUser,postEventbyID , getAbnormalTransList, postEmailNotify } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 
 import { connect } from "react-redux";
@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
-import { postEventbyID ,getAbnormalTransList} from "../../api/frontApi"
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
