@@ -271,11 +271,11 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
             layout="horizontal"
             onFinish={handlefakeData}
           >
-            <Form.Item label="變壓器名稱" name="變壓器名稱" placeholder="請輸入變壓器名稱" rules={[{ required: true, message: '請輸入變壓器名稱',} ]}>
-              <Input />
+            <Form.Item label="變壓器名稱" name="變壓器名稱"  rules={[{ required: true, message: '請輸入變壓器名稱',} ]}>
+              <Input placeholder="請輸入變壓器名稱"/>
             </Form.Item>
-            <Form.Item label="群組名稱" name="群組名稱" placeholder="請輸入群組名稱" rules={[{ required: true, message: '請輸入群組名稱',} ]}>
-              <Input />
+            <Form.Item label="群組名稱" name="群組名稱"  rules={[{ required: true, message: '請輸入群組名稱',} ]}>
+              <Input placeholder="請輸入群組名稱"/>
             </Form.Item>
             <Form.Item label="變壓器型態" name="變壓器型態" rules={[
               {
@@ -301,12 +301,12 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
                     label: '二具',
                     children: [
                       {
-                        value: '燈力',
-                        label: '燈力',
+                        value: '燈、力',
+                        label: '燈、力',
                       },
                       {
-                        value: '力力',
-                        label: '力力',
+                        value: '力、力',
+                        label: '力、力',
                       },
                     ],
                   },
@@ -315,8 +315,8 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
                     label: '三具',
                     children: [
                       {
-                        value: '力力力',
-                        label: '力力力',
+                        value: '力、力、力',
+                        label: '力、力、力',
                       },
                     ],
                   },
@@ -327,7 +327,7 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
               <Select
                 placeholder="請選擇容量"
                 style={{
-                  width: 120,
+                  width: 200,
                 }}
                 options= {opacityOptions}
               />
@@ -350,8 +350,13 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
           onCancel={handleCancel}
           okText="確認"
           cancelText="取消"
+          style={{display:'flex', justifyContent:'space-between'}}
         >
+          <span>變壓器：</span>
           <Select
+            style={{
+              width: 400,
+            }}
             showSearch
             placeholder="請選擇變壓器"
             optionFilterProp="children"
@@ -386,12 +391,12 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
+          <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
+          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KWA</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
           {/* <div>日期 :{selectedMonth ? (<span class="ml-2">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</span>) : (<span class="ml-2">2022 年度 6 月每日用電圖表</span>)}</div> */}
         </Content>
         <Content class="flex justify-end w-50 gap-2" >
@@ -408,8 +413,8 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
-          <Col span={12}><div class="font-bold">原變壓器：T01</div></Col>
-          <Col span={12}><div class="font-bold">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
+          <Col span={12}><div class="font-bold text-normal">原變壓器：T01</div></Col>
+          <Col span={12}><div class="font-bold text-normal">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
         </Row>
         
         {/* 每具資料 */}

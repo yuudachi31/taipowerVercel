@@ -31,7 +31,7 @@ function EChartDay({data}) {
         if (payload?.length <= 0|| payload==null) return null
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                <li key={`item-0`}>{`利用率：${payload[0].value}kW`}</li>
+                <li key={`item-0`}>{`尖峰利用率：${payload[0].value}kW`}</li>
             </ul>
         );
     }

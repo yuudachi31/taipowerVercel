@@ -39,6 +39,7 @@ module.exports = {
       },
       fontSize: {
         base: '18px',
+        normal: '16px',
       },
       backgroundImage:{
         'login':"url('./assets/img/login_bg.png')"
