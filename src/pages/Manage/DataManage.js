@@ -17,14 +17,8 @@ import Menu from "../../components/manage/DataManageMenu"
 const MENU_DATA = [
     {
         route: '/datamanage/AMIimport',
-        title: '智慧電表匯入',
+        title: '資料匯入',
         name: 'AMIimport',
-        icon: <ImportOutlined />
-    },
-    {
-        route: '/datamanage/transformerImport',
-        title: '變壓器匯入',
-        name: 'transformerImport',
         icon: <ImportOutlined />
     },
     {
@@ -33,6 +27,13 @@ const MENU_DATA = [
         name: 'transformerRemit',
         icon: <ExportOutlined />
     },
+    {
+        route: '/datamanage/transformerImport',
+        title: '行業別匯出',
+        name: 'transformerImport',
+        icon: <ExportOutlined />
+    },
+    
    
 ]
 
