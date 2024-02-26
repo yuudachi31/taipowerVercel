@@ -3,7 +3,7 @@
 import { Layout, Input, List, message } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, { useEffect, useState } from 'react';
-const ContainerHeight = 420;
+const ContainerHeight = window.innerHeight - 270;
 const { Header, Content } = Layout;
 
 
