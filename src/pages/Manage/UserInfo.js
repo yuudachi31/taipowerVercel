@@ -13,7 +13,104 @@ import UserForm from '../../components/manage/UserForm'
 const accountUserID = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
 const { Header, Footer, Content } = Layout;
 
-
+const region_list=[
+  {
+      "region_id": "00",
+      "region_name": "台北市區營業處"
+  },
+  {
+      "region_id": "01",
+      "region_name": "台北南區營業處"
+  },
+  {
+      "region_id": "02",
+      "region_name": "基隆區營業處"
+  },
+  {
+      "region_id": "03",
+      "region_name": "宜蘭區營業處"
+  },
+  {
+      "region_id": "04",
+      "region_name": "桃園區營業處"
+  },
+  {
+      "region_id": "05",
+      "region_name": "台北西區營業處"
+  },
+  {
+      "region_id": "06",
+      "region_name": "新竹區營業處"
+  },
+  {
+      "region_id": "07",
+      "region_name": "台中區營業處"
+  },
+  {
+      "region_id": "08",
+      "region_name": "彰化區營業處"
+  },
+  {
+      "region_id": "09",
+      "region_name": "嘉義區營業處"
+  },
+  {
+      "region_id": "10",
+      "region_name": "台南區營業處"
+  },
+  {
+      "region_id": "11",
+      "region_name": "高雄區營業處"
+  },
+  {
+      "region_id": "12",
+      "region_name": "屏東區營業處"
+  },
+  {
+      "region_id": "13",
+      "region_name": "花蓮區營業處"
+  },
+  {
+      "region_id": "14",
+      "region_name": "台東區營業處"
+  },
+  {
+      "region_id": "15",
+      "region_name": "澎湖區營業處"
+  },
+  {
+      "region_id": "16",
+      "region_name": "台北北區營業處"
+  },
+  {
+      "region_id": "17",
+      "region_name": "南投區營業處"
+  },
+  {
+      "region_id": "18",
+      "region_name": "鳳山區營業處"
+  },
+  {
+      "region_id": "19",
+      "region_name": "雲林區營業處"
+  },
+  {
+      "region_id": "20",
+      "region_name": "新營區營業處"
+  },
+  {
+      "region_id": "21",
+      "region_name": "苗栗區營業處"
+  },
+  {
+      "region_id": "22",
+      "region_name": "金門區營業處"
+  },
+  {
+      "region_id": "23",
+      "region_name": "馬祖區營業處"
+  }
+]
 function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
   const _history = useHistory()
   const { user_id: userId } = useParams()
@@ -61,10 +158,17 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
       }));
       console.log(user)
       /////////////////////////
-    } else {
+    }  if (changedValues.district2) {
+      setUser((prevUser) => ({
+        ...prevUser, ...{
+          district2: {region_id:[changedValues.district2],region_name:[region_list.find((el)=>el.region_id==changedValues.district2).region_name]}
+        }
+      }));
+    }else {
+      // console.log("apple")
       setUser((prevUser) => ({ ...prevUser, ...changedValues }));
     }
-
+console.log(user)
   };
   const handleSave = () => {
     setIsloading(true)
@@ -79,7 +183,7 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
         "user_id": accountUserID,
         "user_name": user.name,
         "email": user.email,
-        "region_id": user.region_id,
+        "region_id": user.district2.region_id[0],
         "chat_id": user.chat_id
       }
     ).then(() => {
@@ -121,13 +225,14 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
   const handleClickEdit = () => {
     setIsEdited(true)
     setUser(userManage.userList.find((el) => el.user_id == userId));
+    console.log(userManage.userList)
 
   }
 
 
   return (
     <Layout class="h-screen px-20 py-12 manage-wrapper bg-gray-100">
-      <Header class="pt-4 pb-8 grid grid-rows-2 auto-cols-min items-center gap-x-7">
+      <Header class="pt-4 pb-8 grid grid-rows-2 auto-cols-max items-center gap-x-7">
         <a onClick={(e) => { e.preventDefault(); _history.push('/manage/user'); }} class="row-span-2"><LeftOutlined style={{ fontSize: '24px', color: '#7B7B7B' }} /></a>
         <span class="text-base text-gray-400 col-start-2 whitespace-nowrap overflow-hidden">帳號名稱</span>
         <h2 class="flex-auto font-bold text-xl col-start-2">{userManage.userList.find((el) => el.user_id == userId)?.name}</h2>

@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import qs from "qs"
 // const baseURL = `http://localhost:5000/api/v1`
 // const baseURL = `https://taipower.azurewebsites.net`;
 //for docker compose
@@ -508,6 +508,58 @@ export const postEventbyID = async (channel_id,data) => {
           }
       }
   } catch (err) {
-      console.log(err.response);
+      console.log(err.response);}
+// axios.get(`/myController/myAction?${[1,2,3].map((n, index) => `storeIds[${index}]=${n}`).join('&')}`);
+}
+export const postEmailNotify = async (data) => {
+  try {
+    const _url = `https://ami-alertemail-sendgrid.vercel.app/send-email/`;
+    const result = await axios.post(_url,null, {
+      params:data,
+      // params:{
+      //   emails:"['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com']",
+      //   subject:"title",
+      //   content:"<p>TEstText</p>"
+      // },
+      
+      // paramsSerializer: params => {
+        
+      //   return `'[${params.emails.toString()}]'`
+      //   // console.log(params)
+      // },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+// postEmailNotify()
+console.log(`<p>${'TEstText'}</p>`)
+
+
+export const getAllUser = async () => {
+  try {
+    const _url = `${baseURL}/accounts/all`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
   }
 };

@@ -19,7 +19,13 @@ function EChartMain({data}) {
         else{
            return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                <li key={`item-0`}>{`利用率：${payload[3].value}%`}</li>
+                {payload[2].value==0?<><li key={`item-0`}>{`尖峰利用率：${payload[3].value}kW`}</li>
+                    <li key={`item-1`}>{`離峰利用率：${payload[0].value}kW`}</li></>:
+                    <>
+                    <li key={`item-0`}>{`利用率：${payload[2].value}%`}</li>
+                    </>}
+                
+                {/* <li key={`item-0`}>{`利用率：${payload[3].value}%`}</li> */}
                 {/* <li key={`item-0`}>{`尖峰：${payload[0].value}kW`}</li>
                 <li key={`item-1`}>{`離峰：${payload[1].value}kW`}</li> */}
             </ul>

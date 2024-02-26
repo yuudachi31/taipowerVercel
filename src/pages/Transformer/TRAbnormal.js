@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans, addNoticeNextDay } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom/cjs/react-router-dom';
 
 //antd
 import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message,Spin } from 'antd';
@@ -217,10 +218,9 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
             dataIndex: 'coor',
             render: text => {
                 return (
-                    // <a href='/tr/info' >{text}</a>
-                    <div>{text[0]}</div>
+                    <Link to={'/tr/info/?coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
-            }
+            },
         },
         {
             title: '組別',
@@ -269,7 +269,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                             danger_lv = '一般危險'
                         }
                         return (
-                            <Tag color={color} key={danger_lv}>
+                            <Tag color={color} key={danger_lv} style={{fontSize:'16px', lineHeight:'24px'}}>
                                 {danger_lv}
                             </Tag>
                         );

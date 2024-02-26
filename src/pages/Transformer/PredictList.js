@@ -1,3 +1,5 @@
+//穿梭框
+
 import { Switch, Table, Tag, Transfer, Tooltip ,Layout, Row, Col, Divider} from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import difference from 'lodash/difference';
@@ -40,16 +42,16 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, data, ...restProps
             columns={columns}
             dataSource={filteredItems}
             title={() => 
-              <div class="flex justify-between">
+              <div class="flex justify-between text-normal">
                 <div class='font-bold'>第一具：{overView.type}</div>
-                <div>利用率：{overView.thereshold}</div>
-                <div>十小時率：{overView.tenHour}</div>
+                <div>原利用率：{overView.thereshold}</div>
+                <div>新利用率：{overView.tenHour}</div>
               </div>
             }
             // size="small"
-            scroll={{
-              x: 1000,
-            }}
+            // scroll={{
+            //   x: 1000,
+            // }}
             style={{
               pointerEvents: listDisabled ? 'none' : undefined,
             }}
@@ -102,41 +104,25 @@ const originTargetKeys = mockData //設定target table的資料
   .map((item) => item.key);
 const onlyColumns = [
   {
-    dataIndex: 'title',
-    title: '變壓器形式',
-    sorter: true,
-    width: '100',
-  },
-  {
     dataIndex: 'electricityNum',
     title: '電號',
-    width: '150',
+    // width: '150',
   },
   {
     dataIndex: 'tag',
     title: '相別',
-    width: '100',
+    // width: '50',
     render: (tag) => <Tag>{tag}</Tag>,
   },
   {
-    dataIndex: 'KW',
-    title: '總用電度數',
-    width: '150',
-  },
-  {
-    dataIndex: 'priceDay',
-    title: '計價天數',
-    width: '150',
-  },
-  {
     dataIndex: 'tenHour',
-    title: '十小時率',
-    width: '150',
+    title: '用電量',
+    // width: '100',
   },
   {
     dataIndex: 'address',
     title: '地址',
-    width: '100',
+    // width: '100',
     ellipsis: {
       showTitle: false,
     },
@@ -179,6 +165,7 @@ const PredictList = ({data}) => {
           totalDataL={totalDataL}
           totalDataR={totalDataR}
           data={data}
+          showSelectAll={false}
         />
         <Divider/>
         <TableTransfer
@@ -196,6 +183,7 @@ const PredictList = ({data}) => {
           totalDataL={totalDataL}
           totalDataR={totalDataR}
           data={data}
+          showSelectAll={false}
         />
         {/* <Switch
           unCheckedChildren="disabled"
