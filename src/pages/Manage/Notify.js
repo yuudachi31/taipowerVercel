@@ -314,16 +314,16 @@ function Notify({ transformer, saveAbnormalTransData }) {
         //         </div>
         //     )
         // },
-        {
-            title: () => { return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button> },
-            key: 'action',
-            align: 'right',
-            render: (text, record) => (
-                <button className="btn-manage" style={{ display: 'inline' }} onClick={() => showConfirm(record.user_id)}>
-                    移除
-                </button>
-            ),
-        },
+        // {
+        //     title: () => { return <button class="text-purple-400 font-bold text-3xl" onClick={showadduserModal}>+</button> },
+        //     key: 'action',
+        //     align: 'right',
+        //     render: (text, record) => (
+        //         <button className="btn-manage" style={{ display: 'inline' }} onClick={() => showConfirm(record.user_id)}>
+        //             移除
+        //         </button>
+        //     ),
+        // },
     ];
 
     //當切換成不同群組時將列表切回第一頁
