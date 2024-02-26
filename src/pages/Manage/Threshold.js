@@ -309,7 +309,7 @@ function Threshold() {
                     </Modal>  */}
                 </Header>
                 <Content class=" bg-white">
-                    <div class=" p-10">
+                    <div class=" p-10 text-normal">
                         <span class="font-bold">區處：</span>
                         {/* <Select
                             defaultValue="1"
@@ -322,7 +322,7 @@ function Threshold() {
                         {isEdit ?
                             <Select
                                 defaultValue={groupData[0].value}
-                                style={{ width: 200 }}
+                                style={{ width: 200, fontSize:'16px' }}
                                 onChange={handleGroupChange}
                                 disabled
                             >
@@ -338,7 +338,7 @@ function Threshold() {
                                 placeholder="Select a person"
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
-                                style={{ width: 200 }}
+                                style={{ width: 200, fontSize:'16px' }}
                                 disabled={isLoading}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
@@ -363,7 +363,7 @@ function Threshold() {
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
-                                <div class="flex">
+                                <div class="flex text-normal">
                                     <span class="font-bold">警告門檻：</span>
                                     {/* 修改  */}
                                     {
@@ -371,16 +371,17 @@ function Threshold() {
                                             <div class="flex">
                                                 <div>
                                                     {editedThresholds.threshold.map((item, index) => (
-                                                        <div key={item.state} className="flex mb-3">
-                                                            <div className="flex row">
+                                                        <div key={item.state} className="flex">
+                                                            <div className="flex row text-normal">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
                                                                     {item.state === 2 && '中度'}
                                                                     {item.state === 3 && '重度'}
                                                                 </p>
                                                                 <p className="mr-2">警告門檻：高於 </p>
-                                                                <p className="w-16 mr-2">
+                                                                <p className="w-16 mr-2 text-normal">
                                                                     <Input
+                                                                        // style={{fontSize:'16px'}}
                                                                         value={item.limit_max}
                                                                         onChange={(e) => handleInputChange(e, index)}
                                                                     />
@@ -397,7 +398,7 @@ function Threshold() {
                                                 <div>
                                                     {/* <div  class="flex row "> */}
                                                     {selectedListGroup.threshold.map((item) => (
-                                                        <div key={item.state} className="flex mb-3">
+                                                        <div key={item.state} className="flex text-normal">
                                                             <div class="flex row ">
                                                                 <p className={`mr-2 ${item.state === 1 ? 'normal-style' : (item.state === 2 ? 'medium-style' : 'heavy-style')}`}>
                                                                     {item.state === 1 && '一般'}
@@ -417,15 +418,15 @@ function Threshold() {
                                 </div>
                                 {isEdit ?
                                     <div class="flex2">
-                                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => showCancel()}>取消</button>
-                                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={() => handleSave()}>儲存</button>
+                                        <button class="btn-manage justify-self-end mr-4 text-normal" onClick={() => showCancel()}>取消</button>
+                                        <button class="btn-manage justify-self-end mr-4 btn-manage-full text-normal" onClick={() => handleSave()}>儲存</button>
                                     </div>
                                     :
                                     isLoading ?
                                         <></>
                                         :
                                         <div class="flex2">
-                                            <button class="btn-manage justify-self-end  mr-4 btn-manage-full" onClick={editClicked} >編輯</button>
+                                            <button class="btn-manage justify-self-end  mr-4 btn-manage-full text-normal" onClick={editClicked} >編輯</button>
                                         </div>
                                 }
 
