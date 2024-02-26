@@ -269,7 +269,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                             danger_lv = '一般危險'
                         }
                         return (
-                            <Tag color={color} key={danger_lv}>
+                            <Tag color={color} key={danger_lv} style={{fontSize:'16px', lineHeight:'24px'}}>
                                 {danger_lv}
                             </Tag>
                         );

@@ -19,7 +19,7 @@ body {
 
 @layer base {
   body {
-    @apply text-black text-base flex justify-center;
+    @apply text-black text-base text-normal flex justify-center;
   }
   a {
     @apply cursor-pointer block;

@@ -403,8 +403,8 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
-          <Col span={12}><div class="font-bold">原變壓器：T01</div></Col>
-          <Col span={12}><div class="font-bold">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
+          <Col span={12}><div class="font-bold text-normal">原變壓器：T01</div></Col>
+          <Col span={12}><div class="font-bold text-normal">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
         </Row>
         
         {/* 每具資料 */}

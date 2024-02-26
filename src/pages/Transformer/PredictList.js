@@ -42,7 +42,7 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, data, ...restProps
             columns={columns}
             dataSource={filteredItems}
             title={() => 
-              <div class="flex justify-between">
+              <div class="flex justify-between text-normal">
                 <div class='font-bold'>第一具：{overView.type}</div>
                 <div>原利用率：{overView.thereshold}</div>
                 <div>新利用率：{overView.tenHour}</div>
