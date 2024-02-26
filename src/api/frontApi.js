@@ -493,7 +493,7 @@ export const postEventbyID = async (channel_id,data) => {
   console.log('DATA：' ,data)
   
   try {
-      const _url = `http://localhost:80/linebot/send/${channel_id}`
+      const _url = `http://localhost:80/linebot/send`
       const result = await axios.post(_url,data,{
 
           headers: {
