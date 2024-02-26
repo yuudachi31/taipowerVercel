@@ -632,7 +632,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                     <span class="font-bold">低於 10% 高於80%</span>
                                 } */}
                                 </div>
-                                <div class="flex2">
+                                <div class="flex2 text-normal">
                                 
                                     <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
                                 
