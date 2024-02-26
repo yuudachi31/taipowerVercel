@@ -28,9 +28,9 @@ const MENU_DATA = [
         icon: <ExportOutlined />
     },
     {
-        route: '/datamanage/transformerImport',
+        route: '/datamanage/industryExport',
         title: '行業別匯出',
-        name: 'transformerImport',
+        name: 'industryExport',
         icon: <ExportOutlined />
     },
     
@@ -49,8 +49,8 @@ function DataManage() {
                         <AMIimport />
                     </Route>
                      {/* 變壓器匯入 */}
-                     <Route path="/datamanage/transformerImport">
-                        <Menu data={MENU_DATA} menuActive={'transformerImport'} />
+                     <Route path="/datamanage/industryExport">
+                        <Menu data={MENU_DATA} menuActive={'industryExport'} />
                         <Import />
                     </Route>
                     {/* 變壓器匯出 */}
