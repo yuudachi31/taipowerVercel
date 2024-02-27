@@ -4,6 +4,7 @@ import { Divider, Layout, Input } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
+import {getDMQSCustomer} from '../../api/frontApi';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
@@ -42,7 +43,17 @@ function AMIimport() {
         console.log("save")
         setIsEdit(false)
     }
+const onClickGetDMQSCustomer=()=>{
+    getDMQSCustomer().then((data)=>{
+        if(data.errStatus){
 
+        }else{
+            console.log(data)
+        }
+    })
+      
+    
+}
     return (
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
             <Header class="pt-4 pb-8 flex space-x-7 items-center">
@@ -52,7 +63,7 @@ function AMIimport() {
                 <div class="flex p-10 text-normal">
                     <button class="btn-manage justify-self-end mr-4" >NBS</button>
                     <button class="btn-manage justify-self-end mr-4" >MDMS</button>
-                    <button class="btn-manage justify-self-end mr-4" >DMQS用戶資料查詢</button>
+                    <button class="btn-manage justify-self-end mr-4" onClick={onClickGetDMQSCustomer()}>DMQS用戶資料查詢</button>
                     <button class="btn-manage justify-self-end mr-4" >DMQS變壓器查詢</button>
                 </div>
                 <div>

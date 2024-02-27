@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify } from '../../api/frontApi'
+import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify,postUser } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -99,27 +99,50 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
-
-
+        const reloadusr= document.cookie?.split("; ").find((row) => row.startsWith("usr"))?.split("=")[1]
+        const reloadpsw = document.cookie?.split("; ").find((row) => row.startsWith("psw"))?.split("=")[1]
+        
         getTransformerList().then((data) => {
+            
             if (data == 401) {
-                if (Number(localStorage.getItem('resetTime')) == 2) {
+                if (Number(localStorage.getItem('resetTime')) == 8) {
+                    console.log(Number(localStorage.getItem('resetTime')))
+
                     console.log("aabb")
                     localStorage.removeItem('resetTime');
-
+                    
                     setLogoutModalVisible(true)
-                } else {
-                    console.log("aacc")
-                    localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime'))+1)
+                } else if(Number(localStorage.getItem('resetTime')) < 8&&Number(localStorage.getItem('resetTime')) >=1 ){
+                    console.log(Number(localStorage.getItem('resetTime')))
+
+                    postUser(reloadusr, reloadpsw).then((data) => {
+                        if (data && data.errStatus) {
+                            message.error(data.errDetail);
+                          } else {
+                             document.cookie = "fltk=" + data.access_token+";path=/";
+                             localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime'))+1)
+                             console.log("re")
+                             window.location.reload()
+                          }
+                       
+                    })
+                  
+                }else{
+                    localStorage.setItem('resetTime', 1)
+                    console.log(Number(localStorage.getItem('resetTime')))
                     window.location.reload()
                 }
 
 
             } else {
+                document.cookie = "usr=''" + ";path=/";
+                document.cookie = "psw=''" + ";path=/";
+                localStorage.removeItem('resetTime');
                 getAbnormalTransList().then((data) => {
                     if (data.errStatus) {
                         message.error(data.errDetail);
                     } else {
+                        
                         // console.log(data)
                         setAbnormalTransData(data)
                         // pushData()

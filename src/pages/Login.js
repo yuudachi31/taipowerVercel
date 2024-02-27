@@ -42,6 +42,8 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
   // };
   const _handleLogin = (values) => {
     setIsLoading(true)
+    document.cookie = "usr=" + values.username+";path=/";
+    document.cookie = "psw=" + values.password+";path=/";
     postUser(values.username, values.password).then((data) => {
       if (data && data.errStatus) {
         message.error(data.errDetail);

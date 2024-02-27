@@ -264,6 +264,71 @@ export const postAccountUpload  = async (file) => {
     console.log(err.response);
   }
 };
+export const postUploadLpi  = async (file) => {
+  try {
+   
+    const _url = `${baseURL}/upload_LpiTest/upload`;
+    const result = await axios.post(_url, 
+      file
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const postDMQSCustomer  = async (file) => {
+  try {
+   
+    const _url = `${baseURL}/upload_DMQSCustomer/upload_customerdetail`;
+    const result = await axios.post(_url, 
+      file
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getDMQSCustomer  = async () => {
+  try {
+   
+    const _url = `${baseURL}/upload_DMQSCustomer/get_dmqs_list`;
+    const result = await axios.get(_url
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 
 export const getRegionUser  = async (regions_id) => {
   try {
@@ -335,7 +400,7 @@ export const getAllThreshold = async () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);
@@ -365,6 +430,10 @@ export const getAllRegions = async () => {
     console.log(err.response);
   }
 };
+
+
+
+
 // console(glabalToken)
 // console.log(glabalToken)
 export const patchUserInfo = async (info) => {
@@ -481,8 +550,32 @@ export const postRegionThreshold = async (data) => {
   }
 };
 
-// axios.get(`/myController/myAction?${[1,2,3].map((n, index) => `storeIds[${index}]=${n}`).join('&')}`);
+//line推播用
+export const postEventbyID = async (channel_id,data) => {
+  var _usertoken = document.cookie.split('; ').find(row => row.startsWith('fltk')).split('=')[1];
+  console.log('推播的usertoken：' ,_usertoken)
+  console.log(channel_id)
+  console.log('DATA：' ,data)
+  
+  try {
+      const _url = `http://localhost:80/linebot/send`
+      const result = await axios.post(_url,data,{
 
+          headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${_usertoken}`,
+          },
+      })
+      if (result) {
+          console.log(result)
+          if (result.status === 200) {
+              return (true)
+          }
+      }
+  } catch (err) {
+      console.log(err.response);}
+// axios.get(`/myController/myAction?${[1,2,3].map((n, index) => `storeIds[${index}]=${n}`).join('&')}`);
+}
 export const postEmailNotify = async (data) => {
   try {
     const _url = `https://ami-alertemail-sendgrid.vercel.app/send-email/`;
