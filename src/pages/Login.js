@@ -103,7 +103,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
                   <div className="flex items-center">
                     {/* <img src={rainbowLogo} className="w-12 h-12" /> */}
                     <div className="text-base font-extrabold ml-2">
-                      配電變壓器之負載變化預測及利用率分析研究
+                      配電變壓器之負載變化預測及利用率分析系統
                     </div>
                   </div>
                 </Form.Item>
