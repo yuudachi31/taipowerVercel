@@ -42,10 +42,48 @@ p{
     transform: rotate(360deg);
   }
 }
+.pos-r{
+  position: relative;
+  /* overflow: hidden; */
+}
 #upload-user{
   background-color: blue;
   opacity: 0;
   position: absolute;
+}
+#upload-nbs{
+  /* background-color: blue; */
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+  
+}
+#upload-mdms{
+  background-color: #0000ff;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#upload-dmqscust{
+  background-color: blue;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+}
+
+#upload-dmqstrans{
+  background-color: blue;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+}
+
+#upload-nbs-label{
+  cursor: pointer;
 }
 #upload-user-label{
   cursor: pointer;

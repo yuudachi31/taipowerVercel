@@ -286,6 +286,51 @@ export const postUploadLpi  = async (file) => {
     console.log(err.response);
   }
 };
+
+export const postUploadDMQSTransformer   = async (file) => {
+  try {
+   
+    const _url = `${baseURL}/upload_DMQSTransformer/upload`;
+    const result = await axios.post(_url, 
+      file
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const postUploadNBS  = async (file) => {
+  try {
+   
+    const _url = `${baseURL}/upload_nbs/upload`;
+    const result = await axios.post(_url, 
+      file
+    ,{
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+      
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 export const postDMQSCustomer  = async (file) => {
   try {
    
