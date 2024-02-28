@@ -19,7 +19,7 @@ body {
 
 @layer base {
   body {
-    @apply text-black text-base flex justify-center;
+    @apply text-black text-base text-normal flex justify-center;
   }
   a {
     @apply cursor-pointer block;
@@ -54,6 +54,12 @@ body {
     @apply py-1 px-3 w-max h-auto;
     @apply flex grid-flow-col gap-2 items-center;
   }
+  .btn-orange-outline {
+    @apply border border-orange-400;
+    @apply rounded-sm text-orange-400 text-center;
+    @apply py-1 px-3 w-max h-auto;
+    @apply flex grid-flow-col gap-2 items-center;
+  }
   
   .btn-manage {
     @apply border border-purple-400;
@@ -83,6 +89,9 @@ body {
   }
   .h-08{
     height:80%;
+  }
+  .h-02{
+    height:20%;
   }
   .w-8xl {
     width: 1440px;

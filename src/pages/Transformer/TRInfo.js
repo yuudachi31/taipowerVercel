@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker,Spin } from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker, Spin } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -42,6 +42,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedDay, setSelectedDay] = useState(null);
   const [isLoadingtop, setIsLoadingTop] = useState(true);
   const [isLoadingbottom, setIsLoadingbottom] = useState(true);
+
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -75,11 +76,13 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     if (mode === 'year') {
       setSelectedYear(value.year());
       saveMonthlyRates([{
-        is_predict:3,
+        is_predict: 3,
 
       }])
       setIsLoadingbottom(true)
-      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
+      // getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
+      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
@@ -112,7 +115,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     const parsed = qs.parse(window.location.search);
     // console.log("test:",parsed)
     saveMonthlyRates([{
-      is_predict:3,
+      is_predict: 3,
 
     }])
     // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
@@ -179,44 +182,49 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
-      { isLoadingtop ? (
-                <> 
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (<>
-                  <Header class="pt-4 flex space-x-7 items-center">
-        <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
-        {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
-        <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
-      </Header>
-      <Divider />
-      <Layout class="flex justify-between py-2">
-        <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
-        </Content>
-        <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KW</span></div>
-        </Content>
-        <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>第幾具 :<span class="ml-2">1/2</span></div>
-
-        </Content>
-
-        <Content class="relative flex-col w-40 gap-2" >
-          <span class="relative text-base tracking-widest">利用率(%)</span>
-          <div class="flex mt-8 w-100 h-100 gap-2">
-
-            <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
+      {isLoadingtop ? (
+        <>
+          <div style={{ height: '200px' }}>
+            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
+              <div className="content" />
+            </Spin>
           </div>
-          {/* <EChartRate /> */}
-        </Content>
+        </>
+      ) : (
+        <>
+          <Header class="pt-4 flex space-x-3 items-center">
+            <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
+            {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
+            <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
+            <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
+          </Header>
+          <Divider />
+          <Layout class="flex justify-between py-2">
+            <Content class="text-base tracking-widest space-y-5 flex-col">
+              <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
+              <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
+              <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
+            </Content>
+            <Content class="text-base tracking-widest space-y-5 flex-col">
+              <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
+              <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
+            </Content>
+            <Content class="text-base tracking-widest space-y-5 flex-col">
+              <div>第幾具 :<span class="ml-2">1/2</span></div>
 
-      </Layout></>)}
-     
+            </Content>
+
+            <Content class="relative flex-col w-40 gap-2" >
+              <span class="relative text-base tracking-widest">利用率(%)</span>
+              <div class="flex mt-8 w-100 h-100 gap-2">
+
+                <Progress percent={Math.floor(transformer.eachTransformerInfo.uti_rate)} steps={5} size={80} status='active' strokeColor={[green[4], lime[4], yellow[4], orange[4], volcano[5]]} />
+              </div>
+              {/* <EChartRate /> */}
+            </Content>
+
+          </Layout></>)}
+
       <Divider />
 
 
@@ -244,29 +252,21 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             </div>
           </div>
         </Header>
-
-        <Content class="flex mb-20 justify-center items-center">
-       
-          {
-                isLoadingbottom ? (
-                <> 
-              
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (  <>
-                  <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
+        {
+          isLoadingbottom ? (
+            <>
+              <Spin tip="圖表載入中" size="large">
+                <div className="content" />
+              </Spin>
+            </>) : (
+            <>
+              <Content class="flex mb-20 justify-center items-center">
+                <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
                 <EChartMonth data={transformer.monthlyRatesList} />
-                </> )
-            }
-         
-       
-        </Content>
+              </Content>
+            </>)}
       </Layout>
-
-
-      <Divider />
-
+      {/* <Divider /> */}
     </Layout>
   );
 

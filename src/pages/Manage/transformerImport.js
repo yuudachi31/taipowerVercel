@@ -1,6 +1,7 @@
 // 匯入AMI頁面
 //antd
 import { Divider, Layout, Input } from 'antd';
+import Industry from '../../components/manage/Industry'
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
@@ -86,32 +87,32 @@ function transformerImport() {
 
     return (
         <Layout class="px-20 py-12 manage-wrapper bg-gray-100 minHeight">
-            <Content>
-                <Header class="pt-4 pb-8 flex space-x-7 items-center">
-                    <h2 class="flex-auto font-bold text-2xl">變壓器匯入</h2>
-
-                </Header>
-                <Content class=" bg-white">
-                    <div class="p-10 flex items-center">
-
-                        <label for="upload-user" id="upload-user-label">
-                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器關聯表</button>
-                        </label>
-                        <input type="file"
-                            accept={[".csv.gz", ".csv"]}
-                            id="upload-user"
-                            onChange={(e) => {
-                                handleFileUpload();
-                            }}
-                            name="file" />
-
-
-                        <button class="btn-manage justify-self-end mr-4 btn-manage-full" >匯入變壓器詳細資料</button>
-                    </div>
-
+            {/* <Header class="pt-4 pb-8 flex space-x-7 items-center">
+                <h2 class="flex-auto font-bold text-2xl">變壓器匯入</h2>
+            </Header>
+            <Content class="h-08 bg-white">
+                <Content class="h-08 px-14 py-12">
+                    <Industry  />
                 </Content>
-            </Content>
-
+                <Divider />
+                <div className="remitBotton">
+                    <button class="btn-manage justify-self-end mr-4 btn-manage-full " >匯出</button>
+                </div>
+            </Content> */}
+            <Header class="pt-4 pb-8 flex space-x-7 items-center">
+                <h2 class="flex-auto font-bold text-2xl">行業別匯出</h2>
+            </Header>
+                <Content class="flex h-08 bg-white" style={{ flexDirection:'column', justifyContent:'space-between'}}>
+                    <div class="flex p-10 ">
+                    <Industry  />
+                    </div>
+                    <div>
+                        <Divider />
+                        <div className="remitBotton pr-10 pb-7" >
+                            <button class="btn-manage justify-self-end btn-manage-full  text-normal" >匯出</button>
+                        </div>
+                    </div>
+                </Content>
         </Layout>
     );
 
