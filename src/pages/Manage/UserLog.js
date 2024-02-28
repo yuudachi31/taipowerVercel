@@ -3,7 +3,7 @@
 import { Layout, Input, List, message } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, { useEffect, useState } from 'react';
-const ContainerHeight = 600;
+const ContainerHeight = window.innerHeight - 270;
 const { Header, Content } = Layout;
 
 
@@ -196,20 +196,21 @@ function UserLog() {
                     itemKey="grant_time"
                     onScroll={onScroll}
                     class="loglist-padding"
+                    style={{fontSize:'16px'}}
                 >
                     {(item) => (
                     <List.Item key={item.grant_time}>
                         <List.Item.Meta
-                        title={<div>{item.user_id}</div>}
+                        title={<div class='text-normal'>{item.user_id}</div>}
                         />
                         <List.Item.Meta
-                        title={<div>{item.user_name}</div>}
+                        title={<div class='text-normal'>{item.user_name}</div>}
                         />
                         <List.Item.Meta
-                        title={<div>{item.region_name}</div>}
+                        title={<div class='text-normal'>{item.region_name}</div>}
                         />
                         <List.Item.Meta
-                        title={<div>{item.grant_time}</div>}
+                        title={<div class='text-normal'>{item.grant_time}</div>}
                         />
                         <div>{item.event}</div>
                     </List.Item>

@@ -42,10 +42,48 @@ p{
     transform: rotate(360deg);
   }
 }
+.pos-r{
+  position: relative;
+  /* overflow: hidden; */
+}
 #upload-user{
   background-color: blue;
   opacity: 0;
   position: absolute;
+}
+#upload-nbs{
+  /* background-color: blue; */
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+  
+}
+#upload-mdms{
+  background-color: #0000ff;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#upload-dmqscust{
+  background-color: blue;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+}
+
+#upload-dmqstrans{
+  background-color: blue;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+}
+
+#upload-nbs-label{
+  cursor: pointer;
 }
 #upload-user-label{
   cursor: pointer;
@@ -77,4 +115,25 @@ p{
 
 .ant-transfer-customize-list .ant-transfer-list{
   width: 40%;
+}
+/*列表字體*/
+.ant-table-content{
+  font-size: 16px;
+  color: #282c34;
+}
+
+.anticon {
+  vertical-align: 0em;
+}
+/*圖表X Y軸字體*/
+.recharts-cartesian-axis-ticks{
+  font-size: 16px;
+}
+.recharts-cartesian-axis-ticks{
+  font-size: 16px;
+}
+
+/* 資料管理 */
+.ant-picker-input > input {
+  font-size: 16px;
 }

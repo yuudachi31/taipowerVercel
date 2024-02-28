@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker } from 'antd';
+import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import moment from 'moment';
 import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
@@ -36,6 +36,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -94,7 +95,6 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         if (data.errStatus) {
           console.log(data.errDetail);
         } else {
-
           saveDailyRates(data)
         }
       })
@@ -114,6 +114,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         console.log(data.errDetail);
       } else {
         saveDailyRates(data)
+        setIsLoadingbottom(false)
       }
     })
     getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
@@ -149,21 +150,21 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
   const _history = useHistory();
   return (
     <Layout class="px-20 wrapper">
-      <Header class="pt-4 flex space-x-7 items-center">
+      <Header class="pt-4 flex space-x-3 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
-        <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage`) }}>負載分割</button>
+        <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
         <button class="btn flex" type="primary" onClick={() => { _history.push(`/tr/info/?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>返回年圖表</button>
       </Header>
       <Divider />
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>資料表數 :<span class="ml-2">10 個</span></div>
-          <div>資料完整度 :<span class="ml-2">10 %</span></div>
+          <div>住戶表數 :<span class="ml-2">10 個</span></div>
+          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
-          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap}</span></div>
+          <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>第幾具 :<span class="ml-2">1/2</span></div>
@@ -226,11 +227,22 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
             <span class="ml-2">離峰利用率</span>
           </div>
         </Header>
-        <Content class="flex justify-center items-center mt-14 mb-20 w-full">
-          <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
-          <EChartMain data={transformer.dailyRatesList} />
-          {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
-        </Content>
+        {
+          isLoadingbottom ? (
+          <> 
+            <div style={{height:'200px'}}>
+              <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
+                <div className="content" />
+              </Spin> 
+            </div>
+          </>) : (  
+            
+            <Content class="flex justify-center items-center mt-14 mb-20 w-full">
+              <span class="min-w-max h-8 -mr-6 transform -rotate-90 text-center">利用率 (%)</span>
+              <EChartMain data={transformer.dailyRatesList} />
+              {/* <span class="min-w-max h-8 -ml-6 transform rotate-90 text-center">利用率 (%)</span> */}
+            </Content>
+          )}
       </Layout>
 
       {/* <Layout>

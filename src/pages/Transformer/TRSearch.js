@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTransformerList, getTransformerListByCoor } from '../../api/frontApi'
+import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify,postUser } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -19,12 +19,19 @@ const Time = ['2023/10/01', '2023/10/02', '2023/10/04'];
 const plainPersentage = ['72', '82', '60'];
 const defaultCheckedList = [];
 const { Search } = Input;
-
+const containerStyle = {
+    width: '100%',
+    height: 200,
+    overflow: 'auto',
+    // border: '1px solid #f0f0f0',
+    padding: '4px 8px 4px 8px',
+    borderRadius: '3px'
+};
 function TRSearch({ transformer, saveTransData }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
-    
+    const [abnormalTransData, setAbnormalTransData] = useState([]);
+    const [isModalDataLoading, setIsModalDataLoading] = useState(true);
     const fetchData = () => {
         getTransformerList().then((data) => {
             if (data == 401) {
@@ -56,8 +63,16 @@ function TRSearch({ transformer, saveTransData }) {
         // console.log(document.cookie);
         _history.push('/login')
     }
-    useEffect(() => {
 
+    // const testArr=['g111134001@grad.ntue.edu.tw','yuudachi31@gmail.com'] 
+    const params = new URLSearchParams();
+    // testArr.forEach((value, index) => { 
+    //     params.append(`arr[${index}]`, value); 
+    // });
+
+
+    useEffect(() => {
+        // postEmailNotify(params)
         // const resetTime = localStorage.getItem('resetTime');
         const lastPopupDate = localStorage.getItem('lastPopupDate');
         const today = new Date();
@@ -84,24 +99,57 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
-
-
+        const reloadusr= document.cookie?.split("; ").find((row) => row.startsWith("usr"))?.split("=")[1]
+        const reloadpsw = document.cookie?.split("; ").find((row) => row.startsWith("psw"))?.split("=")[1]
+        
         getTransformerList().then((data) => {
+            
             if (data == 401) {
-                if (Number(localStorage.getItem('resetTime')) == 1) {
+                if (Number(localStorage.getItem('resetTime')) == 8) {
+                    console.log(Number(localStorage.getItem('resetTime')))
+
                     console.log("aabb")
                     localStorage.removeItem('resetTime');
-
+                    
                     setLogoutModalVisible(true)
-                } else {
-                    console.log("aacc")
+                } else if(Number(localStorage.getItem('resetTime')) < 8&&Number(localStorage.getItem('resetTime')) >=1 ){
+                    console.log(Number(localStorage.getItem('resetTime')))
+
+                    postUser(reloadusr, reloadpsw).then((data) => {
+                        if (data && data.errStatus) {
+                            message.error(data.errDetail);
+                          } else {
+                             document.cookie = "fltk=" + data.access_token+";path=/";
+                             localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime'))+1)
+                             console.log("re")
+                             window.location.reload()
+                          }
+                       
+                    })
+                  
+                }else{
                     localStorage.setItem('resetTime', 1)
+                    console.log(Number(localStorage.getItem('resetTime')))
                     window.location.reload()
                 }
 
 
             } else {
-
+                document.cookie = "usr=''" + ";path=/";
+                document.cookie = "psw=''" + ";path=/";
+                localStorage.removeItem('resetTime');
+                getAbnormalTransList().then((data) => {
+                    if (data.errStatus) {
+                        message.error(data.errDetail);
+                    } else {
+                        
+                        // console.log(data)
+                        setAbnormalTransData(data)
+                        // pushData()
+                        console.log("saveall")
+                        setIsModalDataLoading(false)
+                    }
+                })
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
@@ -156,7 +204,8 @@ function TRSearch({ transformer, saveTransData }) {
                 return (
                     <Link to={'/tr/info/?&coor=' + text[0] + '&div=' + text[1] + '&tr_index=' + text[2]} >{text[0]}</Link>
                 )
-            }
+            },
+            width: '20%'
         },
         {
             title: '組別',
@@ -300,22 +349,38 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
                 ]}
             >
-                <div >
-                    <Row >
-                        <Col span={6}>圖號座標</Col>
-                        <Col span={6}>組別</Col>
-                        <Col span={6}>利用率（%）</Col>
-                        <Col span={6}>日期</Col>
-                    </Row>
-                    {plainOptions.map((option, index) => (
-                        <Row key={index}>
-                            <Col span={6}>{option}</Col>
-                            <Col span={6}>{Group[index]}</Col>
-                            <Col span={6} style={{ color: '#F66C55' }}>{Percent[index]}</Col>
-                            <Col span={6}>{Time[index]}</Col>
+                {
+                    isModalDataLoading ? (<> 
+                        <div style={{height:'200px'}}>
+                            <Spin tip="載入中" size="large" style={{height:'200px'}}>
+                                <div className="content" />
+                            </Spin> 
+                        </div> </>) : (<div style={containerStyle}>
+                        <Row style={{marginBottom:'8px'}} className='font-bold'>
+                            <Col span={6}>圖號座標</Col>
+                            <Col span={6}>組別</Col>
+                            <Col span={6}>第幾具</Col>
+                            <Col span={6}>利用率（%）</Col>
+                            {/* <Col span={6}>日期</Col> */}
                         </Row>
-                    ))}
-                </div>
+                            {abnormalTransData.map((data, index) => (
+                                <Row key={index} style={{borderBottom:'1px solid #f0f0f0', height:'28px'}}>
+                                    <Col span={6}>{data.coor}</Col>
+                                    <Col span={6}>{data.div}</Col>
+                                    {data.power_type == "Y接" ?
+                                        <Col span={6}>NA</Col>
+                                        : 
+                                        <Col span={6}>{data.tr_index}</Col>
+                                    }
+
+
+                                    <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                    {/* <Col span={6}>{Time[index]}</Col> */}
+                                </Row>
+                            ))}
+                    </div>)
+                }
+
                 {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
@@ -330,7 +395,7 @@ function TRSearch({ transformer, saveTransData }) {
                     <Button type="primary" onClick={() => { setLogoutModalVisible(false); _logout() }}>確認</Button>,
                 ]}
             >
-                <div >
+                <div>
                     請重新登入系統
                 </div>
                 {/* <div class="flex mb-3"><div class=" w-72">
@@ -343,11 +408,11 @@ function TRSearch({ transformer, saveTransData }) {
             </Modal>
             {
                 isLoading ? (
-                <> 
-                <Spin tip="載入中" size="large">
-                    <div className="content" />
-                </Spin> 
-                </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
+                    <>
+                        <Spin tip="載入中" size="large">
+                            <div className="content" />
+                        </Spin>
+                    </>) : (<Table columns={columns} dataSource={transformer.transformerList} />)
             }
 
         </div>

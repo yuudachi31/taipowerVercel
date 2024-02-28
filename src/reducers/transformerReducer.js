@@ -1,11 +1,11 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO,SAVE_ABN_TRANS_DATA } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA } from "../utils/actionType/frontActionType";
 
 const initialState = {
   transformerList: [],
   dailyRatesList: [],
   quarterRatesList: [],
   monthlyRatesList: [],
-  ABNtransformerList:[],
+  ABNtransformerList: [],
   eachTransformerInfo: {
 
   }
@@ -55,67 +55,68 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         transformerList: data,
       };
-      case SAVE_ABN_TRANS_DATA:
-        const abnData = [];
-        action.payload.forEach((element, index) => {
-          if (element.power_type == 'Y接') {
-            abnData.push({
-              key: index,
-              coor: [element.coor, element.div, element.tr_index],
-              div: element.div,
-              tr_index: 'NA',
-              uti_rate: element.uti_rate.toFixed(1),
-              cap: element.cap,
-              // type: element.type,
-              // cust_num: element.cust_num,
-              num: element.num,
-              transformer_threshold: element.transformer_threshold,
-              power_type: element.power_type,
-              // addr: element.addr,
-              // notify: 'nan',
-              danger_lv: [String(element.danger_lv)]
-            })
-          } else {
-            abnData.push({
-              key: index,
-              coor: [element.coor, element.div, element.tr_index],
-              div: element.div,
-              tr_index: element.tr_index,
-              uti_rate: element.uti_rate.toFixed(1),
-              cap: element.cap,
-              // type: element.type,
-              // cust_num: element.cust_num,
-              num: element.num,
-              transformer_threshold: element.transformer_threshold,
-              power_type: element.power_type,
-              // addr: element.addr,
-              // notify: 'nan'
-              danger_lv: [String(element.danger_lv)]
-            })
-          }
-  
-        });
-        return {
-          ...state,
-          ABNtransformerList: abnData,
-        };
+    case SAVE_ABN_TRANS_DATA:
+      const abnData = [];
+      action.payload.forEach((element, index) => {
+        if (element.power_type == 'Y接') {
+          abnData.push({
+            key: index,
+            coor: [element.coor, element.div, element.tr_index],
+            div: element.div,
+            tr_index: 'NA',
+            uti_rate: element.uti_rate.toFixed(1),
+            cap: element.cap,
+            // type: element.type,
+            // cust_num: element.cust_num,
+            num: element.num,
+            transformer_threshold: element.transformer_threshold,
+            power_type: element.power_type,
+            // addr: element.addr,
+            // notify: 'nan',
+            danger_lv: [String(element.danger_lv)]
+          })
+        } else {
+          abnData.push({
+            key: index,
+            coor: [element.coor, element.div, element.tr_index],
+            div: element.div,
+            tr_index: element.tr_index,
+            uti_rate: element.uti_rate.toFixed(1),
+            cap: element.cap,
+            // type: element.type,
+            // cust_num: element.cust_num,
+            num: element.num,
+            transformer_threshold: element.transformer_threshold,
+            power_type: element.power_type,
+            // addr: element.addr,
+            // notify: 'nan'
+            danger_lv: [String(element.danger_lv)]
+          })
+        }
+
+      });
+      return {
+        ...state,
+        ABNtransformerList: abnData,
+      };
 
     case SAVE_DAILYRATES:
       const dailyrates = [];
       action.payload.forEach((element, index) => {
-        if(!element.isEmpty){
+        if (!element.isEmpty) {
+          // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
           dailyrates.push({
             key: index,
             'load_on': element.peak_rate.toFixed(1),
             'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
             'load_off': element.off_peak_rate.toFixed(1),
             'load_total': element.peak_rate.toFixed(1),
-            'uti_rate': element.peak_rate.toFixed(1),
+            'uti_rate': element.peak_rate + element.off_peak_rate,
             'uti_rate_two': element.off_peak_rate.toFixed(1),
             'x_key': element.date_day
           })
         }
-       
+
       });
       return {
         ...state,
@@ -123,16 +124,26 @@ export const transformerReducer = (state = initialState, action) => {
       };
     case SAVE_QUARTERRATES:
       const quarterRates = [];
-      const time = ['2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
+      // let time = ["0:00","2:00", '4:0', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
       action.payload.forEach((element, index) => {
-        if (index != 0 && index % 8 == 0) {
+        let time = ["0:00","2:00", '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
+        let aaa ="12:00"
+        if ( index!=0 && (index+1)%8 == 0) {
+          
+console.log(index)
           quarterRates.push({
-            key: index,
-            'load': element.uti_rate_15min.toFixed(1),
-            'x_key': time,
+            // key: index,
+            load: Number(element.uti_rate_15min.toFixed(1)),
+            x_key: `${(index+1)/4}:00`,
           })
-
+        } else {
+          quarterRates.push({
+            // key: index,
+            load: Number(element.uti_rate_15min.toFixed(1)),
+            x_key: '',
+          })
         }
+
 
       });
       console.log(quarterRates)
@@ -154,15 +165,15 @@ export const transformerReducer = (state = initialState, action) => {
             'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
             'uti_rate': Math.ceil(element.peak_rate),
             'x_key': month,
-            'year':element.date_year,
+            'year': element.date_year,
             'predict_bars': 0
           })
-        }else if (element.is_predict == 3) {
+        } else if (element.is_predict == 3) {
           monthlyRates.push({
-           
+
           })
-        } 
-        
+        }
+
         else {
           monthlyRates.push({
             'load_on': Math.ceil(element.peak_rate),
@@ -171,7 +182,7 @@ export const transformerReducer = (state = initialState, action) => {
             'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
             'uti_rate': Math.ceil(element.peak_rate),
             'x_key': month,
-            'year':element.date_year,
+            'year': element.date_year,
             'predict_bars': Math.ceil(element.peak_rate),
           })
         }
