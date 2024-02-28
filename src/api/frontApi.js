@@ -183,9 +183,9 @@ export const getQuarterRatesRange  = async (coor,div,tr_index) => {
   }
 };
 
-export const getMonthlyRates  = async (coor,div,tr_index,date_year) => {
+export const getMonthlyRates  = async (coor,div,tr_index) => {
   try {
-    const _url = `${baseURL}/monthlyrate/coor/${coor}/${div}/${tr_index}/${date_year}`;
+    const _url = `${baseURL}/monthlyrate/coor/${coor}/${div}/${tr_index}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
