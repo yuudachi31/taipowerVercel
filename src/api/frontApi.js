@@ -53,7 +53,7 @@ export const getUserRole = async (token) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -72,9 +72,7 @@ export const getTransformerList = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
     return err.response.status
-
   }
 };
 
@@ -93,7 +91,7 @@ export const getTransformerListByCoor = async (coor) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -121,7 +119,7 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -141,7 +139,7 @@ export const getDailyRatesRange  = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
@@ -160,7 +158,7 @@ export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,da
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const getQuarterRatesRange  = async (coor,div,tr_index) => {
@@ -179,7 +177,7 @@ export const getQuarterRatesRange  = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -198,7 +196,7 @@ export const getMonthlyRates  = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const getMonthRatesRange  = async (coor,div,tr_index) => {
@@ -218,7 +216,7 @@ export const getMonthRatesRange  = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -238,7 +236,7 @@ export const getEachTransformer  = async (cust_id,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -261,7 +259,7 @@ export const postAccountUpload  = async (file) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const postUploadLpi  = async (file) => {
@@ -283,7 +281,7 @@ export const postUploadLpi  = async (file) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -306,7 +304,7 @@ export const postUploadDMQSTransformer   = async (file) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const postUploadNBS  = async (file) => {
@@ -328,7 +326,7 @@ export const postUploadNBS  = async (file) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const postDMQSCustomer  = async (file) => {
@@ -350,7 +348,7 @@ export const postDMQSCustomer  = async (file) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const getDMQSCustomer  = async () => {
@@ -371,7 +369,7 @@ export const getDMQSCustomer  = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -393,7 +391,7 @@ export const getRegionUser  = async (regions_id) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -412,7 +410,7 @@ export const getAbnormalTransList = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -432,7 +430,7 @@ export const getAbnormalTransByCoor = async (coor) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -453,7 +451,7 @@ export const getAllThreshold = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -472,7 +470,7 @@ export const getAllRegions = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -496,7 +494,7 @@ export const patchUserInfo = async (info) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const patchRole = async (role,user_id) => {
@@ -517,7 +515,7 @@ export const patchRole = async (role,user_id) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 // patchRole()
@@ -536,7 +534,7 @@ export const deleteDangerTrans = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -555,7 +553,7 @@ export const getNoticeNextDay = async (coor,div,tr_index) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const addNoticeNextDay = async (data) => {
@@ -573,7 +571,7 @@ export const addNoticeNextDay = async (data) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 export const postRegionThreshold = async (data) => {
@@ -591,7 +589,7 @@ export const postRegionThreshold = async (data) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -618,9 +616,9 @@ export const postEventbyID = async (channel_id,data) => {
           }
       }
   } catch (err) {
-      console.log(err.response);}
-// axios.get(`/myController/myAction?${[1,2,3].map((n, index) => `storeIds[${index}]=${n}`).join('&')}`);
-}
+    return err.response.status
+  }
+  }
 export const postEmailNotify = async (data) => {
   try {
     const _url = `https://ami-alertemail-sendgrid.vercel.app/send-email/`;
@@ -648,7 +646,7 @@ export const postEmailNotify = async (data) => {
       return result;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 // postEmailNotify()
@@ -670,6 +668,6 @@ export const getAllUser = async () => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
