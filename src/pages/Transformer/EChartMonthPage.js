@@ -152,7 +152,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
     <Layout class="px-20 wrapper">
       <Header class="pt-4 flex space-x-3 items-center">
         <h2 class="flex-auto font-normal text-base">圖號座標<span class="font-bold text-2xl ml-7">{transformer.eachTransformerInfo.coor}</span></h2>
-        <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
+        <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
         <button class="btn flex" type="primary" onClick={() => { _history.push(`/tr/info/?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>返回年圖表</button>
       </Header>
       <Divider />
