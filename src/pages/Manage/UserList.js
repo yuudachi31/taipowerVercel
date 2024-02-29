@@ -1,6 +1,6 @@
 //帳號管理
 //antd
-import { Divider, Layout, Input, Table ,Spin} from 'antd';
+import { message, Layout, Input, Table ,Spin} from 'antd';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
@@ -114,22 +114,26 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const handlePaginationChange = (page) => {
       setCurrentPage(page);
   };
-useEffect(()=>{
-  console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
-  getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
-    if (data.errStatus) {
-      console.log(data.errDetail);
-    } else {
-      saveUserListApi(data)
-      // console.log(data)
-      setIsLoading(false)
-      console.log(userManage)
-    }
-  })
-},[])
+  useEffect(()=>{
+    console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
+    getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        saveUserListApi(data)
+        // console.log(data)
+        setIsLoading(false)
+        console.log(userManage)
+      }
+    })
+  },[])
 
-
-
+  //更新利用率loading
+  const importSuccess = () => {
+    message.loading('正在匯入中...', 3, () => {
+      message.success('已更新！');
+    });
+  };
 
   // const onClick = ({ key }) => {
   //   console.log("aa")
@@ -220,8 +224,8 @@ useEffect(()=>{
         </div>
 
         <label for="upload-user" id="upload-user-label">
-          <div class="btn-manage btn-manage-full flex-none h-10" >匯入會員資料</div>
-          </label>
+          <button class="btn-manage btn-manage-full flex-none h-10" onClick={importSuccess} >匯入會員資料</button>
+        </label>
         <input type="file"
           accept={[".csv.gz", ".csv"]}
           id="upload-user"
