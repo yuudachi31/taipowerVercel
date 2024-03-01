@@ -5,7 +5,7 @@ import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans, addNot
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
-
+import ErrorModal from '../../components/ErrorModal'
 //antd
 import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message,Spin } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
@@ -16,6 +16,11 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
     //刪除modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+    const [errorStatus, setErrorStatus] = useState(200);
+
+
+
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -360,8 +365,11 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
         setIsLoading(true)
         getAbnormalTransList().then((data) => {
 
-            if (data.errStatus) {
-                message.error(data.errDetail);
+            if (data?.errStatus) {
+                setErrorStatus(data)
+                setIsErrorModalOpen(true)
+              
+               
             } else {
                 // console.log(data)
                 saveAbnormalTransData(data)
@@ -369,6 +377,8 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                 console.log("saveall")
                 setIsLoading(false)
             }
+        }).catch(error=>{
+            console.log(error)
         })
     }, [])
 
@@ -376,7 +386,16 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
 
     return (
+        <>
+         {/* <ErrorModal 
+         setIsErrorModalOpen={setIsErrorModalOpen}
+         isErrorModalOpen={isErrorModalOpen}
+         errStatus={errorStatus}
+         
+         ></ErrorModal> */}
+      
         <div className='wrapper px-24 py-4'>
+           
             <div className="flex justify-between">
                 <div className="flex">
 
@@ -403,6 +422,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
             }
 
         </div>
+        </>
     );
 
 
