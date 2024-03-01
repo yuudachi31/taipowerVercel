@@ -190,9 +190,10 @@ function Threshold() {
                                 ]
                             }
                         ))
+                        setIsLoading(false)
                         setGroupData(listedData)
                         setSelectedGroup(listedData[0])
-                        setIsLoading(false)
+                      
                     }
                 })
                 // console.log()

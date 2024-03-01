@@ -342,12 +342,12 @@ function TRSearch({ transformer, saveTransData }) {
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-end">
-            <ErrorModal 
+            {/* <ErrorModal 
          setIsErrorModalOpen={setIsErrorModalOpen}
          isErrorModalOpen={isErrorModalOpen}
          errStatus={errorStatus}
          
-         ></ErrorModal>
+         ></ErrorModal> */}
                 {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
                 <div className="flex mb-2">
                     <Search
@@ -376,7 +376,7 @@ function TRSearch({ transformer, saveTransData }) {
                                 <div className="content" />
                             </Spin> 
                         </div> </>) :
-                        abnormalTransData.length>1?<>
+                        abnormalTransData.length<1?<>
                         無資料
                         </>
                         :

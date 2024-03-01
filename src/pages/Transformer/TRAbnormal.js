@@ -387,12 +387,12 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
     return (
         <>
-         <ErrorModal 
+         {/* <ErrorModal 
          setIsErrorModalOpen={setIsErrorModalOpen}
          isErrorModalOpen={isErrorModalOpen}
          errStatus={errorStatus}
          
-         ></ErrorModal>
+         ></ErrorModal> */}
       
         <div className='wrapper px-24 py-4'>
            

@@ -402,7 +402,7 @@ export const getAbnormalTransList = async () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${glabalToken}`
+        // Authorization: `Bearer ${glabalToken}`
       },
     });
     // console.log(result);

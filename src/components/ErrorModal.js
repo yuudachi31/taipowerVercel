@@ -50,11 +50,15 @@ const _logout = (e) => {
     return (
         <Modal
             title={"錯誤"+errStatus}
-            visible={isErrorModalOpen}
+            open={isErrorModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
-            okText="新增"
-            cancelText="取消"
+            okText="關閉"
+            cancelText="登出"
+            // footer={[
+            //     // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+            //     <Button type="primary" onClick={handleOk}>確認</Button>,
+            // ]}
         >
             {
                 errStatus==403?(<p>操作失敗 權限不足!</p>):

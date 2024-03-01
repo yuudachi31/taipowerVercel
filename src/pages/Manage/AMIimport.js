@@ -100,12 +100,12 @@ function AMIimport() {
             <Header class="pt-4 pb-8 flex space-x-7 items-center">
                 <h2 class="flex-auto font-bold text-2xl">資料匯入</h2>
             </Header>
-            <ErrorModal 
+            {/* <ErrorModal 
          setIsErrorModalOpen={setIsErrorModalOpen}
          isErrorModalOpen={isErrorModalOpen}
          errStatus={errorStatus}
          
-         ></ErrorModal>
+         ></ErrorModal> */}
             <Content class="flex h-08 bg-white" style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div class="flex p-10 text-normal ">
                     <label for="upload-nbs" id="upload-nbs-label">
