@@ -221,17 +221,21 @@ function Notify({ transformer, saveAbnormalTransData }) {
             }
         })
         getAbnormalTransList().then((abnData) => {
-            if (abnData.errStatus) {
+            if (abnData?.errStatus) {
                 console.log(abnData.errDetail);
             } else {
-                saveAbnormalTransData(abnData)
+                console.log(abnData);
+                if(abnData){
+                     saveAbnormalTransData(abnData)
                 // setIsDisabled(false)
                 setIsLoading(false)
+                }
+               
 
             }
         })
         getAllThreshold().then((data) => {
-            if (data.errStatus) {
+            if (data?.errStatus) {
                 console.log(data.errDetail);
             } else {
 

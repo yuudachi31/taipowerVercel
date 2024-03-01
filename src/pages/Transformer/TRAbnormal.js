@@ -365,7 +365,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
         setIsLoading(true)
         getAbnormalTransList().then((data) => {
 
-            if (data>=400&&data<=500) {
+            if (data?.errStatus) {
                 setErrorStatus(data)
                 setIsErrorModalOpen(true)
               

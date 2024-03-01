@@ -24,10 +24,10 @@ if(errStatus==401){
 const handleCancel =()=>{
 console.log("nono")
 setIsErrorModalOpen(false)
-if(errStatus==401){
-    console.log("logout")
-    _logout()
-}
+
+    // console.log("logout")
+    // _logout()
+
 }
 const _history = useHistory();
 const _logout = (e) => {
@@ -54,11 +54,12 @@ const _logout = (e) => {
             onOk={handleOk}
             onCancel={handleCancel}
             okText="關閉"
-            cancelText="登出"
-            // footer={[
-            //     // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-            //     <Button type="primary" onClick={handleOk}>確認</Button>,
-            // ]}
+            // cancelText="登出"
+            footer={[
+                // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                <Button type="primary" onClick={_logout}>登出</Button>,
+                <Button type="primary" onClick={handleOk}>確認</Button>
+            ]}
         >
             {
                 errStatus==403?(<p>操作失敗 權限不足!</p>):

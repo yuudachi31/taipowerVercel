@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify,postUser } from '../../api/frontApi'
+import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify, postUser } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -35,13 +35,13 @@ function TRSearch({ transformer, saveTransData }) {
     const [isModalDataLoading, setIsModalDataLoading] = useState(true);
     const fetchData = () => {
         getTransformerList().then((data) => {
-            if (data>=400&&data<=500) {
-                        setErrorStatus(data)
-                        setIsErrorModalOpen(true)
-                      
+            if (data?.errStatus) {
+                setErrorStatus(data)
+                setIsErrorModalOpen(true)
+
                 console.log(data)
-                 
-              }  else {
+
+            } else {
                 saveTransData(data)
                 setIsLoading(false)
 
@@ -104,35 +104,35 @@ function TRSearch({ transformer, saveTransData }) {
         // // 在組件卸載時清除定時器，以避免記憶體洩漏
         // return () => clearTimeout(timer);
 
-        const reloadusr= document.cookie?.split("; ").find((row) => row.startsWith("usr"))?.split("=")[1]
+        const reloadusr = document.cookie?.split("; ").find((row) => row.startsWith("usr"))?.split("=")[1]
         const reloadpsw = document.cookie?.split("; ").find((row) => row.startsWith("psw"))?.split("=")[1]
-        
+
         getTransformerList().then((data) => {
-            
+
             if (data == 401) {
                 if (Number(localStorage.getItem('resetTime')) == 8) {
                     console.log(Number(localStorage.getItem('resetTime')))
 
                     console.log("aabb")
                     localStorage.removeItem('resetTime');
-                    
+
                     setLogoutModalVisible(true)
-                } else if(Number(localStorage.getItem('resetTime')) < 8&&Number(localStorage.getItem('resetTime')) >=1 ){
+                } else if (Number(localStorage.getItem('resetTime')) < 8 && Number(localStorage.getItem('resetTime')) >= 1) {
                     console.log(Number(localStorage.getItem('resetTime')))
 
                     postUser(reloadusr, reloadpsw).then((data) => {
                         if (data && data.errStatus) {
                             message.error(data.errDetail);
-                          } else {
-                             document.cookie = "fltk=" + data.access_token+";path=/";
-                             localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime'))+1)
-                             console.log("re")
-                             window.location.reload()
-                          }
-                       
+                        } else {
+                            document.cookie = "fltk=" + data.access_token + ";path=/";
+                            localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime')) + 1)
+                            console.log("re")
+                            window.location.reload()
+                        }
+
                     })
-                  
-                }else{
+
+                } else {
                     localStorage.setItem('resetTime', 1)
                     console.log(Number(localStorage.getItem('resetTime')))
                     window.location.reload()
@@ -144,11 +144,11 @@ function TRSearch({ transformer, saveTransData }) {
                 document.cookie = "psw=''" + ";path=/";
                 localStorage.removeItem('resetTime');
                 getAbnormalTransList().then((data) => {
-                    if (data>=400&&data<=500) {
+                    if (data?.errStatus) {
                         setErrorStatus(data)
                         setIsErrorModalOpen(true)
-                      }  else {
-                        
+                    } else {
+
                         // console.log(data)
                         setAbnormalTransData(data)
                         // pushData()
@@ -255,12 +255,12 @@ function TRSearch({ transformer, saveTransData }) {
     const clearFilters = () => {
 
         getTransformerList().then((data) => {
-            if (data>=400&&data<=500) {
-                        setErrorStatus(data)
-                        setIsErrorModalOpen(true)
-                      
-                 
-              }  else {
+            if (data?.errStatus) {
+                setErrorStatus(data)
+                setIsErrorModalOpen(true)
+
+
+            } else {
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
@@ -324,12 +324,12 @@ function TRSearch({ transformer, saveTransData }) {
     const onSearch = (value, _e, info) => {
         setIsLoading(true)
         getTransformerListByCoor(value).then((data) => {
-            if (data>=400&&data<=500) {
-                        setErrorStatus(data)
-                        setIsErrorModalOpen(true)
-                      
-                 
-              }  else {
+            if (data?.errStatus) {
+                setErrorStatus(data)
+                setIsErrorModalOpen(true)
+
+
+            } else {
                 // console.log(data)
                 saveTransData(data)
                 setIsLoading(false)
@@ -342,12 +342,12 @@ function TRSearch({ transformer, saveTransData }) {
     return (
         <div className='wrapper px-24 py-4'>
             <div className="flex justify-end">
-            {/* <ErrorModal 
-         setIsErrorModalOpen={setIsErrorModalOpen}
-         isErrorModalOpen={isErrorModalOpen}
-         errStatus={errorStatus}
-         
-         ></ErrorModal> */}
+                <ErrorModal
+                    setIsErrorModalOpen={setIsErrorModalOpen}
+                    isErrorModalOpen={isErrorModalOpen}
+                    errStatus={errorStatus}
+
+                ></ErrorModal>
                 {/* <button className="btn " style={{ height: 40, width: 75 }}><PrinterOutlined />匯出</button> */}
                 <div className="flex mb-2">
                     <Search
@@ -370,40 +370,40 @@ function TRSearch({ transformer, saveTransData }) {
                 ]}
             >
                 {
-                    isModalDataLoading ?(<> 
-                        <div style={{height:'200px'}}>
-                            <Spin tip="載入中" size="large" style={{height:'200px'}}>
+                    isModalDataLoading ? (<>
+                        <div style={{ height: '200px' }}>
+                            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
                                 <div className="content" />
-                            </Spin> 
+                            </Spin>
                         </div> </>) :
-                        abnormalTransData.length<1?<>
-                        無資料
+                        abnormalTransData?.length < 1 ? <>
+                            無資料
                         </>
-                        :
-                        (<div style={containerStyle}>
-                        <Row style={{marginBottom:'8px'}} className='font-bold'>
-                            <Col span={6}>圖號座標</Col>
-                            <Col span={6}>組別</Col>
-                            <Col span={6}>第幾具</Col>
-                            <Col span={6}>利用率（%）</Col>
-                            {/* <Col span={6}>日期</Col> */}
-                        </Row>
-                            {abnormalTransData?.map((data, index) => (
-                                <Row key={index} style={{borderBottom:'1px solid #f0f0f0', height:'28px'}}>
-                                    <Col span={6}>{data.coor}</Col>
-                                    <Col span={6}>{data.div}</Col>
-                                    {data.power_type == "Y接" ?
-                                        <Col span={6}>NA</Col>
-                                        : 
-                                        <Col span={6}>{data.tr_index}</Col>
-                                    }
-
-
-                                    <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
-                                    {/* <Col span={6}>{Time[index]}</Col> */}
+                            :
+                            (<div style={containerStyle}>
+                                <Row style={{ marginBottom: '8px' }} className='font-bold'>
+                                    <Col span={6}>圖號座標</Col>
+                                    <Col span={6}>組別</Col>
+                                    <Col span={6}>第幾具</Col>
+                                    <Col span={6}>利用率（%）</Col>
+                                    {/* <Col span={6}>日期</Col> */}
                                 </Row>
-                            ))}
-                    </div>)
+                                {abnormalTransData?.map((data, index) => (
+                                    <Row key={index} style={{ borderBottom: '1px solid #f0f0f0', height: '28px' }}>
+                                        <Col span={6}>{data.coor}</Col>
+                                        <Col span={6}>{data.div}</Col>
+                                        {data.power_type == "Y接" ?
+                                            <Col span={6}>NA</Col>
+                                            :
+                                            <Col span={6}>{data.tr_index}</Col>
+                                        }
+
+
+                                        <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                        {/* <Col span={6}>{Time[index]}</Col> */}
+                                    </Row>
+                                ))}
+                            </div>)
                 }
 
                 {/* <div class="flex mb-3"><div class=" w-72">
