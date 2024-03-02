@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAbnormalTransList, getTransformerList, getTransformerListByCoor, postEmailNotify, postUser } from '../../api/frontApi'
+import { getAbnormalTransListForTrSearch, getTransformerList, getTransformerListByCoor, postEmailNotify, postUser } from '../../api/frontApi'
 import { saveTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -116,7 +116,8 @@ function TRSearch({ transformer, saveTransData }) {
                     console.log("aabb")
                     localStorage.removeItem('resetTime');
 
-                    setLogoutModalVisible(true)
+                    setErrorStatus(data)
+                    setIsErrorModalOpen(true)
                 } else if (Number(localStorage.getItem('resetTime')) < 8 && Number(localStorage.getItem('resetTime')) >= 1) {
                     console.log(Number(localStorage.getItem('resetTime')))
 
@@ -143,10 +144,11 @@ function TRSearch({ transformer, saveTransData }) {
                 document.cookie = "usr=''" + ";path=/";
                 document.cookie = "psw=''" + ";path=/";
                 localStorage.removeItem('resetTime');
-                getAbnormalTransList().then((data) => {
-                    if (data?.errStatus) {
+                getAbnormalTransListForTrSearch().then((data) => {
+                    if (data>=400&&data<=500) {
                         setErrorStatus(data)
                         setIsErrorModalOpen(true)
+
                     } else {
 
                         // console.log(data)
@@ -324,10 +326,9 @@ function TRSearch({ transformer, saveTransData }) {
     const onSearch = (value, _e, info) => {
         setIsLoading(true)
         getTransformerListByCoor(value).then((data) => {
-            if (data?.errStatus) {
+            if (data>=400&&data<=500) {
                 setErrorStatus(data)
                 setIsErrorModalOpen(true)
-
 
             } else {
                 // console.log(data)
@@ -376,7 +377,7 @@ function TRSearch({ transformer, saveTransData }) {
                                 <div className="content" />
                             </Spin>
                         </div> </>) :
-                        abnormalTransData?.length < 1 ? <>
+                        !abnormalTransData? <>
                             無資料
                         </>
                             :
