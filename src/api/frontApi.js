@@ -93,7 +93,7 @@ export const getTransformerListByCoor = async (coor) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -414,6 +414,24 @@ export const getAbnormalTransList = async () => {
   } catch (err) {
     console.log(err.response);
   }
+};
+export const getAbnormalTransListForTrSearch = async () => {
+  try {
+    const _url = `${baseURL}/transformer_detail/danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+  return err.response.status
+}
 };
 
 export const getAbnormalTransByCoor = async (coor) => {
