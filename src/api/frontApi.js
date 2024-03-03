@@ -691,3 +691,41 @@ export const getAllUser = async () => {
     console.log(err.response);
   }
 };
+
+export const getAccountForDownload = async () => {
+  try {
+    const _url = `${baseURL}/account/download_account`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getTransformerExport = async (region_id,startdate,enddate) => {
+  try {
+    const _url = `${baseURL}/transformer_detail/download_transformer/${region_id}/${startdate}/${enddate}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
