@@ -6,7 +6,7 @@ import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { postAccountUpload,getRegionUser } from '../../api/frontApi';
+import { postAccountUpload,getRegionUser,getAccountForDownload} from '../../api/frontApi';
 import{saveUserListApi,saveUserListEdit} from '../../actions/userManage'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
@@ -111,10 +111,12 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const [isLoading, setIsLoading] = useState(true)
     //當切換成不同群組時將列表切回第一頁
   const [currentPage, setCurrentPage] = useState(1);
+  const[downloading,setDownloading]=useState(false)
   const handlePaginationChange = (page) => {
       setCurrentPage(page);
   };
   useEffect(()=>{
+  
     console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
     getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
       if (data.errStatus) {
@@ -134,7 +136,34 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
       message.success('已更新！');
     });
   };
+const handleDownLoadAccountList =()=>{
+  setDownloading(true)
+  getAccountForDownload().then((data)=>{
 
+    //以下為轉成ANSI編碼的寫法 但失敗了
+    // console.log(data)
+    // const encodedData = new TextEncoder().encode(data);
+    // const blob = new Blob([encodedData], {
+      // type: 'text/csv;charset=utf-8;'
+    //   type: '  text/csv;charset=windows-1252;'
+    // });
+
+   
+    const blob = new Blob([data], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'account.csv';
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(link.href);
+  setDownloading(false)
+  })
+}
   // const onClick = ({ key }) => {
   //   console.log("aa")
   // };
@@ -236,7 +265,7 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
 
         {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯入會員資料</button> */}
         {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={() => _history.push('/manage/user/create')}>匯出會員資料</button> */}
-        <button class="btn-manage btn-manage-full flex-none h-10">匯出會員資料</button>
+        <button className={` flex-none h-10 ${downloading?"btn-manage btn-disable":"btn-manage btn-manage-full"}`} disabled={downloading} onClick={handleDownLoadAccountList}>匯出會員資料</button>
       </Header>
       <Content>
         <Layout>
