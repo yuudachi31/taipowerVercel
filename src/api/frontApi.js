@@ -93,7 +93,7 @@ export const getTransformerListByCoor = async (coor) => {
       return result.data;
     }
   } catch (err) {
-    console.log(err.response);
+    return err.response.status
   }
 };
 
@@ -415,6 +415,24 @@ export const getAbnormalTransList = async () => {
     console.log(err.response);
   }
 };
+export const getAbnormalTransListForTrSearch = async () => {
+  try {
+    const _url = `${baseURL}/transformer_detail/danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+  return err.response.status
+}
+};
 
 export const getAbnormalTransByCoor = async (coor) => {
   try {
@@ -658,6 +676,44 @@ console.log(`<p>${'TEstText'}</p>`)
 export const getAllUser = async () => {
   try {
     const _url = `${baseURL}/accounts/all`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getAccountForDownload = async () => {
+  try {
+    const _url = `${baseURL}/account/download_account`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getTransformerExport = async (region_id,startdate,enddate) => {
+  try {
+    const _url = `${baseURL}/transformer_detail/download_transformer/${region_id}/${startdate}/${enddate}`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",
