@@ -222,7 +222,7 @@ console.log()
             {/* <span class="border-2 border-black w-7 h-0 bg-green"></span>
             <span class="ml-2 mr-6">尖峰利用率</span> */}
             <span class="border-2 border-green-500 w-7 h-0 bg-green"></span>
-            <span class="ml-2 mr-6">尖峰利用率</span>
+            <span class="ml-2">尖峰利用率</span>
           </div>
 
         </Header>
