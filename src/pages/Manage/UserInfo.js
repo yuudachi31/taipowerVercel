@@ -6,11 +6,14 @@ import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import { saveUserListApi, saveUserListEdit } from '../../actions/userManage'
+import{storeUserInfo}from '../../actions/frontAction'
 import { connect } from 'react-redux';
 import { USER_DATA } from './UserList';
-import { postAccountUpload, getRegionUser, patchUserInfo, patchRole } from '../../api/frontApi';
+import { postAccountUpload, getRegionUser, patchUserInfo, patchRole,getUserRole } from '../../api/frontApi';
 import UserForm from '../../components/manage/UserForm'
 const accountUserID = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
+const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
+
 const { Header, Footer, Content } = Layout;
 
 const region_list=[
@@ -111,7 +114,7 @@ const region_list=[
       "region_name": "馬祖區營業處"
   }
 ]
-function UserInfo({ userManage, saveUserListApi, saveUserListEdit }) {
+function UserInfo({ userManage, saveUserListApi, saveUserListEdit,storeUserInfo }) {
   const _history = useHistory()
   const { user_id: userId } = useParams()
   const [isEdited, setIsEdited] = useState(false)
@@ -205,7 +208,23 @@ console.log(user)
 
       //  switchRoleName(user.group[0])
       patchRole(switchRoleName(user.group[0]), accountUserID).then(() => {
-        setIsloading(false)
+        getUserRole(glabalToken).then((userData) => {
+          
+          document.cookie = "user_id=" + userData.user_id+";path=/";
+          document.cookie = "email=" + userData.email+";path=/";
+          document.cookie = "chat_id=" + userData.chat_id+";path=/";
+          document.cookie = "user_name=" + userData.user_name+";path=/";
+          document.cookie = "region_id=" + userData.region_id+";path=/";
+          document.cookie = "region_name=" + userData.region_name+";path=/";
+          document.cookie = "roles=" + JSON.stringify(userData.roles)+";path=/";
+          storeUserInfo(userData);
+          // console.log(userData);
+          // console.log(document.cookie);
+          setIsloading(false)
+          // _history.push("/tr/search");
+          // console.log("3")
+          });
+       
       })
     })
 
@@ -263,7 +282,7 @@ const mapStateToProps = ({ userManageReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveUserListApi, saveUserListEdit
+  saveUserListApi, saveUserListEdit,storeUserInfo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

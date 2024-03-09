@@ -9,6 +9,8 @@ import { getAllThreshold, getAllRegions, postRegionThreshold } from '../../api/f
 import { useHistory } from 'react-router-dom';
 import './manage.css'
 
+const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
@@ -322,7 +324,7 @@ function Threshold() {
                         {isEdit ?
                             <Select
                                 defaultValue={groupData[0].value}
-                                style={{ width: 200, fontSize:'16px' }}
+                                style={{ width: 200, fontSize: '16px' }}
                                 onChange={handleGroupChange}
                                 disabled
                             >
@@ -338,7 +340,7 @@ function Threshold() {
                                 placeholder="Select a person"
                                 optionFilterProp="children"
                                 defaultValue={groupData[0].value}
-                                style={{ width: 200, fontSize:'16px' }}
+                                style={{ width: 200, fontSize: '16px' }}
                                 disabled={isLoading}
                                 onChange={handleGroupChange}
                                 onSearch={onSearch}
@@ -356,10 +358,10 @@ function Threshold() {
                     </div>
                     {
                         isLoading ?
-                            <div>                               
-                                 <Spin  tip="載入中" size="large">
-                                <div className="content" />
-                            </Spin>                            
+                            <div>
+                                <Spin tip="載入中" size="large">
+                                    <div className="content" />
+                                </Spin>
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
@@ -422,7 +424,7 @@ function Threshold() {
                                         <button class="btn-manage justify-self-end mr-4 btn-manage-full text-normal" onClick={() => handleSave()}>儲存</button>
                                     </div>
                                     :
-                                    isLoading ?
+                                    isLoading||userRole=="ove"||userRole =="usr" ?
                                         <></>
                                         :
                                         <div class="flex2">

@@ -17,7 +17,9 @@ const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
 const { confirm } = Modal;
-
+const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+const cookiesss = document.cookie
+console.log(cookiesss)
 export const USER_DATA = [
     {
         value: ['00'],
@@ -637,10 +639,12 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                 } */}
                                 </div>
                                 <div class="flex2 text-normal">
-                                
-                                    <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
-                                
+                                {userRole=="usr"?<></>:(
+                                    <>
+                                     <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
                                     <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
+                                    </>
+                                )}
                                 </div>
                             </div>
                     }
