@@ -298,7 +298,10 @@ function Threshold() {
                         )
                         setGroupData(formatedData)
                         setSelectedGroup(formatedData.find((group) => group.value === userRegion));
-                        setIsDisabled(false)
+                        if(userRole=="adm"||userRole=="ops"){
+                           setIsDisabled(false) 
+                        }
+                        
                         setIsLoading(false)
                        
                     }
