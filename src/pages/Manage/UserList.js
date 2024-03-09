@@ -168,6 +168,8 @@ const handleDownLoadAccountList =()=>{
   //   console.log("aa")
   // };
   const handleFileUpload = () => {
+    message.loading('正在匯入中...')
+
     let file = document.querySelector("[name=file]").files[0];
       let formData = new FormData();
     //https://stackoverflow.com/questions/62888805/how-can-i-pass-my-csv-file-as-form-data-using-rest-api
@@ -176,7 +178,14 @@ const handleDownLoadAccountList =()=>{
   
 
     // const blob = new Blob(file, { type: 'text/csv,charset=UTF-8' });
-    postAccountUpload(formData )
+    postAccountUpload(formData ).then((data)=>{
+      if(data.status==200){
+         message.success('已更新！');
+      }else{
+        message.success('出現錯誤!');
+      }
+     
+    })
 
     // const link = document.createElement('a');
     // link.href = window.URL.createObjectURL(file);
@@ -253,7 +262,7 @@ const handleDownLoadAccountList =()=>{
         </div>
 
         <label for="upload-user" id="upload-user-label">
-          <button class="btn-manage btn-manage-full flex-none h-10" onClick={importSuccess} >匯入會員資料</button>
+          <div class="btn-manage btn-manage-full flex-none h-10" >匯入會員資料</div>
         </label>
         <input type="file"
           accept={[".csv.gz", ".csv"]}

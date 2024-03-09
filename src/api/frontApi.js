@@ -252,7 +252,8 @@ export const postAccountUpload  = async (file) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${token}`
+         Authorization: `Bearer ${glabalToken}`
+     
       },
       
     });
@@ -262,6 +263,8 @@ export const postAccountUpload  = async (file) => {
     }
   } catch (err) {
     console.log(err.response);
+    return err;
+    
   }
 };
 export const postUploadLpi  = async (file) => {
