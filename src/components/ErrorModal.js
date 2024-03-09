@@ -57,7 +57,7 @@ const _logout = (e) => {
             // cancelText="登出"
             footer={[
                 // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-                <Button type="primary" onClick={_logout}>登出</Button>,
+                // <Button type="primary" onClick={_logout}>登出</Button>,
                 <Button type="primary" onClick={handleOk}>確認</Button>
             ]}
         >
