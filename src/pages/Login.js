@@ -17,7 +17,7 @@ import passwordIcon from "../assets/img/password.png";
 import { connect } from "react-redux";
 import "./Login.css";
 
-console.log(document.cookie)
+// console.log(document.cookie)
 // document.cookie = "fltk="+";path=/"
 // document.cookie = "flid=" +";path=/"
 // document.cookie = "fln=" +";path=/"
@@ -38,7 +38,7 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
   // const testbtn = () => {
   //   console.log(user);
   //   resetTest(10)
-  console.log(user);
+  // console.log(user);
   // };
   const _handleLogin = (values) => {
     setIsLoading(true)
@@ -48,13 +48,13 @@ function Login({ user, resetTest, loginAction,storeUserInfo }) {
       if (data && data.errStatus) {
         message.error(data.errDetail);
       } else {
-        console.log(data);
+        // console.log(data);
         loginAction(data.access_token);
 
         document.cookie = "fltk=" + data.access_token+";path=/";
         document.cookie = "flid=" + data.group_id+";path=/";
         document.cookie = "fln=" + data.username+";path=/";
-        console.log(document.cookie);
+        // console.log(document.cookie);
         
         getUserRole(data.access_token).then((userData) => {
           

@@ -1,6 +1,6 @@
 //推播管理
 //antd
-import { Divider, Layout, Input, Table, Spin,message } from 'antd';
+import { Divider, Layout, Input, Table, Spin, message } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
 import { useState, useEffect } from 'react';
@@ -18,8 +18,109 @@ const { Search } = Input
 const { Option } = Select;
 const { confirm } = Modal;
 const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+const userRegion = document.cookie?.split("; ").find((row) => row.startsWith("region_id"))?.split("=")[1]
+
 const cookiesss = document.cookie
-console.log(cookiesss)
+console.log()
+
+const region_list = [
+    {
+        "region_id": "00",
+        "region_name": "台北市區營業處"
+    },
+    {
+        "region_id": "01",
+        "region_name": "台北南區營業處"
+    },
+    {
+        "region_id": "02",
+        "region_name": "基隆區營業處"
+    },
+    {
+        "region_id": "03",
+        "region_name": "宜蘭區營業處"
+    },
+    {
+        "region_id": "04",
+        "region_name": "桃園區營業處"
+    },
+    {
+        "region_id": "05",
+        "region_name": "台北西區營業處"
+    },
+    {
+        "region_id": "06",
+        "region_name": "新竹區營業處"
+    },
+    {
+        "region_id": "07",
+        "region_name": "台中區營業處"
+    },
+    {
+        "region_id": "08",
+        "region_name": "彰化區營業處"
+    },
+    {
+        "region_id": "09",
+        "region_name": "嘉義區營業處"
+    },
+    {
+        "region_id": "10",
+        "region_name": "台南區營業處"
+    },
+    {
+        "region_id": "11",
+        "region_name": "高雄區營業處"
+    },
+    {
+        "region_id": "12",
+        "region_name": "屏東區營業處"
+    },
+    {
+        "region_id": "13",
+        "region_name": "花蓮區營業處"
+    },
+    {
+        "region_id": "14",
+        "region_name": "台東區營業處"
+    },
+    {
+        "region_id": "15",
+        "region_name": "澎湖區營業處"
+    },
+    {
+        "region_id": "16",
+        "region_name": "台北北區營業處"
+    },
+    {
+        "region_id": "17",
+        "region_name": "南投區營業處"
+    },
+    {
+        "region_id": "18",
+        "region_name": "鳳山區營業處"
+    },
+    {
+        "region_id": "19",
+        "region_name": "雲林區營業處"
+    },
+    {
+        "region_id": "20",
+        "region_name": "新營區營業處"
+    },
+    {
+        "region_id": "21",
+        "region_name": "苗栗區營業處"
+    },
+    {
+        "region_id": "22",
+        "region_name": "金門區營業處"
+    },
+    {
+        "region_id": "23",
+        "region_name": "馬祖區營業處"
+    }
+]
 export const USER_DATA = [
     {
         value: ['00'],
@@ -222,17 +323,28 @@ function Notify({ transformer, saveAbnormalTransData }) {
                 setIsUserLoading(false)
             }
         })
+        getAllUser().then((data) => {
+            if (data?.errStatus) {
+                console.log(data.errDetail);
+            } else {
+                console.log(data)
+                setUserData(data)
+                setIsUserLoading(false)
+
+                // setFilteredUsers(data.filter((user) => user.region_id == userRegion));
+            }
+        })
         getAbnormalTransList().then((abnData) => {
             if (abnData?.errStatus) {
                 console.log(abnData.errDetail);
             } else {
                 console.log(abnData);
-                if(abnData){
-                     saveAbnormalTransData(abnData)
-                // setIsDisabled(false)
-                setIsLoading(false)
+                if (abnData) {
+                    saveAbnormalTransData(abnData)
+                    // setIsDisabled(false)
+                    setIsLoading(false)
                 }
-               
+
 
             }
         })
@@ -245,8 +357,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
                     if (region_data.errStatus) {
                         console.log(region_data.errDetail);
                     } else {
-
-                        setGroupData(data.map((el) => {
+                        let formatedData = data.map((el) => {
                             console.log(el.region_id)
                             return {
                                 value: el.region_id, //區處別
@@ -262,10 +373,12 @@ function Notify({ transformer, saveAbnormalTransData }) {
                         }
 
 
-                        ))
+                        )
+                        setGroupData(formatedData)
 
-
+                        setSelectedGroup(formatedData.find((group) => group.value === userRegion));
                         setIsDisabled(false)
+                       
                     }
                 })
                 // console.log()
@@ -276,6 +389,10 @@ function Notify({ transformer, saveAbnormalTransData }) {
         const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
     }, []);
+    useEffect(()=>{
+                setFilteredUsers(userData.filter((user) => user.region_id == userRegion));
+           
+    },[userData])
     function setRegionName(region_data, el) {
 
         const data = region_data.find((rel) => rel.region_id == el.region_id)
@@ -334,7 +451,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
 
     //當切換成不同群組時將列表切回第一頁
     const [currentPage, setCurrentPage] = useState(1);
-    const [isMailLoading,setIsMailLoading ] = useState(false);
+    const [isMailLoading, setIsMailLoading] = useState(false);
     const handlePaginationChange = (page) => {
         setCurrentPage(page);
     };
@@ -348,9 +465,9 @@ function Notify({ transformer, saveAbnormalTransData }) {
         console.log("save")
         setIsEdit(false)
     }
-    const sendMailModal =()=>{
+    const sendMailModal = () => {
         Modal.confirm({
-            icon:<ExclamationCircleOutlined/>,
+            icon: <ExclamationCircleOutlined />,
             title: '推播確認',
             content: '確定要進行Email推播嗎？',
             okText: '是',
@@ -375,23 +492,22 @@ function Notify({ transformer, saveAbnormalTransData }) {
                 <th>利用率</th>
                 <th>危險等級</th>
             </tr>
-                    ${
-                        transformer.ABNtransformerList.map((el) => {
-                         return  "<tr>"+
-                                `<td>${el.coor[0]}</td>
+                    ${transformer.ABNtransformerList.map((el) => {
+                return "<tr>" +
+                    `<td>${el.coor[0]}</td>
                                 <td>${el.div}</td>
-                                <td>${el.tr_index}${el.tr_index=="NA"?"":"/"+el.num}</td>
+                                <td>${el.tr_index}${el.tr_index == "NA" ? "" : "/" + el.num}</td>
                                 <td>${el.uti_rate}</td>
                                 <td>${el.danger_lv[0]}</td>`
-                            +"</tr>"
-                        })
+                    + "</tr>"
+            })
 
-                    }  </table>`)
+                }  </table>`)
             postEmailNotify({
                 // emails: `[${emailArr.toString()}]`,
-                emails:"['yuudachi31@zcjh.ntpc.edu.tw']",
+                emails: "['yuudachi31@zcjh.ntpc.edu.tw']",
                 subject: "變壓器異常通知",
-                content:`  <table style=' font-size:20px;'>
+                content: `  <table style=' font-size:20px;'>
                 <tr >
                     <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;'>圖號座標   </th>
                     <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;'>組別  </th>
@@ -399,47 +515,46 @@ function Notify({ transformer, saveAbnormalTransData }) {
                     <th style=' border-right:solid #c9c6c5 1px;background-color:#eefcca;padding:0 10px;'>利用率</th>
                    
                 </tr>
-                        ${
-                            transformer.ABNtransformerList.map((el,index) => {
-                                if(index%2==0){
-                                    return  "<tr style='text-align:center;'>"+
-                                    `<td style='padding:0 10px;'>${el.coor[0]}</td>
+                        ${transformer.ABNtransformerList.map((el, index) => {
+                    if (index % 2 == 0) {
+                        return "<tr style='text-align:center;'>" +
+                            `<td style='padding:0 10px;'>${el.coor[0]}</td>
                                     <td style='background-color:#d0fca4; padding:0 10px;'>${el.div}</td>
-                                    <td>${el.tr_index}${el.tr_index=="NA"?"":"/"+el.num}</td>
+                                    <td>${el.tr_index}${el.tr_index == "NA" ? "" : "/" + el.num}</td>
                                     <td style='background-color:#d0fca4;'>${el.uti_rate}</td>
                                    `
-                                +"</tr>"
-                                }else{
-                                    return  "<tr style='text-align:center; font-size:20px;'>"+
-                                    `<td style='background-color:#d0fca4;padding:0 10px;'>${el.coor[0]}</td>
+                            + "</tr>"
+                    } else {
+                        return "<tr style='text-align:center; font-size:20px;'>" +
+                            `<td style='background-color:#d0fca4;padding:0 10px;'>${el.coor[0]}</td>
                                     <td style='padding:0 10px;'>${el.div}</td>
-                                    <td style='background-color:#d0fca4;'>${el.tr_index}${el.tr_index=="NA"?"":"/"+el.num}</td>
+                                    <td style='background-color:#d0fca4;'>${el.tr_index}${el.tr_index == "NA" ? "" : "/" + el.num}</td>
                                     <td '>${el.uti_rate}</td>
                                   `
-                                +"</tr>"
-                                }
-                             
-                            }).join('')
-    
-                        }  </table>`
+                            + "</tr>"
+                    }
 
-                  
-            }).then((data)=>{
-                if(data.status==200){
+                }).join('')
+
+                    }  </table>`
+
+
+            }).then((data) => {
+                if (data.status == 200) {
                     setIsMailLoading(false)
                     message.success("發送成功!")
-                }else{
+                } else {
                     setIsMailLoading(false)
                     message.error("發送失敗");
-                console.error("Login failed:", data);
+                    console.error("Login failed:", data);
                 }
             }).catch((error) => {
                 // 處理其他錯誤，例如網絡錯誤等
                 setIsMailLoading(false)
                 message.error("發送失敗");
                 console.error("Login failed:", error);
-                
-              });
+
+            });
         }
 
 
@@ -572,8 +687,8 @@ function Notify({ transformer, saveAbnormalTransData }) {
                             showSearch
                             placeholder="Select a person"
                             optionFilterProp="children"
-                            defaultValue={groupData[0].value}
-                            style={{ width: 200, fontSize:'16px'}}
+                            defaultValue={region_list.find(el => el.region_id == userRegion).region_name}
+                            style={{ width: 200, fontSize: '16px' }}
                             disabled={isLoading || isDisabled}
                             onChange={handleGroupChange}
                             onSearch={onSearch}
@@ -639,12 +754,12 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                 } */}
                                 </div>
                                 <div class="flex2 text-normal">
-                                {userRole=="usr"?<></>:(
-                                    <>
-                                     <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
-                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
-                                    </>
-                                )}
+                                    {userRole == "usr" ? <></> : (
+                                        <>
+                                            <button class={`btn-manage justify-self-end mr-4 ${isMailLoading ? '' : 'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
+                                            <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                     }
@@ -692,7 +807,7 @@ function Notify({ transformer, saveAbnormalTransData }) {
                         <div class="flex justify-end py-3 border-purple-400">
                             <Pagination defaultCurrent={1} total={50} />
                         </div> */}
-                        {/* <table>
+                                {/* <table>
                 <tr>
                     <th>圖號座標</th>
                     <th>組別</th>
