@@ -13,7 +13,11 @@ import { postAccountUpload, getRegionUser, patchUserInfo, patchRole, getUserRole
 import UserForm from '../../components/manage/UserForm'
 const accountUserID = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
 const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
-const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+let userRole = null
+if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
+   userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+
+}
 const { Header, Footer, Content } = Layout;
 
 const region_list = [
