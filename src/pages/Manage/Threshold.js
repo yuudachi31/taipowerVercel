@@ -9,11 +9,112 @@ import { getAllThreshold, getAllRegions, postRegionThreshold } from '../../api/f
 import { useHistory } from 'react-router-dom';
 import './manage.css'
 
+const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+const userRegion = document.cookie?.split("; ").find((row) => row.startsWith("region_id"))?.split("=")[1]
+
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
 const { confirm } = Modal;
 
+const region_list = [
+    {
+        "region_id": "00",
+        "region_name": "台北市區營業處"
+    },
+    {
+        "region_id": "01",
+        "region_name": "台北南區營業處"
+    },
+    {
+        "region_id": "02",
+        "region_name": "基隆區營業處"
+    },
+    {
+        "region_id": "03",
+        "region_name": "宜蘭區營業處"
+    },
+    {
+        "region_id": "04",
+        "region_name": "桃園區營業處"
+    },
+    {
+        "region_id": "05",
+        "region_name": "台北西區營業處"
+    },
+    {
+        "region_id": "06",
+        "region_name": "新竹區營業處"
+    },
+    {
+        "region_id": "07",
+        "region_name": "台中區營業處"
+    },
+    {
+        "region_id": "08",
+        "region_name": "彰化區營業處"
+    },
+    {
+        "region_id": "09",
+        "region_name": "嘉義區營業處"
+    },
+    {
+        "region_id": "10",
+        "region_name": "台南區營業處"
+    },
+    {
+        "region_id": "11",
+        "region_name": "高雄區營業處"
+    },
+    {
+        "region_id": "12",
+        "region_name": "屏東區營業處"
+    },
+    {
+        "region_id": "13",
+        "region_name": "花蓮區營業處"
+    },
+    {
+        "region_id": "14",
+        "region_name": "台東區營業處"
+    },
+    {
+        "region_id": "15",
+        "region_name": "澎湖區營業處"
+    },
+    {
+        "region_id": "16",
+        "region_name": "台北北區營業處"
+    },
+    {
+        "region_id": "17",
+        "region_name": "南投區營業處"
+    },
+    {
+        "region_id": "18",
+        "region_name": "鳳山區營業處"
+    },
+    {
+        "region_id": "19",
+        "region_name": "雲林區營業處"
+    },
+    {
+        "region_id": "20",
+        "region_name": "新營區營業處"
+    },
+    {
+        "region_id": "21",
+        "region_name": "苗栗區營業處"
+    },
+    {
+        "region_id": "22",
+        "region_name": "金門區營業處"
+    },
+    {
+        "region_id": "23",
+        "region_name": "馬祖區營業處"
+    }
+]
 // export const USER_DATA = [
 //     {
 //         user_id: 0,
@@ -87,6 +188,8 @@ function Threshold() {
     const [isEdit, setIsEdit] = useState(false);
 
     //設定select內容
+    const [isDisabled, setIsDisabled] = useState(true)
+
     const [groupData, setGroupData] = useState(LINEGROUPID);
     const [tempSaving, setTempSaving] = useState({});
     const [selectedListGroup, setSelectedGroup] = useState(groupData[0]);
@@ -95,7 +198,7 @@ function Threshold() {
         // console.log("aa")
         const selectedGroup = groupData.find((group) => group.value === value);
         setSelectedGroup(selectedGroup);
-        console.log(selectedGroup)
+        // console.log(selectedGroup)
     };
 
     //實現編輯儲存
@@ -109,7 +212,7 @@ function Threshold() {
     });
 
     const handleInputChange = (e, index) => {
-        console.log(tempSaving)
+        // console.log(tempSaving)
         const value = e.target.value;
         const newthreshold = [...editedThresholds.threshold]
         newthreshold[index].limit_max = value
@@ -170,15 +273,17 @@ function Threshold() {
     // ]
     useEffect(() => {
         getAllThreshold().then((data) => {
-            if (data.errStatus) {
+            if (data?.errStatus) {
                 console.log(data.errDetail);
             } else {
+
                 getAllRegions().then((region_data) => {
                     if (region_data.errStatus) {
                         console.log(region_data.errDetail);
                     } else {
-                        let listedData = data.map((el) => (
-                            {
+                        let formatedData = data.map((el) => {
+                            console.log(el.region_id)
+                            return {
                                 value: el.region_id, //區處別
                                 // area: region_id_list[Number(el.region_id)],
                                 area: setRegionName(region_data, el),
@@ -189,10 +294,16 @@ function Threshold() {
                                     { state: 3, limit_max: el.limit_high },
                                 ]
                             }
-                        ))
-                        setGroupData(listedData)
-                        setSelectedGroup(listedData[0])
+                        }
+                        )
+                        setGroupData(formatedData)
+                        setSelectedGroup(formatedData.find((group) => group.value === userRegion));
+                        if(userRole=="adm"||userRole=="ops"){
+                           setIsDisabled(false) 
+                        }
+                        
                         setIsLoading(false)
+                       
                     }
                 })
                 // console.log()
@@ -238,7 +349,7 @@ function Threshold() {
 
         setEditedThresholds({ ...selectedListGroup })
         setIsEdit(false)
-        console.log(tempSaving)
+        // console.log(tempSaving)
         setSelectedGroup({ ...tempSaving })
     };
     const handleOk = (groupId) => {
@@ -254,7 +365,7 @@ function Threshold() {
         const newGroup = groupData.filter((group) => group.value !== groupId);
         setGroupData(newGroup);
         setSelectedGroup(newGroup[0]);
-        console.log("delete", newGroup, groupId, groupData, selectedListGroup)
+        // console.log("delete", newGroup, groupId, groupData, selectedListGroup)
     }
 
     // //新增帳號modal
@@ -322,7 +433,7 @@ function Threshold() {
                         {isEdit ?
                             <Select
                                 defaultValue={groupData[0].value}
-                                style={{ width: 200, fontSize:'16px' }}
+                                style={{ width: 200, fontSize: '16px' }}
                                 onChange={handleGroupChange}
                                 disabled
                             >
@@ -334,32 +445,32 @@ function Threshold() {
                             </Select>
                             :
                             <Select
-                                showSearch
-                                placeholder="Select a person"
-                                optionFilterProp="children"
-                                defaultValue={groupData[0].value}
-                                style={{ width: 200, fontSize:'16px' }}
-                                disabled={isLoading}
-                                onChange={handleGroupChange}
-                                onSearch={onSearch}
-                                filterOption={(input, option) =>
-                                    (option?.area ?? '').includes(input)
-                                }
-                            >
-                                {groupData.map((group) => (
-                                    <Option key={group.value} value={group.value} area={group.area}>
-                                        {group.area}
-                                    </Option>
-                                ))}
-                            </Select>
+                            showSearch
+                            placeholder="Select a person"
+                            optionFilterProp="children"
+                            defaultValue={region_list.find(el => el.region_id == userRegion).region_name}
+                            style={{ width: 200, fontSize: '16px' }}
+                            disabled={isLoading || isDisabled}
+                            onChange={handleGroupChange}
+                            onSearch={onSearch}
+                            filterOption={(input, option) =>
+                                (option?.area ?? '').includes(input)
+                            }
+                        >
+                            {groupData.map((group) => (
+                                <Option key={group.value} value={group.value} area={group.area} class='select-search-input'>
+                                    {group.area}
+                                </Option>
+                            ))}
+                        </Select>
                         }
                     </div>
                     {
                         isLoading ?
-                            <div>                               
-                                 <Spin  tip="載入中" size="large">
-                                <div className="content" />
-                            </Spin>                            
+                            <div>
+                                <Spin tip="載入中" size="large">
+                                    <div className="content" />
+                                </Spin>
                             </div>
                             :
                             <div class=" px-10 pb-10 flex justify-between">
@@ -422,7 +533,7 @@ function Threshold() {
                                         <button class="btn-manage justify-self-end mr-4 btn-manage-full text-normal" onClick={() => handleSave()}>儲存</button>
                                     </div>
                                     :
-                                    isLoading ?
+                                    isLoading||userRole=="ove"||userRole =="usr" ?
                                         <></>
                                         :
                                         <div class="flex2">

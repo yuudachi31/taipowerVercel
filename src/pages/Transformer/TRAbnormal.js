@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 import ErrorModal from '../../components/ErrorModal'
 //antd
-import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message,Spin } from 'antd';
+import { Divider, Menu, Dropdown, Space, Table, Modal, Input, Button, Checkbox, Row, Col, Tag, message, Spin } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
 import { text } from '@fortawesome/fontawesome-svg-core';
 const { Search } = Input;
@@ -18,7 +18,9 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
     const [errorStatus, setErrorStatus] = useState(200);
-
+    const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+    // const userRole = "usr"
+    console.log(userRole)
 
 
     const showModal = () => {
@@ -274,7 +276,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                             danger_lv = '一般危險'
                         }
                         return (
-                            <Tag color={color} key={danger_lv} style={{fontSize:'16px', lineHeight:'24px'}}>
+                            <Tag color={color} key={danger_lv} style={{ fontSize: '16px', lineHeight: '24px' }}>
                                 {danger_lv}
                             </Tag>
                         );
@@ -368,8 +370,8 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
             if (data?.errStatus) {
                 setErrorStatus(data)
                 setIsErrorModalOpen(true)
-              
-               
+
+
             } else {
                 // console.log(data)
                 saveAbnormalTransData(data)
@@ -377,7 +379,7 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                 console.log("saveall")
                 setIsLoading(false)
             }
-        }).catch(error=>{
+        }).catch(error => {
             console.log(error)
         })
     }, [])
@@ -387,41 +389,42 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
     return (
         <>
-         {/* <ErrorModal 
+            {/* <ErrorModal 
          setIsErrorModalOpen={setIsErrorModalOpen}
          isErrorModalOpen={isErrorModalOpen}
          errStatus={errorStatus}
          
          ></ErrorModal> */}
-      
-        <div className='wrapper px-24 py-4'>
-           
-            <div className="flex justify-between">
-                <div className="flex">
 
-                    <button className="btn-red mr-4" style={{ height: 40 }} onClick={confirm}>刪除</button>
+            <div className='wrapper px-24 py-4'>
 
-                    <button className="btn " style={{ height: 40 }} onClick={noticeNextDay}>隔天通知</button>
+                <div className="flex justify-between">
+                    <div className="flex">
+                        {
+                            userRole == "usr" ? (<></>) : (<>
+                                <button className="btn-red mr-4" style={{ height: 40 }} onClick={confirm}>刪除</button>
+                                <button className="btn " style={{ height: 40 }} onClick={noticeNextDay}>隔天通知</button></>)
+                        }
+                    </div>
+                    <div className="flex mb-2">
+                        <Search
+                            size="large"
+                            placeholder="搜尋圖號座標"
+                            onSearch={onSearch}
+                            style={{
+                                width: 200,
+                            }}
+                        />
+                        <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
+                    </div>
                 </div>
-                <div className="flex mb-2">
-                    <Search
-                        size="large"
-                        placeholder="搜尋圖號座標"
-                        onSearch={onSearch}
-                        style={{
-                            width: 200,
-                        }}
-                    />
-                    <button onClick={clearFilters} className="border border-green-400 rounded-sm mb-2" style={{ height: 40, width: 85 }}>清除篩選</button>
-                </div>
+                {
+                    isLoading ? (<><Spin tip="載入中" size="large">
+                        <div className="content" />
+                    </Spin> </>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
+                }
+
             </div>
-            {
-                isLoading ? (<><Spin tip="載入中" size="large">
-                <div className="content" />
-            </Spin> </>) : (<Table rowSelection={rowSelection} columns={columns} dataSource={transformer.ABNtransformerList} onChange={handleChange} />)
-            }
-
-        </div>
         </>
     );
 

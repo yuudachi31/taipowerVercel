@@ -39,7 +39,7 @@ function TRSearch({ transformer, saveTransData }) {
                 setErrorStatus(data)
                 setIsErrorModalOpen(true)
 
-                console.log(data)
+                // console.log(data)
 
             } else {
                 saveTransData(data)
@@ -111,15 +111,15 @@ function TRSearch({ transformer, saveTransData }) {
 
             if (data == 401) {
                 if (Number(localStorage.getItem('resetTime')) == 8) {
-                    console.log(Number(localStorage.getItem('resetTime')))
+                    // console.log(Number(localStorage.getItem('resetTime')))
 
-                    console.log("aabb")
+                    // console.log("aabb")
                     localStorage.removeItem('resetTime');
 
                     setErrorStatus(data)
                     setIsErrorModalOpen(true)
                 } else if (Number(localStorage.getItem('resetTime')) < 8 && Number(localStorage.getItem('resetTime')) >= 1) {
-                    console.log(Number(localStorage.getItem('resetTime')))
+                    // console.log(Number(localStorage.getItem('resetTime')))
 
                     postUser(reloadusr, reloadpsw).then((data) => {
                         if (data && data.errStatus) {
@@ -127,7 +127,7 @@ function TRSearch({ transformer, saveTransData }) {
                         } else {
                             document.cookie = "fltk=" + data.access_token + ";path=/";
                             localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime')) + 1)
-                            console.log("re")
+                            // console.log("re")
                             window.location.reload()
                         }
 
@@ -135,7 +135,7 @@ function TRSearch({ transformer, saveTransData }) {
 
                 } else {
                     localStorage.setItem('resetTime', 1)
-                    console.log(Number(localStorage.getItem('resetTime')))
+                    // console.log(Number(localStorage.getItem('resetTime')))
                     window.location.reload()
                 }
 
