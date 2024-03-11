@@ -12,7 +12,11 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
-const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+let userRole = null
+if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
+   userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+
+}
 
 
 export const USER_DATA = [

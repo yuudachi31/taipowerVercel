@@ -17,7 +17,11 @@ const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
 const { confirm } = Modal;
-const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+let userRole = null
+if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
+   userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+
+}
 const userRegion = document.cookie?.split("; ").find((row) => row.startsWith("region_id"))?.split("=")[1]
 
 const cookiesss = document.cookie
