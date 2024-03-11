@@ -511,8 +511,8 @@ function Notify({ transformer, saveAbnormalTransData }) {
 
                 }  </table>`)
             postEmailNotify({
-                // emails: `[${emailArr.toString()}]`,
-                emails: "['yuudachi31@zcjh.ntpc.edu.tw']",
+                emails: `[${emailArr.toString()}]`,
+                // emails: "['yuudachi31@zcjh.ntpc.edu.tw']",
                 subject: "變壓器異常通知",
                 content: `  <table style=' font-size:20px;'>
                 <tr >
