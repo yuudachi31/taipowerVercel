@@ -26,11 +26,13 @@ export const userManageReducer = (state = initialState, action) => {
             group: element.roles.map((el) => {
               switch (el.role_name) {
                 case "adm":
-                  return "區處管理員"
+                  return "總處管理員"
                 case "ops":
-                  return "運維"
+                  return "總處操作員"
                 case "ove":
-                  return "檢修"
+                  return "區處管理員"
+                  case "usr":
+                  return "區處操作員"
               }
             }),
             email: element.email,

@@ -6,12 +6,13 @@ import { Dropdown, Space } from 'antd';
 import { useState } from 'react';
 import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { postAccountUpload,getRegionUser,getAccountForDownload} from '../../api/frontApi';
+import { postAccountUpload,getRegionUser,getAccountForDownload,getAllUser} from '../../api/frontApi';
 import{saveUserListApi,saveUserListEdit} from '../../actions/userManage'
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
+const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
 
 
 export const USER_DATA = [
@@ -117,17 +118,31 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   };
   useEffect(()=>{
   
-    console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
-    getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
+    // console.log(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1])
+    if(userRole!='usr'&&userRole!='ove'){
+      getAllUser().then((data)=>{
+        // getAllUser().then((data)=>{})
+        // getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+          saveUserListApi(data)
+          setIsLoading(false)
+          console.log(userManage)
+        }
+      })
+    }else{
+      getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
         saveUserListApi(data)
-        // console.log(data)
         setIsLoading(false)
         console.log(userManage)
       }
     })
+    }
+    
   },[])
 
   //更新利用率loading
@@ -260,8 +275,8 @@ const handleDownLoadAccountList =()=>{
               <SearchOutlined />搜尋
             </button> */}
         </div>
-
-        <label for="upload-user" id="upload-user-label">
+{userRole=="adm"||userRole=="ops"?<>
+<label for="upload-user" id="upload-user-label">
           <div class="btn-manage btn-manage-full flex-none h-10" >匯入會員資料</div>
         </label>
         <input type="file"
@@ -271,10 +286,14 @@ const handleDownLoadAccountList =()=>{
             handleFileUpload();
           }}
           name="file" />
+</>:<></>}
+        
 
         {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={()=>_history.push('/manage/user/create')}>匯入會員資料</button> */}
         {/* <button class="btn-manage btn-manage-full flex-none h-10" onClick={() => _history.push('/manage/user/create')}>匯出會員資料</button> */}
-        <button className={` flex-none h-10 ${downloading?"btn-manage btn-disable":"btn-manage btn-manage-full"}`} disabled={downloading} onClick={handleDownLoadAccountList}>匯出會員資料</button>
+{userRole!="usr"?<> <button className={` flex-none h-10 ${downloading?"btn-manage btn-disable":"btn-manage btn-manage-full"}`} disabled={downloading} onClick={handleDownLoadAccountList}>匯出會員資料</button></>:<></>}
+        
+       
       </Header>
       <Content>
         <Layout>

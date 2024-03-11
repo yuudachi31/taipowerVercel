@@ -134,13 +134,13 @@ function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }
             allowClear
             size='middle'
           >
-            {/* <Option value="總處管理員">總處管理員</Option>
+            <Option value="總處管理員">總處管理員</Option>
             <Option value="總處操作員">總處操作員</Option>
             <Option value="區處管理員">區處管理員</Option>
-            <Option value="區處操作員">區處操作員</Option> */}
-            <Option value="區處管理員">區處管理員</Option>
+            <Option value="區處操作員">區處操作員</Option>
+            {/* <Option value="區處管理員">區處管理員</Option>
             <Option value="運維">運維</Option>
-            <Option value="檢修">檢修</Option>
+            <Option value="檢修">檢修</Option> */}
 
           </Select>}
       </Form.Item>

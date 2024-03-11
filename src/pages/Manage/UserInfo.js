@@ -6,119 +6,119 @@ import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import { saveUserListApi, saveUserListEdit } from '../../actions/userManage'
-import{storeUserInfo}from '../../actions/frontAction'
+import { storeUserInfo } from '../../actions/frontAction'
 import { connect } from 'react-redux';
 import { USER_DATA } from './UserList';
-import { postAccountUpload, getRegionUser, patchUserInfo, patchRole,getUserRole } from '../../api/frontApi';
+import { postAccountUpload, getRegionUser, patchUserInfo, patchRole, getUserRole, getAllUser } from '../../api/frontApi';
 import UserForm from '../../components/manage/UserForm'
 const accountUserID = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
 const glabalToken = document.cookie?.split("; ").find((row) => row.startsWith("fltk"))?.split("=")[1]
-
+const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
 const { Header, Footer, Content } = Layout;
 
-const region_list=[
+const region_list = [
   {
-      "region_id": "00",
-      "region_name": "台北市區營業處"
+    "region_id": "00",
+    "region_name": "台北市區營業處"
   },
   {
-      "region_id": "01",
-      "region_name": "台北南區營業處"
+    "region_id": "01",
+    "region_name": "台北南區營業處"
   },
   {
-      "region_id": "02",
-      "region_name": "基隆區營業處"
+    "region_id": "02",
+    "region_name": "基隆區營業處"
   },
   {
-      "region_id": "03",
-      "region_name": "宜蘭區營業處"
+    "region_id": "03",
+    "region_name": "宜蘭區營業處"
   },
   {
-      "region_id": "04",
-      "region_name": "桃園區營業處"
+    "region_id": "04",
+    "region_name": "桃園區營業處"
   },
   {
-      "region_id": "05",
-      "region_name": "台北西區營業處"
+    "region_id": "05",
+    "region_name": "台北西區營業處"
   },
   {
-      "region_id": "06",
-      "region_name": "新竹區營業處"
+    "region_id": "06",
+    "region_name": "新竹區營業處"
   },
   {
-      "region_id": "07",
-      "region_name": "台中區營業處"
+    "region_id": "07",
+    "region_name": "台中區營業處"
   },
   {
-      "region_id": "08",
-      "region_name": "彰化區營業處"
+    "region_id": "08",
+    "region_name": "彰化區營業處"
   },
   {
-      "region_id": "09",
-      "region_name": "嘉義區營業處"
+    "region_id": "09",
+    "region_name": "嘉義區營業處"
   },
   {
-      "region_id": "10",
-      "region_name": "台南區營業處"
+    "region_id": "10",
+    "region_name": "台南區營業處"
   },
   {
-      "region_id": "11",
-      "region_name": "高雄區營業處"
+    "region_id": "11",
+    "region_name": "高雄區營業處"
   },
   {
-      "region_id": "12",
-      "region_name": "屏東區營業處"
+    "region_id": "12",
+    "region_name": "屏東區營業處"
   },
   {
-      "region_id": "13",
-      "region_name": "花蓮區營業處"
+    "region_id": "13",
+    "region_name": "花蓮區營業處"
   },
   {
-      "region_id": "14",
-      "region_name": "台東區營業處"
+    "region_id": "14",
+    "region_name": "台東區營業處"
   },
   {
-      "region_id": "15",
-      "region_name": "澎湖區營業處"
+    "region_id": "15",
+    "region_name": "澎湖區營業處"
   },
   {
-      "region_id": "16",
-      "region_name": "台北北區營業處"
+    "region_id": "16",
+    "region_name": "台北北區營業處"
   },
   {
-      "region_id": "17",
-      "region_name": "南投區營業處"
+    "region_id": "17",
+    "region_name": "南投區營業處"
   },
   {
-      "region_id": "18",
-      "region_name": "鳳山區營業處"
+    "region_id": "18",
+    "region_name": "鳳山區營業處"
   },
   {
-      "region_id": "19",
-      "region_name": "雲林區營業處"
+    "region_id": "19",
+    "region_name": "雲林區營業處"
   },
   {
-      "region_id": "20",
-      "region_name": "新營區營業處"
+    "region_id": "20",
+    "region_name": "新營區營業處"
   },
   {
-      "region_id": "21",
-      "region_name": "苗栗區營業處"
+    "region_id": "21",
+    "region_name": "苗栗區營業處"
   },
   {
-      "region_id": "22",
-      "region_name": "金門區營業處"
+    "region_id": "22",
+    "region_name": "金門區營業處"
   },
   {
-      "region_id": "23",
-      "region_name": "馬祖區營業處"
+    "region_id": "23",
+    "region_name": "馬祖區營業處"
   }
 ]
-function UserInfo({ userManage, saveUserListApi, saveUserListEdit,storeUserInfo }) {
+function UserInfo({ userManage, saveUserListApi, saveUserListEdit, storeUserInfo }) {
   const _history = useHistory()
   const { user_id: userId } = useParams()
   const [isEdited, setIsEdited] = useState(false)
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState({
     user_id: "",
     name: ' ',
@@ -133,18 +133,29 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit,storeUserInfo 
   })
   console.log(userManage.userList)
   useEffect(() => {
-    getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        saveUserListApi(data)
-        // console.log(data)
-        console.log(userManage)
-        setIsloading(false)
-        // console.log(data.find((el)=>el.user_id=userId))
-        setUser(userManage.userList.find((el) => el.user_id == userId));
-      }
-    })
+    if (userRole != 'usr' && userRole != 'ove') {
+      getAllUser().then((data) => {
+        // getAllUser().then((data)=>{})
+        // getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data)=>{
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+          saveUserListApi(data)
+          setIsLoading(false)
+          console.log(userManage)
+        }
+      })
+    } else {
+      getRegionUser(document.cookie.split(";").filter((value) => value.match("region_id"))[0].split('=')[1]).then((data) => {
+        if (data.errStatus) {
+          console.log(data.errDetail);
+        } else {
+          saveUserListApi(data)
+          setIsLoading(false)
+          console.log(userManage)
+        }
+      })
+    }
   }, []);
   useEffect(() => {
     // setUser(userManage.userList.find((el)=>el.user_id=userId));
@@ -152,29 +163,34 @@ function UserInfo({ userManage, saveUserListApi, saveUserListEdit,storeUserInfo 
 
   const handleFormChange = (changedValues) => {
     /////////如果form的身分權限不是用tag 要加if的寫法
+    let groupValue = []
+    console.log(changedValues.group)
+    groupValue.push(changedValues.group)
+    // console.log(groupValue)
+    setUser((prevUser) => ({ ...prevUser, ...changedValues }));
     if (changedValues.group) {
       // console.log()
       setUser((prevUser) => ({
-        ...prevUser, ...{
-          group: [changedValues.group]
-        }
+        ...prevUser, 
+          group: [changedValues.group],
+        
       }));
-      console.log(user)
+      console.log(user.group)
       /////////////////////////
-    }  if (changedValues.district2) {
+    } if (changedValues.district2) {
       setUser((prevUser) => ({
         ...prevUser, ...{
-          district2: {region_id:[changedValues.district2],region_name:[region_list.find((el)=>el.region_id==changedValues.district2).region_name]}
+          district2: { region_id: [changedValues.district2], region_name: [region_list.find((el) => el.region_id == changedValues.district2).region_name] }
         }
       }));
-    }else {
+    } 
       // console.log("apple")
-      setUser((prevUser) => ({ ...prevUser, ...changedValues }));
-    }
-console.log(user)
+      
+    
+    console.log(user)
   };
   const handleSave = () => {
-    setIsloading(true)
+    setIsLoading(true)
     // console.log('Before save:', userManage.userList[userId]);
     // USER_DATA[userId] = user;
     // console.log(user)
@@ -193,38 +209,40 @@ console.log(user)
       console.log(user)
       function switchRoleName(role) {
         switch (role) {
-          case "區處管理員":
+          case "總處管理員":
             return "adm"
-          case "運維":
+          case "總處操作員":
             return "ops"
-          case "檢修":
+          case "區處管理員":
             return "ove"
+          case "區處操作員":
+            return "usr"
           default:
             return "0"
         }
       }
-      console.log(switchRoleName(user.group[0]))
+      console.log(user.group ,switchRoleName(user.group[0]))
 
 
       //  switchRoleName(user.group[0])
       patchRole(switchRoleName(user.group[0]), accountUserID).then(() => {
         getUserRole(glabalToken).then((userData) => {
-          
-          document.cookie = "user_id=" + userData.user_id+";path=/";
-          document.cookie = "email=" + userData.email+";path=/";
-          document.cookie = "chat_id=" + userData.chat_id+";path=/";
-          document.cookie = "user_name=" + userData.user_name+";path=/";
-          document.cookie = "region_id=" + userData.region_id+";path=/";
-          document.cookie = "region_name=" + userData.region_name+";path=/";
-          document.cookie = "roles=" + JSON.stringify(userData.roles)+";path=/";
+
+          document.cookie = "user_id=" + userData.user_id + ";path=/";
+          document.cookie = "email=" + userData.email + ";path=/";
+          document.cookie = "chat_id=" + userData.chat_id + ";path=/";
+          document.cookie = "user_name=" + userData.user_name + ";path=/";
+          document.cookie = "region_id=" + userData.region_id + ";path=/";
+          document.cookie = "region_name=" + userData.region_name + ";path=/";
+          document.cookie = "roles=" + JSON.stringify(userData.roles) + ";path=/";
           storeUserInfo(userData);
           // console.log(userData);
           // console.log(document.cookie);
-          setIsloading(false)
+          setIsLoading(false)
           // _history.push("/tr/search");
           // console.log("3")
-          });
-       
+        });
+
       })
     })
 
@@ -258,7 +276,7 @@ console.log(user)
       </Header>
       <Content class="h-08 bg-white">
         <Content class="h-08 px-14 py-12">
-          <UserForm isLoading={isLoading} setIsloading={setIsloading}isEdited={isEdited} user={userManage.userList.find((el) => el.user_id == userId)} onFormChange={handleFormChange} />
+          <UserForm isLoading={isLoading} setIsloading={setIsLoading} isEdited={isEdited} user={userManage.userList.find((el) => el.user_id == userId)} onFormChange={handleFormChange} />
         </Content>
         <Divider />
         <Footer class="grid grid-cols-2 px-7">
@@ -282,7 +300,7 @@ const mapStateToProps = ({ userManageReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveUserListApi, saveUserListEdit,storeUserInfo
+  saveUserListApi, saveUserListEdit, storeUserInfo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
