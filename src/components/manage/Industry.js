@@ -37,9 +37,9 @@ function Industry({ isEdited, user = null }) {
     <Form name="user-edit" colon={false} labelAlign="left">
       <Form.Item name="industry">
         <Space direction="horizontal">
-          <span className='text-normal font-bold'>行業別：</span> 
+          <span className='text-normal font-bold'>區處：</span> 
           <Select
-            placeholder="選擇行業別"
+            placeholder="選擇區處"
             allowClear
             style={{ fontSize:'16px', width:'200px'}}
             // size='large'
@@ -55,7 +55,7 @@ function Industry({ isEdited, user = null }) {
           <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily}/>
         </Space>
       </Form.Item>
-      <Form.Item name="info">
+      {/* <Form.Item name="info">
         <Space direction="horizontal">
           <span className='text-normal font-bold'>資料形式：</span> 
           <Select
@@ -68,7 +68,7 @@ function Industry({ isEdited, user = null }) {
             <Option value="尖峰用電量">尖峰用電量</Option>
           </Select>
         </Space>
-      </Form.Item>
+      </Form.Item> */}
     
     </Form>
   );

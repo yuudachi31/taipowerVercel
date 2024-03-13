@@ -90,12 +90,12 @@ const mockData = Array.from({
 }).map((_, i) => ({
   key: i.toString(),
   title: `content${i + 1}`,
-  description: `description of content${i + 1}`,
-  electricityNum: `electricityNum of content${i + 1}`,
+  description: `電號${i + 1}`,
+  electricityNum: `電號${i + 1}`,
   priceDay: `${10+ (i % 4)}`,
   tenHour: "5%",
   KW: "1000 kw",
-  address: `address of content${i + 1}`,
+  address: `台北市松山區${i + 1}`,
   // disabled: i % 4 === 0,
   tag: mockTags[i % 3],
 }));
