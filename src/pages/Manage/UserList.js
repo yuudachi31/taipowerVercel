@@ -104,9 +104,9 @@ export const USER_DATA = [
     lock:['解鎖'],
   },
 ];
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
+// const onChange = (pagination, filters, sorter, extra) => {
+//   console.log('params', pagination, filters, sorter, extra);
+// };
 
 
 
@@ -116,6 +116,7 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const [isLoading, setIsLoading] = useState(true)
     //當切換成不同群組時將列表切回第一頁
   const [currentPage, setCurrentPage] = useState(1);
+  const [showUserList,setShowUserList]= useState([]);
   const[downloading,setDownloading]=useState(false)
   const handlePaginationChange = (page) => {
       setCurrentPage(page);
@@ -149,6 +150,9 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
     
   },[])
 
+useEffect(()=>{
+  setShowUserList(userManage.userList)
+},[userManage.userList])
   //更新利用率loading
   const importSuccess = () => {
     message.loading('正在匯入中...', 3, () => {
@@ -215,8 +219,10 @@ const handleDownLoadAccountList =()=>{
     // };
     // getFileContent(0);
   }
-  const onSearch = () => {
-    console.log("aa")
+  const onSearch = (value) => {
+    console.log(userManage.userList.filter((el)=>el.name.includes(value)))
+    setShowUserList(userManage.userList.filter((el)=>el.name.includes(value)))
+    
   };
 
   const columns = [
@@ -272,6 +278,7 @@ const handleDownLoadAccountList =()=>{
             placeholder="請輸入帳號名稱或身份權限"
             size="large"
             value={searchText}
+            onSearch={onSearch}
             onChange={e => setSearchText(e.target.value)}
 
           />
@@ -309,7 +316,7 @@ const handleDownLoadAccountList =()=>{
                 <div className="content" />
               </Spin>    
               :
-              <Table columns={columns} dataSource={userManage.userList} onChange={onChange} pagination={{ current: currentPage, total: userManage.userList.length, onChange: handlePaginationChange, style:{marginRight:'20px'} }} />
+              <Table columns={columns} dataSource={showUserList} pagination={{ current: currentPage, total: userManage.userList.length, onChange: handlePaginationChange, style:{marginRight:'20px'} }} />
 
           }
           
