@@ -221,7 +221,12 @@ const handleDownLoadAccountList =()=>{
   }
   const onSearch = (value) => {
     console.log(userManage.userList.filter((el)=>el.name.includes(value)))
-    setShowUserList(userManage.userList.filter((el)=>el.name.includes(value)))
+    if(value=="總處管理員"||value=="總處操作員"||value=="區處管理員"||value=="區處操作員"){
+      setShowUserList(userManage.userList.filter((el)=>el.group.includes(value)))
+    }else{
+      setShowUserList(userManage.userList.filter((el)=>el.name.includes(value)))
+    }
+
     
   };
 
