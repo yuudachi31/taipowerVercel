@@ -39,6 +39,7 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, data, ...restProps
         <>
           <Table
             rowSelection={rowSelection}
+            pagination={{style:{marginRight:'20px', marginBottom:'15px'} }}
             columns={columns}
             dataSource={filteredItems}
             title={() => 
@@ -88,7 +89,7 @@ const totalDataR ={
 const mockData = Array.from({
   length: 10,
 }).map((_, i) => ({
-  key: i.toString(),
+  key: `ori${i + 1}`,
   title: `content${i + 1}`,
   description: `電號${i + 1}`,
   electricityNum: `電號${i + 1}`,
@@ -99,9 +100,26 @@ const mockData = Array.from({
   // disabled: i % 4 === 0,
   tag: mockTags[i % 3],
 }));
-const originTargetKeys = mockData //設定target table的資料
-  .filter((item) => Number(item.key) % 3 > 1)
-  .map((item) => item.key);
+const mockData2 = Array.from({
+  length: 10,
+}).map((_, i) => ({
+  key: `chang${i + 1}`,
+  title: `content${i + 1}`,
+  description: `電號${i + 1}`,
+  electricityNum: `電號${i + 10}`,
+  priceDay: `${10+ (i % 4)}`,
+  tenHour: "5%",
+  KW: "1000 kw",
+  address: `台北市松山區${i + 1}`,
+  // disabled: i % 4 === 0,
+  tag: mockTags[i % 3],
+}));
+const mockDataAll = mockData.concat(mockData2);
+console.log('mockData', mockDataAll)
+// const originTargetKeys = mockData //設定target table的資料
+//   .filter((item) => Number(item.key) % 3 > 1)
+//   .map((item) => item.key);
+const originTargetKeys = mockData2.map((item) => item.key)
 const onlyColumns = [
   {
     dataIndex: 'electricityNum',
@@ -150,8 +168,9 @@ const PredictList = ({data}) => {
   };
   return (
     <>
+        
         <TableTransfer
-          dataSource={mockData}
+          dataSource={mockDataAll}
           targetKeys={targetKeys}
           // disabled={disabled}
           showSearch={showSearch}
@@ -169,7 +188,7 @@ const PredictList = ({data}) => {
         />
         <Divider/>
         <TableTransfer
-          dataSource={mockData}
+          dataSource={mockDataAll}
           targetKeys={targetKeys}
           // disabled={disabled}
           showSearch={showSearch}
