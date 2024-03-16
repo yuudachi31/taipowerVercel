@@ -13,10 +13,19 @@ import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
 let userRole = null
+
 if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
    userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
 
 }
+let cookie_user_id = null
+
+if(document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]!=undefined){
+  cookie_user_id = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
+
+}
+
+// console.log(document.cookie)
 
 
 export const USER_DATA = [
@@ -267,9 +276,18 @@ const handleDownLoadAccountList =()=>{
       key: 'edit',
       dataIndex: 'edit',
       render: (text, record) => (
-        <button class="btn-manage justify-self-end mr-4" onClick={() => { _history.push(`/manage/user/${record.user_id}`) }}>
+        <>
+         {
+        userRole=='adm'||record.user_id==cookie_user_id?
+          <button class="btn-manage justify-self-end mr-4" onClick={() => { _history.push(`/manage/user/${record.user_id}`) }}>
           編輯
-        </button>
+        </button>:
+        <></>
+        
+      }
+        </>
+     
+       
       ),
     },
   ]
