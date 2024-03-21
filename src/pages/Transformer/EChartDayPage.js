@@ -185,7 +185,7 @@ console.log()
       
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
-          <div>地址 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
+          <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
           <div>住戶表數 :<span class="ml-2">10 個</span></div>
           <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
