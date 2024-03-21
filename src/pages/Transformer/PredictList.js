@@ -69,7 +69,8 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, data, ...restProps
     }}
   </Transfer>
 );
-const mockTags = ['一具', '二具', '三具'];
+const mockLightTags = ['A', 'B', 'C', 'D', 'E'];
+const mockPowerTags = ['F', 'G', 'H', 'I', 'J'];
 const totalDataL ={
     coor: 'B6744HD20',
     type: '燈',
@@ -91,28 +92,20 @@ const mockData = Array.from({
 }).map((_, i) => ({
   key: `ori${i + 1}`,
   title: `content${i + 1}`,
-  description: `電號${i + 1}`,
-  electricityNum: `電號${i + 1}`,
-  priceDay: `${10+ (i % 4)}`,
+  electricityNum: `002709800${i + 1}`,
   tenHour: "5%",
-  KW: "1000 kw",
-  address: `台北市松山區${i + 1}`,
-  // disabled: i % 4 === 0,
-  tag: mockTags[i % 3],
+  address: `台北市松山區XXXXX${i + 1}`,
+  tag: mockLightTags[i % 5],
 }));
 const mockData2 = Array.from({
   length: 10,
 }).map((_, i) => ({
-  key: `chang${i + 1}`,
+  key: `pre${i + 1}`,
   title: `content${i + 1}`,
-  description: `電號${i + 1}`,
-  electricityNum: `電號${i + 10}`,
-  priceDay: `${10+ (i % 4)}`,
+  electricityNum: `002709800${i + 1}`,
   tenHour: "5%",
-  KW: "1000 kw",
-  address: `台北市松山區${i + 1}`,
-  // disabled: i % 4 === 0,
-  tag: mockTags[i % 3],
+  address: `台北市松山區XXXXX${i + 1}`,
+  tag: mockPowerTags[i % 5],
 }));
 const mockDataAll = mockData.concat(mockData2);
 console.log('mockData', mockDataAll)
@@ -153,19 +146,19 @@ const onlyColumns = [
 ];
 
 const PredictList = ({data}) => {
-  console.log('data', data)
+  // console.log('data', data)
   const [targetKeys, setTargetKeys] = useState(originTargetKeys);
-  const [disabled, setDisabled] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
+  // const [disabled, setDisabled] = useState(false);
+  // const [showSearch, setShowSearch] = useState(false);
   const onChange = (nextTargetKeys) => {
     setTargetKeys(nextTargetKeys);
   };
-  const triggerDisable = (checked) => {
-    setDisabled(checked);
-  };
-  const triggerShowSearch = (checked) => {
-    setShowSearch(checked);
-  };
+  // const triggerDisable = (checked) => {
+  //   setDisabled(checked);
+  // };
+  // const triggerShowSearch = (checked) => {
+  //   setShowSearch(checked);
+  // };
   return (
     <>
         
@@ -173,7 +166,7 @@ const PredictList = ({data}) => {
           dataSource={mockDataAll}
           targetKeys={targetKeys}
           // disabled={disabled}
-          showSearch={showSearch}
+          // showSearch={showSearch}
           onChange={onChange}
           filterOption={(inputValue, item) =>
             item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
@@ -191,7 +184,7 @@ const PredictList = ({data}) => {
           dataSource={mockDataAll}
           targetKeys={targetKeys}
           // disabled={disabled}
-          showSearch={showSearch}
+          // showSearch={showSearch}
           onChange={onChange}
           filterOption={(inputValue, item) =>
             item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
