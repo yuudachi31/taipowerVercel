@@ -270,7 +270,7 @@ export const postAccountUpload  = async (file) => {
 export const postUploadLpi  = async (file) => {
   try {
    
-    const _url = `${baseURL}/upload_LpiTest/upload`;
+    const _url = `${baseURL}/upload_LpiTest/upload-csv`;
     const result = await axios.post(_url, 
       file
     ,{

@@ -16,6 +16,7 @@ let userRole = null
 
 if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
    userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+  // userRole ='usr'
 
 }
 let cookie_user_id = null

@@ -54,6 +54,16 @@ function AMIimport() {
 
 
     }
+    // postUploadLpi
+    const handleLpiFileUpload = () => {
+        let file = document.querySelector("[name=file-lpi]").files[0];
+        let formData = new FormData();
+        //https://stackoverflow.com/questions/62888805/how-can-i-pass-my-csv-file-as-form-data-using-rest-api
+        formData.append('file', file)
+        console.log(formData)
+        postUploadLpi(formData)
+        // console.log(formData)
+    }
     const handleNBSFileUpload = () => {
         let file = document.querySelector("[name=file-nbs]").files[0];
         let formData = new FormData();
@@ -69,7 +79,8 @@ function AMIimport() {
         //https://stackoverflow.com/questions/62888805/how-can-i-pass-my-csv-file-as-form-data-using-rest-api
         formData.append('file', file)
         console.log(formData)
-        // postUploadNBS(formData)
+        // postUploadLpi(formData)
+
         // console.log(formData)
     }
     const handleDMQSCustFileUpload = () => {
@@ -90,7 +101,7 @@ function AMIimport() {
         // postUploadNBS(formData)
         // console.log(formData)
     }
-    
+
 
 
     return (
@@ -100,6 +111,17 @@ function AMIimport() {
             </Header>
             <Content class="flex h-08 bg-white" style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div class="flex p-10 text-normal ">
+                    {/* <label for="upload-lpi" id="upload-lpi-label">
+
+                        <div class="btn-manage justify-self-end mr-4 pos-r" ><input type="file"
+                            accept={[".csv.gz", ".csv"]}
+                            id="upload-lpi"
+                            onChange={(e) => {
+                                handleLpiFileUpload();
+                            }}
+                            name="file-lpi" />Lpi </div>
+
+                    </label> */}
                     <label for="upload-nbs" id="upload-nbs-label">
 
                         <div class="btn-manage justify-self-end mr-4 pos-r" ><input type="file"

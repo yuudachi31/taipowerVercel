@@ -63,8 +63,15 @@ function TransformerRemit() {
       <Header class="pt-4 pb-8 flex space-x-7 items-center">
         <h2 class="flex-auto font-bold text-2xl">變壓器匯出</h2>
       </Header>
+        {userRole == 'usr' ?
+      <Content class="flex h-08 bg-white" style={{ flexDirection: 'column',  }}>
+
+        <div class=" p-10 f-24 "  style={{ fontSize: '24px',paddingBottom:"10px"}}>權限不足</div>
+        <div class=" p-10  "  style={{ fontSize: '16px' ,color:"#ff4063",paddingTop:"0" }}>總處管理員、總處操作員、區處管理員方可操作此功能</div>
+        </Content>
+       : <>
       <Content class="flex h-08 bg-white" style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-        {userRole == 'usr' ? <div class="flex p-10 f-24 "  style={{ fontSize: '24px' }}>權限不足</div> : <>
+
           <div class="flex p-10 ">
             <RemitForm setSelectedDate={setSelectedDate} setSelectedRegion={setSelectedRegion} userRole={userRole} setDownloading={setDownloading} />
           </div>
@@ -76,9 +83,10 @@ function TransformerRemit() {
               {/* <button class="btn-manage justify-self-end btn-manage-full  text-normal" onClick={handleExport}>匯出 CSV</button> */}
             </div>
           </div>
+          
+      </Content>
         </>}
 
-      </Content>
     </Layout>
   );
 

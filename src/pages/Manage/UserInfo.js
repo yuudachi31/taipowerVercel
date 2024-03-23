@@ -307,5 +307,5 @@ const mapDispatchToProps = {
   saveUserListApi, saveUserListEdit, storeUserInfo
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo)
 
