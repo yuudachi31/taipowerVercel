@@ -755,3 +755,22 @@ export const postIndustry = async (date,region) => {
     console.log(err.response);
   }
 };
+
+export const getDangerLvs = async () => {
+  try {
+    const _url = `${baseURL}/transformer_detail/download_danger_lvs`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};

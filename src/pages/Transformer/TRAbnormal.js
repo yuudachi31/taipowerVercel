@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans, addNoticeNextDay } from '../../api/frontApi'
+import { getAbnormalTransList, getAbnormalTransByCoor, deleteDangerTrans, addNoticeNextDay,getDangerLvs } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom/cjs/react-router-dom';
@@ -18,6 +18,8 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
     const [errorStatus, setErrorStatus] = useState(200);
+    const [downloading,setDownloading]=useState(false);
+   
     const userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
     // const userRole = "usr"
     console.log(userRole)
@@ -149,6 +151,24 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
 
         });
     };
+    const exportAbnTrans = ()=>{
+        setDownloading(true)
+        getDangerLvs().then((data)=>{
+            const blob = new Blob([data], {
+                type: 'text/csv;charset=utf-8;'
+              });
+      
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = 'danger_transformer.csv';
+              document.body.appendChild(link);
+              link.click();
+      
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(link.href);
+              setDownloading(false)
+        })
+    }
     const _history = useHistory();
     const statefilters = [
         {
@@ -406,7 +426,11 @@ function TRAbnormal({ transformer, saveAbnormalTransData }) {
                                 <button className="btn " style={{ height: 40 }} onClick={noticeNextDay}>隔天通知</button></>)
                         }
                     </div>
+                    
                     <div className="flex mb-2">
+                        {userRole!=='usr'?(
+                    <button className="btn mr-4" style={{ height: 40 }} onClick={exportAbnTrans}>匯出CSV</button>
+                        ):(<></>)}
                         <Search
                             size="large"
                             placeholder="搜尋圖號座標"
