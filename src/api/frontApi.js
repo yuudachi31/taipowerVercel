@@ -270,7 +270,7 @@ export const postAccountUpload  = async (file) => {
 export const postUploadLpi  = async (file) => {
   try {
    
-    const _url = `${baseURL}/upload_LpiTest/upload`;
+    const _url = `${baseURL}/upload_LpiTest/upload-csv`;
     const result = await axios.post(_url, 
       file
     ,{
@@ -624,7 +624,7 @@ export const postEventbyID = async (channel_id,data) => {
   console.log('DATA：' ,data)
   
   try {
-      const _url = `http://localhost:80/linebot/send`
+      const _url = `${baseURL}/linebot/send`
       const result = await axios.post(_url,data,{
 
           headers: {
@@ -717,6 +717,48 @@ export const getAccountForDownload = async () => {
 export const getTransformerExport = async (region_id,startdate,enddate) => {
   try {
     const _url = `${baseURL}/transformer_detail/download_transformer/${region_id}/${startdate}/${enddate}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const postIndustry = async (date,region) => {
+  try {
+    const _url = `${baseURL}/industry_function/start_industry_pr_function_by_month`;
+    const result = await axios.post(_url,null, {
+  params:{
+    month:date,
+    area_code:region
+  },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+export const getDangerLvs = async () => {
+  try {
+    const _url = `${baseURL}/transformer_detail/download_danger_lvs`;
     const result = await axios.get(_url, {
       headers: {
         "Content-Type": "application/json",

@@ -13,10 +13,20 @@ import { useEffect } from 'react';
 const { Header, Content } = Layout;
 const { Search } = Input
 let userRole = null
+
 if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
    userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+  // userRole ='usr'
 
 }
+let cookie_user_id = null
+
+if(document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]!=undefined){
+  cookie_user_id = document.cookie?.split("; ").find((row) => row.startsWith("user_id"))?.split("=")[1]
+
+}
+
+// console.log(document.cookie)
 
 
 export const USER_DATA = [
@@ -104,9 +114,9 @@ export const USER_DATA = [
     lock:['解鎖'],
   },
 ];
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
+// const onChange = (pagination, filters, sorter, extra) => {
+//   console.log('params', pagination, filters, sorter, extra);
+// };
 
 
 
@@ -116,6 +126,7 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
   const [isLoading, setIsLoading] = useState(true)
     //當切換成不同群組時將列表切回第一頁
   const [currentPage, setCurrentPage] = useState(1);
+  const [showUserList,setShowUserList]= useState([]);
   const[downloading,setDownloading]=useState(false)
   const handlePaginationChange = (page) => {
       setCurrentPage(page);
@@ -149,6 +160,9 @@ function UserList({userManage,saveUserListApi,saveUserListEdit}) {
     
   },[])
 
+useEffect(()=>{
+  setShowUserList(userManage.userList)
+},[userManage.userList])
   //更新利用率loading
   const importSuccess = () => {
     message.loading('正在匯入中...', 3, () => {
@@ -215,8 +229,15 @@ const handleDownLoadAccountList =()=>{
     // };
     // getFileContent(0);
   }
-  const onSearch = () => {
-    console.log("aa")
+  const onSearch = (value) => {
+    console.log(userManage.userList.filter((el)=>el.name.includes(value)))
+    if(value=="總處管理員"||value=="總處操作員"||value=="區處管理員"||value=="區處操作員"){
+      setShowUserList(userManage.userList.filter((el)=>el.group.includes(value)))
+    }else{
+      setShowUserList(userManage.userList.filter((el)=>el.name.includes(value)))
+    }
+
+    
   };
 
   const columns = [
@@ -256,9 +277,18 @@ const handleDownLoadAccountList =()=>{
       key: 'edit',
       dataIndex: 'edit',
       render: (text, record) => (
-        <button class="btn-manage justify-self-end mr-4" onClick={() => { _history.push(`/manage/user/${record.user_id}`) }}>
+        <>
+         {
+        userRole=='adm'||record.user_id==cookie_user_id?
+          <button class="btn-manage justify-self-end mr-4" onClick={() => { _history.push(`/manage/user/${record.user_id}`) }}>
           編輯
-        </button>
+        </button>:
+        <></>
+        
+      }
+        </>
+     
+       
       ),
     },
   ]
@@ -272,6 +302,7 @@ const handleDownLoadAccountList =()=>{
             placeholder="請輸入帳號名稱或身份權限"
             size="large"
             value={searchText}
+            onSearch={onSearch}
             onChange={e => setSearchText(e.target.value)}
 
           />
@@ -309,7 +340,7 @@ const handleDownLoadAccountList =()=>{
                 <div className="content" />
               </Spin>    
               :
-              <Table columns={columns} dataSource={userManage.userList} onChange={onChange} pagination={{ current: currentPage, total: userManage.userList.length, onChange: handlePaginationChange, style:{marginRight:'20px'} }} />
+              <Table columns={columns} dataSource={showUserList} pagination={{ current: currentPage, total: userManage.userList.length, onChange: handlePaginationChange, style:{marginRight:'20px'} }} />
 
           }
           

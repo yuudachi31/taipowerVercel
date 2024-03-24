@@ -2,7 +2,12 @@
 import { Form, Input, Select,Spin } from 'antd';
 
 const { Option } = Select;
+let userRole = null
 
+if(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1]!=undefined){
+  userRole = JSON.parse(document.cookie?.split("; ").find((row) => row.startsWith("roles"))?.split("=")[1])[0].role_name
+  // userRole ='usr'
+}
 const layout = {
   labelCol: { span: 3 },
   wrapperCol: { span: 4 },
@@ -133,6 +138,7 @@ function UserForm({ isLoading,setIsLoading,isEdited, user = null, onFormChange }
             defaultValue={user ? user.group : []}
             allowClear
             size='middle'
+            disabled={userRole!="adm"}
           >
             <Option value="總處管理員">總處管理員</Option>
             <Option value="總處操作員">總處操作員</Option>
