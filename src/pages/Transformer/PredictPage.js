@@ -15,6 +15,7 @@ const { Header, Sider, Content } = Layout;
 function Predict({ transformer, saveEachTransInfo }) {
   // const parsed = queryString.parse(window.location.search);
   const [isLoadingtop, setIsLoadingTop] = useState(true);
+  // const [isDataSwitch, setIsDataSwitch] = useState(false); //資料是否已切換，尚未成功
 
   //設定選擇虛擬或是記設變壓器的變壓器資料
   //手動分包檔案 ori：原本的、new：新設的、light：燈、power：力
@@ -35,6 +36,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                 div: 'T01',
                 tr_index:'1',
                 type: '燈',
+                thereshold: '50%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -46,8 +48,11 @@ function Predict({ transformer, saveEachTransInfo }) {
                     tag: mockLightTags[i % 5],
                 })),
             },
-            new: {},
-            targetKey: [],
+            new: {
+              coor: '',
+              thereshold: '0%',
+            },
+            // targetKey: [],
         },
         power: { //新、舊變壓器
             disabled: false,
@@ -57,6 +62,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                 div: 'T01',
                 tr_index:'1',
                 type: '力',
+                thereshold: '60%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -74,6 +80,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                 div: 'T02',
                 tr_index:'1',
                 type: '力',
+                thereshold: '30%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -85,7 +92,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                     tag: mockPowerTags[i % 5],
                 })),
             },
-            targetKey: [],
+            // targetKey: [],
         }
     },
     index2: {
@@ -95,9 +102,15 @@ function Predict({ transformer, saveEachTransInfo }) {
         },
         light: {
             disabled: true, 
-            ori:{}, 
-            new:{}, 
-            targetKey: [],
+            ori:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            new:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            // targetKey: [],
         }, //皆沒有資料
         power: { //新、舊變壓器
             disabled: false,
@@ -107,6 +120,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                 div: 'T01',
                 tr_index:'2',
                 type: '力',
+                thereshold: '75%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -124,6 +138,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                 div: 'T02',
                 tr_index:'2',
                 type: '力',
+                thereshold: '50%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -135,7 +150,7 @@ function Predict({ transformer, saveEachTransInfo }) {
                     tag: mockPowerTags[i % 5],
                 })),
             },
-            targetKey: [],
+            // targetKey: [],
         }
     },
     index3: {
@@ -145,19 +160,29 @@ function Predict({ transformer, saveEachTransInfo }) {
         },
         light: {
             disabled: true, 
-            ori:{}, 
-            new:{},
-            targetKey: [],
+            ori:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            new:{
+              coor: '',
+              thereshold: '0%',
+            },
+            // targetKey: [],
         }, //皆沒有資料
         power: { //新變壓器
             disabled: true,
-            ori: {},
+            ori: {
+              coor: '',
+              thereshold: '0%',
+            },
             new: {
                 id:'3',
                 coor: 'B6744GD33',
                 div: 'T02',
                 tr_index:'3',
                 type: '力',
+                thereshold: '40%',
                 data: Array.from({
                     length: 10,
                 }).map((_, i) => ({
@@ -169,18 +194,10 @@ function Predict({ transformer, saveEachTransInfo }) {
                     tag: mockPowerTags[i % 5],
                 })),
             },
-              targetKey: [],
+              // targetKey: [],
           }
       }
   };
-
-  // 设置 targetKey 属性
-  existIndexData.index1.light.targetKey = existIndexData.index1.light.new.data ? Object.keys(existIndexData.index1.light.new.data).map((item) => item.key) : [];
-  existIndexData.index1.power.targetKey = existIndexData.index1.power.new.data ? Object.keys(existIndexData.index1.power.new.data).map((item) => item.key) : [];
-  existIndexData.index2.light.targetKey = existIndexData.index2.light.new.data ? Object.keys(existIndexData.index2.light.new.data).map((item) => item.key) : [];
-  existIndexData.index2.power.targetKey = existIndexData.index2.power.new.data ? Object.keys(existIndexData.index2.power.new.data).map((item) => item.key) : [];
-  existIndexData.index3.light.targetKey = existIndexData.index3.light.new.data ? Object.keys(existIndexData.index3.light.new.data).map((item) => item.key) : [];
-  existIndexData.index3.power.targetKey = existIndexData.index3.power.new.data ? Object.keys(existIndexData.index3.power.new.data).map((item) => item.key) : [];
 
   const fakeIndexData = { //選擇虛擬變壓器
     index1: {   
@@ -196,6 +213,7 @@ function Predict({ transformer, saveEachTransInfo }) {
           div: 'T01',
           tr_index:'1',
           type: '燈',
+          thereshold: '50%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -207,16 +225,20 @@ function Predict({ transformer, saveEachTransInfo }) {
             tag: mockLightTags[i % 5],
           })),
         },
-        new: {}
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
       },
       power: { //新、變壓器
-        disabled: true,
+        disabled: false,
         ori: {
           id:'2',
           coor: 'B6744GD33',
           div: 'T01',
           tr_index:'1',
           type: '力',
+          thereshold: '60%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -234,6 +256,7 @@ function Predict({ transformer, saveEachTransInfo }) {
           div: 'T02',
           tr_index:'1',
           type: '力',
+          thereshold: '30%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -252,7 +275,17 @@ function Predict({ transformer, saveEachTransInfo }) {
         oriType: '力',
         newType: '',
       },
-      light: { disabled: true, ori: {}, new: {}}, //皆沒有資料
+      light: { 
+        disabled: true, 
+        ori: {
+          coor: '',
+          thereshold: '0%',
+        }, 
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      }, //皆沒有資料
       power: {
         disabled: false,
         ori: {
@@ -261,6 +294,7 @@ function Predict({ transformer, saveEachTransInfo }) {
           div: 'T01',
           tr_index:'2',
           type: '力',
+          thereshold: '75%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -278,6 +312,7 @@ function Predict({ transformer, saveEachTransInfo }) {
           div: 'T02',
           tr_index:'2',
           type: '力',
+          thereshold: '50%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -292,20 +327,21 @@ function Predict({ transformer, saveEachTransInfo }) {
       } ///新、舊變壓器
     },
   }
-  const oriIndexData = { //選擇虛擬變壓器
+  const oriIndexData = { //一開始變壓器資料
     index1: {   
       type:{
         oriType: '燈力',
         newType: '',
       }, 
       light: { //只有原變壓器
-        disabled: false,
+        disabled: true,
         ori: {
           id:'1',
           coor: 'B6744GD33',
           div: 'T01',
           tr_index:'1',
           type: '燈',
+          thereshold: '50%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -317,16 +353,20 @@ function Predict({ transformer, saveEachTransInfo }) {
             tag: mockLightTags[i % 5],
           })),
         },
-        new: {disabled: false, ori:{}, new:{}}
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
       },
       power: { //只有原變壓器
-        disabled: false,
+        disabled: true,
         ori: {
           id:'2',
           coor: 'B6744GD33',
           div: 'T01',
           tr_index:'1',
           type: '力',
+          thereshold: '60%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -338,7 +378,10 @@ function Predict({ transformer, saveEachTransInfo }) {
             tag: mockPowerTags[i % 5],
           })),
         },
-        new: {}
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
       }
       },
     index2: {
@@ -346,15 +389,26 @@ function Predict({ transformer, saveEachTransInfo }) {
         oriType: '力',
         newType: '',
       },
-      light: { disabled: false, ori: {}, new: {}}, //皆沒有資料
+      light: { 
+        disabled: true, 
+        ori: {
+          coor: '',
+          thereshold: '0%',
+        }, 
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      }, //皆沒有資料
       power: {
-        disabled: false,
+        disabled: true,
         ori: {
           id:'3',
           coor: 'B6744GD33',
           div: 'T01',
           tr_index:'2',
           type: '力',
+          thereshold: '75%',
           data: Array.from({
             length: 10,
           }).map((_, i) => ({
@@ -365,7 +419,11 @@ function Predict({ transformer, saveEachTransInfo }) {
             address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
-        }
+        },
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
       } ///只有原變壓器
     },
   }
@@ -393,6 +451,7 @@ function Predict({ transformer, saveEachTransInfo }) {
   const handlefakeData = (values) => {
     console.log("虛擬變壓器資料", values);
     setupdateIndexData(fakeIndexData)
+    // setIsDataSwitch(true)
     setIsaddFakeOpen(false);
   };
 
@@ -401,6 +460,7 @@ function Predict({ transformer, saveEachTransInfo }) {
   };
   const handleExistOk = () => {
     setupdateIndexData(existIndexData)
+    // setIsDataSwitch(true)
     setIsaddExistOpen(false);
   };
   const onSearch = (value) => {
@@ -634,12 +694,7 @@ function Predict({ transformer, saveEachTransInfo }) {
     setSecondDiv(value);
   };
 
-  //更新利用率loading
-  const theresholdSuccess = () => {
-    message.loading('正在計算並更新利用率中...', 3, () => {
-      message.success('已更新！');
-    });
-  };
+
   // console.log(mergeData);
   
   return (
@@ -840,10 +895,9 @@ function Predict({ transformer, saveEachTransInfo }) {
               </Row>
               <Content class="predict-box mb-2">
                 <PredictList 
-                  indexData={updateIndexData[key]} />
-                <div class="flex" style={{justifyContent:'flex-end'}}>
-                  <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={theresholdSuccess}>更新利用率</button>
-                </div>
+                  indexData = {updateIndexData[key]} 
+                  // isDataSwitch = {isDataSwitch}
+                />
               </Content>
             </div>
           ))}

@@ -1,9 +1,9 @@
 //穿梭框
 
-import { Switch, Table, Tag, Transfer, Tooltip ,Layout, Row, Col, Divider} from 'antd';
+import { Switch, Table, Tag, Transfer, Tooltip ,message, Row, Col, Divider} from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import difference from 'lodash/difference';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // Customize Table Transfer
 const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, indexData, ...restProps }) => (
   <Transfer {...restProps}>
@@ -44,10 +44,14 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, indexData, ...rest
             dataSource={filteredItems}
             title={() => 
               <div class="flex justify-between text-normal">
-                <div class='font-bold'>第一具：{overView.type}</div>
+                <div class='font-bold'>{overView.type}</div>
                 <div>原利用率：{overView.thereshold}</div>
-                <div>新利用率：{overView.tenHour}</div>
+                <div>新利用率：{overView.newThereshold}</div>
               </div>
+            }
+            footer={() => listDisabled?
+              <div class="font-bold">無法分割</div>
+              : undefined
             }
             // size="small"
             // scroll={{
@@ -71,22 +75,22 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, indexData, ...rest
 );
 const mockLightTags = ['A', 'B', 'C', 'D', 'E'];
 const mockPowerTags = ['F', 'G', 'H', 'I', 'J'];
-const totalDataL ={
-    coor: 'B6744HD20',
-    type: '燈',
-    isExist: true,
-    thereshold: '40%',
-    tenHour: '50%'
-  }
-;
-const totalDataR ={
-    coor: 'xxxx',
-    type: '燈',
-    isExist: false,
-    thereshold: '0%',
-    tenHour: '0%'
-  }
-;
+// const totalDataL ={
+//     coor: 'B6744HD20',
+//     type: '燈',
+//     isExist: true,
+//     thereshold: '40%',
+//     tenHour: '50%'
+//   }
+// ;
+// const totalDataR ={
+//     coor: 'xxxx',
+//     type: '燈',
+//     isExist: false,
+//     thereshold: '0%',
+//     tenHour: '0%'
+//   }
+// ;
 const mockData = Array.from({
   length: 10,
 }).map((_, i) => ({
@@ -147,12 +151,25 @@ const onlyColumns = [
   },
 ];
 
-const PredictList = ({indexData}) => {
+const PredictList = ({ indexData, isDataSwitch }) => {
   // console.log('data', data)
   console.log('list data', indexData, indexData.light)
-  const [targetKeys, setTargetKeys] = useState(originTargetKeys); //test
-  const [lightDisabled, setLightDisabled] = useState(false);
-  const [powerDisabled, setPowerDisabled] = useState(false);
+  // const [targetKeys, setTargetKeys] = useState(originTargetKeys); //test
+  const [updateOriLightThereshold, setupdateOriLightThereshold] = useState('0%'); //更新原變壓器燈利用率
+  const [updateNewLightThereshold, setupdateNewLightThereshold] = useState('0%'); //更新新變壓器燈利用率
+  const [updateOriPowerThereshold, setupdateOriPowerThereshold] = useState('0%'); //更新原變壓器力利用率
+  const [updateNewPowerThereshold, setupdateNewPowerThereshold] = useState('0%'); //更新新變壓器力利用率
+
+  // //想設定當資料切換時新利用率為0%!
+  // useEffect(() => {
+  //   if (isDataSwitch) {
+  //     setupdateOriLightThereshold('0%');
+  //     setupdateNewLightThereshold('0%');
+  //     setupdateOriPowerThereshold('0%');
+  //     setupdateNewPowerThereshold('0%');
+  //     isDataSwitch = false
+  //   }
+  // }, [isDataSwitch]);
 
   //設定燈資料
   let originLightTargetKeys = [];
@@ -194,9 +211,9 @@ const PredictList = ({indexData}) => {
   console.log('power data', powerData )
 
   // const [showSearch, setShowSearch] = useState(false);
-  const onChange = (nextTargetKeys) => {
-    setTargetKeys(nextTargetKeys);
-  };
+  // const onChange = (nextTargetKeys) => {
+  //   setTargetKeys(nextTargetKeys);
+  // };
   const onLightChange = (nextTargetKeys) => {
     setTargetLightKeys(nextTargetKeys);
   };
@@ -209,30 +226,52 @@ const PredictList = ({indexData}) => {
   // const triggerShowSearch = (checked) => {
   //   setShowSearch(checked);
   // };
+
+  //設定燈表格上資料
+  const lightDataL ={
+    coor: `${indexData.light.ori.coor}`,
+    type: '燈',
+    thereshold: `${indexData.power.ori.thereshold}`,
+    newThereshold: updateOriLightThereshold,
+  }
+  const lightDataR ={
+    coor: `${indexData.light.new.coor}`,
+    type: '燈',
+    thereshold: `${indexData.light.new.thereshold}`,
+    newThereshold: updateNewLightThereshold,
+  }
+
+  //設定力表格上資料
+  const powerDataL ={
+    coor: `${indexData.power.ori.coor}`,
+    type: '力',
+    thereshold: `${indexData.power.ori.thereshold}`,
+    newThereshold: updateOriPowerThereshold,
+  }
+  const powerDataR ={
+    coor: `${indexData.power.new.coor}`,
+    type: '力',
+    thereshold: `${indexData.power.new.thereshold}`,
+    newThereshold: updateNewPowerThereshold,
+  }
+
+  //更新利用率loading
+  const theresholdSuccess = () => {
+    message.loading('正在計算並更新利用率中...', 3, () => {
+      message.success('已更新！');
+    });
+    setupdateOriLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+    setupdateNewLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+    setupdateOriPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`) 
+    setupdateNewPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+  };
+
   return (
     <>
-        {/* <TableTransfer
-          dataSource={mockDataAll}
-          targetKeys={targetKeys}
-          // disabled={lightDisabled}
-          // showSearch={showSearch}
-          onChange={onChange}
-          // filterOption={(inputValue, item) =>
-          //   item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
-          // }
-          // leftColumns={leftTableColumns}
-          // rightColumns={rightTableColumns}
-          onlyColumns={onlyColumns}
-          totalDataL={totalDataL}
-          totalDataR={totalDataR}
-          indexData={mockDataAll}
-          showSelectAll={false}
-        />
-        <Divider/> */}
         <TableTransfer
           dataSource={lightData}
           targetKeys={targetLightKeys}
-          // disabled={lightDisabled}
+          disabled={indexData.light.disabled}
           // showSearch={showSearch}
           onChange={onLightChange}
           // filterOption={(inputValue, item) =>
@@ -241,15 +280,15 @@ const PredictList = ({indexData}) => {
           // leftColumns={leftTableColumns}
           // rightColumns={rightTableColumns}
           onlyColumns={onlyColumns}
-          totalDataL={totalDataL}
-          totalDataR={totalDataR}
+          totalDataL={lightDataL}
+          totalDataR={lightDataR}
           showSelectAll={false}
         />
         <Divider/>
         <TableTransfer
           dataSource={powerData}
           targetKeys={originPowerTargetKeys}
-          // disabled={powerDisabled}
+          disabled={indexData.power.disabled}
           // showSearch={showSearch}
           onChange={onPowerChange}
           filterOption={(inputValue, item) =>
@@ -258,10 +297,13 @@ const PredictList = ({indexData}) => {
           // leftColumns={leftTableColumns}
           // rightColumns={rightTableColumns}
           onlyColumns={onlyColumns}
-          totalDataL={totalDataL}
-          totalDataR={totalDataR}
+          totalDataL={powerDataL}
+          totalDataR={powerDataR}
           showSelectAll={false}
         />
+        <div class="flex" style={{justifyContent:'flex-end'}}>
+          <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={theresholdSuccess}>更新利用率</button>
+        </div>
         {/* <Switch
           unCheckedChildren="disabled"
           checkedChildren="disabled"
