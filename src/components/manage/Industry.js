@@ -109,7 +109,7 @@ const region_list = [
 ]
 
 function Industry({setSelectedDate,setSelectedRegion}) {
-  const parsed = queryString.parse(window.location.search);
+  // const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
