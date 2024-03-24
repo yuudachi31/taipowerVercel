@@ -736,11 +736,11 @@ export const getTransformerExport = async (region_id,startdate,enddate) => {
 export const postIndustry = async (date,region) => {
   try {
     const _url = `${baseURL}/industry_function/start_industry_pr_function_by_month`;
-    const result = await axios.post(_url,{
-      month:date,
-      area_code:region
-    }, {
- 
+    const result = await axios.post(_url,null, {
+  params:{
+    month:date,
+    area_code:region
+  },
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

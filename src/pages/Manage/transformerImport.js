@@ -81,7 +81,7 @@ function TransformerImport() {
     const [isComputing, setIsComputing] = useState(false)
     const [industryData, setIndustryData] = useState(null)
     const handleSaveImage = (strArray, index) => {
-        strArray.forEach(element => {
+        strArray?.forEach(element => {
             const downloadLink = document.createElement('a');
             downloadLink.href = `data:image/png;base64,${element}`
             downloadLink.download = `image_${index + 1}.png`
