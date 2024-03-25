@@ -36,9 +36,9 @@ function Header({user}) {
   function _gotoabnormal() { //異常變壓器
     _history.push('/tr/abnormal') 
   }
-  function _gotoindustryinfo() { //異常變壓器
-    _history.push('/IndustryInfo') 
-  }
+  // function _gotoindustryinfo() { //行業別
+  //   _history.push('/IndustryInfo') 
+  // }
 
   function _gotoAMI() { //異常變壓器
     _history.push('/tr/AMIinfo')  
