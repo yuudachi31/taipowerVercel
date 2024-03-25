@@ -867,7 +867,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             <div class="text-normal">變壓器型態：{EData.type}</div>
           </Col>
           <Col span={12}>
-            <div class="text-normal">新變壓器：虛擬/既設變壓器組別名稱 {PData.coor}</div>
+            <div class="text-normal">新變壓器：{PData.coor}</div>
             <div class="text-normal">組別：{PData.div}</div>
             <div class="text-normal">變壓器型態：{PData.type}</div>
           </Col>
@@ -895,8 +895,7 @@ function Predict({ transformer, saveEachTransInfo }) {
               </Row>
               <Content class="predict-box mb-2">
                 <PredictList 
-                  indexData = {updateIndexData[key]} 
-                  // isDataSwitch = {isDataSwitch}
+                  indexData={updateIndexData[key]} 
                 />
               </Content>
             </div>

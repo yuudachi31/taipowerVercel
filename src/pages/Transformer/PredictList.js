@@ -6,7 +6,7 @@ import difference from 'lodash/difference';
 import React, { useEffect, useState } from 'react';
 // Customize Table Transfer
 const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, indexData, ...restProps }) => (
-  <Transfer {...restProps}>
+  <Transfer {...restProps} >
     {({
       direction,
       filteredItems,
@@ -42,7 +42,7 @@ const TableTransfer = ({ onlyColumns, totalDataL, totalDataR, indexData, ...rest
             pagination={{style:{marginRight:'20px', marginBottom:'15px'} }}
             columns={columns}
             dataSource={filteredItems}
-            title={() => 
+            title={() =>   
               <div class="flex justify-between text-normal">
                 <div class='font-bold'>{overView.type}</div>
                 <div>原利用率：{overView.thereshold}</div>
@@ -151,33 +151,38 @@ const onlyColumns = [
   },
 ];
 
-const PredictList = ({ indexData, isDataSwitch }) => {
-  // console.log('data', data)
+const PredictList = ({ indexData }) => {
+
   console.log('list data', indexData, indexData.light)
   // const [targetKeys, setTargetKeys] = useState(originTargetKeys); //test
   const [updateOriLightThereshold, setupdateOriLightThereshold] = useState('0%'); //更新原變壓器燈利用率
   const [updateNewLightThereshold, setupdateNewLightThereshold] = useState('0%'); //更新新變壓器燈利用率
   const [updateOriPowerThereshold, setupdateOriPowerThereshold] = useState('0%'); //更新原變壓器力利用率
   const [updateNewPowerThereshold, setupdateNewPowerThereshold] = useState('0%'); //更新新變壓器力利用率
+  const [targetPowerKeys, setTargetPowerKeys] = useState([]);
+  const [targetLightKeys, setTargetLightKeys] = useState([]);
 
-  // //想設定當資料切換時新利用率為0%!
-  // useEffect(() => {
-  //   if (isDataSwitch) {
-  //     setupdateOriLightThereshold('0%');
-  //     setupdateNewLightThereshold('0%');
-  //     setupdateOriPowerThereshold('0%');
-  //     setupdateNewPowerThereshold('0%');
-  //     isDataSwitch = false
-  //   }
-  // }, [isDataSwitch]);
+  // //想設定當資料切換時新利用率為0%! && 當資料變換時重新設定target key
+  useEffect(() => {
+    let originPowerTargetKeys = [];
+    if (indexData.power && indexData.power.new && indexData.power.new.data) {
+      originPowerTargetKeys = indexData.power.new.data.map((item) => item.key);
+    } 
+    setTargetPowerKeys(originPowerTargetKeys)
+    let originLightTargetKeys = [];
+    if (indexData.light && indexData.light.new && indexData.light.new.data) {
+      originLightTargetKeys = indexData.light.new.data.map((item) => item.key);
+    }   
+    setTargetLightKeys(originLightTargetKeys)
+    setupdateOriLightThereshold('0%')
+    setupdateNewLightThereshold('0%')
+    setupdateOriPowerThereshold('0%')
+    setupdateNewPowerThereshold('0%')
+    // console.log('targetPowerKeys', targetPowerKeys)
+
+  }, [indexData]);
 
   //設定燈資料
-  let originLightTargetKeys = [];
-  // const lightData = 
-  if (indexData.light && indexData.light.new && indexData.light.new.data) {
-    originLightTargetKeys = indexData.light.new.data.map((item) => item.key);
-  } 
-  const [targetLightKeys, setTargetLightKeys] = useState(originLightTargetKeys);
   console.log('targetLightKeys', targetLightKeys)
   const lightData = [];
   if (indexData.light.ori && Array.isArray(indexData.light.ori.data)) {
@@ -192,12 +197,6 @@ const PredictList = ({ indexData, isDataSwitch }) => {
   console.log('light data', lightData )
 
   //設定力資料
-  let originPowerTargetKeys = [];
-  if (indexData.power && indexData.power.new && indexData.power.new.data) {
-    originPowerTargetKeys = indexData.power.new.data.map((item) => item.key);
-  } 
-  const [targetPowerKeys, setTargetPowerKeys] = useState(originPowerTargetKeys);
-  console.log('targetPowerKeys', targetPowerKeys)
   const powerData = [];
   if (indexData.power.ori && Array.isArray(indexData.power.ori.data)) {
     powerData.push(...indexData.power.ori.data);
@@ -210,22 +209,14 @@ const PredictList = ({ indexData, isDataSwitch }) => {
   }
   console.log('power data', powerData )
 
-  // const [showSearch, setShowSearch] = useState(false);
-  // const onChange = (nextTargetKeys) => {
-  //   setTargetKeys(nextTargetKeys);
-  // };
+  //更新移動的key
   const onLightChange = (nextTargetKeys) => {
     setTargetLightKeys(nextTargetKeys);
   };
   const onPowerChange = (nextTargetKeys) => {
+    console.log('nextTargetKeys', nextTargetKeys)
     setTargetPowerKeys(nextTargetKeys);
   };
-  // const triggerDisable = (checked) => {
-  //   setDisabled(checked);
-  // };
-  // const triggerShowSearch = (checked) => {
-  //   setShowSearch(checked);
-  // };
 
   //設定燈表格上資料
   const lightDataL ={
@@ -259,11 +250,12 @@ const PredictList = ({ indexData, isDataSwitch }) => {
   const theresholdSuccess = () => {
     message.loading('正在計算並更新利用率中...', 3, () => {
       message.success('已更新！');
+      setupdateOriLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+      setupdateNewLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+      setupdateOriPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`) 
+      setupdateNewPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
     });
-    setupdateOriLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
-    setupdateNewLightThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
-    setupdateOriPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`) 
-    setupdateNewPowerThereshold(`${Math.floor(Math.random() * 51) + 10}%`)
+    console.log('變換到右邊穿梭框的資料key值，燈：', targetLightKeys, '，力：' , targetPowerKeys)
   };
 
   return (
@@ -272,13 +264,10 @@ const PredictList = ({ indexData, isDataSwitch }) => {
           dataSource={lightData}
           targetKeys={targetLightKeys}
           disabled={indexData.light.disabled}
-          // showSearch={showSearch}
           onChange={onLightChange}
-          // filterOption={(inputValue, item) =>
-          //   item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
-          // }
-          // leftColumns={leftTableColumns}
-          // rightColumns={rightTableColumns}
+          filterOption={(inputValue, item) =>
+            item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
+          }
           onlyColumns={onlyColumns}
           totalDataL={lightDataL}
           totalDataR={lightDataR}
@@ -287,15 +276,12 @@ const PredictList = ({ indexData, isDataSwitch }) => {
         <Divider/>
         <TableTransfer
           dataSource={powerData}
-          targetKeys={originPowerTargetKeys}
+          targetKeys={targetPowerKeys}
           disabled={indexData.power.disabled}
-          // showSearch={showSearch}
           onChange={onPowerChange}
           filterOption={(inputValue, item) =>
             item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1
           }
-          // leftColumns={leftTableColumns}
-          // rightColumns={rightTableColumns}
           onlyColumns={onlyColumns}
           totalDataL={powerDataL}
           totalDataR={powerDataR}
@@ -304,24 +290,6 @@ const PredictList = ({ indexData, isDataSwitch }) => {
         <div class="flex" style={{justifyContent:'flex-end'}}>
           <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={theresholdSuccess}>更新利用率</button>
         </div>
-        {/* <Switch
-          unCheckedChildren="disabled"
-          checkedChildren="disabled"
-          checked={disabled}
-          onChange={triggerDisable}
-          style={{
-            marginTop: 16,
-          }}
-        />
-        <Switch
-          unCheckedChildren="showSearch"
-          checkedChildren="showSearch"
-          checked={showSearch}
-          onChange={triggerShowSearch}
-          style={{
-            marginTop: 16,
-          }}
-        /> */}
     </>
   );
 };
