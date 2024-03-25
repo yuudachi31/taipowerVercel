@@ -76,7 +76,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             },
             new: {
                 id:'1',
-                coor: 'B6744GD33',
+                coor: 'B6744GD11',
                 div: 'T02',
                 tr_index:'1',
                 type: '力',
@@ -134,7 +134,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             },
             new: {
                 id:'2',
-                coor: 'B6744GD33',
+                coor: 'B6744GD11',
                 div: 'T02',
                 tr_index:'2',
                 type: '力',
@@ -178,7 +178,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             },
             new: {
                 id:'3',
-                coor: 'B6744GD33',
+                coor: 'B6744GD11',
                 div: 'T02',
                 tr_index:'3',
                 type: '力',
@@ -203,7 +203,7 @@ function Predict({ transformer, saveEachTransInfo }) {
     index1: {   
       type:{
         oriType: '燈力',
-        newType: '力、力',
+        newType: '力',
       }, 
       light: { //只有原變壓器
         disabled: true,
@@ -273,7 +273,7 @@ function Predict({ transformer, saveEachTransInfo }) {
     index2: {
       type:{
         oriType: '力',
-        newType: '',
+        newType: '力',
       },
       light: { 
         disabled: true, 
@@ -482,7 +482,7 @@ function Predict({ transformer, saveEachTransInfo }) {
     const _history = useHistory();
 
   const mockTags = ['XX', 'XX', 'XX'];
-  // 資料要寫在一起因為穿梭框是用key在判斷資料，不過在思考怎麼樣才比較好
+  // EData、PData都是穿梭框上面的資料細節才會用到
   const EData = { //原變壓器
     coor: 'B6744GD33',
     cap: '50 KWA',
@@ -840,7 +840,6 @@ function Predict({ transformer, saveEachTransInfo }) {
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
           <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
@@ -867,9 +866,12 @@ function Predict({ transformer, saveEachTransInfo }) {
             <div class="text-normal">變壓器型態：{EData.type}</div>
           </Col>
           <Col span={12}>
-            <div class="text-normal">新變壓器：{PData.coor}</div>
+            {/* <div class="text-normal">新變壓器：{PData.coor}</div>
             <div class="text-normal">組別：{PData.div}</div>
-            <div class="text-normal">變壓器型態：{PData.type}</div>
+            <div class="text-normal">變壓器型態：{PData.type}</div> */}
+            <div class="text-normal">新變壓器：B6744GD11</div>
+            <div class="text-normal">組別：T02</div>
+            <div class="text-normal">變壓器型態：力、力、力</div>
           </Col>
         </Row>
         
