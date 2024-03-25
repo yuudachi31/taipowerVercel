@@ -1,12 +1,6 @@
 //antd
 import { Layout, Divider, Row, Col, Modal, Form, Input, message, Cascader, Button, Select } from 'antd';
-import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
-import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
-import styles from '../../index.less'
-import moment from 'moment';
 import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
-// import EChartRate from '../../components/chart/EChartRate';
-import { data_main, data_month } from '../../components/chart/TempData'
 import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -18,76 +12,446 @@ import predictTestData from './predictTestData.json'
 
 const { Header, Sider, Content } = Layout;
 
-
-const currentDate = new Date('2022/6/1');
-console.log('currentDate', currentDate)
-const currentMonth = currentDate.getMonth;
-const currentHour = currentDate.getHours;
-const defaultTimeRange = [currentHour, currentHour];
-const defaultMonth = [currentMonth, currentMonth];
-
-const onChangeMonth = (date, dateString) => {
-  console.log(date, dateString);
-};
-
-function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
+function Predict({ transformer, saveEachTransInfo }) {
+  // const parsed = queryString.parse(window.location.search);
   const [isLoadingtop, setIsLoadingTop] = useState(true);
-  const handledayChange = (value,mode) => {
-    
-    setSelectedDay(mode);
-    
-  };
-  // console.log(transformer.dailyRatesList)
+  // const [isDataSwitch, setIsDataSwitch] = useState(false); //資料是否已切換，尚未成功
 
-  const handlePanelChange = (value, mode) => {
-    if (mode === 'year') {
-      setSelectedYear(value.year());
-      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
-
-          saveMonthlyRates(data)
+  //設定選擇虛擬或是記設變壓器的變壓器資料
+  //手動分包檔案 ori：原本的、new：新設的、light：燈、power：力
+  //分三具包
+  const mockLightTags = ['A', 'B', 'C', 'D', 'E'];
+  const mockPowerTags = ['F', 'G', 'H', 'I', 'J'];
+  const existIndexData = { //選擇既有變壓器
+    index1: {  
+        type: {
+            oriType: '燈力',
+            newType: '力',
+        },
+        light: { //只有原變壓器
+            disabled: true,
+            ori: {
+                id:'1',
+                coor: 'B6744GD33',
+                div: 'T01',
+                tr_index:'1',
+                type: '燈',
+                thereshold: '50%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `ori${i + 1}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709811${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockLightTags[i % 5],
+                })),
+            },
+            new: {
+              coor: '',
+              thereshold: '0%',
+            },
+            // targetKey: [],
+        },
+        power: { //新、舊變壓器
+            disabled: false,
+            ori: {
+                id:'2',
+                coor: 'B6744GD33',
+                div: 'T01',
+                tr_index:'1',
+                type: '力',
+                thereshold: '60%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `ori${i + 1}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709800${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockPowerTags[i % 5],
+                })),
+            },
+            new: {
+                id:'1',
+                coor: 'B6744GD11',
+                div: 'T02',
+                tr_index:'1',
+                type: '力',
+                thereshold: '30%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `pre${i + 1}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709888${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockPowerTags[i % 5],
+                })),
+            },
+            // targetKey: [],
         }
-      })
-    }
-  };
-  const handlePanelChange_daily =(value,mode)=>{
-    const parsed = queryString.parse(window.location.search);
-    // setSelectedYear(value.year());
-    if (mode === 'month') {
-      setSelectedYear(value.year());
-      setSelectedMonth(value.month());
-    // const parsed = queryString.parse(window.location.search);
-      console.log(value.year())
-      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(),value.month()+1).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
-
-          saveDailyRates(data)
+    },
+    index2: {
+        type: {
+            oriType: '力',
+            newType: '力',
+        },
+        light: {
+            disabled: true, 
+            ori:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            new:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            // targetKey: [],
+        }, //皆沒有資料
+        power: { //新、舊變壓器
+            disabled: false,
+            ori: {
+                id:'3',
+                coor: 'B6744GD33',
+                div: 'T01',
+                tr_index:'2',
+                type: '力',
+                thereshold: '75%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `ori${i + 11}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709822${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockPowerTags[i % 5],
+                })),
+            },
+            new: {
+                id:'2',
+                coor: 'B6744GD11',
+                div: 'T02',
+                tr_index:'2',
+                type: '力',
+                thereshold: '50%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `pre${i + 21}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709855${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockPowerTags[i % 5],
+                })),
+            },
+            // targetKey: [],
         }
-      })
-    }
+    },
+    index3: {
+        type: {
+            oriType: '',
+            newType: '力',
+        },
+        light: {
+            disabled: true, 
+            ori:{
+              coor: '',
+              thereshold: '0%',
+            }, 
+            new:{
+              coor: '',
+              thereshold: '0%',
+            },
+            // targetKey: [],
+        }, //皆沒有資料
+        power: { //新變壓器
+            disabled: true,
+            ori: {
+              coor: '',
+              thereshold: '0%',
+            },
+            new: {
+                id:'3',
+                coor: 'B6744GD11',
+                div: 'T02',
+                tr_index:'3',
+                type: '力',
+                thereshold: '40%',
+                data: Array.from({
+                    length: 10,
+                }).map((_, i) => ({
+                    key: `pre${i + 31}`,
+                    title: `content${i + 1}`,
+                    electricityNum: `002709833${i + 1}`,
+                    tenHour: "5%",
+                    address: `台北市松山區XXXXX${i + 1}`,
+                    tag: mockPowerTags[i % 5],
+                })),
+            },
+              // targetKey: [],
+          }
+      }
+  };
+
+  const fakeIndexData = { //選擇虛擬變壓器
+    index1: {   
+      type:{
+        oriType: '燈力',
+        newType: '力',
+      }, 
+      light: { //只有原變壓器
+        disabled: true,
+        ori: {
+          id:'1',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'1',
+          type: '燈',
+          thereshold: '50%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockLightTags[i % 5],
+          })),
+        },
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      },
+      power: { //新、變壓器
+        disabled: false,
+        ori: {
+          id:'2',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'1',
+          type: '力',
+          thereshold: '60%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        },
+        new: {
+          id:'1',
+          coor: 'B6744GD33',
+          div: 'T02',
+          tr_index:'1',
+          type: '力',
+          thereshold: '30%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `pre${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709888${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        }
+      }
+      },
+    index2: {
+      type:{
+        oriType: '力',
+        newType: '力',
+      },
+      light: { 
+        disabled: true, 
+        ori: {
+          coor: '',
+          thereshold: '0%',
+        }, 
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      }, //皆沒有資料
+      power: {
+        disabled: false,
+        ori: {
+          id:'3',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'2',
+          type: '力',
+          thereshold: '75%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        },
+        new: {
+          id:'2',
+          coor: 'B6744GD33',
+          div: 'T02',
+          tr_index:'2',
+          type: '力',
+          thereshold: '50%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `pre${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709855${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        }
+      } ///新、舊變壓器
+    },
   }
+  const oriIndexData = { //一開始變壓器資料
+    index1: {   
+      type:{
+        oriType: '燈力',
+        newType: '',
+      }, 
+      light: { //只有原變壓器
+        disabled: true,
+        ori: {
+          id:'1',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'1',
+          type: '燈',
+          thereshold: '50%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockLightTags[i % 5],
+          })),
+        },
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      },
+      power: { //只有原變壓器
+        disabled: true,
+        ori: {
+          id:'2',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'1',
+          type: '力',
+          thereshold: '60%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        },
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      }
+      },
+    index2: {
+      type:{
+        oriType: '力',
+        newType: '',
+      },
+      light: { 
+        disabled: true, 
+        ori: {
+          coor: '',
+          thereshold: '0%',
+        }, 
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      }, //皆沒有資料
+      power: {
+        disabled: true,
+        ori: {
+          id:'3',
+          coor: 'B6744GD33',
+          div: 'T01',
+          tr_index:'2',
+          type: '力',
+          thereshold: '75%',
+          data: Array.from({
+            length: 10,
+          }).map((_, i) => ({
+            key: `ori${i + 1}`,
+            title: `content${i + 1}`,
+            electricityNum: `002709800${i + 1}`,
+            tenHour: "5%",
+            address: `台北市松山區XXXXX${i + 1}`,
+            tag: mockPowerTags[i % 5],
+          })),
+        },
+        new: {
+          coor: '',
+          thereshold: '0%',
+        },
+      } ///只有原變壓器
+    },
+  }
+  //一開始只有原變壓器有資料
+  const [updateIndexData, setupdateIndexData] = useState(oriIndexData);
+  // console.log('indexData', updateIndexData, updateIndexData.index1.type.oriType)
 
   //設定新變壓器Modal
   const [isaddFakeOpen, setIsaddFakeOpen] = useState(false);
   const [isaddExistOpen, setIsaddExistOpen] = useState(false);
-
-  const showaddFakeModal = () => {
-    setIsaddFakeOpen(true);
-  };
+  const [formData, setFormData] = useState({});
+  const [selectedTransformerType, setSelectedTransformerType] = useState([]);
+  
   const handleCancel = () => {
+    // 清空表單數據和選擇的變壓器型態
+    setFormData({});
+    setSelectedTransformerType([]);
     setIsaddFakeOpen(false);
     setIsaddExistOpen(false);
   };
+  const showaddFakeModal = () => {
+    setIsaddFakeOpen(true);
+  };
+
   const handlefakeData = (values) => {
     console.log("虛擬變壓器資料", values);
+    setupdateIndexData(fakeIndexData)
+    // setIsDataSwitch(true)
     setIsaddFakeOpen(false);
   };
 
@@ -95,7 +459,8 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
     setIsaddExistOpen(true);
   };
   const handleExistOk = () => {
-
+    setupdateIndexData(existIndexData)
+    // setIsDataSwitch(true)
     setIsaddExistOpen(false);
   };
   const onSearch = (value) => {
@@ -115,115 +480,137 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       })
     }, [])
     const _history = useHistory();
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        key: i,
-        name: `Edrward ${i}`,
-        age: 32,
-        address: `London Park no. ${i}`,
-      });
-    }
 
-  const mockTags = ['01', '02', '03'];
-  const lsags = ['燈', '力'];
-  // 資料要寫在一起因為穿梭框是用key在判斷資料，不過在思考怎麼樣才比較好
-  const EData = {
-    coor: 'B6744HD20',
+  const mockTags = ['XX', 'XX', 'XX'];
+  // EData、PData都是穿梭框上面的資料細節才會用到
+  const EData = { //原變壓器
+    coor: 'B6744GD33',
     cap: '50 KWA',
     div: 'T01',
-    totalNum: 2,
+    // totalNum: 2,
     type: '燈力、力',
     mockData: [
       {
         id:'1',
-        type: '燈力',
+        coor: 'B6744GD33',
+        div: 'T01',
+        tr_index:'1',
+        type: '燈',
         data: Array.from({
           length: 10,
         }).map((_, i) => ({
-          key: 'e' + i.toString(),
+          key: `ori${i + 1}`,
           title: `content${i + 1}`,
-          description: `description of content${i + 1}`,
-          electricityNum: `electricityNum of content${i + 1}`,
-          priceDay: `${10 + (i % 4)}`,
+          electricityNum: `002709800${i + 1}`,
           tenHour: "5%",
-          KW: "1000 kw",
-          address: `address of content${i + 1}`,
+          address: `台北市松山區XXXXX${i + 1}`,
           tag: mockTags[i % 3],
-          // 燈還是力
-          lors: lsags[i % 2],
         })),
       },
       {
         id:'2',
+        coor: 'B6744GD33',
+        div: 'T01',
+        tr_index:'1',
         type: '力',
         data: Array.from({
           length: 10,
         }).map((_, i) => ({
-          key: 'e' + i.toString(),
+          key: `ori${i + 1}`,
           title: `content${i + 1}`,
-          description: `description of content${i + 1}`,
-          electricityNum: `electricityNum of content${i + 1}`,
-          priceDay: `${10 + (i % 4)}`,
+          electricityNum: `002709800${i + 1}`,
           tenHour: "5%",
-          KW: "1000 kw",
-          address: `address of content${i + 1}`,
+          address: `台北市松山區XXXXX${i + 1}`,
           tag: mockTags[i % 3],
-          lors: '力',
+        })),
+      },
+      {
+        id:'3',
+        coor: 'B6744GD33',
+        div: 'T01',
+        tr_index:'2',
+        type: '力',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: `ori${i + 1}`,
+          title: `content${i + 1}`,
+          electricityNum: `002709800${i + 1}`,
+          tenHour: "5%",
+          address: `台北市松山區XXXXX${i + 1}`,
+          tag: mockTags[i % 3],
         })),
       },
     ]
   };
-  const PData = {
-    coor: 'XXXXXXXXX',
-    cap: '50 KWA',
+  const PData = { //新變壓器
+    coor: 'B6744GD11',
+    cap: '167 KWA',
     div: 'T02',
-    totalNum: 3,
+    // totalNum: 3,
     type: '力、力、力',
     mockData: [
       {
-        key: 'p1',
         id:'1',
+        coor: 'B6744GD33',
+        div: 'T02',
+        tr_index:'1',
         type: '力',
-        data:'',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: `pre${i + 1}`,
+          title: `content${i + 1}`,
+          electricityNum: `002709800${i + 1}`,
+          tenHour: "5%",
+          address: `台北市松山區XXXXX${i + 1}`,
+          tag: mockTags[i % 3],
+        })),
       },
       {
-        key: 'p2',
         id:'2',
+        coor: 'B6744GD33',
+        div: 'T02',
+        tr_index:'2',
         type: '力',
-        data:'',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: `pre${i + 1}`,
+          title: `content${i + 1}`,
+          electricityNum: `002709800${i + 1}`,
+          tenHour: "5%",
+          address: `台北市松山區XXXXX${i + 1}`,
+          tag: mockTags[i % 3],
+        })),
       },
       {
-        key: 'p3',
         id:'3',
+        coor: 'B6744GD33',
+        div: 'T02',
+        tr_index:'3',
         type: '力',
-        data:'',
+        data: Array.from({
+          length: 10,
+        }).map((_, i) => ({
+          key: `pre${i + 1}`,
+          title: `content${i + 1}`,
+          electricityNum: `002709800${i + 1}`,
+          tenHour: "5%",
+          address: `台北市松山區XXXXX${i + 1}`,
+          tag: mockTags[i % 3],
+        })),
       },
     ]
   };
-  const eDataTotalNum = EData.totalNum || 0;
-  const pDataTotalNum = PData.totalNum || 0;
+  // const eDataTotalNum = EData.totalNum || 0;
+  // const pDataTotalNum = PData.totalNum || 0;
 
-  // 找到最大的 totalNum
-  const maxNum = Math.max(eDataTotalNum, pDataTotalNum);
-  console.log('PData', PData, maxNum)
-
-  // 取得所有的 id
-  const allIds = [...new Set([...EData.mockData.map(item => item.id), ...PData.mockData.map(item => item.id)])];
-
-  // 重新封裝資料
-  const mergeData = allIds.map(id => {
-    const EDataItem = EData.mockData.find(item => item.id === id) || { data: '' }
-    const PDataItem = PData.mockData.find(item => item.id === id) || { data: '' }
-
-    return { id, EDataItem, PDataItem };
-  });
-
-  //設定容量
+  //設定容量 25 50 100 167
   const opacityOptions = [
     {
-      value: '10 KVA',
-      label: '10 KVA',
+      value: '25 KVA',
+      label: '25 KVA',
     },
     {
       value: '50 KVA',
@@ -234,28 +621,86 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       label: '100 KVA',
     },
     {
-      value: '150 KVA',
-      label: '150 KVA',
-    },
-    {
-      value: '200 KVA',
-      label: '200 KVA',
+      value: '167 KVA',
+      label: '167 KVA',
     },
   ];
-
-  //更新利用率loading
-  const theresholdSuccess = () => {
-    message.loading('正在計算並更新利用率中...', 3, () => {
-      message.success('已更新！');
-    });
+  //設定虛擬變壓器容量select
+  const capacitySelect = () => {
+    if (selectedTransformerType.includes('燈')) {
+      return (
+        <Form.Item label="燈容量" name="燈容量" rules={[{ required: true,  message: '請輸入燈容量'} ]}>
+          <Select
+            placeholder="請選擇燈容量"
+            style={{
+              width: 200,
+            }}
+            options= {opacityOptions}
+          />
+        </Form.Item>
+      );
+    } else if (selectedTransformerType.includes('力、力') || selectedTransformerType.includes('力、力、力')) {
+      return (
+        <Form.Item label="力容量" name="力容量" rules={[{ required: true,  message: '請輸入力容量'} ]}>
+          <Select
+            placeholder="請選擇力容量"
+            style={{
+              width: 200,
+            }}
+            options= {opacityOptions}
+          />
+        </Form.Item>
+      );
+    } else if (selectedTransformerType.includes('燈、力')) {
+      return (
+        <>
+         <Form.Item label="燈容量" name="燈容量" rules={[{ required: true,  message: '請輸入燈容量'} ]}>
+          <Select
+            placeholder="請選擇燈容量"
+            style={{
+              width: 200,
+            }}
+            options= {opacityOptions}
+          />
+        </Form.Item>
+        <Form.Item label="力容量" name="力容量" rules={[{ required: true,  message: '請輸入力容量'} ]}>
+          <Select
+            placeholder="請選擇力容量"
+            style={{
+              width: 200,
+            }}
+            options= {opacityOptions}
+          />
+        </Form.Item>
+        </>
+      );
+    }
   };
 
-  console.log(mergeData);
+  //設定既有變壓器select
+  const totalCoorData = ['B6744GD33', 'B6744GD11', 'B6744GD72'];
+  const coorData = {
+    B6744GD33: ['T01'],
+    B6744GD11: ['T01', 'T02', 'T03', 'T04'],
+    B6744GD72: ['T01'],
+  };
+  const [coors, setCoors] = useState(coorData[totalCoorData[0]]);
+  const [secondDiv, setSecondDiv] = useState(coorData[totalCoorData[0]][0]);
+  const handleExistCoorChange = (value) => {
+    setCoors(coorData[value]);
+    setSecondDiv(coorData[value][0]);
+  };
+  const onSecondDivChange = (value) => {
+    setSecondDiv(value);
+  };
+
+
+  // console.log(mergeData);
   
   return (
     <Layout class="px-20 wrapper">
-        {/* 設定虛擬變壓器 */}
-        <Modal
+      {/* 設定虛擬變壓器 */}
+      <Modal
           title="設定虛擬變壓器"
           open={isaddFakeOpen}
           // onOk={handleOk}
@@ -270,6 +715,10 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
             }}
             layout="horizontal"
             onFinish={handlefakeData}
+            initialValues={formData}
+            onValuesChange={(changedValues, allValues) => {
+              setFormData(allValues);
+            }}
           >
             <Form.Item label="變壓器名稱" name="變壓器名稱"  rules={[{ required: true, message: '請輸入變壓器名稱',} ]}>
               <Input placeholder="請輸入變壓器名稱"/>
@@ -321,17 +770,12 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
                     ],
                   },
                 ]}
-              />
-            </Form.Item>
-            <Form.Item label="容量" name="容量" rules={[{ required: true,  message: '請輸入容量'} ]}>
-              <Select
-                placeholder="請選擇容量"
-                style={{
-                  width: 200,
+                onChange={(value) => {
+                  setSelectedTransformerType(value);
                 }}
-                options= {opacityOptions}
               />
             </Form.Item>
+            {capacitySelect()}
             <Form.Item style={{textAlign: 'right',}}> 
               <Button style={{marginRight:'8px'}} htmlType="button" onClick={handleCancel}>
                 取消
@@ -355,8 +799,10 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
           <span>變壓器：</span>
           <Select
             style={{
-              width: 400,
+              width: 200,
+              marginRight:'8px',
             }}
+            defaultValue={totalCoorData[0]}
             showSearch
             placeholder="請選擇變壓器"
             optionFilterProp="children"
@@ -364,20 +810,22 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
             filterOption={(input, option) =>
               (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
             }
-            options={[
-              {
-                value: 'B6744HD57',
-                label: 'B6744HD57',
-              },
-              {
-                value: 'B6744GD11',
-                label: 'B6744GD11',
-              },
-              {
-                value: 'B6744GD11',
-                label: 'B6744GD11',
-              },
-            ]}
+            onChange={handleExistCoorChange}
+            options={totalCoorData.map((coor) => ({
+              label: coor,
+              value: coor,
+            }))}
+          />
+          <Select
+            style={{
+              width: 120,
+            }}
+            value={secondDiv}
+            onChange={onSecondDivChange}
+            options={coors.map((coor) => ({
+              label: coor,
+              value: coor,
+            }))}
           />
       </Modal>
       <Header class="pt-4 flex space-x-7 items-center">
@@ -392,7 +840,6 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
           <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-          <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
@@ -413,34 +860,49 @@ function Predict({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRat
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
-          <Col span={12}><div class="font-bold text-normal">原變壓器：T01</div></Col>
-          <Col span={12}><div class="font-bold text-normal">新變壓器：虛擬/既設變壓器組別名稱</div></Col>
+          <Col span={12}>
+            <div class="text-normal">原變壓器：{transformer.eachTransformerInfo.coor}</div>
+            <div class="text-normal">組別：{transformer.eachTransformerInfo.div}</div>
+            <div class="text-normal">變壓器型態：{EData.type}</div>
+          </Col>
+          <Col span={12}>
+            {/* <div class="text-normal">新變壓器：{PData.coor}</div>
+            <div class="text-normal">組別：{PData.div}</div>
+            <div class="text-normal">變壓器型態：{PData.type}</div> */}
+            <div class="text-normal">新變壓器：B6744GD11</div>
+            <div class="text-normal">組別：T02</div>
+            <div class="text-normal">變壓器型態：力、力、力</div>
+          </Col>
         </Row>
         
         {/* 每具資料 */}
-        {Array.from({ length: maxNum }).map((_, index) => (
-          <Content class='mt-5'>
-            <Row key={index}>
-              <Col span={12}>
-                {EData.mockData[index] && (
-                  <div class="text-orange-400 mb-2">{`第${index + 1}具：${EData.mockData[index].type}`}</div>
-                )}
-              </Col>
-              <Col span={12}>
-                {PData.mockData[index] && (
-                  <div class="text-orange-400 mb-2">{`第${index + 1}具：${PData.mockData[index].type}`}</div>
-                )}
-              </Col>
-            </Row>
-            <Content class="predict-box">
-              <PredictList data={mergeData[index]}/>
-              <div class="flex" style={{justifyContent:'flex-end'}}>
-                <button class="btn btn-orange bg-orange-400 mt-5" type="primary" onClick={theresholdSuccess}>更新利用率</button>
-              </div>
-              
-            </Content>
-          </Content>
-        ))}
+        <Content class='mt-5'>
+          {Object.keys(updateIndexData).map((key, index) => (
+            <div key={index}>
+              <Row>
+                <Col span={12}>
+                  {updateIndexData[key].type.oriType ? (
+                    <div class="text-orange-400 mb-2">{`第${index + 1}具：${updateIndexData[key].type.oriType}`}</div>
+                  ) : (
+                    <div class="text-orange-400 mb-2">{`第${index + 1}具：無資料`}</div>
+                  )}
+                </Col>
+                <Col span={12}>
+                  {updateIndexData[key].type.newType ? (
+                    <div class="text-orange-400 mb-2">{`第${index + 1}具：${updateIndexData[key].type.newType}`}</div>
+                  ) : (
+                    <div class="text-orange-400 mb-2">{`第${index + 1}具：無資料`}</div>
+                  )}
+                </Col>
+              </Row>
+              <Content class="predict-box mb-2">
+                <PredictList 
+                  indexData={updateIndexData[key]} 
+                />
+              </Content>
+            </div>
+          ))}
+        </Content>
 
         {/* 結束與匯出 */}
         {/* </div> */}
