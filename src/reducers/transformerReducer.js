@@ -154,41 +154,95 @@ console.log(index)
     case SAVE_MONTHLYRATES:
       const monthlyRates = [];
       // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
-      action.payload.forEach((element, index) => {
+      for (let i = 1; i <= 12; i++) {
+        let haveData = false
+        action.payload.forEach((element, index) => {
+if(element.date_month==i){
+  haveData = true
 
-        let month = `${element.date_month}月`
-        if (element.is_predict == 1) {
-          monthlyRates.push({
-            'load_on': Math.ceil(element.peak_rate),
-            'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
-            'load_off': Math.ceil(element.off_peak_rate),
-            'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
-            'uti_rate': Math.ceil(element.peak_rate),
-            'x_key': month,
-            'year': element.date_year,
-            'predict_bars': 0
-          })
-        } else if (element.is_predict == 3) {
-          monthlyRates.push({
-
-          })
+          let month = `${element.date_month}月`
+          if (element.is_predict == 1) {
+            monthlyRates.push({
+              'load_on': Math.ceil(element.peak_rate),
+              'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
+              'load_off': Math.ceil(element.off_peak_rate),
+              'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+              'uti_rate': Math.ceil(element.peak_rate),
+              'x_key': month,
+              'year': element.date_year,
+              'predict_bars': 0
+            })
+          } else if (element.is_predict == 3) {
+            monthlyRates.push({
+  
+            })
+          }
+  
+          else {
+            monthlyRates.push({
+              'load_on': Math.ceil(element.peak_rate),
+              'load_on_forChart': 0,
+              'load_off': 0,
+              'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+              'uti_rate': Math.ceil(element.peak_rate),
+              'x_key': month,
+              'year': element.date_year,
+              'predict_bars': Math.ceil(element.peak_rate),
+            })
+          }
+  
         }
+        });
 
-        else {
+        if(haveData!=true){
           monthlyRates.push({
-            'load_on': Math.ceil(element.peak_rate),
+            'load_on': null,
             'load_on_forChart': 0,
             'load_off': 0,
-            'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
-            'uti_rate': Math.ceil(element.peak_rate),
-            'x_key': month,
-            'year': element.date_year,
-            'predict_bars': Math.ceil(element.peak_rate),
+            'load_total': 0,
+            'uti_rate': 0,
+            'x_key': `${i}月`,
+            'year': 0,
+            'predict_bars': 0,
           })
         }
+      }
+
+      // action.payload.forEach((element, index) => {
+
+      //   let month = `${element.date_month}月`
+      //   if (element.is_predict == 1) {
+      //     monthlyRates.push({
+      //       'load_on': Math.ceil(element.peak_rate),
+      //       'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
+      //       'load_off': Math.ceil(element.off_peak_rate),
+      //       'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+      //       'uti_rate': Math.ceil(element.peak_rate),
+      //       'x_key': month,
+      //       'year': element.date_year,
+      //       'predict_bars': 0
+      //     })
+      //   } else if (element.is_predict == 3) {
+      //     monthlyRates.push({
+
+      //     })
+      //   }
+
+      //   else {
+      //     monthlyRates.push({
+      //       'load_on': Math.ceil(element.peak_rate),
+      //       'load_on_forChart': 0,
+      //       'load_off': 0,
+      //       'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+      //       'uti_rate': Math.ceil(element.peak_rate),
+      //       'x_key': month,
+      //       'year': element.date_year,
+      //       'predict_bars': Math.ceil(element.peak_rate),
+      //     })
+      //   }
 
 
-      });
+      // });
       console.log(monthlyRates)
       return {
         ...state,

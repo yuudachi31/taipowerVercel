@@ -142,9 +142,9 @@ function Industry({setSelectedDate,setSelectedRegion}) {
     <Form name="user-edit" colon={false} labelAlign="left">
       {/* <Form.Item name="industry">
         <Space direction="horizontal">
-          <span className='text-normal font-bold'>行業別：</span> 
+          <span className='text-normal font-bold'>區處：</span> 
           <Select
-            placeholder="選擇行業別"
+            placeholder="選擇區處"
             allowClear
             style={{ fontSize:'16px', width:'200px'}}
             // size='large'
