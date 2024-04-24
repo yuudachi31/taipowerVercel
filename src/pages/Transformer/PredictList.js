@@ -127,28 +127,28 @@ const onlyColumns = [
   },
   {
     dataIndex: 'tag',
-    title: '相別',
+    title: '電表相別',
     // width: '50',
     render: (tag) => <Tag>{tag}</Tag>,
   },
   {
     dataIndex: 'tenHour',
-    title: '用電量',
+    title: '用電量(kWH)',
     // width: '100',
   },
-  {
-    dataIndex: 'address',
-    title: '地址',
-    // width: '100',
-    ellipsis: {
-      showTitle: false,
-    },
-    render: (address) => (
-      <Tooltip placement="topLeft" title={address}>
-        {address}
-      </Tooltip>
-    ),
-  },
+  // {
+  //   dataIndex: 'address',
+  //   title: '地址',
+  //   // width: '100',
+  //   ellipsis: {
+  //     showTitle: false,
+  //   },
+  //   render: (address) => (
+  //     <Tooltip placement="topLeft" title={address}>
+  //       {address}
+  //     </Tooltip>
+  //   ),
+  // },
 ];
 
 const PredictList = ({ indexData }) => {
