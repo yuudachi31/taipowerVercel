@@ -428,7 +428,7 @@ function Predict({ transformer, saveEachTransInfo }) {
     },
   }
   //一開始只有原變壓器有資料
-  const [updateIndexData, setupdateIndexData] = useState(oriIndexData);
+  const [updateIndexData, setupdateIndexData] = useState({});
   // console.log('indexData', updateIndexData, updateIndexData.index1.type.oriType)
 
   //設定新變壓器Modal
@@ -485,13 +485,16 @@ function Predict({ transformer, saveEachTransInfo }) {
       } else {
         // setupdateIndexData()
         console.log(mapFetchData(fetchData))
-        // setupdateIndexData(mapFetchData(fetchData))
+        setupdateIndexData(mapFetchData(fetchData))
       }
     })
 
   }, [])
 
   const mapFetchData=(fetchData)=>{
+    const light_tag=["A","B","C","D","E"];
+    const power_tag=["F","G","H","I","J"];
+
     let tr1type=null
     let tr2type=null
     let tr3type=null
@@ -510,7 +513,7 @@ if(el.tr_index==1){
     key: `ori${index}`,
     title: `content${index}`,
     electricityNum: el.cust_id,
-    tenHour: el.energy_used.toFixed(2),
+    tenHour: el.energy_used?.toFixed(2),
     // address: el.cust_addr,
     tag: el.phase_type,
     power_type:el.type
@@ -524,7 +527,7 @@ if(el.tr_index==2){
     key: `ori${index}`,
     title: `content${index}`,
     electricityNum: el.cust_id,
-    tenHour: el.energy_used.toFixed(2),
+    tenHour: el.energy_used?.toFixed(2),
     // address: el.cust_addr,
     tag: el.phase_type,
     power_type:el.type
@@ -538,7 +541,7 @@ if(el.tr_index==3){
     key: `ori${index}`,
     title: `content${index}`,
     electricityNum: el.cust_id,
-    tenHour: el.energy_used.toFixed(2),
+    tenHour: el.energy_used?.toFixed(2),
     // address: el.cust_addr,
     tag: el.phase_type,
     power_type:el.type
@@ -554,7 +557,11 @@ console.log(tr3Array)
 //問題:type現在有燈力並
 let returnValue = { 
   
-  index1: {
+ 
+  
+}
+if(tr1Array.length>0){
+  returnValue.index1= {
     type: {
       oriType:tr1type?tr1type:null,
       newType: '',
@@ -568,7 +575,8 @@ let returnValue = {
         tr_index: '1',
         type: '燈',
         thereshold: '50%',
-        data: tr1Array,
+        data: tr1Array.filter(el=>light_tag.includes(el.tag)),
+        
       },
       new: {
         coor: '',
@@ -584,7 +592,7 @@ let returnValue = {
         tr_index: '1',
         type: '力',
         thereshold: '60%',
-        data: tr1Array
+        data: tr1Array.filter(el=>!light_tag.includes(el.tag)),
       },
       new: {
         coor: '',
@@ -592,7 +600,6 @@ let returnValue = {
       },
     }
   }
-  
 }
 if(tr2Array.length>0){
   returnValue.index2= {
@@ -605,6 +612,7 @@ if(tr2Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
+        data: tr2Array.filter(el=>light_tag.includes(el.tag)),
       },
       new: {
         coor: '',
@@ -620,7 +628,7 @@ if(tr2Array.length>0){
         tr_index: '2',
         type: '力',
         thereshold: '75%',
-        data: tr2Array,
+        data: tr2Array.filter(el=>!light_tag.includes(el.tag)),
       },
       new: {
         coor: '',
@@ -641,6 +649,7 @@ if(tr3Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
+        data: tr3Array.filter(el=>!light_tag.includes(el.tag)),
       },
       new: {
         coor: '',
@@ -656,7 +665,7 @@ if(tr3Array.length>0){
         tr_index: '2',
         type: '力',
         thereshold: '75%',
-        data: tr3Array
+        data: tr3Array.filter(el=>power_tag.includes(el.tag)),
       },
       new: {
         coor: '',
