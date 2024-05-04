@@ -175,7 +175,7 @@ console.log(_login_status)
         </div>
         <div className="w-1.5/3 flex items-center justify-end">
 
-          <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
+          <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>變壓器搜尋</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           {/* <Button className='ant-button-black flex-none' type='link' onClick={_gotoindustryinfo}>行業別</Button> */}
           {/* <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>智慧電表</Button> */}

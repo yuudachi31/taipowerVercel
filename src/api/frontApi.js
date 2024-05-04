@@ -774,3 +774,23 @@ export const getDangerLvs = async () => {
     console.log(err.response);
   }
 };
+
+export const getSeparationTable  = async (coor,div) => {
+  try {
+   
+    const _url = `${baseURL}/separation/${coor}/${div}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        //  Authorization: `Bearer ${glabalToken}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
