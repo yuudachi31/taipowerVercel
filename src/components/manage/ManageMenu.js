@@ -21,7 +21,7 @@ function ManageMenu({ data, menuActive }) {
     return (
         <Sider width={290}>
             <div class="flex row px-6 pt-12 pb-8">
-                <div class="w-14 h-14 rounded-full bg-gray-300 row-span-2 mr-6"></div>
+                {/* <div class="w-14 h-14 rounded-full bg-gray-300 row-span-2 mr-6"></div> */}
                 <div>
                     <div class="text-base font-bold mb-3">{_username}</div>
                     <span class="text-gray-300">管理者</span>

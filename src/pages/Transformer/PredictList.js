@@ -133,7 +133,7 @@ const onlyColumns = [
   },
   {
     dataIndex: 'tenHour',
-    title: '用電量(kWH)',
+    title: '尖峰用電量(kWH)',
     // width: '100',
   },
   // {
