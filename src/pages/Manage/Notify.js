@@ -1,10 +1,13 @@
 //推播管理
 //antd
-import { Divider, Layout, Input, Table, Spin, message } from 'antd';
+
+
+import { Dropdown, Space, Button, Select, Modal, Popconfirm,message } from 'antd';
+import { Divider, Layout, Input, Table, Spin } from 'antd';
 import { DownOutlined, SearchOutlined, CheckCircleFilled, CloseCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
-import { Dropdown, Space, Button, Select, Modal, Popconfirm } from 'antd';
+
 import { useState, useEffect } from 'react';
-import { getAllThreshold, getAllRegions, getAllUser, getAbnormalTransList, postEmailNotify } from '../../api/frontApi'
+import { getAllThreshold, getAllRegions, getAllUser,postEventbyID , getAbnormalTransList, postEmailNotify } from '../../api/frontApi'
 import { saveAbnormalTransData } from '../../actions/transformer';
 
 import { connect } from "react-redux";
@@ -12,7 +15,6 @@ import { connect } from "react-redux";
 // import { Pagination } from 'antd';
 import { useHistory } from 'react-router-dom';
 import './manage.css'
-
 const { Header, Content } = Layout;
 const { Search } = Input
 const { Option } = Select;
@@ -306,6 +308,8 @@ function Notify({ transformer, saveAbnormalTransData }) {
     const [selectedGroup, setSelectedGroup] = useState(groupData[0]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [userData, setUserData] = useState(USER_DATA);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [abnormalTRList,setAbnormalTRList]= useState([]);
     // 切換群組時更新列表資訊
     const handleGroupChange = (value) => {
         const selectedGroup = groupData.find((group) => group.value === value);
@@ -395,6 +399,18 @@ function Notify({ transformer, saveAbnormalTransData }) {
         // 在組件初始化時進行一次過濾
         const initialUsersInGroup = userData.filter((user) => user.area.includes(groupData[0].area));
         setFilteredUsers(initialUsersInGroup);
+       
+        getAbnormalTransList().then((data) => {
+            if (data.errStatus) {
+                message.error(data.errDetail);
+            } else {
+                // console.log(data)
+                console.log(data)
+                setAbnormalTRList(data)
+                // pushData()
+                console.log("saveall")
+            }
+        })
     }, []);
     useEffect(()=>{
                 setFilteredUsers(userData.filter((user) => user.region_id == userRegion));
@@ -651,7 +667,47 @@ function Notify({ transformer, saveAbnormalTransData }) {
             );
         }
     };
+    const channel_id="U15f78caf74ae1efbf7f593a8e9e7f9e8"
+    //line 推播
+    function showlineConfirm() {
+        confirm({
+            icon: <ExclamationCircleOutlined />,
+            content: '確定要進行Line推播嗎？',
+            onOk() {
+                console.log(abnormalTRList);
+                console.log('OK');
+                setIsModalVisible(false);
+                _handleSend(channel_id);
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+            okText: '確定',
+            cancelText: '取消',
+            
+        });
+        
+    }
+    const _handleSend = async (channel_id) => {
+        console.log(`事件`)
+        // const dis = _district.join('_')
+        const send = await postEventbyID(channel_id,transformer.ABNtransformerList);
+        if (send) {
+            success();
+        } else {
+            message.error(`推播錯誤`)
+        }
+    }
+    function success() {
+        Modal.success({
+            content: '推播成功！',
 
+        });
+        return (
+            <div className="w-12 h-12 bg-black"></div>
+        );
+
+    }
     const handleCancel_adduser = () => {
         // 重置輸入的值、提示信息，並禁用 OK 按鈕
         // setNewAccountName('');
@@ -759,17 +815,37 @@ function Notify({ transformer, saveAbnormalTransData }) {
                                     //修改完後的顯示
                                     <span class="font-bold">低於 10% 高於80%</span>
                                 } */}
-                                </div>
-                                <div class="flex2 text-normal">
-                                    {userRole == "usr" ? <></> : (
-                                        <>
-                                            <button class={`btn-manage justify-self-end mr-4 ${isMailLoading ? '' : 'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
-                                            <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
-                                        </>
-                                    )}
-                                </div>
                             </div>
+                            <Modal title="確認推播" visible={isModalVisible} >
+                            </Modal>
+                            <div class="flex2">
+                            <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
+                                    <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={showlineConfirm} >LINE 推播</button>
+                            </div>
+                        </div>
+
+                    //     <Modal title="確認推播" visible={isModalVisible} >
+                    //             </Modal>
+                    //     <div class="flex2">
+                                
+                    //             <button class="btn-manage justify-self-end mr-4 btn-manage-full" >電子信箱推播</button>
+                    //             <button class="btn-manage justify-self-end mr-4 btn-manage-full" onClick={showlineConfirm} >LINE 推播</button>
+                    //     </div>
+                    
+                    // </div>
+                    
+
+
+                            //     </div>
+                            //     <div class="flex2 text-normal">
+                                
+                            //         <button class={`btn-manage justify-self-end mr-4 ${isMailLoading?'':'btn-manage-full'}`} onClick={sendMailModal} disabled={isMailLoading} >電子信箱推播</button>
+                                
+                            //         <button class="btn-manage justify-self-end mr-4 btn-manage-full">LINE 推播</button>
+                            //     </div>
+                            // </div>
                     }
+
                 </Content>
             </Content>
             <div class="my-7 font-bold text-base">推播帳號列表</div>

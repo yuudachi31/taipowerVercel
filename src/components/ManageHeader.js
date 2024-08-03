@@ -103,7 +103,7 @@ function ManageHeader({user}) {
           <div className='w-1.2/3 text-center text-xl '>後台系統操作頁面</div>
         </div>
         <div className="w-1.5/3 flex items-center justify-end">
-        <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>全部變壓器</Button>
+        <Button className='ant-button-black flex-none' type='link' onClick={_gotosearch}>變壓器搜尋</Button>
           <Button className='ant-button-black flex-none' type='link' onClick={_gotoabnormal}>異常變壓器</Button>
           {/* <Button className='ant-button-black flex-none' type='link' onClick={_gotoAMI}>智慧電表</Button> */}
           <Button className='ant-button-black flex-none' type='link' onClick={_gotomanage1}>系統管理</Button>
