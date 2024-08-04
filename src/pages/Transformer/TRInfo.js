@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker, Spin } from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -13,10 +13,11 @@ import EChartMonth from '../../components/chart/EChartMonth';
 import { data_main, data_month } from '../../components/chart/TempData'
 import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange } from '../../api/frontApi'
 import { connect } from 'react-redux';
+
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
-
+const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 
 const Timeformat = 'HH:mm';
@@ -178,8 +179,11 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     // result
 
   }, [])
+  
   const _history = useHistory();
+  
   return (
+    
     <Layout class="px-20 wrapper">
       {isLoadingtop ? (
         <>
@@ -191,6 +195,54 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         </>
       ) : (
         <>
+
+        <div class="flex flex-row justify-between">
+          <div class="flex flex-row">
+        <h2 class="mt-5 font-normal text-base">圖號座標</h2>
+        <div class="ml-2 mt-5">
+        <Search 
+                  placeholder="搜尋圖號座標"
+                  size="medium"
+                        
+                        style={{
+                            width: 200,
+                        }}
+                    /></div>
+
+        </div>
+        <div class="flex flex-row">
+        <h2 class="mt-5 font-normal text-base">組別</h2>
+        <div class="ml-2 mt-5">
+        <Search 
+                  placeholder="搜尋組別"
+                  size="medium"
+                        
+                        style={{
+                            width: 200,
+                        }}
+                    /></div>
+
+        </div>
+        <div class="flex flex-row">
+        <h2 class="mt-5 font-normal text-base">第幾具</h2>
+        <div class="ml-2 mt-5">
+        <Search 
+                  placeholder="搜尋第幾具"
+                  size="medium"
+                        
+                        style={{
+                            width: 200,
+                        }}
+                    /></div>
+
+        </div>
+        <div class="flex flex-row">
+        <button class="mt-5 btn w-15 h-7"type="primary">搜尋</button>
+        <button class="ml-2 mt-5 btn bg-gray-300 w-18 h-7" type="primary">負載分割</button>
+        </div>
+        
+
+        </div>
         <Divider />
           <Header class="flex space-x-3 items-center">
             <h2 class="flex-auto font-normal text-base">圖號座標<span class="text-2xl font-bold ml-6">{transformer.eachTransformerInfo.coor}</span></h2>
@@ -231,24 +283,39 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       <Layout>
         <Header class="flex items-center justify-between mb-14">
           {/* <div class="space-x-3 flex-1"></div> */}
-          <div class="space-x-2 flex-1">
+          <div class="space-x-3 ">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             <DatePicker defaultValue={moment(currentDate, yearFormat)} disabledDate={disabledDate} format={yearFormat} picker="year" onPanelChange={handlePanelChange} />
           </div>
-          {selectedYear ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 每月用電圖表</h3>)}
-          <div class="flex flex-col flex-1">
-            <div class="flex flex-1 items-center justify-end">
-              <span class="mt-2 border-2 border-gray-300 w-7 h-0 bg-green"></span>
-              <span class="mt-2 ml-2 mr-6">保證利用率</span>
+          {selectedYear ? (<h3 class="font-bold flex-1 m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 m-0 text-base">2022 年度 每月用電圖表</h3>)}
+          <div class="flex flex-row ">
+            <div class="flex flex-col items-start justify-start">
+              <div class="flex flex-row items-center ">
               <span class="mt-2 w-7 h-3 bg-green-500"></span>
-              <span class="mt-2 ml-2">尖峰利用率</span>
-
-            </div>
-            <div class="flex items-center justify-end">
+              <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
+              </div>
+              <div class="flex flex-row items-center justify-end">
               <span class="mt-2 bg-gray-300 w-7 h-3"></span>
-              <span class="mt-2 ml-2 mr-6">預估利用率</span>
-              <span class="mt-2 w-7 h-3 bg-green-300"></span>
-              <span class="mt-2 ml-2">離峰利用率</span>
+              <span class="mt-2 ml-2">預測利用率</span>
+              </div>
+              <div class="flex flex-row items-center justify-end">
+              <span class="mt-2 border-2 border-gray-300 bg-gray-300 w-7 h-0"></span>
+              <span class="mt-2 ml-2">預測利用率</span>
+              </div>
+            </div>
+            <div class="flex flex-col items-start justify-start">
+            <div class="flex flex-row items-center ">
+              <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+              <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+              </div>
+              <div class="flex flex-row items-center">
+              <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+              <span class="mt-2 ml-2">十小時率</span>
+              </div>
+              <div class="flex flex-row items-center">
+              <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
+              <span class="mt-2 ml-2">保證利用率</span>
+              </div>
             </div>
           </div>
         </Header>

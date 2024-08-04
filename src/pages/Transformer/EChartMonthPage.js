@@ -214,18 +214,31 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
       <Layout class="py-2">
         <Header class="flex items-center justify-between">
 
-          <div class="space-x-2 flex-1">
+          <div class="space-x-2 ">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
             <DatePicker defaultValue={moment(currentDate, monthFormat)} disabledDate={disabledDate} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily} />
           </div>
           {selectedMonth ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 6 月每日用電圖表</h3>)}
-          <div class="flex flex-1 items-center justify-end">
-
-            <span class="w-7 h-3 bg-green-500"></span>
-            <span class="ml-2 mr-6">尖峰利用率</span>
-            <span class="w-7 h-3 bg-green-300"></span>
-            <span class="ml-2">離峰利用率</span>
+          <div class="flex flex-row ">
+            <div class="flex flex-col items-start justify-start">
+              <div class="flex flex-row items-center ">
+              <span class="mt-2 w-7 h-3 bg-green-500"></span>
+              <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
+              </div>
+             
+            </div>
+            <div class="flex flex-col items-start justify-start">
+            <div class="flex flex-row items-center ">
+              <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+              <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+              </div>
+              <div class="flex flex-row items-center">
+              <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+              <span class="mt-2 ml-2">十小時率</span>
+              </div>
+              
+            </div>
           </div>
         </Header>
         {

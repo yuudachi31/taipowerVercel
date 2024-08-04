@@ -39,7 +39,7 @@ function EChartMain({data}) {
 // console.log(data)
     return (
         <ResponsiveContainer height={400}>
-            <BarChart data={data} margin={0} barGap={60}>
+            <ComposedChart data={data} margin={0} barGap={60}>
                 <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
                 {/* ticks={ticks_y} */}
                 {/* dataKey="load_total" */}  
@@ -52,8 +52,11 @@ function EChartMain({data}) {
                 {/* 圖表線 */}
                 {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
                 {/* 第二條線 */}
-                {/* <Line isAnimationActive={false} type="monotone"  name="利用率" dataKey="uti_rate_two" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} /> */}
-            </BarChart>
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="load_on" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="load_on" stroke="orange" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
+
+
+            </ComposedChart>
         </ResponsiveContainer>
     );
 
