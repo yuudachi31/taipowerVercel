@@ -34,6 +34,8 @@ export const postUser = async (username, password) => {
     }
   } catch (err) {
     console.log(err.response);
+    return err.response.status
+
     // return { "errStatus": err.response.status, "errDetail": err.response.data.detail }
   }
 };

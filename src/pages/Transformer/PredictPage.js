@@ -575,7 +575,7 @@ if(tr1Array.length>0){
         tr_index: '1',
         type: '燈',
         thereshold: '50%',
-        data: tr1Array.filter(el=>light_tag.includes(el.tag)),
+        data: tr1Array.filter(el=>light_tag.includes(el.tag)||!el.tag),
         
       },
       new: {
@@ -592,7 +592,7 @@ if(tr1Array.length>0){
         tr_index: '1',
         type: '力',
         thereshold: '60%',
-        data: tr1Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr1Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
@@ -612,7 +612,7 @@ if(tr2Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
-        data: tr2Array.filter(el=>light_tag.includes(el.tag)),
+        data: tr2Array.filter(el=>light_tag.includes(el.tag)||!el.tag),
       },
       new: {
         coor: '',
@@ -628,7 +628,7 @@ if(tr2Array.length>0){
         tr_index: '2',
         type: '力',
         thereshold: '75%',
-        data: tr2Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr2Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
@@ -649,7 +649,7 @@ if(tr3Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
-        data: tr3Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr3Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
