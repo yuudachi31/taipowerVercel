@@ -31,7 +31,9 @@ function EChartDay({data}) {
         if (payload?.length <= 0|| payload==null) return null
         return (
             <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                <li key={`item-0`}>{`尖峰利用率：${payload[0].value}kW`}</li>
+                <li key={`item-0`}>{`十小時率：${payload[0].value}%`}</li>
+                <li key={`item-1`}>{`KNN：${payload[0].value}%`}</li>
+                <li key={`item-1`}>{`純AMI：${payload[0].value}%`}</li>
             </ul>
         );
     }
@@ -49,6 +51,8 @@ function EChartDay({data}) {
                 
                 {/* <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
                 <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="green" strokeWidth={2}  dot={{ stroke: 'green', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="#55A630" strokeWidth={2}  dot={{ stroke: '#55A630', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="#F49507" strokeWidth={2}  dot={{ stroke: '#F49507', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
             </ComposedChart>
         </ResponsiveContainer>
     );
