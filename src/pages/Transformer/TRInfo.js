@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input } from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input,Button} from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -196,59 +196,48 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       ) : (
         <>
 
-        <div class="flex flex-row justify-between">
-          <div class="flex flex-row">
-        <h2 class="mt-5 font-normal text-base">圖號座標</h2>
-        <div class="ml-2 mt-5">
-        <Search 
-                  placeholder="搜尋圖號座標"
-                  size="medium"
-                        
-                        style={{
-                            width: 200,
-                        }}
-                    /></div>
-
+<div class="flex justify-between mt-8">
+        <div>
+          <label class="mr-2" htmlFor="coor">圖號座標</label>
+          <Input
+            id="coor"
+            style={{ width: '150px' }}
+            placeholder="輸入圖號座標"
+            value={coor}
+            onChange={(e) => setCoor(e.target.value)}
+          />
         </div>
-        <div class="flex flex-row">
-        <h2 class="mt-5 font-normal text-base">組別</h2>
-        <div class="ml-2 mt-5">
-        <Search 
-                  placeholder="搜尋組別"
-                  size="medium"
-                        
-                        style={{
-                            width: 200,
-                        }}
-                    /></div>
-
+        <div>
+          <label class="mr-2" htmlFor="div">組別</label>
+          <Input
+            id="div"
+            style={{ width: '150px' }}
+            placeholder="輸入組別"
+            value={"000"}
+            onChange={(e) => setDiv(e.target.value)}
+          />
         </div>
-        <div class="flex flex-row">
-        <h2 class="mt-5 font-normal text-base">第幾具</h2>
-        <div class="ml-2 mt-5">
-        <Search 
-                  placeholder="搜尋第幾具"
-                  size="medium"
-                        
-                        style={{
-                            width: 200,
-                        }}
-                    /></div>
-
+        <div>
+          <label class="mr-2" htmlFor="trIndex">第幾具</label>
+          <Input
+            id="trIndex"
+            style={{ width: '150px' }}
+            placeholder="輸入第幾具"
+            value={"000"}
+            onChange={(e) => setTrIndex(e.target.value)}
+          />
         </div>
-        <div class="flex flex-row">
-        <button class="mt-5 btn w-15 h-7"type="primary">搜尋</button>
-        <button class="ml-2 mt-5 btn bg-gray-300 w-18 h-7" type="primary">負載分割</button>
+        <div class="flex justify-between">
+          <Button type="primary" onClick={console.log("search")}>搜尋</Button>
+          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
         </div>
-        
-
         </div>
         <Divider />
           <Header class="flex space-x-3 items-center">
             <h2 class="flex-auto font-normal text-base">圖號座標<span class="text-2xl font-bold ml-6">{transformer.eachTransformerInfo.coor}</span></h2>
             {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
-            <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
-            <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
+            {/* <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
+            <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button> */}
           </Header>
           
           <Layout class="flex justify-between py-2">
