@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input,Button} from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input, Button } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -41,9 +41,11 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [isLoadingtop, setIsLoadingTop] = useState(true);
-  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
-
+  const [isLoadingtop, setIsLoadingTop] = useState(false);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(false);
+  const [coor, setCoor] = useState('');
+  const [div, setDiv] = useState('');
+  const [tr_index, setTrIndex] = useState('');
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -82,7 +84,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       }])
       setIsLoadingbottom(true)
       // getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, value.year()).then((data) => {
-      getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+      getMonthlyRates(coor, div, tr_index).then((data) => {
 
         if (data.errStatus) {
           console.log(data.errDetail);
@@ -101,14 +103,14 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
       setSelectedMonth(value.month());
       // const parsed = queryString.parse(window.location.search);
       console.log(value.year())
-      getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(), value.month() + 1).then((data) => {
-        if (data.errStatus) {
-          console.log(data.errDetail);
-        } else {
+      // getDailyRates(parsed.coor, parsed.div, parsed.tr_index, value.year(), value.month() + 1).then((data) => {
+      //   if (data.errStatus) {
+      //     console.log(data.errDetail);
+      //   } else {
 
-          saveDailyRates(data)
-        }
-      })
+      //     saveDailyRates(data)
+      //   }
+      // })
     }
   }
   // console.log(transformer.dailyRatesList)
@@ -134,36 +136,38 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     //     saveQuarterRates(data)
     //   }
     // })
-    getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        setIsLoadingbottom(false)
-        saveMonthlyRates(data)
-      }
-    })
-    getMonthRatesRange(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        setInterval({
-          ...data[0],
-          "min_month": 1,
-          "min_day": 1,
-          "max_month": 12,
-          "max_day": 31
-        })
+    // getMonthlyRates(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     setIsLoadingbottom(false)
+    //     saveMonthlyRates(data)
+    //   }
+    // })
 
-      }
-    })
-    getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
-      if (data.errStatus) {
-        console.log(data.errDetail);
-      } else {
-        setIsLoadingTop(false)
-        saveEachTransInfo(data)
-      }
-    })
+    // getMonthRatesRange(parsed.coor, parsed.div, parsed.tr_index, 2022).then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     setInterval({
+    //       ...data[0],
+    //       "min_month": 1,
+    //       "min_day": 1,
+    //       "max_month": 12,
+    //       "max_day": 31
+    //     })
+
+    //   }
+    // })
+
+    // getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
+    //   if (data.errStatus) {
+    //     console.log(data.errDetail);
+    //   } else {
+    //     setIsLoadingTop(false)
+    //     saveEachTransInfo(data)
+    //   }
+    // })
 
     //     getMonthlyRates(parsed.coor,parsed.div,parsed.tr_index,2022).then((data) => {
     //       if (data.errStatus) {
@@ -179,24 +183,52 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     // result
 
   }, [])
-  
-  const _history = useHistory();
-  
-  return (
-    
-    <Layout class="px-20 wrapper">
-      {isLoadingtop ? (
-        <>
-          <div style={{ height: '200px' }}>
-            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
-              <div className="content" />
-            </Spin>
-          </div>
-        </>
-      ) : (
-        <>
 
-<div class="flex justify-between mt-8">
+  const _history = useHistory();
+  const handleSearch = () => {
+    // 在此處執行搜索邏輯，使用 coor、div 和 tr_index 進行搜索
+    setIsLoadingTop(true)
+    setIsLoadingbottom(true)
+    getEachTransformer(coor, div, tr_index).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setIsLoadingTop(false)
+        saveEachTransInfo(data)
+      }
+    })
+  getMonthlyRates(coor, div, tr_index, 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setIsLoadingbottom(false)
+        saveMonthlyRates(data)
+      }
+    })
+
+    getMonthRatesRange(coor, div, tr_index, 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setInterval({
+          ...data[0],
+          "min_month": 1,
+          "min_day": 1,
+          "max_month": 12,
+          "max_day": 31
+        })
+
+      }
+    })
+  };
+
+
+  return (
+
+    <Layout class="px-20 wrapper">
+
+
+      <div class="flex justify-between mt-8">
         <div>
           <label class="mr-2" htmlFor="coor">圖號座標</label>
           <Input
@@ -213,33 +245,43 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             id="div"
             style={{ width: '150px' }}
             placeholder="輸入組別"
-            value={"000"}
+            value={div}
             onChange={(e) => setDiv(e.target.value)}
           />
         </div>
         <div>
-          <label class="mr-2" htmlFor="trIndex">第幾具</label>
+          <label class="mr-2" htmlFor="tr_index">第幾具</label>
           <Input
-            id="trIndex"
+            id="tr_index"
             style={{ width: '150px' }}
             placeholder="輸入第幾具"
-            value={"000"}
+            value={tr_index}
             onChange={(e) => setTrIndex(e.target.value)}
           />
         </div>
         <div class="flex justify-between">
-          <Button type="primary" onClick={console.log("search")}>搜尋</Button>
-          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
+          <Button type="primary" onClick={handleSearch}>搜尋</Button>
+          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${coor}&div=${div}&tr_index=${tr_index}`) }}>負載分割</button>
         </div>
-        </div>
-        <Divider />
+      </div>
+      {isLoadingtop ? (
+        <>
+          <div style={{ height: '200px' }}>
+            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
+              <div className="content" />
+            </Spin>
+          </div>
+        </>
+      ) : (
+        <>
+          <Divider />
           <Header class="flex space-x-3 items-center">
             <h2 class="flex-auto font-normal text-base">圖號座標<span class="text-2xl font-bold ml-6">{transformer.eachTransformerInfo.coor}</span></h2>
             {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
             {/* <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
             <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button> */}
           </Header>
-          
+
           <Layout class="flex justify-between py-2">
             <Content class="text-base tracking-widest space-y-5 flex-col">
               <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
@@ -280,30 +322,30 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
           <div class="flex flex-row ">
             <div class="flex flex-col items-start justify-start">
               <div class="flex flex-row items-center ">
-              <span class="mt-2 w-7 h-3 bg-green-500"></span>
-              <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
+                <span class="mt-2 w-7 h-3 bg-green-500"></span>
+                <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
               </div>
               <div class="flex flex-row items-center justify-end">
-              <span class="mt-2 bg-gray-300 w-7 h-3"></span>
-              <span class="mt-2 ml-2">預測利用率</span>
+                <span class="mt-2 bg-gray-300 w-7 h-3"></span>
+                <span class="mt-2 ml-2">預測利用率</span>
               </div>
               <div class="flex flex-row items-center justify-end">
-              <span class="mt-2 border-2 border-gray-300 bg-gray-300 w-7 h-0"></span>
-              <span class="mt-2 ml-2">預測利用率</span>
+                <span class="mt-2 border-2 border-gray-300 bg-gray-300 w-7 h-0"></span>
+                <span class="mt-2 ml-2">預測利用率</span>
               </div>
             </div>
             <div class="flex flex-col items-start justify-start">
-            <div class="flex flex-row items-center ">
-              <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
-              <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+                <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
               </div>
               <div class="flex flex-row items-center">
-              <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
-              <span class="mt-2 ml-2">十小時率</span>
+                <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+                <span class="mt-2 ml-2">十小時率</span>
               </div>
               <div class="flex flex-row items-center">
-              <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
-              <span class="mt-2 ml-2">保證利用率</span>
+                <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
+                <span class="mt-2 ml-2">保證利用率</span>
               </div>
             </div>
           </div>
