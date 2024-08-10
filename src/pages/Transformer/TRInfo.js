@@ -197,7 +197,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
         saveEachTransInfo(data)
       }
     })
-  getMonthlyRates(coor, div, tr_index, 2022).then((data) => {
+    getMonthlyRates(coor, div, tr_index, 2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
