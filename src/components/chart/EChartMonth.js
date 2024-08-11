@@ -5,7 +5,7 @@ import { BarChart, ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import { renderCustomXTick, renderCustomYLeftTick, renderCustomYRightTick } from './CustomRender'
 import queryString from "query-string";
 
-function EChartMain({ data }) {
+function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
     const [ticks_y, setTicks_y] = useState(['0.00', '50.00', '100.00', '150.00', '200.00']);
 
     const processedData = data.map((item, index) => ({
@@ -54,7 +54,11 @@ function EChartMain({ data }) {
         const parsed = queryString.parse(window.location.search);
         console.log(payload)
         console.log(parsed)
-        history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+        if(searchCoor&&searchDiv&&searchTrIndex){
+            history.push(`/EChartMonthPage?coor=${searchCoor}&div=${searchDiv}&tr_index=${searchTrIndex}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+        }else{
+            history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+        }
     }
     return (
         <ResponsiveContainer height={500}>

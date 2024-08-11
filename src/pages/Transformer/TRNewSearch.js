@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker, Spin, Input, Button } from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker,message, Spin, Input, Button,Row,Col ,Modal} from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -11,15 +11,22 @@ import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange } from '../../api/frontApi'
+import {getAbnormalTransListForTrSearch, getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange,postUser } from '../../api/frontApi'
 import { connect } from 'react-redux';
-
+import ErrorModal from '../../components/ErrorModal'
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import queryString from "query-string";
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
-
+const containerStyle = {
+  width: '100%',
+  height: 200,
+  overflow: 'auto',
+  // border: '1px solid #f0f0f0',
+  padding: '4px 8px 4px 8px',
+  borderRadius: '3px'
+};
 const Timeformat = 'HH:mm';
 
 const yearFormat = 'YYYY 年';
@@ -38,14 +45,21 @@ const onChangeMonth = (date, dateString) => {
 
 function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const [isLoadingtop, setIsLoadingTop] = useState(false);
   const [isLoadingbottom, setIsLoadingbottom] = useState(false);
+
+  const [abnormalTransData, setAbnormalTransData] = useState([]);
+  const [isModalDataLoading, setIsModalDataLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [coor, setCoor] = useState('');
   const [div, setDiv] = useState('');
   const [tr_index, setTrIndex] = useState('');
+  const [errorStatus, setErrorStatus] = useState(200);
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -121,13 +135,13 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
 
     }])
     saveEachTransInfo([{
-      coor:"",
-      addr:"",
-      div:"",
-      cap:"",
-      uti_rate:""
+      coor: "",
+      addr: "",
+      div: "",
+      cap: "",
+      uti_rate: ""
 
-    }]) 
+    }])
     // getDailyRates(parsed.coor, parsed.div, parsed.tr_index,2022,7).then((data) => {
     //   // getDailyRates().then((data) => {
     //   if (data.errStatus) {
@@ -189,7 +203,107 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
     // })
 
     // result
+    // postEmailNotify(params)
+    // const resetTime = localStorage.getItem('resetTime');
+    const lastPopupDate = localStorage.getItem('lastPopupDate');
+    const today = new Date();
+    const todayString = today.toISOString().slice(0, 10);
+    // console.log(todayString)
 
+    // 设置定时器，在凌晨12点时清除弹窗记录
+    const clearPopupAtMidnight = () => {
+      const now = new Date();
+      if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+        localStorage.removeItem('lastPopupDate');
+      }
+    };
+
+    // 每隔一段时间检查是否到达凌晨12点
+    const interval = setInterval(clearPopupAtMidnight, 60000); // 每分钟检查一次
+
+
+
+    // // 在组件加载时设置一个定时器，用于在几秒后显示 Modal
+    // const timer = setTimeout(() => {
+    //     setIsModalVisible(true);
+    // }, 500); // 在这里设置显示 Modal 的延迟时间，单位是毫秒
+    // // 在組件卸載時清除定時器，以避免記憶體洩漏
+    // return () => clearTimeout(timer);
+
+    const reloadusr = document.cookie?.split("; ").find((row) => row.startsWith("usr"))?.split("=")[1]
+    const reloadpsw = document.cookie?.split("; ").find((row) => row.startsWith("psw"))?.split("=")[1]
+
+    getAbnormalTransListForTrSearch().then((data) => {
+      if (data == 401) {
+        if (Number(localStorage.getItem('resetTime')) == 8) {
+          // console.log(Number(localStorage.getItem('resetTime')))
+
+          // console.log("aabb")
+          localStorage.removeItem('resetTime');
+
+          setErrorStatus(data)
+          setIsErrorModalOpen(true)
+        } else if (Number(localStorage.getItem('resetTime')) < 8 && Number(localStorage.getItem('resetTime')) >= 1) {
+          // console.log(Number(localStorage.getItem('resetTime')))
+
+          postUser(reloadusr, reloadpsw).then((data) => {
+            if (data && data.errStatus) {
+              message.error(data.errDetail);
+            } else {
+              document.cookie = "fltk=" + data.access_token + ";path=/";
+              localStorage.setItem('resetTime', Number(localStorage.getItem('resetTime')) + 1)
+              // console.log("re")
+              window.location.reload()
+            }
+
+          })
+
+        } else {
+          localStorage.setItem('resetTime', 1)
+          // console.log(Number(localStorage.getItem('resetTime')))
+          window.location.reload()
+        }
+
+
+      } else {
+        document.cookie = "usr=''" + ";path=/";
+        document.cookie = "psw=''" + ";path=/";
+        localStorage.removeItem('resetTime');
+        // getAbnormalTransListForTrSearch().then((data) => {
+        //   if (data >= 400 && data <= 500) {
+        //     setErrorStatus(data)
+        //     setIsErrorModalOpen(true)
+
+        //   } else {
+
+            // console.log(data)
+            setAbnormalTransData(data)
+            // pushData()
+            console.log("saveall")
+            setIsModalDataLoading(false)
+        //   }
+        // })
+        // console.log(data)
+        // saveTransData(data)
+        setIsLoading(false)
+        if (!lastPopupDate || lastPopupDate !== todayString) {
+          // 如果是第一次弹出或者上次弹出的日期不是今天，则弹出 Modal
+          setIsModalVisible(true);
+
+          // 更新弹窗日期为今天
+          localStorage.setItem('lastPopupDate', todayString);
+        }
+        // pushData()
+      }
+    }).catch((error) => {
+      // 處理其他錯誤，例如網絡錯誤等
+      // message.error("登入失敗，請檢查帳號密碼是否正確。");
+      console.log(error);
+    });
+
+    return () => {
+      clearInterval(interval); // 清除定时器
+    };
   }, [])
 
   const _history = useHistory();
@@ -234,9 +348,63 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
   return (
 
     <Layout class="px-20 wrapper">
-
-
       <div class="flex justify-between mt-8">
+        <ErrorModal
+          setIsErrorModalOpen={setIsErrorModalOpen}
+          isErrorModalOpen={isErrorModalOpen}
+          errStatus={errorStatus}
+        ></ErrorModal>
+          <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
+                footer={[
+                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+                    <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
+                ]}
+            >
+                {
+                    isModalDataLoading ? (<>
+                        <div style={{ height: '200px' }}>
+                            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
+                                <div className="content" />
+                            </Spin>
+                        </div> </>) :
+                        !abnormalTransData? <>
+                            無資料
+                        </>
+                            :
+                            (<div style={containerStyle}>
+                                <Row style={{ marginBottom: '8px' }} className='font-bold'>
+                                    <Col span={6}>圖號座標</Col>
+                                    <Col span={6}>組別</Col>
+                                    <Col span={6}>第幾具</Col>
+                                    <Col span={6}>利用率（%）</Col>
+                                    {/* <Col span={6}>日期</Col> */}
+                                </Row>
+                                {abnormalTransData?.map((data, index) => (
+                                    <Row key={index} style={{ borderBottom: '1px solid #f0f0f0', height: '28px' }}>
+                                        <Col span={6}>{data.coor}</Col>
+                                        <Col span={6}>{data.div}</Col>
+                                        {data.power_type == "Y接" ?
+                                            <Col span={6}>NA</Col>
+                                            :
+                                            <Col span={6}>{data.tr_index}</Col>
+                                        }
+
+
+                                        <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                                        {/* <Col span={6}>{Time[index]}</Col> */}
+                                    </Row>
+                                ))}
+                            </div>)
+                }
+
+                {/* <div class="flex mb-3"><div class=" w-72">
+                        <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
+                        </div>
+                        </div>
+                    <div class="flex mb-3">
+                        <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
+                        </div> */}
+            </Modal>
         <div>
           <label class="mr-2" htmlFor="coor">圖號座標</label>
           <Input
@@ -269,7 +437,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
         </div>
         <div class="flex justify-between">
           <Button type="primary" onClick={handleSearch}>搜尋</Button>
-          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${coor}&div=${div}&tr_index=${tr_index?tr_index:1}`) }}>負載分割</button>
+          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${coor}&div=${div}&tr_index=${tr_index ? tr_index : 1}`) }}>負載分割</button>
         </div>
       </div>
       {isLoadingtop ? (
@@ -368,7 +536,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
             <>
               <Content class="flex mb-20 justify-center items-center">
                 <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
-                <EChartMonth data={transformer.monthlyRatesList} />
+                <EChartMonth data={transformer.monthlyRatesList} searchCoor={coor} searchDiv={div} searchTrIndex={tr_index}/>
               </Content>
             </>)}
       </Layout>
