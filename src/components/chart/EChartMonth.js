@@ -23,8 +23,9 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
                         <>
                             {payload[3]!=undefined && payload[0] ? (
                                 <>
-                                    <li key={`item-0`}>{`尖峰利用率：${payload[3]?.value}kW`}</li>
-                                    <li key={`item-1`}>{`離峰利用率：${payload[0]?.value}kW`}</li>
+                                    <li key={`item-0`}>{`十小時率：${payload[3]?.value}kW`}</li>
+                                    <li key={`item-1`}>{`KNN：${payload[0]?.value}kW`}</li>
+                                    <li key={`item-2`}>{`純AMI：${payload[3]?.value}kW`}</li>
                                 </>) : (<></>)}
 
                         </>
@@ -33,7 +34,7 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
 
                             {payload[2] ? (
                                 <>
-                                    <li key={`item-0`}>{`利用率：${payload[2]?.value}%`}</li>
+                                    <li key={`item-0`}>{`純AMI：${payload[2]?.value}%`}</li>
                                 </>
                             ) : (<></>)}
                         </>
@@ -69,7 +70,7 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
                 <YAxis dataKey="uti_rate" orientation="left" tickLine={false} tickCount={6} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false} />
-                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={20} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToMonth} />
+                <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={20} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToMonth} />
                 <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={20} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToMonth} />
                 <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={20} fill="#BDBDBD" activeBar={{ fill: "#939393" }} onClick={BarClickToMonth} />
                 {/* 這條透明bar是為了hover寫的 */}

@@ -17,8 +17,9 @@ function EChartMain({data}) {
             return (
                 <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                     
-                    <li key={`item-0`}>{`尖峰利用率：${payload[2].value}kW`}</li>
-                    <li key={`item-1`}>{`離峰利用率：${payload[0].value}kW`}</li>
+                    <li key={`item-0`}>{`十小時率：${payload[1].value}kW`}</li>
+                    <li key={`item-1`}>{`KNN：${payload[0].value}kW`}</li>
+                    <li key={`item-2`}>{`純AMI：${payload[2].value}kW`}</li>
                     {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
                     
                 </ul>
@@ -46,7 +47,7 @@ function EChartMain({data}) {
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false}/>
-                <Bar dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToDay}/>
+                <Bar dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToDay}/>
                 <Bar dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToDay}/>
                 <Bar dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent" />
                 {/* 圖表線 */}
