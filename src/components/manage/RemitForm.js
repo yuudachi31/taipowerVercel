@@ -119,9 +119,10 @@ function UserInfo({ setSelectedDate,setSelectedRegion,setDownloading,isEdited, u
   const handleGroupChange = (value) => {
     // console.log("aa")
     // const selectedGroup = region_list.find((group) => group.region_name === value);
+    
     setSelectedRegion(value);
     setDownloading(false)
-    // console.log(value)
+    console.log(value)
 };
   return (
     <Form name="user-edit" colon={false} labelAlign="left">

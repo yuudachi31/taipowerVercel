@@ -185,16 +185,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
   return (
     
     <Layout class="px-20 wrapper">
-      {isLoadingtop ? (
-        <>
-          <div style={{ height: '200px' }}>
-            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
-              <div className="content" />
-            </Spin>
-          </div>
-        </>
-      ) : (
-        <>
+      
 
         {/* <div class="flex flex-row justify-between">
           <div class="flex flex-row">
@@ -250,7 +241,16 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
             <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
             <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button>
           </Header>
-          
+          {isLoadingtop ? (
+        <>
+          <div style={{ height: '200px' }}>
+            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
+              <div className="content" />
+            </Spin>
+          </div>
+        </>
+      ) : (
+        <>
           <Layout class="flex justify-between py-2">
             <Content class="text-base tracking-widest space-y-5 flex-col">
               <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>

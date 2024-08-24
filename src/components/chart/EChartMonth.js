@@ -70,13 +70,13 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false} />
                 <Bar isAnimationActive={false} dataKey="load_off" name="尖峰利用率" stackId="a" barSize={20} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToMonth} />
-                <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={20} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToMonth} />
+                {/* <Bar isAnimationActive={false} dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={20} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToMonth} /> */}
                 <Bar isAnimationActive={false} dataKey="predict_bars" name="預測利用率" stackId="a" barSize={20} fill="#BDBDBD" activeBar={{ fill: "#939393" }} onClick={BarClickToMonth} />
                 {/* 這條透明bar是為了hover寫的 */}
                 <Bar isAnimationActive={false} dataKey="load_on" name="離峰利用率" stackId="a" barSize={20} fill="transparent" />
                 {/* 圖表線 */}
                 <Line isAnimationActive={false} type="monotone" name="保證利用率" dataKey="load_on" stroke="black" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: 'black', strokeWidth: 2 }} />
-                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="load_on" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="load_on_forChart   " stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
                 <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="load_on" stroke="orange" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
 
             </ComposedChart>

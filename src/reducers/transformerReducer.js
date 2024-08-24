@@ -1,4 +1,4 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES } from "../utils/actionType/frontActionType";
 
 const initialState = {
   transformerList: [],
@@ -105,14 +105,26 @@ export const transformerReducer = (state = initialState, action) => {
       action.payload.forEach((element, index) => {
         if (!element.isEmpty) {
           // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
+          // dailyrates.push({
+          //   key: index,
+          //   'load_on': element.peak_rate.toFixed(1),
+          //   'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
+          //   'load_off': element.off_peak_rate.toFixed(1),
+          //   'load_total': element.peak_rate.toFixed(1),
+          //   'uti_rate': element.peak_rate + element.off_peak_rate,
+          //   'uti_rate_two': element.off_peak_rate.toFixed(1),
+          //   'x_key': element.date_day
+          // })
           dailyrates.push({
             key: index,
             'load_on': element.peak_rate.toFixed(1),
-            'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
-            'load_off': element.off_peak_rate.toFixed(1),
+            'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+            'year': element.date_year,
+            'month': element.date_month,
+            'day': element.date_day,
             'load_total': element.peak_rate.toFixed(1),
-            'uti_rate': element.peak_rate + element.off_peak_rate,
-            'uti_rate_two': element.off_peak_rate.toFixed(1),
+            'uti_rate': element.peak_rate,
+            // 'uti_rate_two': element.off_peak_rate.toFixed(1),
             'x_key': element.date_day
           })
         }
@@ -122,19 +134,53 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         dailyRatesList: [...dailyrates],
       };
+
+    case SAVE_DAILYKNNRATES:
+      const newStateArray = [];
+
+      state.dailyRatesList.forEach((item, index) => {
+        var match = false
+        var newobj ={}
+        action.payload.forEach(element => {
+          
+          if (index + 1 == element.date_day) {
+            match = true
+            newobj= {...state.dailyRatesList[index],  knn:element.peak_rate.toFixed(1)}
+          } 
+        })
+
+        if(match==false){
+          newStateArray.push(item[index])
+        }else{
+          newStateArray.push(newobj)
+        }
+
+      })
+      console.log(newStateArray)
+      // action.payload.forEach((element, index) => {
+      //   if (!element.isEmpty) {
+
+      //   }
+
+      // });
+      return {
+        ...state,
+        dailyRatesList:[...newStateArray]
+      };
+
     case SAVE_QUARTERRATES:
       const quarterRates = [];
       // let time = ["0:00","2:00", '4:0', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
       action.payload.forEach((element, index) => {
-        let time = ["0:00","2:00", '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
-        let aaa ="12:00"
-        if ( index!=0 && (index+1)%8 == 0) {
-          
-console.log(index)
+        let time = ["0:00", "2:00", '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
+        let aaa = "12:00"
+        if (index != 0 && (index + 1) % 8 == 0) {
+
+          console.log(index)
           quarterRates.push({
             // key: index,
             load: Number(element.uti_rate_15min.toFixed(1)),
-            x_key: `${(index+1)/4}:00`,
+            x_key: `${(index + 1) / 4}:00`,
           })
         } else {
           quarterRates.push({
@@ -157,44 +203,44 @@ console.log(index)
       for (let i = 1; i <= 12; i++) {
         let haveData = false
         action.payload.forEach((element, index) => {
-if(element.date_month==i){
-  haveData = true
+          if (element.date_month == i) {
+            haveData = true
 
-          let month = `${element.date_month}月`
-          if (element.is_predict == 1) {
-            monthlyRates.push({
-              'load_on': Math.ceil(element.peak_rate),
-              'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
-              'load_off': Math.ceil(element.off_peak_rate),
-              'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
-              'uti_rate': Math.ceil(element.peak_rate),
-              'x_key': month,
-              'year': element.date_year,
-              'predict_bars': 0
-            })
-          } else if (element.is_predict == 3) {
-            monthlyRates.push({
-  
-            })
+            let month = `${element.date_month}月`
+            if (element.is_predict == 1) {
+              monthlyRates.push({
+                'load_on': Math.ceil(element.peak_rate),
+                'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
+                'load_off': Math.ceil(element.off_peak_rate),
+                'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+                'uti_rate': Math.ceil(element.peak_rate),
+                'x_key': month,
+                'year': element.date_year,
+                'predict_bars': 0
+              })
+            } else if (element.is_predict == 3) {
+              monthlyRates.push({
+
+              })
+            }
+
+            else {
+              monthlyRates.push({
+                'load_on': Math.ceil(element.peak_rate),
+                'load_on_forChart': 0,
+                'load_off': 0,
+                'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+                'uti_rate': Math.ceil(element.peak_rate),
+                'x_key': month,
+                'year': element.date_year,
+                'predict_bars': Math.ceil(element.peak_rate),
+              })
+            }
+
           }
-  
-          else {
-            monthlyRates.push({
-              'load_on': Math.ceil(element.peak_rate),
-              'load_on_forChart': 0,
-              'load_off': 0,
-              'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
-              'uti_rate': Math.ceil(element.peak_rate),
-              'x_key': month,
-              'year': element.date_year,
-              'predict_bars': Math.ceil(element.peak_rate),
-            })
-          }
-  
-        }
         });
 
-        if(haveData!=true){
+        if (haveData != true) {
           monthlyRates.push({
             'load_on': null,
             'load_on_forChart': 0,

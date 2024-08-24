@@ -2,12 +2,12 @@
 import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import moment from 'moment';
-import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
+import { saveDailyKnnRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getDailyRatesRange } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates,getDailyKnnRates, getMonthlyRates, getEachTransformer, getDailyRatesRange } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -31,7 +31,7 @@ const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
 };
 
-function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
@@ -96,6 +96,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
           console.log(data.errDetail);
         } else {
           saveDailyRates(data)
+         
         }
       })
     }
@@ -113,8 +114,18 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
+       
+
         saveDailyRates(data)
-        setIsLoadingbottom(false)
+        getDailyKnnRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((knnData) => {
+          if (data.errStatus) {
+            console.log(data.errDetail);
+          } else {
+            saveDailyKnnRates(knnData)
+            setIsLoadingbottom(false)
+          }
+        })
+     
       }
     })
     getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
@@ -291,6 +302,6 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
+  saveDailyKnnRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EChartDayPage);

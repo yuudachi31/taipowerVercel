@@ -1,6 +1,7 @@
 import {
     SAVE_TRANS_DATA,
     SAVE_DAILYRATES,
+    SAVE_DAILYKNNRATES,
     SAVE_QUARTERRATES,
     SAVE_MONTHLYRATES,
     SAVE_EACHTRANSINFO,
@@ -25,6 +26,14 @@ export const saveDailyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_DAILYRATES,
+        payload:data
+    }
+}
+
+export const saveDailyKnnRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_DAILYKNNRATES,
         payload:data
     }
 }
