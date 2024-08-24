@@ -331,7 +331,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
             <div class="flex flex-col items-start justify-start">
               <div class="flex flex-row items-center ">
                 <span class="mt-2 w-7 h-3 bg-green-500"></span>
-                <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
+                <span class="mt-2 ml-2">純AMI</span>
               </div>
               <div class="flex flex-row items-center justify-end">
                 <span class="mt-2 bg-gray-300 w-7 h-3"></span>

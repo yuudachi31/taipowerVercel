@@ -488,7 +488,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
 
 
       <Layout>
-        <Header class="flex items-center justify-between mb-14">
+        <Header class="flex items-center justify-between mb-10">
           {/* <div class="space-x-3 flex-1"></div> */}
           <div class="space-x-3 ">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
@@ -496,7 +496,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           </div>
           {selectedYear ? (<h3 class="font-bold flex-1 m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-row ">
-            <div class="flex flex-col items-start justify-start">
+            {/* <div class="flex flex-col items-start justify-start">
               <div class="flex flex-row items-center ">
                 <span class="mt-2 w-7 h-3 bg-green-500"></span>
                 <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
@@ -509,7 +509,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
                 <span class="mt-2 border-2 border-gray-300 bg-gray-300 w-7 h-0"></span>
                 <span class="mt-2 ml-2">預測利用率</span>
               </div>
-            </div>
+            </div> */}
             <div class="flex flex-col items-start justify-start">
               <div class="flex flex-row items-center ">
                 <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>

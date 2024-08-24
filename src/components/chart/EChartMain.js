@@ -17,8 +17,9 @@ function EChartMain({data}) {
             return (
                 <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                     
-                    <li key={`item-0`}>{`尖峰利用率：${payload[0].value}kW`}</li>
-                    <li key={`item-1`}>{`KNN：${payload[1].value}kW`}</li>
+                    <li key={`item-0`}>{`十小時率：${payload[1].value}kW`}</li>
+                    <li key={`item-1`}>{`KNN：${payload[0].value}kW`}</li>
+                    <li key={`item-2`}>{`純AMI：${payload[2].value}kW`}</li>
                     {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
                     
                 </ul>
