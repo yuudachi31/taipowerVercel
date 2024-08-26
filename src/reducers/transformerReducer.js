@@ -226,7 +226,7 @@ export const transformerReducer = (state = initialState, action) => {
 
             else {
               monthlyRates.push({
-                'load_on': Math.ceil(element.peak_rate),
+                'load_on': 0,
                 'load_on_forChart': 0,
                 'load_off': 0,
                 'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),

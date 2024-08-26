@@ -92,12 +92,12 @@ function App() {
             <Header />
             {/* <TRSearch /> */}
             <TRNewSearch />
-            <ErrorModal
+            {/* <ErrorModal
               setIsErrorModalOpen={setIsErrorModalOpen}
               isErrorModalOpen={isErrorModalOpen}
               errStatus={errorStatus}
 
-            ></ErrorModal>
+            ></ErrorModal> */}
           </Route>
           <Route path="/tr/abnormal">
             <Header />

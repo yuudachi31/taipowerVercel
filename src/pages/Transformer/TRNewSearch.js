@@ -1,5 +1,5 @@
 //antd
-import { Layout, Divider, DatePicker, Progress, TimePicker,message, Spin, Input, Button,Row,Col ,Modal} from 'antd';
+import { Layout, Divider, DatePicker, Progress, TimePicker, message, Spin, Input, Button, Row, Col, Modal } from 'antd';
 
 import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
@@ -11,7 +11,7 @@ import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import {getAbnormalTransListForTrSearch, getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange,postUser } from '../../api/frontApi'
+import { getAbnormalTransListForTrSearch, getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange, postUser } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import ErrorModal from '../../components/ErrorModal'
 import { useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
   const [selectedDay, setSelectedDay] = useState(null);
   const [isLoadingtop, setIsLoadingTop] = useState(false);
   const [isLoadingbottom, setIsLoadingbottom] = useState(false);
-
+  const [isdateLoading, setDateLoading] = useState(true)
   const [abnormalTransData, setAbnormalTransData] = useState([]);
   const [isModalDataLoading, setIsModalDataLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -276,11 +276,11 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
 
         //   } else {
 
-            // console.log(data)
-            setAbnormalTransData(data)
-            // pushData()
-            console.log("saveall")
-            setIsModalDataLoading(false)
+        // console.log(data)
+        setAbnormalTransData(data)
+        // pushData()
+        console.log("saveall")
+        setIsModalDataLoading(false)
         //   }
         // })
         // console.log(data)
@@ -307,11 +307,15 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
   }, [])
 
   const _history = useHistory();
+  const gotoPredict=()=>{
+    _history.push(`/PredictPage?coor=${coor}&div=${div}&tr_index=${tr_index ? tr_index : 1}`)
+  }
   const handleSearch = () => {
+    setDateLoading(true)
     // 在此處執行搜索邏輯，使用 coor、div 和 tr_index 進行搜索
     setIsLoadingTop(true)
     setIsLoadingbottom(true)
-    getEachTransformer(coor, div, tr_index).then((data) => {
+    getEachTransformer(coor, div?div:"T01", tr_index?tr_index:"1").then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
@@ -319,7 +323,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
         saveEachTransInfo(data)
       }
     })
-    getMonthlyRates(coor, div, tr_index, 2022).then((data) => {
+    getMonthlyRates(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
@@ -328,10 +332,11 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
       }
     })
 
-    getMonthRatesRange(coor, div, tr_index, 2022).then((data) => {
+    getMonthRatesRange(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
+        setDateLoading(false)
         setInterval({
           ...data[0],
           "min_month": 1,
@@ -354,57 +359,57 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           isErrorModalOpen={isErrorModalOpen}
           errStatus={errorStatus}
         ></ErrorModal>
-          <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
-                footer={[
-                    // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
-                    <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
-                ]}
-            >
-                {
-                    isModalDataLoading ? (<>
-                        <div style={{ height: '200px' }}>
-                            <Spin tip="載入中" size="large" style={{ height: '200px' }}>
-                                <div className="content" />
-                            </Spin>
-                        </div> </>) :
-                        !abnormalTransData? <>
-                            無資料
-                        </>
-                            :
-                            (<div style={containerStyle}>
-                                <Row style={{ marginBottom: '8px' }} className='font-bold'>
-                                    <Col span={6}>圖號座標</Col>
-                                    <Col span={6}>組別</Col>
-                                    <Col span={6}>第幾具</Col>
-                                    <Col span={6}>利用率（%）</Col>
-                                    {/* <Col span={6}>日期</Col> */}
-                                </Row>
-                                {abnormalTransData?.map((data, index) => (
-                                    <Row key={index} style={{ borderBottom: '1px solid #f0f0f0', height: '28px' }}>
-                                        <Col span={6}>{data.coor}</Col>
-                                        <Col span={6}>{data.div}</Col>
-                                        {data.power_type == "Y接" ?
-                                            <Col span={6}>NA</Col>
-                                            :
-                                            <Col span={6}>{data.tr_index}</Col>
-                                        }
+        <Modal title="變壓器異常通知" open={isModalVisible} onCancel={() => setIsModalVisible(false)}
+          footer={[
+            // 定义右下角 按钮的地方 可根据需要使用 一个或者 2个按钮
+            <Button type="primary" onClick={() => setIsModalVisible(false)}>確認</Button>,
+          ]}
+        >
+          {
+            isModalDataLoading ? (<>
+              <div style={{ height: '200px' }}>
+                <Spin tip="載入中" size="large" style={{ height: '200px' }}>
+                  <div className="content" />
+                </Spin>
+              </div> </>) :
+              !abnormalTransData ? <>
+                無資料
+              </>
+                :
+                (<div style={containerStyle}>
+                  <Row style={{ marginBottom: '8px' }} className='font-bold'>
+                    <Col span={6}>圖號座標</Col>
+                    <Col span={6}>組別</Col>
+                    <Col span={6}>第幾具</Col>
+                    <Col span={6}>利用率（%）</Col>
+                    {/* <Col span={6}>日期</Col> */}
+                  </Row>
+                  {abnormalTransData?.map((data, index) => (
+                    <Row key={index} style={{ borderBottom: '1px solid #f0f0f0', height: '28px' }}>
+                      <Col span={6}>{data.coor}</Col>
+                      <Col span={6}>{data.div}</Col>
+                      {data.power_type == "Y接" ?
+                        <Col span={6}>NA</Col>
+                        :
+                        <Col span={6}>{data.tr_index}</Col>
+                      }
 
 
-                                        <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
-                                        {/* <Col span={6}>{Time[index]}</Col> */}
-                                    </Row>
-                                ))}
-                            </div>)
-                }
+                      <Col span={6} style={{ color: '#F66C55' }}>{data.uti_rate.toFixed(1)}</Col>
+                      {/* <Col span={6}>{Time[index]}</Col> */}
+                    </Row>
+                  ))}
+                </div>)
+          }
 
-                {/* <div class="flex mb-3"><div class=" w-72">
+          {/* <div class="flex mb-3"><div class=" w-72">
                         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>全選</Checkbox>
                         </div>
                         </div>
                     <div class="flex mb-3">
                         <CheckboxGroup class=" w-72" options={dataCheck} value={checkedList} onChange={onChange} />
                         </div> */}
-            </Modal>
+        </Modal>
         <div>
           <label class="mr-2" htmlFor="coor">圖號座標</label>
           <Input
@@ -436,8 +441,8 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           />
         </div>
         <div class="flex justify-between">
-          <Button type="primary" onClick={handleSearch}>搜尋</Button>
-          <button class="btn btn-orange bg-orange-400 flex ml-4" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${coor}&div=${div}&tr_index=${tr_index ? tr_index : 1}`) }}>負載分割</button>
+          <Button disabled={!coor||!div||!tr_index} type="primary" onClick={handleSearch}>搜尋</Button>
+          <Button disabled={!coor||!div||!tr_index} type="primary" onClick={ gotoPredict } style={{ background: "orange",marginLeft:"10px" }}>負載分割</Button>
         </div>
       </div>
       {isLoadingtop ? (
@@ -452,7 +457,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
         <>
           <Divider />
           <Header class="flex space-x-3 items-center">
-            <h2 class="flex-auto font-normal text-base">圖號座標<span class="text-2xl font-bold ml-6">{transformer.eachTransformerInfo.coor}</span></h2>
+            <h2 class="flex-auto font-normal text-base">圖號座標<span class="text-2xl font-bold ml-6">{transformer.eachTransformerInfo.coor?transformer.eachTransformerInfo.coor:""}</span></h2>
             {/* <button class="btn flex-none"><MessageOutlined />推播</button> */}
             {/* <button class="btn btn-orange bg-orange-400 flex" type="primary" onClick={() => { _history.push(`/PredictPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}`) }}>負載分割</button>
             <button class="btn flex-none" onClick={() => { _history.push(`/tr/search`) }}>返回列表</button> */}
@@ -461,15 +466,17 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           <Layout class="flex justify-between py-2">
             <Content class="text-base tracking-widest space-y-5 flex-col">
               <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-              <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
-              <div>AMI資料完整度 :<span class="ml-2">10 %</span></div>
+              {/* <div>住戶表數 :<span class="ml-2">{transformer.eachTransformerInfo.cust_num} 個（{transformer.eachTransformerInfo.cust_count} 個 AMI）</span></div> */}
+              <div>住戶表數 :<span class="ml-2">{transformer.eachTransformerInfo.cust_num} 個</span></div>
+
+              {/* <div>AMI資料完整度 :<span class="ml-2">10 %</span></div> */}
             </Content>
             <Content class="text-base tracking-widest space-y-5 flex-col">
               <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
               <div>容量 :<span class="ml-2">{transformer.eachTransformerInfo.cap} KVA</span></div>
             </Content>
             <Content class="text-base tracking-widest space-y-5 flex-col">
-              <div>第幾具 :<span class="ml-2">1/2</span></div>
+              <div>第幾具 :<span class="ml-2">{transformer.eachTransformerInfo.tr_index}/{transformer.eachTransformerInfo.num}</span></div>
 
             </Content>
 
@@ -492,7 +499,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           {/* <div class="space-x-3 flex-1"></div> */}
           <div class="space-x-3 ">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
-            <DatePicker defaultValue={moment(currentDate, yearFormat)} disabledDate={disabledDate} format={yearFormat} picker="year" onPanelChange={handlePanelChange} />
+            <DatePicker disabled={isdateLoading } defaultValue={moment(currentDate, yearFormat)} disabledDate={disabledDate} format={yearFormat} picker="year" onPanelChange={handlePanelChange} />
           </div>
           {selectedYear ? (<h3 class="font-bold flex-1 m-0 text-base">{selectedYear} 年度 每月用電圖表</h3>) : (<h3 class="font-bold flex-1 m-0 text-base">2022 年度 每月用電圖表</h3>)}
           <div class="flex flex-row ">
@@ -536,7 +543,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
             <>
               <Content class="flex mb-20 justify-center items-center">
                 <span class="min-w-max h-8 -mr-10 transform -rotate-90 text-center">利用率 (%)</span>
-                <EChartMonth data={transformer.monthlyRatesList} searchCoor={coor} searchDiv={div} searchTrIndex={tr_index}/>
+                <EChartMonth data={transformer.monthlyRatesList} searchCoor={coor} searchDiv={div} searchTrIndex={tr_index} />
               </Content>
             </>)}
       </Layout>
