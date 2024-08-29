@@ -12,50 +12,59 @@ export const saveTransData = (data) => {
     // console.log(data)
     return {
         type: SAVE_TRANS_DATA,
-        payload:data
+        payload: data
     }
 }
 export const saveAbnormalTransData = (data) => {
     // console.log(data)
     return {
         type: SAVE_ABN_TRANS_DATA,
-        payload:data
+        payload: data
     }
 }
 export const saveDailyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_DAILYRATES,
-        payload:data
+        payload: data
     }
 }
 
 export const saveDailyKnnRates = (data) => {
     // console.log(data)
-    return {
-        type: SAVE_DAILYKNNRATES,
-        payload:data
+    if (data == undefined) {
+        return {
+            type: SAVE_DAILYKNNRATES,
+            payload: []
+        }
     }
+    else {
+        return {
+            type: SAVE_DAILYKNNRATES,
+            payload: data
+        }
+    }
+
 }
 export const saveQuarterRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_QUARTERRATES,
-        payload:data
+        payload: data
     }
 }
 export const saveMonthlyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_MONTHLYRATES,
-        payload:data
+        payload: data
     }
 }
 export const saveEachTransInfo = (data) => {
     // console.log(data)
     return {
         type: SAVE_EACHTRANSINFO,
-        payload:data
+        payload: data
     }
 }
 

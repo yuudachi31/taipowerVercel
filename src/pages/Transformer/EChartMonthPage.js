@@ -121,6 +121,7 @@ function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyRates, saveQuar
           if (data.errStatus) {
             console.log(data.errDetail);
           } else {
+
             saveDailyKnnRates(knnData)
             setIsLoadingbottom(false)
           }

@@ -1,7 +1,7 @@
 import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES } from "../utils/actionType/frontActionType";
 
 const initialState = {
-  transformerList: [],
+  transformerList:Array(31),
   dailyRatesList: [],
   quarterRatesList: [],
   monthlyRatesList: [],
@@ -226,9 +226,9 @@ export const transformerReducer = (state = initialState, action) => {
 
             else {
               monthlyRates.push({
-                'load_on': 0,
-                'load_on_forChart': 0,
-                'load_off': 0,
+                'load_on': null,
+                'load_on_forChart': null,
+                'load_off': null,
                 'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
                 'uti_rate': Math.ceil(element.peak_rate),
                 'x_key': month,
