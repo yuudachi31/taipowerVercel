@@ -53,8 +53,8 @@ function EChartMain({data}) {
                 {/* 圖表線 */}
                 {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
                 {/* 第二條線 */}
-                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="knn" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
-                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="load_on_forChart" stroke="orange" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="knn" stroke="orange" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="ten" stroke="green" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
 
 
             </ComposedChart>

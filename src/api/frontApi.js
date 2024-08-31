@@ -145,7 +145,25 @@ export const getDailyKnnRates = async (coor,div,tr_index,date_year,date_month) =
     console.log(err.response);
   }
 };
-
+export const getDailyTenRates = async (coor,div,tr_index,date_year,date_month) => {
+  try {
+    
+    const _url = `${baseURL}/dailypeak_rate/ten_dailyrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
 
 
 export const getDailyRatesRange  = async (coor,div,tr_index) => {

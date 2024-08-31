@@ -1,8 +1,8 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES,SAVE_DAILYTENRATES } from "../utils/actionType/frontActionType";
 
 const initialState = {
-  transformerList:Array(31),
-  dailyRatesList: [],
+  transformerList:[],
+  dailyRatesList: Array.from({ length: 31 }, (index) => ({})),
   quarterRatesList: [],
   monthlyRatesList: [],
   ABNtransformerList: [],
@@ -102,22 +102,18 @@ export const transformerReducer = (state = initialState, action) => {
 
     case SAVE_DAILYRATES:
       const dailyrates = [];
-      action.payload.forEach((element, index) => {
-        if (!element.isEmpty) {
-          // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
-          // dailyrates.push({
-          //   key: index,
-          //   'load_on': element.peak_rate.toFixed(1),
-          //   'load_on_forChart': element.peak_rate.toFixed(1) - element.off_peak_rate.toFixed(1),
-          //   'load_off': element.off_peak_rate.toFixed(1),
-          //   'load_total': element.peak_rate.toFixed(1),
-          //   'uti_rate': element.peak_rate + element.off_peak_rate,
-          //   'uti_rate_two': element.off_peak_rate.toFixed(1),
-          //   'x_key': element.date_day
-          // })
-          dailyrates.push({
-            key: index,
-            'load_on': element.peak_rate.toFixed(1),
+     
+      state.dailyRatesList.forEach((item, index) => {
+        var match = false
+       
+        var newobj ={}
+        action.payload.forEach(element => {
+          
+          if (index + 1 == element.date_day) {
+            match = true
+            newobj= {...state.dailyRatesList[index],  
+             key: index,
+              'load_on': element.peak_rate.toFixed(1),
             'load_on_forChart': (element.peak_rate + 10).toFixed(1),
             'year': element.date_year,
             'month': element.date_month,
@@ -126,14 +122,93 @@ export const transformerReducer = (state = initialState, action) => {
             'uti_rate': element.peak_rate,
             // 'uti_rate_two': element.off_peak_rate.toFixed(1),
             'x_key': element.date_day
-          })
+            }
+          } 
+        })
+
+        if(match==false){
+          var oldobj=state.dailyRatesList[index]
+          dailyrates.push(oldobj)
+        }else{
+          dailyrates.push(newobj)
         }
 
-      });
+      })
+
+      // action.payload.forEach((element, index) => {
+      //   if (!element.isEmpty) {
+          // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
+
+      //    ----------------
+          // dailyrates.push({
+          //   key: index,
+          //   'load_on': element.peak_rate.toFixed(1),
+          //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+          //   'year': element.date_year,
+          //   'month': element.date_month,
+          //   'day': element.date_day,
+          //   'load_total': element.peak_rate.toFixed(1),
+          //   'uti_rate': element.peak_rate,
+          //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
+          //   'x_key': element.date_day
+          // })
+     //    ----------------
+          // dailyrates.push({
+          //   key: index,
+          //   'load_on': element.peak_rate.toFixed(1),
+          //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+          //   'year': element.date_year,
+          //   'month': element.date_month,
+          //   'day': element.date_day,
+          //   'load_total': element.peak_rate.toFixed(1),
+          //   'uti_rate': element.peak_rate,
+          //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
+          //   'x_key': element.date_day
+          // })
+      //   }
+
+      // });
+ 
+
       return {
         ...state,
         dailyRatesList: [...dailyrates],
       };
+SAVE_DAILYTENRATES
+case SAVE_DAILYTENRATES:
+  const newStateArrayForTen = [];
+
+  state.dailyRatesList.forEach((item, index) => {
+    var match = false
+    var newobj ={}
+    action.payload.forEach(element => {
+      
+      if (index + 1 == element.date_day) {
+        match = true
+        newobj= {...state.dailyRatesList[index], 
+          key: index,  ten:element.peak_rate.toFixed(1)}
+      } 
+    })
+
+    if(match==false){
+      var oldobj=state.dailyRatesList[index]
+      newStateArrayForTen.push(oldobj)
+    }else{
+      newStateArrayForTen.push(newobj)
+    }
+
+  })
+  console.log(newStateArrayForTen)
+  // action.payload.forEach((element, index) => {
+  //   if (!element.isEmpty) {
+
+  //   }
+
+  // });
+  return {
+    ...state,
+    dailyRatesList:[...newStateArrayForTen]
+  };
 
     case SAVE_DAILYKNNRATES:
       const newStateArray = [];
@@ -145,12 +220,14 @@ export const transformerReducer = (state = initialState, action) => {
           
           if (index + 1 == element.date_day) {
             match = true
-            newobj= {...state.dailyRatesList[index],  knn:element.peak_rate.toFixed(1)}
+            newobj= {...state.dailyRatesList[index], 
+              key: index,  knn:element.peak_rate.toFixed(1)}
           } 
         })
 
         if(match==false){
-          newStateArray.push(item[index])
+          var oldobj=state.dailyRatesList[index]
+          newStateArray.push(oldobj)
         }else{
           newStateArray.push(newobj)
         }

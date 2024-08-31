@@ -2,12 +2,12 @@
 import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import moment from 'moment';
-import { saveDailyKnnRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
+import { saveDailyKnnRates,saveDailyTenRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates,getDailyKnnRates, getMonthlyRates, getEachTransformer, getDailyRatesRange } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates,getDailyKnnRates, getMonthlyRates, getEachTransformer, getDailyRatesRange,getDailyTenRates } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -31,12 +31,16 @@ const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
 };
 
-function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyTenRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
+  const [isRateLoading, setisRateLoading] = useState(true);
+  const [isKnnLoading, setisKnnLoading] = useState(true);
+  const [isTenLoading, setisTenLoading] = useState(true);
+
+
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -114,21 +118,29 @@ function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyRates, saveQuar
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
-       
-
         saveDailyRates(data)
-        getDailyKnnRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((knnData) => {
-          if (data.errStatus) {
-            console.log(data.errDetail);
-          } else {
-
-            saveDailyKnnRates(knnData)
-            setIsLoadingbottom(false)
-          }
-        })
-     
+        setisRateLoading(false)
       }
     })
+    getDailyKnnRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((knnData) => {
+      if (knnData.errStatus) {
+        console.log(knnData.errDetail);
+      } else {
+
+        saveDailyKnnRates(knnData)
+        setisKnnLoading(false)
+      }
+    })
+   getDailyTenRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((data) => {
+    if (data.errStatus) {
+      console.log(data.errDetail);
+    } else {
+
+      saveDailyTenRates(data)
+      setisTenLoading(false)
+    }
+  })
+   
     getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -254,7 +266,7 @@ function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyRates, saveQuar
           </div>
         </Header>
         {
-          isLoadingbottom ? (
+          isRateLoading||isKnnLoading||isTenLoading ? (
           <> 
             <div style={{height:'200px'}}>
               <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
@@ -303,6 +315,6 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyKnnRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
+  saveDailyKnnRates,saveDailyRates, saveDailyTenRates,saveQuarterRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EChartDayPage);
