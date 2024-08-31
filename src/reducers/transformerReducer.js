@@ -174,7 +174,7 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         dailyRatesList: [...dailyrates],
       };
-SAVE_DAILYTENRATES
+
 case SAVE_DAILYTENRATES:
   const newStateArrayForTen = [];
 
