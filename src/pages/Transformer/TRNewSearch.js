@@ -16,7 +16,8 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/ErrorModal'
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
+// import queryString from "query-string";
+import qs from "qs"
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 const containerStyle = {
@@ -44,7 +45,7 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates,saveMonthlyKnnRates,saveMonthlyTenRates,saveMonthlyGuartRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
+  const parsed = qs.parse(window.location.search);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedYear, setSelectedYear] = useState(null);
@@ -114,7 +115,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
     }
   };
   const handlePanelChange_daily = (value, mode) => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());

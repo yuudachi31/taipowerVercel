@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import queryString from "query-string";
+import qs from "qs";
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 
@@ -37,7 +37,7 @@ const onChangeMonth = (date, dateString) => {
 };
 
 function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
-  const parsed = queryString.parse(window.location.search);
+  const parsed =  qs.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -94,7 +94,7 @@ function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRate
     }
   };
   const handlePanelChange_daily = (value, mode) => {
-    const parsed = queryString.parse(window.location.search);
+    const parsed = qs.parse(window.location.search);
     // setSelectedYear(value.year());
     if (mode === 'month') {
       setSelectedYear(value.year());
