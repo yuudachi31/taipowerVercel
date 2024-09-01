@@ -5,13 +5,13 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
-import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
+import { saveDailyRates, saveQuarterRates,saveQuarterKnnRates,saveQuarterTenRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer,getQuarterRatesRange} from '../../api/frontApi'
+import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer,getQuarterRatesRange,getQuarterKnnRates,getQuarterTenRates } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -38,12 +38,17 @@ const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
 };
 
-function TRInfo({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+function TRInfo({ transformer, saveDailyRates, saveQuarterRates,saveQuarterKnnRates,saveQuarterTenRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
+  const [isLoadingAmi, setIsLoadingAmi] = useState(true);
+  const [isLoadingKnn,setIsLoadingKnn] = useState(true);
+  const [isLoadingTen,setIsLoadingTen] = useState(true);
+
+
+
   const [currentDate,setCurrentDate]=useState(null);
  const [interval,setInterval]=useState(
   {
@@ -128,13 +133,32 @@ console.log()
      setSelectedMonth(parsed.month)
      setSelectedYear(parsed.year)
      setSelectedDay(parsed.day)
+     
      getQuarterRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month,parsed.day).then((data) => {
      
       if (data.errStatus) {
         console.log(data.errDetail);
       } else {
         saveQuarterRates(data)
-        setIsLoadingbottom(false)
+        setIsLoadingAmi(false)
+      }
+    })
+    getQuarterKnnRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month,parsed.day).then((data) => {
+     
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        saveQuarterKnnRates(data)
+        setIsLoadingKnn(false)
+      }
+    })
+    getQuarterTenRates(parsed.coor, parsed.div, parsed.tr_index,parsed.year,parsed.month,parsed.day).then((data) => {
+     
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        saveQuarterTenRates(data)
+        setIsLoadingTen(false)
       }
     })
     getQuarterRatesRange(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
@@ -237,7 +261,7 @@ console.log()
         </Header>
 
         {
-          isLoadingbottom ? (
+          isLoadingAmi||isLoadingKnn||isLoadingTen? (
           <> 
             <div style={{height:'200px'}}>
               <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
@@ -261,6 +285,6 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
+  saveDailyRates, saveQuarterRates,saveQuarterKnnRates,saveQuarterTenRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRInfo);

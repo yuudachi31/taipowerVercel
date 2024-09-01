@@ -204,6 +204,45 @@ export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,da
     console.log(err.response);
   }
 };
+export const getQuarterKnnRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
+  try {
+    const _url = `${baseURL}/quarterrate/knn_quarterrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getQuarterTenRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
+  try {
+    const _url = `${baseURL}/quarterrate/ten_quarterrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 export const getQuarterRatesRange  = async (coor,div,tr_index) => {
   try {
     const _url = `${baseURL}/quarterrate/interval/${coor}/${div}/${tr_index}   `;

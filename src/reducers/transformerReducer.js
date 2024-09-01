@@ -1,9 +1,9 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES,SAVE_DAILYTENRATES } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES, SAVE_QUARTERKNNRATES,SAVE_QUARTERTENRATES, SAVE_DAILYTENRATES } from "../utils/actionType/frontActionType";
 
 const initialState = {
-  transformerList:[],
+  transformerList: [],
   dailyRatesList: Array.from({ length: 31 }, (index) => ({})),
-  quarterRatesList: [],
+  quarterRatesList: Array.from({ length: 96 }, () => ({})),
   monthlyRatesList: [],
   ABNtransformerList: [],
   eachTransformerInfo: {
@@ -102,34 +102,35 @@ export const transformerReducer = (state = initialState, action) => {
 
     case SAVE_DAILYRATES:
       const dailyrates = [];
-     
+
       state.dailyRatesList.forEach((item, index) => {
         var match = false
-       
-        var newobj ={}
+
+        var newobj = {}
         action.payload.forEach(element => {
-          
+
           if (index + 1 == element.date_day) {
             match = true
-            newobj= {...state.dailyRatesList[index],  
-             key: index,
+            newobj = {
+              ...state.dailyRatesList[index],
+              key: index,
               'load_on': element.peak_rate.toFixed(1),
-            'load_on_forChart': (element.peak_rate + 10).toFixed(1),
-            'year': element.date_year,
-            'month': element.date_month,
-            'day': element.date_day,
-            'load_total': element.peak_rate.toFixed(1),
-            'uti_rate': element.peak_rate,
-            // 'uti_rate_two': element.off_peak_rate.toFixed(1),
-            'x_key': element.date_day
+              'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+              'year': element.date_year,
+              'month': element.date_month,
+              'day': element.date_day,
+              'load_total': element.peak_rate.toFixed(1),
+              'uti_rate': element.peak_rate,
+              // 'uti_rate_two': element.off_peak_rate.toFixed(1),
+              'x_key': element.date_day
             }
-          } 
+          }
         })
 
-        if(match==false){
-          var oldobj=state.dailyRatesList[index]
+        if (match == false) {
+          var oldobj = state.dailyRatesList[index]
           dailyrates.push(oldobj)
-        }else{
+        } else {
           dailyrates.push(newobj)
         }
 
@@ -137,98 +138,102 @@ export const transformerReducer = (state = initialState, action) => {
 
       // action.payload.forEach((element, index) => {
       //   if (!element.isEmpty) {
-          // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
+      // console.log(`${element.peak_rate.toFixed(1)}+${element.off_peak_rate.toFixed(1)}=${(element.peak_rate + element.off_peak_rate).toFixed(1)}`)
 
       //    ----------------
-          // dailyrates.push({
-          //   key: index,
-          //   'load_on': element.peak_rate.toFixed(1),
-          //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
-          //   'year': element.date_year,
-          //   'month': element.date_month,
-          //   'day': element.date_day,
-          //   'load_total': element.peak_rate.toFixed(1),
-          //   'uti_rate': element.peak_rate,
-          //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
-          //   'x_key': element.date_day
-          // })
-     //    ----------------
-          // dailyrates.push({
-          //   key: index,
-          //   'load_on': element.peak_rate.toFixed(1),
-          //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
-          //   'year': element.date_year,
-          //   'month': element.date_month,
-          //   'day': element.date_day,
-          //   'load_total': element.peak_rate.toFixed(1),
-          //   'uti_rate': element.peak_rate,
-          //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
-          //   'x_key': element.date_day
-          // })
+      // dailyrates.push({
+      //   key: index,
+      //   'load_on': element.peak_rate.toFixed(1),
+      //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+      //   'year': element.date_year,
+      //   'month': element.date_month,
+      //   'day': element.date_day,
+      //   'load_total': element.peak_rate.toFixed(1),
+      //   'uti_rate': element.peak_rate,
+      //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
+      //   'x_key': element.date_day
+      // })
+      //    ----------------
+      // dailyrates.push({
+      //   key: index,
+      //   'load_on': element.peak_rate.toFixed(1),
+      //   'load_on_forChart': (element.peak_rate + 10).toFixed(1),
+      //   'year': element.date_year,
+      //   'month': element.date_month,
+      //   'day': element.date_day,
+      //   'load_total': element.peak_rate.toFixed(1),
+      //   'uti_rate': element.peak_rate,
+      //   // 'uti_rate_two': element.off_peak_rate.toFixed(1),
+      //   'x_key': element.date_day
+      // })
       //   }
 
       // });
- 
+
 
       return {
         ...state,
         dailyRatesList: [...dailyrates],
       };
 
-case SAVE_DAILYTENRATES:
-  const newStateArrayForTen = [];
+    case SAVE_DAILYTENRATES:
+      const newStateArrayForTen = [];
 
-  state.dailyRatesList.forEach((item, index) => {
-    var match = false
-    var newobj ={}
-    action.payload.forEach(element => {
-      
-      if (index + 1 == element.date_day) {
-        match = true
-        newobj= {...state.dailyRatesList[index], 
-          key: index,  ten:element.peak_rate.toFixed(1)}
-      } 
-    })
+      state.dailyRatesList.forEach((item, index) => {
+        var match = false
+        var newobj = {}
+        action.payload.forEach(element => {
 
-    if(match==false){
-      var oldobj=state.dailyRatesList[index]
-      newStateArrayForTen.push(oldobj)
-    }else{
-      newStateArrayForTen.push(newobj)
-    }
+          if (index + 1 == element.date_day) {
+            match = true
+            newobj = {
+              ...state.dailyRatesList[index],
+              key: index, ten: element.peak_rate.toFixed(1)
+            }
+          }
+        })
 
-  })
-  console.log(newStateArrayForTen)
-  // action.payload.forEach((element, index) => {
-  //   if (!element.isEmpty) {
+        if (match == false) {
+          var oldobj = state.dailyRatesList[index]
+          newStateArrayForTen.push(oldobj)
+        } else {
+          newStateArrayForTen.push(newobj)
+        }
 
-  //   }
+      })
+      console.log(newStateArrayForTen)
+      // action.payload.forEach((element, index) => {
+      //   if (!element.isEmpty) {
 
-  // });
-  return {
-    ...state,
-    dailyRatesList:[...newStateArrayForTen]
-  };
+      //   }
+
+      // });
+      return {
+        ...state,
+        dailyRatesList: [...newStateArrayForTen]
+      };
 
     case SAVE_DAILYKNNRATES:
       const newStateArray = [];
 
       state.dailyRatesList.forEach((item, index) => {
         var match = false
-        var newobj ={}
+        var newobj = {}
         action.payload.forEach(element => {
-          
+
           if (index + 1 == element.date_day) {
             match = true
-            newobj= {...state.dailyRatesList[index], 
-              key: index,  knn:element.peak_rate.toFixed(1)}
-          } 
+            newobj = {
+              ...state.dailyRatesList[index],
+              key: index, knn: element.peak_rate.toFixed(1)
+            }
+          }
         })
 
-        if(match==false){
-          var oldobj=state.dailyRatesList[index]
+        if (match == false) {
+          var oldobj = state.dailyRatesList[index]
           newStateArray.push(oldobj)
-        }else{
+        } else {
           newStateArray.push(newobj)
         }
 
@@ -242,38 +247,131 @@ case SAVE_DAILYTENRATES:
       // });
       return {
         ...state,
-        dailyRatesList:[...newStateArray]
+        dailyRatesList: [...newStateArray]
       };
 
     case SAVE_QUARTERRATES:
-      const quarterRates = [];
+      const quarterAmiRates = [];
       // let time = ["0:00","2:00", '4:0', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
-      action.payload.forEach((element, index) => {
-        let time = ["0:00", "2:00", '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
-        let aaa = "12:00"
-        if (index != 0 && (index + 1) % 8 == 0) {
+      // action.payload.forEach((element, index) => {
+      //   let time = ["0:00", "2:00", '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'];
+      //   if (index != 0 && (index + 1) % 8 == 0) {
+      //     console.log(index)
+      //     quarterRates.push({
+      //       // key: index,
+      //       load: Number(element.uti_rate_15min.toFixed(1)),
+      //       x_key: `${(index + 1) / 4}:00`,
+      //     })
+      //   } else {
+      //     quarterRates.push({
+      //       // key: index,
+      //       load: Number(element.uti_rate_15min.toFixed(1)),
+      //       x_key: '',
+      //     })
+      //   }
+      // });
+      state.quarterRatesList.forEach((item, index1) => {
+        var newobj = {}
+        action.payload.forEach((element, index2 )=> {
+          if (index1 == index2) {
+            if (index1 != 0 && (index1 + 1) % 8 == 0) {
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1, load: element.uti_rate_15min.toFixed(1),
+                x_key: `${(index1 + 1) / 4}:00`,
+              }
+            }else{
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1, load: element.uti_rate_15min.toFixed(1),
+                x_key: '',
+              }
+            
+            }
+            
+          }
+        })
+        quarterAmiRates.push(newobj)
 
-          console.log(index)
-          quarterRates.push({
-            // key: index,
-            load: Number(element.uti_rate_15min.toFixed(1)),
-            x_key: `${(index + 1) / 4}:00`,
-          })
-        } else {
-          quarterRates.push({
-            // key: index,
-            load: Number(element.uti_rate_15min.toFixed(1)),
-            x_key: '',
-          })
-        }
+
+      })
 
 
-      });
-      console.log(quarterRates)
+      console.log(quarterAmiRates)
       return {
         ...state,
-        quarterRatesList: quarterRates,
+        quarterRatesList: [...quarterAmiRates],
       };
+    case SAVE_QUARTERKNNRATES:
+      const quarterKnnRates = [];
+      state.quarterRatesList.forEach((item, index1) => {
+        var newobj = {}
+        action.payload.forEach((element, index2) => {
+          if (index1 == index2) {
+            if (index1 != 0 && (index1 + 1) % 8 == 0) {
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1, knn: element.uti_rate_15min_knn.toFixed(1),
+                x_key: `${(index1 + 1) / 4}:00`,
+              }
+            }else{
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1,  knn: element.uti_rate_15min_knn.toFixed(1),
+                x_key: '',
+              }
+            
+            }
+            
+          }
+        })
+        quarterKnnRates.push(newobj)
+
+
+      })
+
+
+      console.log(quarterKnnRates)
+      return {
+        ...state,
+        quarterRatesList: [...quarterKnnRates],
+      };
+      case SAVE_QUARTERTENRATES:
+      const quarterTenRates = [];
+      state.quarterRatesList.forEach((item, index1) => {
+        var newobj = {}
+        action.payload.forEach((element, index2) => {
+          if (index1 == index2) {
+            if (index1 != 0 && (index1 + 1) % 8 == 0) {
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1, ten: element.uti_rate_15min_10h.toFixed(1),
+                x_key: `${(index1 + 1) / 4}:00`,
+              }
+            }else{
+              newobj = {
+                ...state.quarterRatesList[index1],
+                key: index1,  ten: element.uti_rate_15min_10h.toFixed(1),
+                x_key: '',
+              }
+            
+            }
+            
+          }
+        })
+        quarterTenRates.push(newobj)
+
+
+      })
+
+
+      console.log(quarterTenRates)
+      return {
+        ...state,
+        quarterRatesList: [...quarterTenRates],
+      };
+      
+
     case SAVE_MONTHLYRATES:
       const monthlyRates = [];
       // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];

@@ -235,7 +235,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
 
     getAbnormalTransListForTrSearch().then((data) => {
       if (data == 401) {
-        if (Number(localStorage.getItem('resetTime')) == 8) {
+        if (Number(localStorage.getItem('resetTime')) == 5) {
           // console.log(Number(localStorage.getItem('resetTime')))
 
           // console.log("aabb")

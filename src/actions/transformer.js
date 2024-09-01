@@ -4,6 +4,8 @@ import {
     SAVE_DAILYKNNRATES,
     SAVE_DAILYTENRATES,
     SAVE_QUARTERRATES,
+    SAVE_QUARTERKNNRATES,
+    SAVE_QUARTERTENRATES,
     SAVE_MONTHLYRATES,
     SAVE_EACHTRANSINFO,
     SAVE_ABN_TRANS_DATA
@@ -68,6 +70,21 @@ export const saveQuarterRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_QUARTERRATES,
+        payload: data
+    }
+}
+export const saveQuarterKnnRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_QUARTERKNNRATES,
+        payload: data
+    }
+}
+
+export const saveQuarterTenRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_QUARTERTENRATES,
         payload: data
     }
 }
