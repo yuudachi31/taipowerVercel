@@ -1,52 +1,130 @@
 import {
     SAVE_TRANS_DATA,
     SAVE_DAILYRATES,
+    SAVE_DAILYKNNRATES,
+    SAVE_DAILYTENRATES,
     SAVE_QUARTERRATES,
+    SAVE_QUARTERKNNRATES,
+    SAVE_QUARTERTENRATES,
     SAVE_MONTHLYRATES,
     SAVE_EACHTRANSINFO,
-    SAVE_ABN_TRANS_DATA
+    SAVE_ABN_TRANS_DATA,
+    SAVE_MONTHLYKNNRATES,
+    SAVE_MONTHLYTENRATES,
+    SAVE_MONTHLYGUARTRATES
+
 } from '../utils/actionType/frontActionType'
 
 export const saveTransData = (data) => {
     // console.log(data)
     return {
         type: SAVE_TRANS_DATA,
-        payload:data
+        payload: data
     }
 }
 export const saveAbnormalTransData = (data) => {
     // console.log(data)
     return {
         type: SAVE_ABN_TRANS_DATA,
-        payload:data
+        payload: data
     }
 }
 export const saveDailyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_DAILYRATES,
-        payload:data
+        payload: data
     }
+}
+
+export const saveDailyKnnRates = (data) => {
+    // console.log(data)
+    if (data == undefined) {
+        return {
+            type: SAVE_DAILYKNNRATES,
+            payload: []
+        }
+    }
+    else {
+        return {
+            type: SAVE_DAILYKNNRATES,
+            payload: data
+        }
+    }
+
+}
+
+export const saveDailyTenRates = (data) => {
+    // console.log(data)
+    if (data == undefined) {
+        return {
+            type: SAVE_DAILYTENRATES,
+            payload: []
+        }
+    }
+    else {
+        return {
+            type: SAVE_DAILYTENRATES,
+            payload: data
+        }
+    }
+
 }
 export const saveQuarterRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_QUARTERRATES,
-        payload:data
+        payload: data
+    }
+}
+export const saveQuarterKnnRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_QUARTERKNNRATES,
+        payload: data
+    }
+}
+
+export const saveQuarterTenRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_QUARTERTENRATES,
+        payload: data
     }
 }
 export const saveMonthlyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_MONTHLYRATES,
-        payload:data
+        payload: data
+    }
+}
+export const saveMonthlyKnnRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYKNNRATES,
+        payload: data
+    }
+}
+export const saveMonthlyTenRates= (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYTENRATES,
+        payload: data
+    }
+}
+export const saveMonthlyGuartRates= (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYGUARTRATES,
+        payload: data
     }
 }
 export const saveEachTransInfo = (data) => {
     // console.log(data)
     return {
         type: SAVE_EACHTRANSINFO,
-        payload:data
+        payload: data
     }
 }
 

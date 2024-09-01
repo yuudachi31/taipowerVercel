@@ -2,12 +2,12 @@
 import { Layout, Divider, DatePicker, Progress, Spin } from 'antd';
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import moment from 'moment';
-import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
+import { saveDailyKnnRates,saveDailyTenRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getDailyRatesRange } from '../../api/frontApi'
+import { getDailyRates, getQuarterRates,getDailyKnnRates, getMonthlyRates, getEachTransformer, getDailyRatesRange,getDailyTenRates } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
@@ -31,12 +31,16 @@ const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
 };
 
-function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyTenRates,saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
   const parsed = qs.parse(window.location.search);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(6);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
+  const [isRateLoading, setisRateLoading] = useState(true);
+  const [isKnnLoading, setisKnnLoading] = useState(true);
+  const [isTenLoading, setisTenLoading] = useState(true);
+
+
   const [interval, setInterval] = useState(
     {
       "min_year": 2022,
@@ -96,6 +100,7 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
           console.log(data.errDetail);
         } else {
           saveDailyRates(data)
+         
         }
       })
     }
@@ -114,9 +119,28 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
         console.log(data.errDetail);
       } else {
         saveDailyRates(data)
-        setIsLoadingbottom(false)
+        setisRateLoading(false)
       }
     })
+    getDailyKnnRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((knnData) => {
+      if (knnData.errStatus) {
+        console.log(knnData.errDetail);
+      } else {
+
+        saveDailyKnnRates(knnData)
+        setisKnnLoading(false)
+      }
+    })
+   getDailyTenRates(parsed.coor, parsed.div, parsed.tr_index, 2022, parsed.month ).then((data) => {
+    if (data.errStatus) {
+      console.log(data.errDetail);
+    } else {
+
+      saveDailyTenRates(data)
+      setisTenLoading(false)
+    }
+  })
+   
     getEachTransformer(parsed.coor, parsed.div, parsed.tr_index).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -214,22 +238,47 @@ function EChartDayPage({ transformer, saveDailyRates, saveQuarterRates, saveMont
       <Layout class="py-2">
         <Header class="flex items-center justify-between">
 
-          <div class="space-x-2 flex-1">
+          <div class="space-x-2 ">
             <span class="text-base " style={{ fontSize: '14px' }}>期間選擇</span>
             {/* <DatePicker defaultValue={moment(currentDate, monthFormat)} format={monthFormat} picker="month" onPanelChange={handlemonthChange}/> */}
             <DatePicker defaultValue={moment(currentDate, monthFormat)} disabledDate={disabledDate} format={monthFormat} picker="month" onPanelChange={handlePanelChange_daily} />
           </div>
           {selectedMonth ? (<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年度 {selectedMonth} 月每日用電圖表</h3>) : (<h3 class="font-bold flex-1 text-center m-0 text-base">2022 年度 6 月每日用電圖表</h3>)}
-          <div class="flex flex-1 items-center justify-end">
-
-            <span class="w-7 h-3 bg-green-500"></span>
-            <span class="ml-2 mr-6">尖峰利用率</span>
-            <span class="w-7 h-3 bg-green-300"></span>
-            <span class="ml-2">離峰利用率</span>
+          <div class="flex flex-row ">
+            {/* <div class="flex flex-col items-start justify-start">
+              <div class="flex flex-row items-center ">
+              <span class="mt-2 w-7 h-3 bg-green-500"></span>
+              <span class="mt-2 ml-2">純AMI&emsp;&emsp;&emsp;</span>
+              </div>
+             
+            </div> */}
+            <div class="flex flex-row ">
+            <div class="flex flex-col items-start justify-start">
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 w-7 h-3 bg-green-500"></span>
+                <span class="mt-2 ml-2">純AMI</span>
+              </div>
+              
+            </div>
+            <div class="flex flex-col ml-2 items-start justify-start">
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+                <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+              </div>
+              <div class="flex flex-row items-center">
+                <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+                <span class="mt-2 ml-2">十小時率</span>
+              </div>
+              <div class="flex flex-row items-center">
+                <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
+                <span class="mt-2 ml-2">保證利用率</span>
+              </div>
+            </div>
+          </div>
           </div>
         </Header>
         {
-          isLoadingbottom ? (
+          isRateLoading||isKnnLoading||isTenLoading ? (
           <> 
             <div style={{height:'200px'}}>
               <Spin tip="圖表載入中" size="large" style={{height:'200px'}}>
@@ -278,6 +327,6 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
+  saveDailyKnnRates,saveDailyRates, saveDailyTenRates,saveQuarterRates, saveMonthlyRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EChartDayPage);

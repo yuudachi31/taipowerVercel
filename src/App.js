@@ -9,8 +9,9 @@ import Header from "./components/Header";
 import ManageHeader from "./components/ManageHeader";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import TRInfo from "./pages/Transformer/TRInfo";
+import TRNewSearch from "./pages/Transformer/TRNewSearch";
 import TRSearch from "./pages/Transformer/TRSearch";
+import TRInfo from "./pages/Transformer/TRInfoOld";
 import TRAbnormal from "./pages/Transformer/TRAbnormal";
 import IndustryInfo from "./pages/Transformer/IndustryInfo";
 import PredictPage from "./pages/Transformer/PredictPage";
@@ -89,7 +90,8 @@ function App() {
           </Route>
           <Route path="/tr/search">
             <Header />
-            <TRSearch />
+            {/* <TRSearch /> */}
+            <TRNewSearch />
             {/* <ErrorModal
               setIsErrorModalOpen={setIsErrorModalOpen}
               isErrorModalOpen={isErrorModalOpen}

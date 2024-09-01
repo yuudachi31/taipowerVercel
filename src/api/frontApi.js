@@ -34,6 +34,8 @@ export const postUser = async (username, password) => {
     }
   } catch (err) {
     console.log(err.response);
+    return err.response.status
+
     // return { "errStatus": err.response.status, "errDetail": err.response.data.detail }
   }
 };
@@ -124,6 +126,45 @@ export const getDailyRates = async (coor,div,tr_index,date_year,date_month) => {
     console.log(err.response);
   }
 };
+export const getDailyKnnRates = async (coor,div,tr_index,date_year,date_month) => {
+  try {
+   
+    const _url = `${baseURL}/dailypeak_rate/knn_dailyrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getDailyTenRates = async (coor,div,tr_index,date_year,date_month) => {
+  try {
+    
+    const _url = `${baseURL}/dailypeak_rate/ten_dailyrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}   `;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 
 export const getDailyRatesRange  = async (coor,div,tr_index) => {
   try {
@@ -163,6 +204,45 @@ export const getQuarterRates  = async (coor,div,tr_index,date_year,date_month,da
     console.log(err.response);
   }
 };
+export const getQuarterKnnRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
+  try {
+    const _url = `${baseURL}/quarterrate/knn_quarterrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getQuarterTenRates  = async (coor,div,tr_index,date_year,date_month,date_day) => {
+  try {
+    const _url = `${baseURL}/quarterrate/ten_quarterrate/${coor}/${div}/${tr_index}/${date_year}/${date_month}/${date_day}   `;
+    console.log(_url)
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 export const getQuarterRatesRange  = async (coor,div,tr_index) => {
   try {
     const _url = `${baseURL}/quarterrate/interval/${coor}/${div}/${tr_index}   `;
@@ -201,6 +281,61 @@ export const getMonthlyRates  = async (coor,div,tr_index) => {
     console.log(err.response);
   }
 };
+export const getMonthlyKnnRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/knn_monthlyrate/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthlyTenRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/ten_monthlyrate/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthlyGuartRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/guart/coor/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 export const getMonthRatesRange  = async (coor,div,tr_index) => {
   try {
  

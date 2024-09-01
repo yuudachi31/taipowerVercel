@@ -43,12 +43,6 @@
     "eject": "react-scripts eject",
     "mac-start": "craco --openssl-legacy-provider start"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": [
     ">0.2%",
     "not dead",

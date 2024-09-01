@@ -16,6 +16,8 @@ const { Header, Sider, Content } = Layout;
 function Predict({ transformer, saveEachTransInfo }) {
   // const parsed = queryString.parse(window.location.search);
   const [isLoadingtop, setIsLoadingTop] = useState(true);
+  const [isLoadingbottom, setIsLoadingbottom] = useState(true);
+
   // const [isDataSwitch, setIsDataSwitch] = useState(false); //資料是否已切換，尚未成功
 
   //設定選擇虛擬或是記設變壓器的變壓器資料
@@ -44,7 +46,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709811${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockLightTags[i % 5],
           })),
@@ -70,7 +72,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -88,7 +90,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `pre${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709888${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -128,7 +130,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 11}`,
             title: `content${i + 1}`,
             electricityNum: `002709822${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -146,7 +148,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `pre${i + 21}`,
             title: `content${i + 1}`,
             electricityNum: `002709855${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -190,7 +192,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `pre${i + 31}`,
             title: `content${i + 1}`,
             electricityNum: `002709833${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -221,7 +223,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockLightTags[i % 5],
           })),
@@ -246,7 +248,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -264,7 +266,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `pre${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709888${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -302,7 +304,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -320,7 +322,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `pre${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709855${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -349,7 +351,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockLightTags[i % 5],
           })),
@@ -374,7 +376,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -416,7 +418,7 @@ function Predict({ transformer, saveEachTransInfo }) {
             key: `ori${i + 1}`,
             title: `content${i + 1}`,
             electricityNum: `002709800${i + 1}`,
-            tenHour: "5%",
+            tenHour: "0.01",
             // address: `台北市松山區XXXXX${i + 1}`,
             tag: mockPowerTags[i % 5],
           })),
@@ -487,6 +489,7 @@ function Predict({ transformer, saveEachTransInfo }) {
         // setupdateIndexData()
         console.log(mapFetchData(fetchData))
         setupdateIndexData(mapFetchData(fetchData))
+        setIsLoadingbottom(false)
       }
     })
 
@@ -576,7 +579,7 @@ if(tr1Array.length>0){
         tr_index: '1',
         type: '燈',
         thereshold: '50%',
-        data: tr1Array.filter(el=>light_tag.includes(el.tag)),
+        data: tr1Array.filter(el=>light_tag.includes(el.tag)||!el.tag),
         
       },
       new: {
@@ -593,7 +596,7 @@ if(tr1Array.length>0){
         tr_index: '1',
         type: '力',
         thereshold: '60%',
-        data: tr1Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr1Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
@@ -613,7 +616,7 @@ if(tr2Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
-        data: tr2Array.filter(el=>light_tag.includes(el.tag)),
+        data: tr2Array.filter(el=>light_tag.includes(el.tag)||!el.tag),
       },
       new: {
         coor: '',
@@ -629,7 +632,7 @@ if(tr2Array.length>0){
         tr_index: '2',
         type: '力',
         thereshold: '75%',
-        data: tr2Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr2Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
@@ -650,7 +653,7 @@ if(tr3Array.length>0){
       ori: {
         coor: '',
         thereshold: '0%',
-        data: tr3Array.filter(el=>!light_tag.includes(el.tag)),
+        data: tr3Array.filter(el=>!light_tag.includes(el.tag)&&el.tag),
       },
       new: {
         coor: '',
@@ -675,6 +678,7 @@ if(tr3Array.length>0){
     } ///只有原變壓器
   }
 }
+console.log(returnValue)
 return returnValue
   }
 
@@ -1043,7 +1047,7 @@ return returnValue
       <Layout class="flex justify-between py-2">
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>所轄區處 :<span class="ml-2">{transformer.eachTransformerInfo.addr}</span></div>
-          <div>住戶表數 :<span class="ml-2">10 個（6 個 AMI）</span></div>
+          <div>住戶表數 :<span class="ml-2">{transformer.eachTransformerInfo.cust_num} 個</span></div>
         </Content>
         <Content class="text-base tracking-widest space-y-5 flex-col">
           <div>組別 :<span class="ml-2">{transformer.eachTransformerInfo.div}</span></div>
@@ -1052,15 +1056,26 @@ return returnValue
         </Content>
         <Content class="flex justify-end w-50 gap-2" >
           <div class="flex w-100 h-100 gap-2" style={{ alignItems: 'end' }}>
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={showaddExistModal}>選擇既有變壓器</button>
-            <button class="btn btn-orange bg-orange-400 flex-end" type="primary" onClick={showaddFakeModal}>新增虛擬變壓器</button>
+            <Button  type="primary"disabled={isLoadingbottom}onClick={showaddExistModal}style={{ background: "orange", }}>選擇既有變壓器</Button>
+            <Button  type="primary"disabled={isLoadingbottom} onClick={showaddFakeModal}style={{ background: "orange", }}>新增虛擬變壓器</Button>
           </div>
           {/* <EChartRate /> */}
         </Content>
       </Layout>
 
       {/* 負載變壓器規劃 */}
-      <Divider />
+      <Divider />{
+        isLoadingbottom?<>
+         <div style={{height:'200px'}}>
+              <Spin tip="載入中" size="large" style={{height:'200px'}}>
+                <div className="content" />
+              </Spin> 
+            </div>
+        </>:
+        <>
+        
+      
+     
       <Layout class="py-1 pb-20">
         <h2 class="flex-auto font-normal text-base font-bold">負載變壓器規劃</h2>
         <Row>
@@ -1118,6 +1133,8 @@ return returnValue
           {/* <EChartRate /> */}
         </Content>
       </Layout>
+      </>
+      }
     </Layout>
   );
 

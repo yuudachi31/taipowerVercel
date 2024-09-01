@@ -331,17 +331,17 @@ function Notify({ transformer, saveAbnormalTransData }) {
                 setIsUserLoading(false)
             }
         })
-        getAllUser().then((data) => {
-            if (data?.errStatus) {
-                console.log(data.errDetail);
-            } else {
-                console.log(data)
-                setUserData(data)
-                setIsUserLoading(false)
+        // getAllUser().then((data) => {
+        //     if (data?.errStatus) {
+        //         console.log(data.errDetail);
+        //     } else {
+        //         console.log(data)
+        //         setUserData(data)
+        //         setIsUserLoading(false)
 
-                // setFilteredUsers(data.filter((user) => user.region_id == userRegion));
-            }
-        })
+        //         // setFilteredUsers(data.filter((user) => user.region_id == userRegion));
+        //     }
+        // })
         getAbnormalTransList().then((abnData) => {
             if (abnData?.errStatus) {
                 console.log(abnData.errDetail);

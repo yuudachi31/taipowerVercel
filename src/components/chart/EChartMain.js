@@ -18,8 +18,9 @@ function EChartMain({data}) {
             return (
                 <ul class="border-2 border-green-400 py-2 px-3 bg-white">
                     
-                    <li key={`item-0`}>{`尖峰利用率：${payload[2].value}kW`}</li>
-                    <li key={`item-1`}>{`離峰利用率：${payload[0].value}kW`}</li>
+                    <li key={`item-0`}>{`十小時率：${payload[1].value}kW`}</li>
+                    <li key={`item-1`}>{`KNN：${payload[2].value}kW`}</li>
+                    <li key={`item-2`}>{`純AMI：${payload[0].value}kW`}</li>
                     {/* <li key={`item-2`}>{`尖峰利用率：${payload[2].value}%`}</li> */}
                     
                 </ul>
@@ -38,23 +39,33 @@ function EChartMain({data}) {
         history.push(`/EChartDayPage?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${parsed.year}&month=${parsed.month}&day=${payload.x_key}`);
     }
 // console.log(data)
+const SquareDot = (props) => {
+    const { cx, cy, fill } = props;
+    return (
+      <rect x={cx - 4} y={cy - 4} width={8} height={8} fill={fill} />
+    );
+  };
+
     return (
         <ResponsiveContainer height={400}>
-            <BarChart data={data} margin={0} barGap={60}>
+            <ComposedChart data={data} margin={0} barGap={60}>
                 <XAxis dataKey="x_key" tickLine={false} tick={renderCustomXTick} />
                 {/* ticks={ticks_y} */}
                 {/* dataKey="load_total" */}  
                 <YAxis dataKey="uti_rate"  orientation="left" tickLine={false} tickCount={5} tick={renderCustomYLeftTick} />
                 <CartesianGrid strokeDasharray="2" vertical={false} stroke="#BDBDBD" />
                 <Tooltip content={renderLegend} cursor={false}/>
-                <Bar dataKey="load_off" name="尖峰利用率" stackId="a" barSize={16} fill="#92D131" activeBar={{ fill: "#81C12E" }} onClick={BarClickToDay}/>
-                <Bar dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToDay}/>
-                <Bar dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent" />
+                <Bar dataKey="load_on" name="尖峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927" }} onClick={BarClickToDay}/>
+                {/* <Bar dataKey="load_on_forChart" name="離峰利用率" stackId="a" barSize={16} fill="#55A630" activeBar={{ fill: "#4A8927"}} onClick={BarClickToDay}/> */}
+                {/* <Bar dataKey="load_on" name="離峰利用率" stackId="a" barSize={16} fill="transparent" /> */}
                 {/* 圖表線 */}
                 {/* <Line isAnimationActive={false} type="monotone" yAxisId="uti_rate" name="尖峰利用率" dataKey="uti_rate" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
                 {/* 第二條線 */}
-                {/* <Line isAnimationActive={false} type="monotone"  name="利用率" dataKey="uti_rate_two" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} /> */}
-            </BarChart>
+                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="ten" stroke="orange" strokeWidth={2} activeDot={{ stroke: 'transparent' }}  dot={{ stroke: 'orange',strokeWidth: 7}} />
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="knn" stroke="#92D131" strokeWidth={2}activeDot={{ stroke: 'transparent' }}  dot={{ stroke: '#81C12E', strokeWidth: 2 }} />
+
+
+            </ComposedChart>
         </ResponsiveContainer>
     );
 
