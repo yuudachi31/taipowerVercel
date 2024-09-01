@@ -1,10 +1,10 @@
-import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES, SAVE_QUARTERKNNRATES,SAVE_QUARTERTENRATES, SAVE_DAILYTENRATES } from "../utils/actionType/frontActionType";
+import { SAVE_TRANS_DATA, SAVE_DAILYRATES, SAVE_QUARTERRATES, SAVE_MONTHLYRATES, SAVE_MONTHLYKNNRATES, SAVE_MONTHLYTENRATES, SAVE_MONTHLYGUARTRATES, SAVE_EACHTRANSINFO, SAVE_ABN_TRANS_DATA, SAVE_DAILYKNNRATES, SAVE_QUARTERKNNRATES, SAVE_QUARTERTENRATES, SAVE_DAILYTENRATES } from "../utils/actionType/frontActionType";
 
 const initialState = {
   transformerList: [],
   dailyRatesList: Array.from({ length: 31 }, (index) => ({})),
   quarterRatesList: Array.from({ length: 96 }, () => ({})),
-  monthlyRatesList: [],
+  monthlyRatesList: Array.from({ length: 12 }, () => ({})),
   ABNtransformerList: [],
   eachTransformerInfo: {
 
@@ -272,7 +272,7 @@ export const transformerReducer = (state = initialState, action) => {
       // });
       state.quarterRatesList.forEach((item, index1) => {
         var newobj = {}
-        action.payload.forEach((element, index2 )=> {
+        action.payload.forEach((element, index2) => {
           if (index1 == index2) {
             if (index1 != 0 && (index1 + 1) % 8 == 0) {
               newobj = {
@@ -280,15 +280,15 @@ export const transformerReducer = (state = initialState, action) => {
                 key: index1, load: element.uti_rate_15min.toFixed(1),
                 x_key: `${(index1 + 1) / 4}:00`,
               }
-            }else{
+            } else {
               newobj = {
                 ...state.quarterRatesList[index1],
                 key: index1, load: element.uti_rate_15min.toFixed(1),
                 x_key: '',
               }
-            
+
             }
-            
+
           }
         })
         quarterAmiRates.push(newobj)
@@ -314,20 +314,16 @@ export const transformerReducer = (state = initialState, action) => {
                 key: index1, knn: element.uti_rate_15min_knn.toFixed(1),
                 x_key: `${(index1 + 1) / 4}:00`,
               }
-            }else{
+            } else {
               newobj = {
                 ...state.quarterRatesList[index1],
-                key: index1,  knn: element.uti_rate_15min_knn.toFixed(1),
+                key: index1, knn: element.uti_rate_15min_knn.toFixed(1),
                 x_key: '',
               }
-            
             }
-            
           }
         })
         quarterKnnRates.push(newobj)
-
-
       })
 
 
@@ -336,7 +332,7 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         quarterRatesList: [...quarterKnnRates],
       };
-      case SAVE_QUARTERTENRATES:
+    case SAVE_QUARTERTENRATES:
       const quarterTenRates = [];
       state.quarterRatesList.forEach((item, index1) => {
         var newobj = {}
@@ -348,15 +344,15 @@ export const transformerReducer = (state = initialState, action) => {
                 key: index1, ten: element.uti_rate_15min_10h.toFixed(1),
                 x_key: `${(index1 + 1) / 4}:00`,
               }
-            }else{
+            } else {
               newobj = {
                 ...state.quarterRatesList[index1],
-                key: index1,  ten: element.uti_rate_15min_10h.toFixed(1),
+                key: index1, ten: element.uti_rate_15min_10h.toFixed(1),
                 x_key: '',
               }
-            
+
             }
-            
+
           }
         })
         quarterTenRates.push(newobj)
@@ -370,53 +366,82 @@ export const transformerReducer = (state = initialState, action) => {
         ...state,
         quarterRatesList: [...quarterTenRates],
       };
-      
+
 
     case SAVE_MONTHLYRATES:
       const monthlyRates = [];
       // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
       for (let i = 1; i <= 12; i++) {
         let haveData = false
+        var newobj = {}
         action.payload.forEach((element, index) => {
           if (element.date_month == i) {
             haveData = true
-
             let month = `${element.date_month}月`
             if (element.is_predict == 1) {
-              monthlyRates.push({
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                key: i - 1,
                 'load_on': Math.ceil(element.peak_rate),
-                'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
-                'load_off': Math.ceil(element.off_peak_rate),
-                'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+                // 'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+                'year': element.date_year,
                 'uti_rate': Math.ceil(element.peak_rate),
                 'x_key': month,
-                'year': element.date_year,
                 'predict_bars': 0
-              })
+              }
             } else if (element.is_predict == 3) {
-              monthlyRates.push({
+              newobj = {
+                ...state.monthlyRatesList[i - 1]
 
-              })
-            }
-
-            else {
-              monthlyRates.push({
+              }
+            } else {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                key: i - 1,
                 'load_on': null,
-                'load_on_forChart': null,
-                'load_off': null,
-                'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+                // 'load_on_forChart': null,
+                // 'load_off': null,
+                'year': element.date_year,
                 'uti_rate': Math.ceil(element.peak_rate),
                 'x_key': month,
-                'year': element.date_year,
                 'predict_bars': Math.ceil(element.peak_rate),
-              })
+              }
             }
+            // if (element.is_predict == 1) {
+            //   monthlyRates.push({
+            //     'load_on': Math.ceil(element.peak_rate),
+            //     'load_on_forChart': Math.ceil(element.peak_rate) - Math.ceil(element.off_peak_rate),
+            //     'load_off': Math.ceil(element.off_peak_rate),
+            //     'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+            //     'uti_rate': Math.ceil(element.peak_rate),
+            //     'x_key': month,
+            //     'year': element.date_year,
+            //     'predict_bars': 0
+            //   })
+            // } else if (element.is_predict == 3) {
+            //   monthlyRates.push({
+
+            //   })
+            // }
+
+            // else {
+            //   monthlyRates.push({
+            //     'load_on': null,
+            //     'load_on_forChart': null,
+            //     'load_off': null,
+            //     'load_total': Math.ceil(element.peak_rate + element.off_peak_rate),
+            //     'uti_rate': Math.ceil(element.peak_rate),
+            //     'x_key': month,
+            //     'year': element.date_year,
+            //     'predict_bars': Math.ceil(element.peak_rate),
+            //   })
+            // }
 
           }
         });
 
         if (haveData != true) {
-          monthlyRates.push({
+          newobj = {
             'load_on': null,
             'load_on_forChart': 0,
             'load_off': 0,
@@ -425,8 +450,9 @@ export const transformerReducer = (state = initialState, action) => {
             'x_key': `${i}月`,
             'year': 0,
             'predict_bars': 0,
-          })
+          }
         }
+        monthlyRates.push(newobj)
       }
 
       // action.payload.forEach((element, index) => {
@@ -467,8 +493,176 @@ export const transformerReducer = (state = initialState, action) => {
       console.log(monthlyRates)
       return {
         ...state,
-        monthlyRatesList: monthlyRates,
+        monthlyRatesList: [...monthlyRates],
       };
+
+    case SAVE_MONTHLYKNNRATES:
+      const monthlyKnnRates = [];
+      // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+      for (let i = 1; i <= 12; i++) {
+        let haveData = false
+        var newobj = {}
+        action.payload.forEach((element, index) => {
+          if (element.date_month == i) {
+            haveData = true
+            let month = `${element.date_month}月`
+            if (element.is_predict == 1) {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                knn: element.peak_rate
+              }
+            } else if (element.is_predict == 3) {
+              newobj = {
+                knn: element.peak_rate
+
+              }
+            } else {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                knn: element.peak_rate
+              }
+            }
+
+          }
+        });
+
+        if (haveData != true) {
+          newobj = {
+            ...state.monthlyRatesList[i - 1],
+            'load_on': null,
+            'load_on_forChart': 0,
+            'load_off': 0,
+            'load_total': 0,
+            'uti_rate': 0,
+            'x_key': `${i}月`,
+            'year': 0,
+            'predict_bars': 0,
+            'knn': null
+          }
+        }
+        monthlyKnnRates.push(newobj)
+      }
+
+
+      // console.log(monthlyRates)
+      return {
+        ...state,
+        monthlyRatesList: [...monthlyKnnRates],
+      };
+
+    case SAVE_MONTHLYTENRATES:
+      const monthlyTenRates = [];
+      // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+      for (let i = 1; i <= 12; i++) {
+        let haveData = false
+        var newobj = {}
+        action.payload.forEach((element, index) => {
+          if (element.date_month == i) {
+            haveData = true
+            let month = `${element.date_month}月`
+            if (element.is_predict == 1) {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                ten: element.peak_rate
+              }
+            } else if (element.is_predict == 3) {
+              newobj = {
+                ten: element.peak_rate
+
+              }
+            } else {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                ten: element.peak_rate
+              }
+            }
+
+          }
+        });
+
+        if (haveData != true) {
+          newobj = {
+            ...state.monthlyRatesList[i - 1],
+            'load_on': null,
+            'load_on_forChart': 0,
+            'load_off': 0,
+            'load_total': 0,
+            'uti_rate': 0,
+            'x_key': `${i}月`,
+            'year': 0,
+            'predict_bars': 0,
+            'ten': null
+          }
+        }
+        monthlyTenRates.push(newobj)
+      }
+
+
+      // console.log(monthlyRates)
+      return {
+        ...state,
+        monthlyRatesList: [...monthlyTenRates],
+      };
+    case SAVE_MONTHLYGUARTRATES:
+      const monthlyGuartRates = [];
+      // const time = ['2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'];
+      for (let i = 1; i <= 12; i++) {
+        let haveData = false
+        var newobj = {}
+        action.payload.forEach((element, index) => {
+          if (element.date_month == i) {
+            haveData = true
+            let month = `${element.date_month}月`
+            if (element.is_predict == 1) {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                guartRate: element.peak_rate,
+                preGuartRate: null
+
+              }
+            } else if (element.is_predict == 3) {
+              newobj = {
+                guartRate: element.peak_rate,
+                preGuartRate: null
+
+              }
+            } else {
+              newobj = {
+                ...state.monthlyRatesList[i - 1],
+                preGuartRate: element.peak_rate,
+                guartRate: null
+              }
+            }
+
+          }
+        });
+
+        if (haveData != true) {
+          newobj = {
+            ...state.monthlyRatesList[i - 1],
+            'load_on': null,
+            'load_on_forChart': 0,
+            'load_off': 0,
+            'load_total': 0,
+            'uti_rate': 0,
+            'x_key': `${i}月`,
+            'year': 0,
+            'predict_bars': 0,
+            'knn': null,
+            ten: null,
+            preGuartRate: null,
+            guartRate: null
+          }
+        }
+
+        monthlyGuartRates.push(newobj)
+      }
+        // console.log(monthlyRates)
+        return {
+          ...state,
+          monthlyRatesList: [...monthlyGuartRates],
+        };
+      
     case SAVE_EACHTRANSINFO:
       console.log(action.payload)
       return {

@@ -5,13 +5,13 @@ import { MessageOutlined, CaretRightOutlined, CaretLeftOutlined } from '@ant-des
 import { red, green, lime, yellow, orange, volcano } from '@ant-design/colors';
 import styles from '../../index.less'
 import moment from 'moment';
-import { saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo } from '../../actions/transformer'
+import { saveDailyRates, saveQuarterRates, saveMonthlyRates,saveMonthlyKnnRates,saveMonthlyTenRates,saveMonthlyGuartRates, saveEachTransInfo } from '../../actions/transformer'
 import EChartMain from '../../components/chart/EChartMain';
 import EChartDay from '../../components/chart/EChartDay';
 import EChartMonth from '../../components/chart/EChartMonth';
 // import EChartRate from '../../components/chart/EChartRate';
 import { data_main, data_month } from '../../components/chart/TempData'
-import { getAbnormalTransListForTrSearch, getDailyRates, getQuarterRates, getMonthlyRates, getEachTransformer, getMonthRatesRange, postUser } from '../../api/frontApi'
+import { getAbnormalTransListForTrSearch, getDailyRates, getQuarterRates, getMonthlyRates,getMonthlyKnnRates,getMonthlyTenRates, getEachTransformer, getMonthRatesRange,getMonthlyGuartRates, postUser } from '../../api/frontApi'
 import { connect } from 'react-redux';
 import ErrorModal from '../../components/ErrorModal'
 import { useEffect, useState } from 'react';
@@ -43,7 +43,7 @@ const onChangeMonth = (date, dateString) => {
   console.log(date, dateString);
 };
 
-function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo }) {
+function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthlyRates,saveMonthlyKnnRates,saveMonthlyTenRates,saveMonthlyGuartRates, saveEachTransInfo }) {
   const parsed = queryString.parse(window.location.search);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,6 +52,10 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
   const [selectedDay, setSelectedDay] = useState(null);
   const [isLoadingtop, setIsLoadingTop] = useState(false);
   const [isLoadingbottom, setIsLoadingbottom] = useState(false);
+  const [isLoadingKnn, setIsLoadingKnn] = useState(false);
+  const [isLoadingTen, setIsLoadingTen] = useState(false);
+  const [isLoadingGuart, setIsLoadingGuart] = useState(false);
+
   const [isdateLoading, setDateLoading] = useState(true)
   const [abnormalTransData, setAbnormalTransData] = useState([]);
   const [isModalDataLoading, setIsModalDataLoading] = useState(true);
@@ -315,6 +319,9 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
     // 在此處執行搜索邏輯，使用 coor、div 和 tr_index 進行搜索
     setIsLoadingTop(true)
     setIsLoadingbottom(true)
+    setIsLoadingKnn(true)
+    setIsLoadingTen(true)
+    setIsLoadingGuart(true)
     getEachTransformer(coor, div?div:"T01", tr_index?tr_index:"1").then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -331,7 +338,30 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
         saveMonthlyRates(data)
       }
     })
-
+    getMonthlyKnnRates(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setIsLoadingKnn(false)
+        saveMonthlyKnnRates(data)
+      }
+    })
+    getMonthlyTenRates(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setIsLoadingTen(false)
+        saveMonthlyTenRates(data)
+      }
+    })
+    getMonthlyGuartRates(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
+      if (data.errStatus) {
+        console.log(data.errDetail);
+      } else {
+        setIsLoadingGuart(false)
+        saveMonthlyGuartRates(data)
+      }
+    })
     getMonthRatesRange(coor, div?div:"T01", tr_index?tr_index:"1", 2022).then((data) => {
       if (data.errStatus) {
         console.log(data.errDetail);
@@ -534,7 +564,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
           </div>
         </Header>
         {
-          isLoadingbottom ? (
+          isLoadingbottom||isLoadingKnn||isLoadingTen||isLoadingGuart ? (
             <>
               <Spin tip="圖表載入中" size="large">
                 <div className="content" />
@@ -557,6 +587,6 @@ const mapStateToProps = ({ transformerReducer }) => ({
 });
 
 const mapDispatchToProps = {
-  saveDailyRates, saveQuarterRates, saveMonthlyRates, saveEachTransInfo
+  saveDailyRates, saveQuarterRates, saveMonthlyRates,saveMonthlyKnnRates,saveMonthlyTenRates,saveMonthlyGuartRates, saveEachTransInfo
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TRNewSearch);

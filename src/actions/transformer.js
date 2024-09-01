@@ -8,7 +8,11 @@ import {
     SAVE_QUARTERTENRATES,
     SAVE_MONTHLYRATES,
     SAVE_EACHTRANSINFO,
-    SAVE_ABN_TRANS_DATA
+    SAVE_ABN_TRANS_DATA,
+    SAVE_MONTHLYKNNRATES,
+    SAVE_MONTHLYTENRATES,
+    SAVE_MONTHLYGUARTRATES
+
 } from '../utils/actionType/frontActionType'
 
 export const saveTransData = (data) => {
@@ -92,6 +96,27 @@ export const saveMonthlyRates = (data) => {
     // console.log(data)
     return {
         type: SAVE_MONTHLYRATES,
+        payload: data
+    }
+}
+export const saveMonthlyKnnRates = (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYKNNRATES,
+        payload: data
+    }
+}
+export const saveMonthlyTenRates= (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYTENRATES,
+        payload: data
+    }
+}
+export const saveMonthlyGuartRates= (data) => {
+    // console.log(data)
+    return {
+        type: SAVE_MONTHLYGUARTRATES,
         payload: data
     }
 }

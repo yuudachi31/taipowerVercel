@@ -257,7 +257,7 @@ console.log()
               </div>
               <div class="flex flex-row items-center">
                 <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
-                <span class="mt-2 ml-2">保證利用率</span>
+                <span class="mt-2 ml-2">純AMI</span>
               </div>
             </div>
           </div>

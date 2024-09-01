@@ -281,6 +281,61 @@ export const getMonthlyRates  = async (coor,div,tr_index) => {
     console.log(err.response);
   }
 };
+export const getMonthlyKnnRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/knn_monthlyrate/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthlyTenRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/ten_monthlyrate/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+export const getMonthlyGuartRates  = async (coor,div,tr_index) => {
+  try {
+    const _url = `${baseURL}/monthlyrate/guart/coor/${coor}/${div}/${tr_index}`;
+    const result = await axios.get(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Authorization: `Bearer ${token}`
+      },
+    });
+    // console.log(result);
+    if (result.status === 200) {
+      return result.data;
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
 export const getMonthRatesRange  = async (coor,div,tr_index) => {
   try {
  

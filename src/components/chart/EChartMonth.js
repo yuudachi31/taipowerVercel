@@ -19,13 +19,16 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
         else {
             return (
                 <ul class="border-2 border-green-400 py-2 px-3 bg-white">
-                    {payload[2]?.value == 0 ?
+                    {payload[1]?.value == 0 ?
                         <>
                             {payload[3]!=undefined && payload[0] ? (
                                 <>
-                                    <li key={`item-0`}>{`十小時率：${payload[3]?.value}kW`}</li>
-                                    <li key={`item-1`}>{`KNN：${payload[0]?.value}kW`}</li>
-                                    <li key={`item-2`}>{`純AMI：${payload[3]?.value}kW`}</li>
+                                    <li key={`item-0`}>{`十小時率：${payload[3]?.value}`}</li>
+                                    <li key={`item-1`}>{`KNN：${payload[2]?.value}`}</li>
+                                    {/* <li key={`item-2`}>{`純AMI：${payload[0]?.value}kW`}</li> */}
+                                    <li key={`item-2`}>{`AMI：${payload[0]?.value}`}</li>
+                                    <li key={`item-3`}>{`保證利用率：${payload[4]?.value}`}</li>
+
                                 </>) : (<></>)}
 
                         </>
@@ -34,7 +37,13 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
 
                             {payload[2] ? (
                                 <>
-                                    <li key={`item-0`}>{`純AMI：${payload[2]?.value}%`}</li>
+                                       <li key={`item-0`}>{`十小時率：${payload[2]?.value}`}</li>
+                                    <li key={`item-1`}>{`KNN：${payload[1]?.value}`}</li>
+                                    {/* <li key={`item-2`}>{`純AMI：${payload[0]?.value}kW`}</li> */}
+                                    <li key={`item-2`}>{`預測AMI：${payload[0]?.value}`}</li>
+                                    <li key={`item-3`}>{`預測保證利用率：${payload[3]?.value}`}</li>
+                                    
+
                                 </>
                             ) : (<></>)}
                         </>
@@ -76,10 +85,12 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
                 {/* 這條透明bar是為了hover寫的 */}
                 {/* <Bar isAnimationActive={false} dataKey="load_on" name="離峰利用率" stackId="a" barSize={20} fill="transparent" /> */}
                 {/* 圖表線 */}
-                <Line isAnimationActive={false} type="monotone" name="保證利用率" dataKey="load_on" stroke="black" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: 'black', strokeWidth: 2 }} />
-                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="load_on_forChart   " stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
-                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="load_on" stroke="orange" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
 
+
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="knn" stroke="green" strokeWidth={2} dot={{ stroke: 'green', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="ten" stroke="orange" strokeWidth={2} dot={{ stroke: 'orange', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone" name="保證利用率" dataKey="guartRate" stroke="black" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: 'black', strokeWidth: 2 }} />
+                <Line isAnimationActive={false} type="monotone" name="預測保證利用率" dataKey="preGuartRate" stroke="#BDBDBD" strokeWidth={2} activeDot={{ r: 5 }} dot={{ stroke: '#BDBDBD', strokeWidth: 2 }} />
             </ComposedChart>
         </ResponsiveContainer>
     );
