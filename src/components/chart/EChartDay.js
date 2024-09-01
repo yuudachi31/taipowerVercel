@@ -50,9 +50,14 @@ function EChartDay({data}) {
                 {/* <Bar isAnimationActive={false} dataKey="load" name="尖峰利用率" stackId="a" barSize={16} fill="transparent" /> */}
                 
                 {/* <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 2 }} /> */}
-                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="knn" stroke="green" strokeWidth={2}  dot={{ stroke: 'green', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
-                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="#55A630" strokeWidth={2}  dot={{ stroke: '#55A630', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
-                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="ten" stroke="#F49507" strokeWidth={2}  dot={{ stroke: '#F49507', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
+                {/* <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="" stroke="green" strokeWidth={2}  dot={{ stroke: 'green', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="" stroke="#55A630" strokeWidth={2}  dot={{ stroke: '#55A630', strokeWidth: 2 }} activeDot={{ r: 7 }}/>
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="ten" stroke="#F49507" strokeWidth={2}  dot={{ stroke: '#F49507', strokeWidth: 2 }} activeDot={{ r: 7 }}/> */}
+                   <Line isAnimationActive={false} type="monotone"  name="十小時率" dataKey="ten" stroke="#F49507" strokeWidth={2}  dot={{ stroke: '#F49507', strokeWidth: 1 }} activeDot={{ stroke: 'transparent' }}/>
+                <Line isAnimationActive={false} type="monotone"  name="尖峰利用率" dataKey="load" stroke="black" strokeWidth={2} dot={{ stroke: 'black', strokeWidth: 7 }} activeDot={{ stroke: 'transparent' }} />
+                <Line isAnimationActive={false} type="monotone"  name="KNN" dataKey="knn" stroke="green" strokeWidth={2}  dot={{ stroke: 'green', strokeWidth: 4 }} activeDot={{ stroke: 'transparent' }}/>
+                {/* <Line isAnimationActive={false} type="monotone"  name="" dataKey="load" stroke="#55A630" strokeWidth={2}  dot={{ stroke: '#55A630', strokeWidth: 2 }} activeDot={{ r: 7 }}/> */}
+             
             </ComposedChart>
         </ResponsiveContainer>
     );

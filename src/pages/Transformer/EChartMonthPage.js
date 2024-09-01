@@ -252,17 +252,29 @@ function EChartDayPage({ transformer,saveDailyKnnRates, saveDailyTenRates,saveDa
               </div>
              
             </div> */}
-            <div class="flex flex-col items-start justify-end">
-            <div class="flex flex-row items-center ">
-              <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
-              <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
-              </div>
-              <div class="flex flex-row items-center">
-              <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
-              <span class="mt-2 ml-2">十小時率</span>
+            <div class="flex flex-row ">
+            <div class="flex flex-col items-start justify-start">
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 w-7 h-3 bg-green-500"></span>
+                <span class="mt-2 ml-2">純AMI</span>
               </div>
               
             </div>
+            <div class="flex flex-col ml-2 items-start justify-start">
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+                <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+              </div>
+              <div class="flex flex-row items-center">
+                <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+                <span class="mt-2 ml-2">十小時率</span>
+              </div>
+              <div class="flex flex-row items-center">
+                <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
+                <span class="mt-2 ml-2">保證利用率</span>
+              </div>
+            </div>
+          </div>
           </div>
         </Header>
         {

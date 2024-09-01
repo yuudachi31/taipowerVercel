@@ -244,17 +244,23 @@ console.log()
           { selectedDay ? (<h3 class="font-bold flex-1 text-center m-0 text-base"> {selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>):(<h3 class="font-bold flex-1 text-center m-0 text-base">{selectedYear} 年 {selectedMonth}  月 {selectedDay} 日 當日用電圖表</h3>)}
 
           <div class="flex flex-row ">
-          <div class="flex flex-col items-start justify-end">
-            <div class="flex flex-row items-center ">
-              <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
-              <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
+            
+            
+            <div class="flex flex-col ml-2 items-start justify-start">
+              <div class="flex flex-row items-center ">
+                <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
+                <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
               </div>
               <div class="flex flex-row items-center">
-              <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
-              <span class="mt-2 ml-2">十小時率</span>
+                <span class="mt-2 border-2 border-orange-400 w-7 h-0 bg-orange-400"></span>
+                <span class="mt-2 ml-2">十小時率</span>
               </div>
+              <div class="flex flex-row items-center">
+                <span class="mt-2 border-2 border-black w-7 h-0 bg-black"></span>
+                <span class="mt-2 ml-2">保證利用率</span>
               </div>
             </div>
+          </div>
           
           
 
