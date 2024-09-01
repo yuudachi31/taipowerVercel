@@ -342,7 +342,7 @@ function TRNewSearch({ transformer, saveDailyRates, saveQuarterRates, saveMonthl
                 <span class="mt-2 ml-2">預測利用率</span>
               </div>
             </div>
-            <div class="flex flex-col items-start justify-start">
+            <div class="flex flex-col ml-2 items-start justify-start">
               <div class="flex flex-row items-center ">
                 <span class="mt-2 border-2 border-green-300 w-7 h-0 bg-green-300"></span>
                 <span class="mt-2 ml-2 mr-6">KNN&emsp;&emsp;&emsp;&nbsp;</span>
