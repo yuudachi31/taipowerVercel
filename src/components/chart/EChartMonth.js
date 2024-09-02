@@ -65,9 +65,9 @@ function EChartMain({ data ,searchCoor,searchDiv,searchTrIndex}) {
         console.log(payload)
         console.log(parsed)
         if(searchCoor&&searchDiv&&searchTrIndex){
-            history.push(`/EChartMonthPage?coor=${searchCoor}&div=${searchDiv}&tr_index=${searchTrIndex}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+            history.push(`/EChartMonthPage?&coor=${searchCoor}&div=${searchDiv}&tr_index=${searchTrIndex}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
         }else{
-            history.push(`/EChartMonthPage?coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
+            history.push(`/EChartMonthPage?&coor=${parsed.coor}&div=${parsed.div}&tr_index=${parsed.tr_index}&year=${payload.year}&month=${payload.x_key.split("月")[0]}`);
         }
     }
     return (
